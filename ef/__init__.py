@@ -18,11 +18,12 @@ Example:
     >>> project.add_source('doc1', 'Sample text to analyze')
     >>>
     >>> # Create and run pipeline
-    >>> project.create_pipeline('analysis', embedder='simple', clusterer='simple_kmeans')
+    >>> _ = project.create_pipeline('analysis', embedder='simple', clusterer='simple_kmeans')
     >>> results = project.run_pipeline('analysis')
     >>>
     >>> # Access persisted results
-    >>> print(len(project.embeddings))
+    >>> len(project.embeddings)
+    1
 """
 
 from ef.projects import Project, Projects

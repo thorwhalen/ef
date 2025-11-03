@@ -90,7 +90,7 @@ class Project:
         >>> from ef import Project
         >>> project = Project.create('my_project', backend='memory')
         >>> project.add_source('doc1', 'Sample text')
-        >>> project.create_pipeline('test', embedder='simple')
+        >>> _ = project.create_pipeline('test', embedder='simple')
         >>> results = project.run_pipeline('test')
         >>> 'embeddings' in results
         True
@@ -262,7 +262,7 @@ class Project:
 
         Example:
             >>> project = Project.create('test', backend='memory')
-            >>> pipeline = project.create_pipeline('my_pipeline', embedder='simple')
+            >>> _ = project.create_pipeline('my_pipeline', embedder='simple')
             >>> 'my_pipeline' in project.pipelines
             True
         """
@@ -312,7 +312,7 @@ class Project:
 
         Example:
             >>> project = Project.create('test', backend='memory')
-            >>> project.create_pipeline('simple', embedder='simple')
+            >>> _ = project.create_pipeline('simple', embedder='simple')
             >>> project.segments['doc1'] = 'Test document'
             >>> results = project.run_pipeline('simple', source_key='doc1')
             >>> 'embeddings' in results
@@ -359,7 +359,7 @@ class Project:
 
         Example:
             >>> project = Project.create('test', backend='memory')
-            >>> project.create_pipeline('pipe1', embedder='simple')
+            >>> _ = project.create_pipeline('pipe1', embedder='simple')
             >>> 'pipe1' in project.list_pipelines()
             True
         """

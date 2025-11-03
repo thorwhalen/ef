@@ -85,7 +85,7 @@ def _register_planarizers(project):
 def _register_clusterers(project):
     """Add imbed's real clusterers."""
     try:
-        from imbed.components.clustering import clusterers as imbed_clusterers
+        from imbed.components.clusterization import clusterers as imbed_clusterers
 
         for name, func in imbed_clusterers.items():
             project.clusterers.register(name)(func)
