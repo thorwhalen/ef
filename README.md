@@ -173,13 +173,76 @@ print(list(project.embedders.keys()))
 # ['simple', 'char_counts', 'openai-small', 'openai-large', ...]
 ```
 
+### External Segmenter Registration
+
+ef provides conditional registration for advanced segmenters from popular packages:
+
+```python
+from ef import Project
+from ef.plugins import segmenter_registry
+
+project = Project.create('my_project')
+
+# Register all available segmenters (conditional on package installation)
+segmenter_registry.register_all_segmenters(project)
+
+# Now you can use advanced segmenters in pipelines
+project.create_pipeline(
+    'analysis',
+    segmenter='langchain_recursive_1000',  # LangChain smart chunking
+    embedder='simple'
+)
+```
+
+**Supported packages** (all optional, automatically skipped if not installed):
+
+- **LangChain** (`langchain-text-splitters`) - Character, recursive, markdown, code splitters
+- **Tree-sitter** (`tree-sitter-languages`) - Multi-language code parsing
+- **AST** (built-in) - Python code segmentation
+- **spaCy** (`spacy`) - NLP sentence/token segmentation
+- **NLTK** (`nltk`) - Classic NLP tokenization
+- **tiktoken** (`tiktoken`) - OpenAI tokenizer for token-based chunking
+- **segtok** (`segtok`) - Fast sentence/word segmentation
+
+**Example with LangChain markdown splitter:**
+
+```python
+project.add_source('docs', open('README.md').read())
+project.create_pipeline('doc_pipeline',
+                       segmenter='langchain_markdown',
+                       embedder='simple')
+results = project.run_pipeline('doc_pipeline')
+```
+
+**Example with Python code segmentation:**
+
+```python
+code = '''
+def hello():
+    print("Hello")
+
+class Greeter:
+    def greet(self):
+        return "Hi"
+'''
+
+project.add_source('module', code)
+project.create_pipeline('code_pipeline',
+                       segmenter='tree_sitter_python',  # or 'ast_python'
+                       embedder='simple')
+results = project.run_pipeline('code_pipeline')
+# Each function/class becomes a separate segment
+```
+
+See [docs/SEGMENTER_REGISTRATION.md](docs/SEGMENTER_REGISTRATION.md) for complete documentation on all available segmenters, installation instructions, and usage examples.
+
 ### Writing Your Own Plugin
 
 ```python
 # my_plugin.py
 def register(project):
     """Add custom components to project."""
-    
+
     @project.embedders.register('my_embedder', dimension=768)
     def my_embedder(segments):
         # Your implementation

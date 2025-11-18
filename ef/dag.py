@@ -131,7 +131,14 @@ def assemble_pipeline_dag(
 
     # Add segmenter if provided
     if segmenter:
-        nodes.append(FuncNode(segmenter, name='segment_func', out='segments'))
+        nodes.append(
+            FuncNode(
+                segmenter,
+                name='segment_func',
+                bind={'source': 'segments'},  # Bind source param to segments input
+                out='segments',
+            )
+        )
 
     # Add embedder if provided (depends on segments)
     if embedder:
