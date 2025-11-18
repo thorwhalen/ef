@@ -236,6 +236,82 @@ results = project.run_pipeline('code_pipeline')
 
 See [docs/SEGMENTER_REGISTRATION.md](docs/SEGMENTER_REGISTRATION.md) for complete documentation on all available segmenters, installation instructions, and usage examples.
 
+### Advanced Segmentation Features
+
+ef includes powerful advanced segmentation capabilities:
+
+```python
+from ef import Project
+from ef.plugins import advanced_segmenters, segmenter_utils
+
+# Create project with auto-registration
+project = Project.create('advanced', backend='memory', auto_register_segmenters=True)
+
+# Register advanced segmenters
+advanced_segmenters.register_all_advanced_segmenters(project)
+
+# Now you have access to:
+# - Sliding window segmentation (with overlap)
+# - Hierarchical segmentation (multi-level)
+# - Semantic segmentation (embedding-based)
+# - Pattern-based segmentation (custom regex)
+# - Configurable segmenters (runtime parameters)
+# - Multi-strategy segmentation
+```
+
+**Sliding Window (preserves context across boundaries):**
+
+```python
+text = "A long document..." * 100
+segments = project.segmenters['sliding_window'](
+    text,
+    window_size=500,
+    stride=250  # 50% overlap
+)
+```
+
+**Hierarchical (multi-level analysis):**
+
+```python
+text = "Para 1.\n\nPara 2. Sentence 2.\n\nPara 3."
+segments = project.segmenters['hierarchical'](text, max_depth=2)
+# Returns both paragraph and sentence levels with keys like 'para_0.sent_1'
+```
+
+**Utilities (analysis and optimization):**
+
+```python
+# Compare different strategies
+results = segmenter_utils.compare_segmenters(
+    project,
+    text,
+    ['sentences', 'sliding_window', 'hierarchical'],
+    verbose=True
+)
+
+# Get automatic recommendation
+seg, reason = segmenter_utils.recommend_segmenter(
+    project,
+    content_type='code',
+    language='python'
+)
+print(f"Use {seg}: {reason}")
+
+# Batch process files
+results = segmenter_utils.batch_segment_files(
+    project,
+    pattern='**/*.py',
+    segmenter='auto',  # Auto-detects best segmenter per file
+    cache_results=True
+)
+
+# Analyze quality
+metrics = segmenter_utils.analyze_segmentation(segments)
+print(f"{metrics['count']} segments, avg {metrics['avg_length']:.1f} chars")
+```
+
+See [docs/ADVANCED_SEGMENTATION.md](docs/ADVANCED_SEGMENTATION.md) for complete guide including semantic segmentation, caching, pattern creation, and optimization techniques.
+
 ### Writing Your Own Plugin
 
 ```python

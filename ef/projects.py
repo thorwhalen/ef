@@ -109,6 +109,7 @@ class Project:
         root_dir: str | None = None,
         backend: str = 'files',
         registries: SimpleNamespace | None = None,
+        auto_register_segmenters: bool = False,
     ) -> 'Project':
         """
         Create a new project with storage and component registries.
@@ -118,6 +119,8 @@ class Project:
             root_dir: Storage root directory
             backend: Storage backend ('files' or 'memory')
             registries: Custom registries (uses defaults if None)
+            auto_register_segmenters: If True, automatically register all available
+                external segmenters (LangChain, spaCy, NLTK, etc.) on project creation
 
         Returns:
             New Project instance
@@ -126,17 +129,29 @@ class Project:
             >>> project = Project.create('test', backend='memory')
             >>> list(project.mall.keys())
             ['segments', 'embeddings', 'planar_embeddings', 'clusters']
+
+            >>> # With auto-registration of external segmenters
+            >>> project = Project.create('test', backend='memory', auto_register_segmenters=True)
+            >>> 'langchain_recursive_1000' in project.list_components()['segmenters']
+            True  # If langchain-text-splitters is installed
         """
         mall = mk_project_mall(project_id, root_dir, backend=backend)
 
         if registries is None:
             registries = _mk_default_registries()
 
-        return cls(
+        project = cls(
             project_id=project_id,
             mall=mall,
             registries=registries,
         )
+
+        # Auto-register external segmenters if requested
+        if auto_register_segmenters:
+            from ef.plugins import segmenter_registry
+            segmenter_registry.register_all_segmenters(project, verbose=False)
+
+        return project
 
     # -------- Component Access --------
 
