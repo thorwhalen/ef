@@ -1,0 +1,4 @@
+ef.plugins
+==========
+.. automodule:: ef.plugins
+   :members:

@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.dag &mdash; ef 0.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.dag</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.dag</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pipeline assembly using DAG composition.</span>
+
+<span class="sd">This module provides:</span>
+<span class="sd">- DAG assembly from components</span>
+<span class="sd">- Simple DAG execution that collects all intermediate results</span>
+<span class="sd">- Optional future integration with meshed for advanced features</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+
+<span class="c1"># ============================================================================</span>
+<span class="c1"># Function Node</span>
+<span class="c1"># ============================================================================</span>
+
+
+<div class="viewcode-block" id="FuncNode">
+<a class="viewcode-back" href="../../module_docs/ef/dag.html#ef.dag.FuncNode">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FuncNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A node in the pipeline DAG representing a function.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">bind</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="ow">or</span> <span class="s1">&#39;result&#39;</span></div>
+
+
+
+<span class="c1"># ============================================================================</span>
+<span class="c1"># Simple Pipeline DAG</span>
+<span class="c1"># ============================================================================</span>
+
+
+<div class="viewcode-block" id="DAG">
+<a class="viewcode-back" href="../../module_docs/ef/dag.html#ef.dag.DAG">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DAG</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple DAG implementation for pipeline execution.</span>
+
+<span class="sd">    Executes a sequence of functions, collecting all intermediate results.</span>
+<span class="sd">    Returns a dictionary with all outputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DAG.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            nodes: List of FuncNode objects or a single FuncNode</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">nodes</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the DAG.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs: Initial inputs to the pipeline</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing all intermediate and final results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="c1"># Get inputs for this node</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+            <span class="n">func_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># Use bind if specified (explicit mapping)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">bind</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">bind</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                        <span class="n">func_kwargs</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Auto-match parameters by name</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                        <span class="n">func_kwargs</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+
+            <span class="c1"># Execute function</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">func_kwargs</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">out</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># Provide helpful error message</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Error calling </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;  Available in results: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;  Tried to pass: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">func_kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;  Function signature: </span><span class="si">{</span><span class="n">sig</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<span class="c1"># ============================================================================</span>
+<span class="c1"># Pipeline Assembly</span>
+<span class="c1"># ============================================================================</span>
+
+
+<div class="viewcode-block" id="assemble_pipeline_dag">
+<a class="viewcode-back" href="../../module_docs/ef/dag.html#ef.dag.assemble_pipeline_dag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">assemble_pipeline_dag</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">segmenter</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">planarizer</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">clusterer</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DAG</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assemble a DAG from pipeline components.</span>
+
+<span class="sd">    Components are connected automatically based on their input/output names.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        segmenter: Optional segmentation function (source -&gt; segments)</span>
+<span class="sd">        embedder: Optional embedding function (segments -&gt; embeddings)</span>
+<span class="sd">        planarizer: Optional planarization function (embeddings -&gt; planar_embeddings)</span>
+<span class="sd">        clusterer: Optional clustering function (embeddings -&gt; clusters)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DAG that can be executed with source data</span>
+
+<span class="sd">    &gt;&gt;&gt; def seg(source): return {&#39;main&#39;: source}</span>
+<span class="sd">    &gt;&gt;&gt; def emb(segments): return {k: [1.0, 2.0] for k in segments}</span>
+<span class="sd">    &gt;&gt;&gt; dag = assemble_pipeline_dag(segmenter=seg, embedder=emb)</span>
+<span class="sd">    &gt;&gt;&gt; results = dag(source=&#39;test&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;embeddings&#39; in results</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Add segmenter if provided</span>
+    <span class="k">if</span> <span class="n">segmenter</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FuncNode</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;segment_func&#39;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;segments&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Add embedder if provided (depends on segments)</span>
+    <span class="k">if</span> <span class="n">embedder</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">FuncNode</span><span class="p">(</span>
+                <span class="n">embedder</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;embed_func&#39;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;segments&#39;</span><span class="p">:</span> <span class="s1">&#39;segments&#39;</span><span class="p">},</span>  <span class="c1"># Connect to segmenter output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;embeddings&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Add planarizer if provided (depends on embeddings)</span>
+    <span class="k">if</span> <span class="n">planarizer</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">FuncNode</span><span class="p">(</span>
+                <span class="n">planarizer</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;planarize_func&#39;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="s1">&#39;embeddings&#39;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;planar_embeddings&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Add clusterer if provided (depends on embeddings)</span>
+    <span class="k">if</span> <span class="n">clusterer</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">FuncNode</span><span class="p">(</span>
+                <span class="n">clusterer</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cluster_func&#39;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="s1">&#39;embeddings&#39;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;clusters&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">DAG</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

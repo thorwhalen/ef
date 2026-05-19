@@ -1,0 +1,4 @@
+ef.plugins.imbed_plugin
+=======================
+.. automodule:: ef.plugins.imbed_plugin
+   :members:

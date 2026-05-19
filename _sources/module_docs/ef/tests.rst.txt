@@ -1,0 +1,4 @@
+ef.tests
+========
+.. automodule:: ef.tests
+   :members:

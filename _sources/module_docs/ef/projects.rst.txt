@@ -1,0 +1,4 @@
+ef.projects
+===========
+.. automodule:: ef.projects
+   :members:
