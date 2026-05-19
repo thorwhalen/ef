@@ -21,4 +21,4 @@ Usage:
 from ef.plugins import simple_plugin as simple
 from ef.plugins import imbed_plugin as imbed
 
-__all__ = ['simple', 'imbed']
+__all__ = ["simple", "imbed"]

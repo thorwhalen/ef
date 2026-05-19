@@ -42,12 +42,12 @@ from ef.base import (
 # ============================================================================
 
 __all__ = [
-    'Project',
-    'Projects',
-    'ComponentRegistry',
-    'SegmentKey',
-    'Segment',
-    'Vector',
-    'PlanarVector',
-    'ClusterIndex',
+    "Project",
+    "Projects",
+    "ComponentRegistry",
+    "SegmentKey",
+    "Segment",
+    "Vector",
+    "PlanarVector",
+    "ClusterIndex",
 ]

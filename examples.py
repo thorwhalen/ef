@@ -8,13 +8,13 @@ print("Example 1: Quickstart")
 print("=" * 60)
 
 # Create project and add data
-project = Project.create('quickstart', backend='memory')
-project.add_source('doc1', 'This is about AI and ML')
-project.add_source('doc2', 'Deep learning is powerful')
+project = Project.create("quickstart", backend="memory")
+project.add_source("doc1", "This is about AI and ML")
+project.add_source("doc2", "Deep learning is powerful")
 
 # Create and run pipeline
-project.create_pipeline('analysis', embedder='simple', clusterer='simple_kmeans')
-results = project.run_pipeline('analysis')
+project.create_pipeline("analysis", embedder="simple", clusterer="simple_kmeans")
+results = project.run_pipeline("analysis")
 
 print(f"Processed {len(results['embeddings'])} documents")
 print(f"Clusters: {dict(project.clusters)}")
@@ -42,15 +42,15 @@ print("=" * 60)
 
 
 # Register custom embedder
-@project.embedders.register('word_count', dimension=1)
+@project.embedders.register("word_count", dimension=1)
 def word_count_embedder(segments):
     """Count words in each segment."""
     return {key: [float(len(text.split()))] for key, text in segments.items()}
 
 
 # Use it
-project.create_pipeline('word_count_pipe', embedder='word_count')
-results = project.run_pipeline('word_count_pipe')
+project.create_pipeline("word_count_pipe", embedder="word_count")
+results = project.run_pipeline("word_count_pipe")
 print(f"Word counts: {dict(results['embeddings'])}")
 print()
 

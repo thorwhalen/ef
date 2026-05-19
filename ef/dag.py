@@ -24,7 +24,7 @@ class FuncNode:
         self.func = func
         self.name = name or func.__name__
         self.bind = bind or {}
-        self.out = out or 'result'
+        self.out = out or "result"
 
 
 # ============================================================================
@@ -131,16 +131,16 @@ def assemble_pipeline_dag(
 
     # Add segmenter if provided
     if segmenter:
-        nodes.append(FuncNode(segmenter, name='segment_func', out='segments'))
+        nodes.append(FuncNode(segmenter, name="segment_func", out="segments"))
 
     # Add embedder if provided (depends on segments)
     if embedder:
         nodes.append(
             FuncNode(
                 embedder,
-                name='embed_func',
-                bind={'segments': 'segments'},  # Connect to segmenter output
-                out='embeddings',
+                name="embed_func",
+                bind={"segments": "segments"},  # Connect to segmenter output
+                out="embeddings",
             )
         )
 
@@ -149,9 +149,9 @@ def assemble_pipeline_dag(
         nodes.append(
             FuncNode(
                 planarizer,
-                name='planarize_func',
-                bind={'embeddings': 'embeddings'},  # Connect to embedder output
-                out='planar_embeddings',
+                name="planarize_func",
+                bind={"embeddings": "embeddings"},  # Connect to embedder output
+                out="planar_embeddings",
             )
         )
 
@@ -160,9 +160,9 @@ def assemble_pipeline_dag(
         nodes.append(
             FuncNode(
                 clusterer,
-                name='cluster_func',
-                bind={'embeddings': 'embeddings'},  # Connect to embedder output
-                out='clusters',
+                name="cluster_func",
+                bind={"embeddings": "embeddings"},  # Connect to embedder output
+                out="clusters",
             )
         )
 

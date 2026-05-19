@@ -44,10 +44,10 @@ def _mk_default_registries() -> SimpleNamespace:
     works out-of-the-box without requiring heavy dependencies.
     """
     registries = SimpleNamespace(
-        segmenters=ComponentRegistry('segmenters'),
-        embedders=ComponentRegistry('embedders'),
-        planarizers=ComponentRegistry('planarizers'),
-        clusterers=ComponentRegistry('clusterers'),
+        segmenters=ComponentRegistry("segmenters"),
+        embedders=ComponentRegistry("embedders"),
+        planarizers=ComponentRegistry("planarizers"),
+        clusterers=ComponentRegistry("clusterers"),
     )
 
     # Auto-register simple components from plugin
@@ -56,13 +56,13 @@ def _mk_default_registries() -> SimpleNamespace:
     simple.register_simple_components(
         # Create minimal project-like object for registration
         type(
-            '_Project',
+            "_Project",
             (),
             {
-                'segmenters': registries.segmenters,
-                'embedders': registries.embedders,
-                'planarizers': registries.planarizers,
-                'clusterers': registries.clusterers,
+                "segmenters": registries.segmenters,
+                "embedders": registries.embedders,
+                "planarizers": registries.planarizers,
+                "clusterers": registries.clusterers,
             },
         )()
     )
@@ -107,9 +107,9 @@ class Project:
         project_id: str,
         *,
         root_dir: str | None = None,
-        backend: str = 'files',
+        backend: str = "files",
         registries: SimpleNamespace | None = None,
-    ) -> 'Project':
+    ) -> "Project":
         """
         Create a new project with storage and component registries.
 
@@ -165,22 +165,22 @@ class Project:
     @property
     def segments(self) -> MutableMapping[SegmentKey, Segment]:
         """Access to segments store."""
-        return self.mall['segments']
+        return self.mall["segments"]
 
     @property
     def embeddings(self) -> MutableMapping[SegmentKey, Vector]:
         """Access to embeddings store."""
-        return self.mall['embeddings']
+        return self.mall["embeddings"]
 
     @property
     def planar_embeddings(self) -> MutableMapping[SegmentKey, PlanarVector]:
         """Access to planar embeddings store."""
-        return self.mall['planar_embeddings']
+        return self.mall["planar_embeddings"]
 
     @property
     def clusters(self) -> MutableMapping[SegmentKey, ClusterIndex]:
         """Access to clusters store."""
-        return self.mall['clusters']
+        return self.mall["clusters"]
 
     # -------- Data Operations --------
 
@@ -223,10 +223,10 @@ class Project:
             True
         """
         all_components = {
-            'segmenters': list(self.segmenters.keys()),
-            'embedders': list(self.embedders.keys()),
-            'planarizers': list(self.planarizers.keys()),
-            'clusterers': list(self.clusterers.keys()),
+            "segmenters": list(self.segmenters.keys()),
+            "embedders": list(self.embedders.keys()),
+            "planarizers": list(self.planarizers.keys()),
+            "clusterers": list(self.clusterers.keys()),
         }
 
         if component_type:
@@ -274,8 +274,8 @@ class Project:
 
         # Apply any parameters via partial
         if component_params:
-            if clu_func and 'n_clusters' in component_params:
-                clu_func = partial(clu_func, n_clusters=component_params['n_clusters'])
+            if clu_func and "n_clusters" in component_params:
+                clu_func = partial(clu_func, n_clusters=component_params["n_clusters"])
 
         # Assemble DAG
         dag = assemble_pipeline_dag(
@@ -327,7 +327,7 @@ class Project:
         if source_data is not None:
             # Use provided source data
             if isinstance(source_data, str):
-                segments = {'main': source_data}
+                segments = {"main": source_data}
             else:
                 segments = source_data
         elif source_key is not None:
@@ -342,14 +342,14 @@ class Project:
 
         # Persist results if requested
         if persist:
-            if 'segments' in results:
-                self.segments.update(results['segments'])
-            if 'embeddings' in results:
-                self.embeddings.update(results['embeddings'])
-            if 'planar_embeddings' in results:
-                self.planar_embeddings.update(results['planar_embeddings'])
-            if 'clusters' in results:
-                self.clusters.update(results['clusters'])
+            if "segments" in results:
+                self.segments.update(results["segments"])
+            if "embeddings" in results:
+                self.embeddings.update(results["embeddings"])
+            if "planar_embeddings" in results:
+                self.planar_embeddings.update(results["planar_embeddings"])
+            if "clusters" in results:
+                self.clusters.update(results["clusters"])
 
         return results
 
@@ -371,7 +371,7 @@ class Project:
         self,
         source: str | dict[str, str],
         *,
-        embedder: str = 'simple',
+        embedder: str = "simple",
         segmenter: str | None = None,
     ) -> dict[str, Vector]:
         """
@@ -392,7 +392,7 @@ class Project:
             True
         """
         # Create temporary pipeline
-        temp_name = f'_temp_{id(self)}'
+        temp_name = f"_temp_{id(self)}"
         self.create_pipeline(
             temp_name,
             segmenter=segmenter,
@@ -406,7 +406,7 @@ class Project:
                 source_data=source,
                 persist=False,
             )
-            return results.get('embeddings', {})
+            return results.get("embeddings", {})
         finally:
             del self.pipelines[temp_name]
 
@@ -424,13 +424,13 @@ class Project:
             True
         """
         return {
-            'project_id': self.project_id,
-            'n_segments': len(self.segments),
-            'n_embeddings': len(self.embeddings),
-            'n_planar_embeddings': len(self.planar_embeddings),
-            'n_clusters': len(self.clusters),
-            'n_pipelines': len(self.pipelines),
-            'available_components': self.list_components(),
+            "project_id": self.project_id,
+            "n_segments": len(self.segments),
+            "n_embeddings": len(self.embeddings),
+            "n_planar_embeddings": len(self.planar_embeddings),
+            "n_clusters": len(self.clusters),
+            "n_pipelines": len(self.pipelines),
+            "available_components": self.list_components(),
         }
 
 
@@ -460,7 +460,7 @@ class Projects(MutableMapping[str, Project]):
         Args:
             root_dir: Root directory for all projects
         """
-        self.root_dir = root_dir or os.path.join(tempfile.gettempdir(), 'ef_projects')
+        self.root_dir = root_dir or os.path.join(tempfile.gettempdir(), "ef_projects")
         self._projects: dict[str, Project] = {}
 
     def __getitem__(self, key: str) -> Project:
@@ -469,7 +469,7 @@ class Projects(MutableMapping[str, Project]):
             project_dir = os.path.join(self.root_dir, key)
             if os.path.exists(project_dir):
                 self._projects[key] = Project.create(
-                    key, root_dir=self.root_dir, backend='files'
+                    key, root_dir=self.root_dir, backend="files"
                 )
             else:
                 raise KeyError(f"Project '{key}' not found")
