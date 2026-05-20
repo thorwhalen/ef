@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.9 documentation</title>
+  <title>ef &mdash; ef 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8618f531"></script>
+      <script src="../_static/documentation_options.js?v=bafade30"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -98,12 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.ChangeEvent.new_hash"><code class="docutils literal notranslate"><span class="pre">ChangeEvent.new_hash</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#ef.ClusterIndex"><code class="docutils literal notranslate"><span class="pre">ClusterIndex</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ef.ComponentRegistry"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.get_metadata"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.get_metadata()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.register"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.register()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ConfigId"><code class="docutils literal notranslate"><span class="pre">ConfigId</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.CorpusDiff.changed"><code class="docutils literal notranslate"><span class="pre">CorpusDiff.changed</span></code></a></li>
@@ -146,29 +140,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.ProducerSpec.params"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.params</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ProducerSpec.as_dict"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.as_dict()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ProducerSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.from_dict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#ef.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.add_source"><code class="docutils literal notranslate"><span class="pre">Project.add_source()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.clusterers"><code class="docutils literal notranslate"><span class="pre">Project.clusterers</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.clusters"><code class="docutils literal notranslate"><span class="pre">Project.clusters</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.create"><code class="docutils literal notranslate"><span class="pre">Project.create()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.create_pipeline"><code class="docutils literal notranslate"><span class="pre">Project.create_pipeline()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.embedders"><code class="docutils literal notranslate"><span class="pre">Project.embedders</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.embeddings"><code class="docutils literal notranslate"><span class="pre">Project.embeddings</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.list_components"><code class="docutils literal notranslate"><span class="pre">Project.list_components()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.list_pipelines"><code class="docutils literal notranslate"><span class="pre">Project.list_pipelines()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.planar_embeddings"><code class="docutils literal notranslate"><span class="pre">Project.planar_embeddings</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.planarizers"><code class="docutils literal notranslate"><span class="pre">Project.planarizers</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.quick_embed"><code class="docutils literal notranslate"><span class="pre">Project.quick_embed()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.run_pipeline"><code class="docutils literal notranslate"><span class="pre">Project.run_pipeline()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.segmenters"><code class="docutils literal notranslate"><span class="pre">Project.segmenters</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.segments"><code class="docutils literal notranslate"><span class="pre">Project.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Project.summary"><code class="docutils literal notranslate"><span class="pre">Project.summary()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#ef.Projects"><code class="docutils literal notranslate"><span class="pre">Projects</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ef.Projects.create_project"><code class="docutils literal notranslate"><span class="pre">Projects.create_project()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.RagEvalReport"><code class="docutils literal notranslate"><span class="pre">RagEvalReport</span></code></a></li>
@@ -215,7 +186,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ef.SegmentKey"><code class="docutils literal notranslate"><span class="pre">SegmentKey</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.SegmentRecord"><code class="docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SegmentRecord.to_segment"><code class="docutils literal notranslate"><span class="pre">SegmentRecord.to_segment()</span></code></a></li>
 </ul>
@@ -255,6 +225,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.average_precision"><code class="docutils literal notranslate"><span class="pre">average_precision()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.context_precision"><code class="docutils literal notranslate"><span class="pre">context_precision()</span></code></a></li>
@@ -272,6 +243,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.imbed_segmenter"><code class="docutils literal notranslate"><span class="pre">imbed_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ingest"><code class="docutils literal notranslate"><span class="pre">ingest()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.label_clusters"><code class="docutils literal notranslate"><span class="pre">label_clusters()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.line_segmenter"><code class="docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.materialise"><code class="docutils literal notranslate"><span class="pre">materialise()</span></code></a></li>
@@ -280,6 +252,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.plan_refresh"><code class="docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.precision_at_k"><code class="docutils literal notranslate"><span class="pre">precision_at_k()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.producer_spec"><code class="docutils literal notranslate"><span class="pre">producer_spec()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.read_beir"><code class="docutils literal notranslate"><span class="pre">read_beir()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.recall_at_k"><code class="docutils literal notranslate"><span class="pre">recall_at_k()</span></code></a></li>
@@ -297,30 +270,22 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ef/artifact_graph.html">ef.artifact_graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/base.html">ef.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/corpus.html">ef.corpus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/diagnostics.html">ef.diagnostics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/explore.html">ef.explore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/ops.html">ef.ops</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/plugins.html">ef.plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/projects.html">ef.projects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/refresh.html">ef.refresh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/reranking.html">ef.reranking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segments.html">ef.segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/source_manager.html">ef.source_manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/storage.html">ef.storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/tests.html">ef.tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ef/tests/test_basic.html">ef.tests.test_basic</a></li>
 </ul>
 
         </div>
@@ -447,6 +412,14 @@ bridges to Ragas for the LLM-judged metrics.</p></li>
 <li><p><a class="reference internal" href="ef/reranking.html#ef.reranking.with_reranker" title="ef.reranking.with_reranker"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_reranker()</span></code></a> — a two-stage reranking decorator over any
 retriever; <a class="reference internal" href="ef/reranking.html#ef.reranking.cross_encoder_reranker" title="ef.reranking.cross_encoder_reranker"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_encoder_reranker()</span></code></a> is a ready reranker.</p></li>
 </ul>
+<p>The <strong>explore layer</strong> (L5) is <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s visualization heritage, kept as a
+<em>secondary</em> “see the shape of the corpus” surface — search/RAG/indexing is the
+primary one. It imports numpy-only; UMAP, HDBSCAN and <code class="docutils literal notranslate"><span class="pre">imbed</span></code> are lazy extras:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/explore.html#ef.explore.project" title="ef.explore.project"><code class="xref py py-func docutils literal notranslate"><span class="pre">project()</span></code></a> — reduce embeddings to 2-D/3-D coordinates
+(PCA → UMAP); <a class="reference internal" href="ef/explore.html#ef.explore.cluster" title="ef.explore.cluster"><code class="xref py py-func docutils literal notranslate"><span class="pre">cluster()</span></code></a> — group them (k-means / HDBSCAN);
+<a class="reference internal" href="ef/explore.html#ef.explore.label_clusters" title="ef.explore.label_clusters"><code class="xref py py-func docutils literal notranslate"><span class="pre">label_clusters()</span></code></a> — name clusters with an LLM via <code class="docutils literal notranslate"><span class="pre">imbed</span></code>.</p></li>
+</ul>
 <p>Example — wrap a plain function and embed two strings:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
@@ -457,11 +430,6 @@ retriever; <a class="reference internal" href="ef/reranking.html#ef.reranking.cr
 <span class="go">[5.0, 2.0]</span>
 </pre></div>
 </div>
-<p>The legacy embedding-<em>visualization</em> pipeline (<code class="docutils literal notranslate"><span class="pre">Project</span></code> / <code class="docutils literal notranslate"><span class="pre">Projects</span></code> —
-<code class="docutils literal notranslate"><span class="pre">segment</span> <span class="pre">→</span> <span class="pre">embed</span> <span class="pre">→</span> <span class="pre">planarize</span> <span class="pre">→</span> <span class="pre">cluster</span></code>) is being demoted to one secondary
-use case of the refactored <code class="docutils literal notranslate"><span class="pre">ef</span></code>. It needs the <code class="docutils literal notranslate"><span class="pre">full</span></code> / <code class="docutils literal notranslate"><span class="pre">imbed</span></code> extras and
-is imported best-effort: if those dependencies are absent, the embedder facade
-above still works.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ef.ArtifactGraph">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ArtifactGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">producers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/artifact_graph.html#ArtifactGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ArtifactGraph" title="Link to this definition"></a></dt>
@@ -996,47 +964,6 @@ for a <code class="docutils literal notranslate"><span class="pre">&quot;deleted
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ef.ClusterIndex">
-<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ClusterIndex</span></span><a class="headerlink" href="#ef.ClusterIndex" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ef.ComponentRegistry">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ComponentRegistry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/base.html#ComponentRegistry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ComponentRegistry" title="Link to this definition"></a></dt>
-<dd><p>A registry that stores pipeline components (functions) in a Mapping interface.</p>
-<p>This allows components to be accessed like a dictionary while maintaining
-additional metadata about each component.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">registry</span> <span class="o">=</span> <span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;embedders&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">registry</span><span class="p">[</span><span class="s1">&#39;simple&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;simple&#39;</span> <span class="ow">in</span> <span class="n">registry</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s1">&#39;simple&#39;</span><span class="p">](</span><span class="s2">&quot;test text&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.ComponentRegistry.get_metadata">
-<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ef/base.html#ComponentRegistry.get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ComponentRegistry.get_metadata" title="Link to this definition"></a></dt>
-<dd><p>Get metadata for a component.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.ComponentRegistry.register">
-<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/base.html#ComponentRegistry.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ComponentRegistry.register" title="Link to this definition"></a></dt>
-<dd><p>Decorator to register a component.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">registry</span> <span class="o">=</span> <span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;embedders&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nd">@registry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;my_embedder&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">128</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;my_embedder&#39;</span> <span class="ow">in</span> <span class="n">registry</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="ef.ConfigId">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ConfigId</span></span><a class="headerlink" href="#ef.ConfigId" title="Link to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
@@ -1507,298 +1434,6 @@ registry to a <code class="docutils literal notranslate"><span class="pre">dol</
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ef.Project">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mall</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~collections.abc.MutableMapping]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimpleNamespace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipelines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~ef.dag.DAG]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/projects.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project" title="Link to this definition"></a></dt>
-<dd><p>Main project interface for ef pipelines.</p>
-<p>Provides:
-- Component registries (as Mapping stores)
-- Data storage (via mall - store of stores)
-- Pipeline assembly (via DAG composition)
-- Automatic persistence</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">Project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;my_project&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="s1">&#39;doc1&#39;</span><span class="p">,</span> <span class="s1">&#39;Sample text&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;embeddings&#39;</span> <span class="ow">in</span> <span class="n">results</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.add_source">
-<span class="sig-name descname"><span class="pre">add_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.add_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.add_source" title="Link to this definition"></a></dt>
-<dd><p>Add source data to the project.</p>
-<p>The source will be stored as-is. You can later run a pipeline
-to segment and process it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> – Unique identifier for this source</p></li>
-<li><p><strong>source_data</strong> – The data to store (will be converted to string)</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="s1">&#39;doc1&#39;</span><span class="p">,</span> <span class="s1">&#39;Sample text&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;doc1&#39;</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">segments</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.clusterers">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">clusterers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ef/base.html#ef.base.ComponentRegistry" title="ef.base.ComponentRegistry"><span class="pre">ComponentRegistry</span></a></span><a class="headerlink" href="#ef.Project.clusterers" title="Link to this definition"></a></dt>
-<dd><p>Access to clustering components.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.clusters">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">clusters</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.Project.clusters" title="Link to this definition"></a></dt>
-<dd><p>Access to clusters store.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.create">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimpleNamespace</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/projects.html#ef.projects.Project" title="ef.projects.Project"><span class="pre">Project</span></a></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.create" title="Link to this definition"></a></dt>
-<dd><p>Create a new project with storage and component registries.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>project_id</strong> – Unique project identifier</p></li>
-<li><p><strong>root_dir</strong> – Storage root directory</p></li>
-<li><p><strong>backend</strong> – Storage backend (‘files’ or ‘memory’)</p></li>
-<li><p><strong>registries</strong> – Custom registries (uses defaults if None)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New Project instance</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">mall</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="go">[&#39;segments&#39;, &#39;embeddings&#39;, &#39;planar_embeddings&#39;, &#39;clusters&#39;]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.create_pipeline">
-<span class="sig-name descname"><span class="pre">create_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planarizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">component_params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/dag.html#ef.dag.DAG" title="ef.dag.DAG"><span class="pre">DAG</span></a></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.create_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.create_pipeline" title="Link to this definition"></a></dt>
-<dd><p>Create a pipeline from component names.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Pipeline name</p></li>
-<li><p><strong>segmenter</strong> – Name of segmenter component (or None to skip)</p></li>
-<li><p><strong>embedder</strong> – Name of embedder component (or None to skip)</p></li>
-<li><p><strong>planarizer</strong> – Name of planarizer component (or None to skip)</p></li>
-<li><p><strong>clusterer</strong> – Name of clusterer component (or None to skip)</p></li>
-<li><p><strong>**component_params</strong> – Parameters to pass to components (e.g., n_clusters=5)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The assembled DAG pipeline</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span><span class="s1">&#39;my_pipeline&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;my_pipeline&#39;</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">pipelines</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.embedders">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">embedders</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ef/base.html#ef.base.ComponentRegistry" title="ef.base.ComponentRegistry"><span class="pre">ComponentRegistry</span></a></span><a class="headerlink" href="#ef.Project.embedders" title="Link to this definition"></a></dt>
-<dd><p>Access to embedding components.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.embeddings">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">embeddings</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.Project.embeddings" title="Link to this definition"></a></dt>
-<dd><p>Access to embeddings store.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.list_components">
-<span class="sig-name descname"><span class="pre">list_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.list_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.list_components" title="Link to this definition"></a></dt>
-<dd><p>List available components, optionally filtered by type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>component_type</strong> – Type to filter (‘segmenters’, ‘embedders’, etc.)
-If None, returns all components</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary of component types to lists of component names</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">list_components</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;embedders&#39;</span> <span class="ow">in</span> <span class="n">components</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;simple&#39;</span> <span class="ow">in</span> <span class="n">components</span><span class="p">[</span><span class="s1">&#39;embedders&#39;</span><span class="p">]</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.list_pipelines">
-<span class="sig-name descname"><span class="pre">list_pipelines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.list_pipelines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.list_pipelines" title="Link to this definition"></a></dt>
-<dd><p>List all created pipelines.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span><span class="s1">&#39;pipe1&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;pipe1&#39;</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">list_pipelines</span><span class="p">()</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.planar_embeddings">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">planar_embeddings</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.Project.planar_embeddings" title="Link to this definition"></a></dt>
-<dd><p>Access to planar embeddings store.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.planarizers">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">planarizers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ef/base.html#ef.base.ComponentRegistry" title="ef.base.ComponentRegistry"><span class="pre">ComponentRegistry</span></a></span><a class="headerlink" href="#ef.Project.planarizers" title="Link to this definition"></a></dt>
-<dd><p>Access to planarization components.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.quick_embed">
-<span class="sig-name descname"><span class="pre">quick_embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'simple'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.quick_embed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.quick_embed" title="Link to this definition"></a></dt>
-<dd><p>Quick embedding without creating a named pipeline.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> – Text or dict of texts to embed</p></li>
-<li><p><strong>embedder</strong> – Name of embedder to use</p></li>
-<li><p><strong>segmenter</strong> – Optional segmenter name</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary of embeddings</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">quick_embed</span><span class="p">(</span><span class="s1">&#39;Test text&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;main&#39;</span> <span class="ow">in</span> <span class="n">embeddings</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.run_pipeline">
-<span class="sig-name descname"><span class="pre">run_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.run_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.run_pipeline" title="Link to this definition"></a></dt>
-<dd><p>Run a pipeline on source data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pipeline_name</strong> – Name of the pipeline to run</p></li>
-<li><p><strong>source_key</strong> – Key of source data in segments store (if already added)</p></li>
-<li><p><strong>source_data</strong> – Source data to process (if not already in store)</p></li>
-<li><p><strong>persist</strong> – Whether to persist intermediate results to stores</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with pipeline results</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="s1">&#39;doc1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Test document&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">source_key</span><span class="o">=</span><span class="s1">&#39;doc1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;embeddings&#39;</span> <span class="ow">in</span> <span class="n">results</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.segmenters">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">segmenters</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ef/base.html#ef.base.ComponentRegistry" title="ef.base.ComponentRegistry"><span class="pre">ComponentRegistry</span></a></span><a class="headerlink" href="#ef.Project.segmenters" title="Link to this definition"></a></dt>
-<dd><p>Access to segmentation components.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ef.Project.segments">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">segments</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.Project.segments" title="Link to this definition"></a></dt>
-<dd><p>Access to segments store.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Project.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ef/projects.html#Project.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Project.summary" title="Link to this definition"></a></dt>
-<dd><p>Get a summary of the project state.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with project statistics</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">summary</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;project_id&#39;</span> <span class="ow">in</span> <span class="n">summary</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ef.Projects">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Projects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/projects.html#Projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Projects" title="Link to this definition"></a></dt>
-<dd><p>A store of projects, following the “mall” pattern.</p>
-<p>This allows you to manage multiple projects with a dict-like interface.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">Projects</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">projects</span> <span class="o">=</span> <span class="n">Projects</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proj</span> <span class="o">=</span> <span class="n">projects</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="s1">&#39;proj1&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;proj1&#39;</span> <span class="ow">in</span> <span class="n">projects</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="ef.Projects.create_project">
-<span class="sig-name descname"><span class="pre">create_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/projects.html#ef.projects.Project" title="ef.projects.Project"><span class="pre">Project</span></a></span></span><a class="reference internal" href="../_modules/ef/projects.html#Projects.create_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Projects.create_project" title="Link to this definition"></a></dt>
-<dd><p>Create a new project and add it to the manager.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>project_id</strong> – Unique project identifier</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments for Project.create()</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New Project instance</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">projects</span> <span class="o">=</span> <span class="n">Projects</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proj</span> <span class="o">=</span> <span class="n">projects</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="s1">&#39;new_proj&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proj</span><span class="o">.</span><span class="n">project_id</span>
-<span class="go">&#39;new_proj&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="ef.RagEvalReport">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RagEvalReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/evaluation.html#RagEvalReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RagEvalReport" title="Link to this definition"></a></dt>
 <dd><p>The outcome of <a class="reference internal" href="#ef.evaluate_rag" title="ef.evaluate_rag"><code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_rag()</span></code></a> — lexical RAG metrics over a sample set.</p>
@@ -2198,12 +1833,6 @@ tokens: Token count of <code class="docutils literal notranslate"><span class="p
 </dl>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ef.SegmentKey">
-<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SegmentKey</span></span><a class="headerlink" href="#ef.SegmentKey" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -2811,6 +2440,44 @@ inner’s <code class="docutils literal notranslate"><span class="pre">model_id<
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.cluster">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'kmeans'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hdbscan'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kmeans'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cluster_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/ef/explore.html#cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.cluster" title="Link to this definition"></a></dt>
+<dd><p>Cluster a corpus’s embeddings (use cases §G2).</p>
+<p><code class="docutils literal notranslate"><span class="pre">method='kmeans'</span></code> is the default and is <strong>dependency-free</strong> — a numpy
+Lloyd’s algorithm with k-means++ seeding. <code class="docutils literal notranslate"><span class="pre">method='hdbscan'</span></code> finds a
+density-based clustering (and a noise label <code class="docutils literal notranslate"><span class="pre">-1</span></code>) and needs the
+<code class="docutils literal notranslate"><span class="pre">ef[explore]</span></code> extra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – what to cluster — see <a class="reference internal" href="#ef.project" title="ef.project"><code class="xref py py-func docutils literal notranslate"><span class="pre">project()</span></code></a> / <code class="xref py py-func docutils literal notranslate"><span class="pre">_resolve_vectors()</span></code>.</p></li>
+<li><p><strong>method</strong> – <code class="docutils literal notranslate"><span class="pre">'kmeans'</span></code> (numpy-only) or <code class="docutils literal notranslate"><span class="pre">'hdbscan'</span></code> (optional extra).</p></li>
+<li><p><strong>n_clusters</strong> – number of clusters for k-means (clamped to <code class="docutils literal notranslate"><span class="pre">n_samples</span></code>).</p></li>
+<li><p><strong>min_cluster_size</strong> – smallest cluster HDBSCAN will form.</p></li>
+<li><p><strong>embedder</strong> – embedder used when <code class="docutils literal notranslate"><span class="pre">data</span></code> is raw text.</p></li>
+<li><p><strong>normalize</strong> – L2-normalize the vectors first, so Euclidean distance
+behaves like cosine similarity — the right default for semantic
+embeddings. Set <code class="docutils literal notranslate"><span class="pre">False</span></code> to cluster raw vectors.</p></li>
+<li><p><strong>random_state</strong> – seed for k-means initialization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of integer cluster labels, shape <code class="docutils literal notranslate"><span class="pre">(n_samples,)</span></code>, in
+input order. HDBSCAN labels unclustered points <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(15,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.config_id">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">config_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/config.html#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><span class="pre">PipelineSpec</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ef/config.html#config_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config_id" title="Link to this definition"></a></dt>
 <dd><p>Content-addressed id of a <a class="reference internal" href="#ef.PipelineSpec" title="ef.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> over its steps.</p>
@@ -3290,6 +2957,47 @@ beyond <code class="docutils literal notranslate"><span class="pre">pip</span> <
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.label_clusters">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">label_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">labeler_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/explore.html#label_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.label_clusters" title="Link to this definition"></a></dt>
+<dd><p>Name each cluster with a short LLM-generated title (use cases §G3).</p>
+<p>A thin wrapper over <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s <code class="xref py py-class docutils literal notranslate"><span class="pre">imbed.tools.ClusterLabeler</span></code>: it
+samples each cluster’s segments, asks an LLM for a few-word title, and
+returns <code class="docutils literal notranslate"><span class="pre">{cluster_id:</span> <span class="pre">title}</span></code>. <code class="docutils literal notranslate"><span class="pre">ef</span></code> does not reimplement this — it
+reuses <code class="docutils literal notranslate"><span class="pre">imbed</span></code> (design notes §7).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segments</strong> – the segment texts — plain strings or <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>
+mappings (the <code class="docutils literal notranslate"><span class="pre">&quot;text&quot;</span></code> field is used). Aligned with <code class="docutils literal notranslate"><span class="pre">labels</span></code>.</p></li>
+<li><p><strong>labels</strong> – the cluster id of each segment — typically the output of
+<a class="reference internal" href="#ef.cluster" title="ef.cluster"><code class="xref py py-func docutils literal notranslate"><span class="pre">cluster()</span></code></a>.</p></li>
+<li><p><strong>context</strong> – the corpus’s overall topic, given to the LLM so titles
+describe how a cluster <em>differs</em> from the rest, not the shared topic.</p></li>
+<li><p><strong>n_words</strong> – maximum title length, in words.</p></li>
+<li><p><strong>n_samples</strong> – how many segments to sample per cluster when prompting;
+<code class="docutils literal notranslate"><span class="pre">None</span></code> keeps <code class="docutils literal notranslate"><span class="pre">ClusterLabeler</span></code>’s default.</p></li>
+<li><p><strong>**labeler_kwargs</strong> – forwarded to <code class="xref py py-class docutils literal notranslate"><span class="pre">imbed.tools.ClusterLabeler</span></code>
+(e.g. <code class="docutils literal notranslate"><span class="pre">max_unique_clusters</span></code>, <code class="docutils literal notranslate"><span class="pre">prompt</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{cluster_id:</span> <span class="pre">title}</span></code> for every distinct label.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">segments</span></code> and <code class="docutils literal notranslate"><span class="pre">labels</span></code> differ in length.</p></li>
+<li><p><strong>ImportError</strong> – if <code class="docutils literal notranslate"><span class="pre">imbed</span></code> (and its <code class="docutils literal notranslate"><span class="pre">pandas</span></code>/<code class="docutils literal notranslate"><span class="pre">oa</span></code> deps) is missing.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># needs ef[imbed] + an LLM key — illustrative only:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># label_clusters([&#39;neural net training ...&#39;, ...], [0, 1, 0, ...])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># -&gt; {0: &#39;Neural network training&#39;, 1: &#39;Dataset preprocessing&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.line_segmenter">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">line_segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#line_segmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.line_segmenter" title="Link to this definition"></a></dt>
 <dd><p>Segment a document into its non-empty lines.</p>
@@ -3448,6 +3156,56 @@ safely.</p>
 <span class="go">(&#39;segment&#39;, (&#39;doc-1&#39;,))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">params</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span> <span class="s1">&#39;overlap&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">}</span>
 <span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.project">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'umap'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pca'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cosine'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pca_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/ef/explore.html#project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.project" title="Link to this definition"></a></dt>
+<dd><p>Project a corpus’s embeddings to <code class="docutils literal notranslate"><span class="pre">dims</span></code> coordinates for visualization.</p>
+<p>The canonical “show me the shape of the corpus” operation (use cases §G1).
+The default <code class="docutils literal notranslate"><span class="pre">method='auto'</span></code> runs the design-notes §8.4 recipe — <strong>PCA →
+UMAP</strong>, <code class="docutils literal notranslate"><span class="pre">cosine</span></code> metric, seeded: PCA first compresses high-dimensional
+embeddings to <code class="docutils literal notranslate"><span class="pre">pca_components</span></code> (cheap denoising), then UMAP lays them out
+in <code class="docutils literal notranslate"><span class="pre">dims</span></code> dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – what to project — anything <code class="xref py py-func docutils literal notranslate"><span class="pre">_resolve_vectors()</span></code> understands:
+an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> (or nested sequence) of vectors, an iterable of
+texts (embedded with <code class="docutils literal notranslate"><span class="pre">embedder</span></code>), a <a class="reference internal" href="ef/corpus.html#ef.corpus.Corpus" title="ef.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a>
+mapping, or a <a class="reference internal" href="ef/source_manager.html#ef.source_manager.SearchableCorpus" title="ef.source_manager.SearchableCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SearchableCorpus</span></code></a> /
+<a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> (vectors pulled from the
+index).</p></li>
+<li><p><strong>dims</strong> – target dimensionality — <code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">3</span></code> for plotting.</p></li>
+<li><p><strong>method</strong> – <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> (UMAP when available and the corpus is large enough,
+else PCA), <code class="docutils literal notranslate"><span class="pre">'umap'</span></code> (force UMAP — needs the <code class="docutils literal notranslate"><span class="pre">ef[explore]</span></code>
+extra), or <code class="docutils literal notranslate"><span class="pre">'pca'</span></code> (numpy-only, always available).</p></li>
+<li><p><strong>embedder</strong> – embedder used when <code class="docutils literal notranslate"><span class="pre">data</span></code> is raw text; defaults to the
+dependency-free <a class="reference internal" href="ef/source_manager.html#ef.source_manager.DEFAULT_EMBEDDER" title="ef.source_manager.DEFAULT_EMBEDDER"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_EMBEDDER</span></code></a>.</p></li>
+<li><p><strong>n_neighbors</strong> – UMAP neighborhood size (clamped to <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p></li>
+<li><p><strong>min_dist</strong> – UMAP minimum point separation in the embedding.</p></li>
+<li><p><strong>metric</strong> – UMAP distance metric — <code class="docutils literal notranslate"><span class="pre">'cosine'</span></code> for semantic embeddings.</p></li>
+<li><p><strong>pca_components</strong> – PCA width for the pre-UMAP compression step; PCA is
+skipped when the source dimensionality is already smaller.</p></li>
+<li><p><strong>random_state</strong> – seed — projection is reproducible.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">dims)</span></code>, rows in input order.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if there are fewer than 2 samples.</p></li>
+<li><p><strong>ImportError</strong> – if <code class="docutils literal notranslate"><span class="pre">method='umap'</span></code> and <code class="docutils literal notranslate"><span class="pre">umap-learn</span></code> is not installed.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(20, 3)</span>
 </pre></div>
 </div>
 </dd></dl>

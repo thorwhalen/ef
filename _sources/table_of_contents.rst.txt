@@ -4,27 +4,19 @@
 
    module_docs/ef
    module_docs/ef/artifact_graph
-   module_docs/ef/base
    module_docs/ef/config
    module_docs/ef/corpus
-   module_docs/ef/dag
    module_docs/ef/diagnostics
    module_docs/ef/embedder_adapters
    module_docs/ef/embedder_wrappers
    module_docs/ef/embedders
    module_docs/ef/evaluation
+   module_docs/ef/explore
    module_docs/ef/hashing
    module_docs/ef/ops
-   module_docs/ef/plugins
-   module_docs/ef/plugins/imbed_plugin
-   module_docs/ef/plugins/simple_plugin
-   module_docs/ef/projects
    module_docs/ef/refresh
    module_docs/ef/reranking
    module_docs/ef/segmenter_adapters
    module_docs/ef/segmenters
    module_docs/ef/segments
    module_docs/ef/source_manager
-   module_docs/ef/storage
-   module_docs/ef/tests
-   module_docs/ef/tests/test_basic

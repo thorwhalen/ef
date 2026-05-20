@@ -1,4 +1,0 @@
-ef.plugins.simple_plugin
-========================
-.. automodule:: ef.plugins.simple_plugin
-   :members:

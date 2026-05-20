@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.9 documentation</title>
+  <title>Index &mdash; ef 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8618f531"></script>
+      <script src="_static/documentation_options.js?v=bafade30"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,30 +48,22 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/base.html">ef.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/explore.html">ef.explore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins.html">ef.plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/projects.html">ef.projects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/reranking.html">ef.reranking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/source_manager.html">ef.source_manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/storage.html">ef.storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/tests.html">ef.tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
 </ul>
 
         </div>
@@ -131,12 +123,6 @@
 
       <ul>
         <li><a href="module_docs/ef.html#ef.ArtifactGraph.add">(ef.ArtifactGraph method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.add_source">add_source() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.add_source">(ef.projects.Project method)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.ancestors">ancestors() (ef.artifact_graph.ArtifactGraph method)</a>
@@ -217,8 +203,6 @@
         <li><a href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter">(in module ef.segmenter_adapters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/dag.html#ef.dag.assemble_pipeline_dag">assemble_pipeline_dag() (in module ef.dag)</a>
-</li>
       <li><a href="module_docs/ef.html#ef.average_precision">average_precision() (in module ef)</a>
 
       <ul>
@@ -325,24 +309,10 @@
       </ul></li>
       <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeKind">ChangeKind (in module ef.corpus)</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.Project.clusterers">clusterers (ef.Project property)</a>
+      <li><a href="module_docs/ef.html#ef.cluster">cluster() (in module ef)</a>
 
       <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.clusterers">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ClusterIndex">ClusterIndex (in module ef)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.Project.clusters">clusters (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.clusters">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ComponentRegistry">ComponentRegistry (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/base.html#ef.base.ComponentRegistry">(class in ef.base)</a>
+        <li><a href="module_docs/ef/explore.html#ef.explore.cluster">(in module ef.explore)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource.config_hashes">config_hashes (ef.diagnostics.IndexedSource attribute)</a>
@@ -399,24 +369,6 @@
         <li><a href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff">(class in ef.corpus)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.create">create() (ef.Project class method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.create">(ef.projects.Project class method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.create_pipeline">create_pipeline() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.create_pipeline">(ef.projects.Project method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Projects.create_project">create_project() (ef.Projects method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Projects.create_project">(ef.projects.Projects method)</a>
-</li>
-      </ul></li>
       <li><a href="module_docs/ef.html#ef.cross_encoder_reranker">cross_encoder_reranker() (in module ef)</a>
 
       <ul>
@@ -429,8 +381,6 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/dag.html#ef.dag.DAG">DAG (class in ef.dag)</a>
-</li>
       <li><a href="module_docs/ef.html#ef.dcg_at_k">dcg_at_k() (in module ef)</a>
 
       <ul>
@@ -506,13 +456,6 @@
 </li>
       </ul></li>
       <li>
-    ef.base
-
-      <ul>
-        <li><a href="module_docs/ef/base.html#module-ef.base">module</a>
-</li>
-      </ul></li>
-      <li>
     ef.config
 
       <ul>
@@ -524,13 +467,6 @@
 
       <ul>
         <li><a href="module_docs/ef/corpus.html#module-ef.corpus">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.dag
-
-      <ul>
-        <li><a href="module_docs/ef/dag.html#module-ef.dag">module</a>
 </li>
       </ul></li>
       <li>
@@ -569,6 +505,13 @@
 </li>
       </ul></li>
       <li>
+    ef.explore
+
+      <ul>
+        <li><a href="module_docs/ef/explore.html#module-ef.explore">module</a>
+</li>
+      </ul></li>
+      <li>
     ef.hashing
 
       <ul>
@@ -583,42 +526,12 @@
 </li>
       </ul></li>
       <li>
-    ef.plugins
-
-      <ul>
-        <li><a href="module_docs/ef/plugins.html#module-ef.plugins">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.plugins.imbed_plugin
-
-      <ul>
-        <li><a href="module_docs/ef/plugins/imbed_plugin.html#module-ef.plugins.imbed_plugin">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.plugins.simple_plugin
-
-      <ul>
-        <li><a href="module_docs/ef/plugins/simple_plugin.html#module-ef.plugins.simple_plugin">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.projects
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#module-ef.projects">module</a>
-</li>
-      </ul></li>
-      <li>
     ef.refresh
 
       <ul>
         <li><a href="module_docs/ef/refresh.html#module-ef.refresh">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.reranking
 
@@ -626,6 +539,8 @@
         <li><a href="module_docs/ef/reranking.html#module-ef.reranking">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segmenter_adapters
 
@@ -652,20 +567,6 @@
 
       <ul>
         <li><a href="module_docs/ef/source_manager.html#module-ef.source_manager">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.storage
-
-      <ul>
-        <li><a href="module_docs/ef/storage.html#module-ef.storage">module</a>
-</li>
-      </ul></li>
-      <li>
-    ef.tests
-
-      <ul>
-        <li><a href="module_docs/ef/tests.html#module-ef.tests">module</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.BaseEmbedder.embed_batch">embed_batch() (ef.BaseEmbedder method)</a>
@@ -698,18 +599,6 @@
 </li>
       <li><a href="module_docs/ef.html#ef.EmbedderError">EmbedderError</a>, <a href="module_docs/ef/embedders.html#ef.embedders.EmbedderError">[1]</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.Project.embedders">embedders (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.embedders">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.embeddings">embeddings (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.embeddings">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
       <li><a href="module_docs/ef.html#ef.evaluate_rag">evaluate_rag() (in module ef)</a>
 
       <ul>
@@ -764,8 +653,6 @@
         <li><a href="module_docs/ef/config.html#ef.config.full_kwargs">(in module ef.config)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/dag.html#ef.dag.FuncNode">FuncNode (class in ef.dag)</a>
-</li>
       <li><a href="module_docs/ef.html#ef.FunctionEmbedder">FunctionEmbedder (class in ef)</a>
 
       <ul>
@@ -788,14 +675,6 @@
 
       <ul>
         <li><a href="module_docs/ef.html#ef.SourceManager.gc_orphans">(ef.SourceManager method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/base.html#ef.base.ComponentRegistry.get_metadata">get_metadata() (ef.base.ComponentRegistry method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ComponentRegistry.get_metadata">(ef.ComponentRegistry method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -914,30 +793,24 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.label_clusters">label_clusters() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/explore.html#ef.explore.label_clusters">(in module ef.explore)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.line_segmenter">line_segmenter() (in module ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/segmenters.html#ef.segmenters.line_segmenter">(in module ef.segmenters)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.lineage">lineage() (ef.source_manager.SourceManager method)</a>
 
       <ul>
         <li><a href="module_docs/ef.html#ef.SourceManager.lineage">(ef.SourceManager method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.Project.list_components">list_components() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.list_components">(ef.projects.Project method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.list_pipelines">list_pipelines() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.list_pipelines">(ef.projects.Project method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -990,10 +863,6 @@
         <li><a href="module_docs/ef.html#ef.RetryPolicy.max_delay">(ef.RetryPolicy attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/storage.html#ef.storage.mk_extension_based_store">mk_extension_based_store() (in module ef.storage)</a>
-</li>
-      <li><a href="module_docs/ef/storage.html#ef.storage.mk_project_mall">mk_project_mall() (in module ef.storage)</a>
-</li>
       <li><a href="module_docs/ef.html#ef.Embedder.model_id">model_id (ef.Embedder attribute)</a>
 
       <ul>
@@ -1008,13 +877,9 @@
 </li>
         <li><a href="module_docs/ef/artifact_graph.html#module-ef.artifact_graph">ef.artifact_graph</a>
 </li>
-        <li><a href="module_docs/ef/base.html#module-ef.base">ef.base</a>
-</li>
         <li><a href="module_docs/ef/config.html#module-ef.config">ef.config</a>
 </li>
         <li><a href="module_docs/ef/corpus.html#module-ef.corpus">ef.corpus</a>
-</li>
-        <li><a href="module_docs/ef/dag.html#module-ef.dag">ef.dag</a>
 </li>
         <li><a href="module_docs/ef/diagnostics.html#module-ef.diagnostics">ef.diagnostics</a>
 </li>
@@ -1026,17 +891,11 @@
 </li>
         <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">ef.evaluation</a>
 </li>
+        <li><a href="module_docs/ef/explore.html#module-ef.explore">ef.explore</a>
+</li>
         <li><a href="module_docs/ef/hashing.html#module-ef.hashing">ef.hashing</a>
 </li>
         <li><a href="module_docs/ef/ops.html#module-ef.ops">ef.ops</a>
-</li>
-        <li><a href="module_docs/ef/plugins.html#module-ef.plugins">ef.plugins</a>
-</li>
-        <li><a href="module_docs/ef/plugins/imbed_plugin.html#module-ef.plugins.imbed_plugin">ef.plugins.imbed_plugin</a>
-</li>
-        <li><a href="module_docs/ef/plugins/simple_plugin.html#module-ef.plugins.simple_plugin">ef.plugins.simple_plugin</a>
-</li>
-        <li><a href="module_docs/ef/projects.html#module-ef.projects">ef.projects</a>
 </li>
         <li><a href="module_docs/ef/refresh.html#module-ef.refresh">ef.refresh</a>
 </li>
@@ -1049,10 +908,6 @@
         <li><a href="module_docs/ef/segments.html#module-ef.segments">ef.segments</a>
 </li>
         <li><a href="module_docs/ef/source_manager.html#module-ef.source_manager">ef.source_manager</a>
-</li>
-        <li><a href="module_docs/ef/storage.html#module-ef.storage">ef.storage</a>
-</li>
-        <li><a href="module_docs/ef/tests.html#module-ef.tests">ef.tests</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1179,18 +1034,6 @@
         <li><a href="module_docs/ef/refresh.html#ef.refresh.plan_refresh">(in module ef.refresh)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.planar_embeddings">planar_embeddings (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.planar_embeddings">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.planarizers">planarizers (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.planarizers">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
       <li><a href="module_docs/ef.html#ef.BatchHandle.poll">poll (ef.BatchHandle attribute)</a>
 
       <ul>
@@ -1203,14 +1046,14 @@
         <li><a href="module_docs/ef/evaluation.html#ef.evaluation.precision_at_k">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary">primary (ef.evaluation.RetrievalEvalReport property)</a>
 
       <ul>
         <li><a href="module_docs/ef.html#ef.RetrievalEvalReport.primary">(ef.RetrievalEvalReport property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary_at">primary_at() (ef.evaluation.RetrievalEvalReport method)</a>
 
       <ul>
@@ -1229,16 +1072,10 @@
         <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec">(class in ef.artifact_graph)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project">Project (class in ef)</a>
+      <li><a href="module_docs/ef.html#ef.project">project() (in module ef)</a>
 
       <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project">(class in ef.projects)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Projects">Projects (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Projects">(class in ef.projects)</a>
+        <li><a href="module_docs/ef/explore.html#ef.explore.project">(in module ef.explore)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/segments.html#ef.segments.PROMOTED_METADATA_KEYS">PROMOTED_METADATA_KEYS (in module ef.segments)</a>
@@ -1259,14 +1096,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/evaluation.html#ef.evaluation.Qrels">Qrels (in module ef.evaluation)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.Project.quick_embed">quick_embed() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.quick_embed">(ef.projects.Project method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1349,36 +1178,20 @@
         <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshReport">(class in ef.refresh)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/base.html#ef.base.ComponentRegistry.register">register() (ef.base.ComponentRegistry method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ComponentRegistry.register">(ef.ComponentRegistry method)</a>
-</li>
-        <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register">(in module ef.plugins.imbed_plugin)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_all">register_all() (in module ef.plugins.imbed_plugin)</a>
-</li>
       <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.register_config">register_config() (ef.source_manager.SourceManager method)</a>
 
       <ul>
         <li><a href="module_docs/ef.html#ef.SourceManager.register_config">(ef.SourceManager method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_embedders_only">register_embedders_only() (in module ef.plugins.imbed_plugin)</a>
-</li>
-      <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_ml_only">register_ml_only() (in module ef.plugins.imbed_plugin)</a>
-</li>
       <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.register_op">register_op() (ef.artifact_graph.ArtifactGraph method)</a>
 
       <ul>
         <li><a href="module_docs/ef.html#ef.ArtifactGraph.register_op">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/plugins/simple_plugin.html#ef.plugins.simple_plugin.register_simple_components">register_simple_components() (in module ef.plugins.simple_plugin)</a>
-</li>
       <li><a href="module_docs/ef.html#ef.rerank">rerank() (in module ef)</a>
 
       <ul>
@@ -1435,12 +1248,6 @@
 
       <ul>
         <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy">(class in ef.embedder_wrappers)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.run_pipeline">run_pipeline() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.run_pipeline">(ef.projects.Project method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1519,6 +1326,8 @@
         <li><a href="module_docs/ef/segments.html#ef.segments.segment_record">(in module ef.segments)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/ops.html#ef.ops.segment_step">segment_step() (in module ef.ops)</a>
 </li>
       <li><a href="module_docs/ef.html#ef.Segmenter">Segmenter (class in ef)</a>
@@ -1527,28 +1336,12 @@
         <li><a href="module_docs/ef/segmenters.html#ef.segmenters.Segmenter">(class in ef.segmenters)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/ops.html#ef.ops.segmenter_identity">segmenter_identity() (in module ef.ops)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.Project.segmenters">segmenters (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.segmenters">(ef.projects.Project property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.SegmentKey">SegmentKey (in module ef)</a>
 </li>
       <li><a href="module_docs/ef.html#ef.SegmentRecord">SegmentRecord (class in ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord">(class in ef.segments)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.segments">segments (ef.Project property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.segments">(ef.projects.Project property)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.sentence_transformers_embedder">sentence_transformers_embedder() (in module ef)</a>
@@ -1558,8 +1351,6 @@
 </li>
       </ul></li>
       <li><a href="module_docs/ef/hashing.html#ef.hashing.sha256_hex">sha256_hex() (in module ef.hashing)</a>
-</li>
-      <li><a href="module_docs/ef/storage.html#ef.storage.SimpleFileStore">SimpleFileStore (class in ef.storage)</a>
 </li>
       <li><a href="module_docs/ef/corpus.html#ef.corpus.Source">Source (in module ef.corpus)</a>
 </li>
@@ -1599,12 +1390,6 @@
 
       <ul>
         <li><a href="module_docs/ef/config.html#ef.config.step_params">(in module ef.config)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Project.summary">summary() (ef.Project method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/projects.html#ef.projects.Project.summary">(ef.projects.Project method)</a>
 </li>
       </ul></li>
   </ul></td>
