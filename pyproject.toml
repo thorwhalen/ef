@@ -16,6 +16,8 @@ authors = [
 ]
 dependencies = [
     "numpy",
+    "dol>=0.3.31",
+    "i2>=0.1.63",
 ]
 
 [project.license]

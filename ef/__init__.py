@@ -35,6 +35,16 @@ no numpy at all):
 - Composition helpers: :func:`~ef.segmenters.with_overlap`,
   :func:`~ef.segmenters.hierarchical`, :func:`~ef.segmenters.materialise`.
 
+The **corpus facade** is ``ef``'s source layer (L0) — also always importable:
+
+- :data:`~ef.corpus.Corpus` / :data:`~ef.corpus.Source` — the type aliases: a
+  corpus is just a ``MutableMapping[source_id, Source]`` (any ``dol`` store).
+- :func:`~ef.corpus.as_corpus` — the dependency-injection seam (``None`` /
+  mapping / directory path / iterable of sources → a corpus).
+- :func:`~ef.corpus.content_hash` — the content hash of a source.
+- :class:`~ef.corpus.ChangeDetectingCorpus` — a corpus wrapper that detects and
+  reports changes (:class:`~ef.corpus.ChangeEvent` / :class:`~ef.corpus.CorpusDiff`).
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -100,9 +110,19 @@ from ef.segmenters import (
     with_overlap,
 )
 from ef.segmenter_adapters import as_segmenter, imbed_segmenter
+from ef.corpus import (
+    ChangeDetectingCorpus,
+    ChangeEvent,
+    ChangeKind,
+    Corpus,
+    CorpusDiff,
+    Source,
+    as_corpus,
+    content_hash,
+)
 
 # ============================================================================
-# Public API — the embedder & segmenter facades (always available)
+# Public API — the embedder, segmenter & corpus facades (always available)
 # ============================================================================
 
 __all__ = [
@@ -154,6 +174,18 @@ __all__ = [
     # adapters & the DI seam
     "as_segmenter",
     "imbed_segmenter",
+    # --- corpus facade ---
+    # the contract
+    "Corpus",
+    "Source",
+    "content_hash",
+    # the DI seam
+    "as_corpus",
+    # change detection
+    "ChangeDetectingCorpus",
+    "ChangeEvent",
+    "ChangeKind",
+    "CorpusDiff",
 ]
 
 # ============================================================================
