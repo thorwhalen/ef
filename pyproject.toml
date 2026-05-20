@@ -36,6 +36,12 @@ imbed = [
     "meshed>=0.1.165",
     "larder>=0.0.3",
 ]
+openai = [
+    "openai>=1.0",
+]
+sentence-transformers = [
+    "sentence-transformers>=2.2",
+]
 testing = [
     "pytest",
 ]
