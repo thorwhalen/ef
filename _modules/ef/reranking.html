@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.reranking &mdash; ef 0.1.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/reranking.html">ef.reranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.reranking</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.reranking</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Reranking — a precision pass over retrieved segments (use case F6).</span>
+
+<span class="sd">First-stage retrieval (a dense ANN query over ``vd``) is tuned for *recall*: it</span>
+<span class="sd">casts a wide, cheap net. A **reranker** is the precision counterpart — a slower,</span>
+<span class="sd">more accurate model that re-scores a handful of candidates against the query.</span>
+<span class="sd">The standard two-stage pattern is &quot;retrieve ``fetch_k`` cheaply, rerank, keep</span>
+<span class="sd">the top ``limit``&quot;.</span>
+
+<span class="sd">This module keeps reranking a *decorator over a retriever*, never a new pipeline</span>
+<span class="sd">stage — it composes with the existing surface rather than complicating it:</span>
+
+<span class="sd">- :class:`Reranker` — the structural protocol: a callable</span>
+<span class="sd">  ``(query, segments) -&gt; one score per segment``. Any plain function of that</span>
+<span class="sd">  shape *is* a reranker; no base class to subclass.</span>
+<span class="sd">- :func:`rerank` — the pure operation: re-score and re-order a list of</span>
+<span class="sd">  :class:`~ef.segments.Segment`\\ s. The reranker&#39;s score is folded into each</span>
+<span class="sd">  segment&#39;s ``metadata[&quot;rerank_score&quot;]``.</span>
+<span class="sd">- :func:`with_reranker` — the decorator: wrap a retrieve-style callable (such as</span>
+<span class="sd">  :meth:`SourceManager.retrieve &lt;ef.source_manager.SourceManager.retrieve&gt;`) so</span>
+<span class="sd">  every call over-fetches, reranks, and trims — transparently.</span>
+<span class="sd">- :func:`cross_encoder_reranker` — a ready reranker backed by a</span>
+<span class="sd">  sentence-transformers ``CrossEncoder`` (an optional heavy dependency, imported</span>
+<span class="sd">  lazily — the protocol and :func:`rerank` cost nothing).</span>
+
+<span class="sd">Example — rerank three segments by a toy length score, longest first:</span>
+
+<span class="sd">&gt;&gt;&gt; segments = [</span>
+<span class="sd">...     {&#39;text&#39;: &#39;cat&#39;, &#39;id&#39;: &#39;1&#39;},</span>
+<span class="sd">...     {&#39;text&#39;: &#39;dog&#39;, &#39;id&#39;: &#39;2&#39;},</span>
+<span class="sd">...     {&#39;text&#39;: &#39;cathedral&#39;, &#39;id&#39;: &#39;3&#39;},</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; def by_length(query, segments):</span>
+<span class="sd">...     return [len(segment[&#39;text&#39;]) for segment in segments]</span>
+<span class="sd">&gt;&gt;&gt; [segment[&#39;text&#39;] for segment in rerank(&#39;a query&#39;, segments, by_length, limit=2)]</span>
+<span class="sd">[&#39;cathedral&#39;, &#39;cat&#39;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Reranker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rerank&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;with_reranker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cross_encoder_reranker&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="Reranker">
+<a class="viewcode-back" href="../../module_docs/ef/reranking.html#ef.Reranker">[docs]</a>
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Reranker</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A callable that re-scores ``(query, segments)`` — higher means more relevant.</span>
+
+<span class="sd">    The structural contract a reranker satisfies: given the query and a list of</span>
+<span class="sd">    candidate :class:`~ef.segments.Segment`\\ s, return **one score per</span>
+<span class="sd">    segment**, in the same order. :func:`rerank` sorts by these scores. It is a</span>
+<span class="sd">    ``@runtime_checkable Protocol``, not a base class — a plain function of the</span>
+<span class="sd">    right shape already *is* a :class:`Reranker`.</span>
+
+<span class="sd">    &gt;&gt;&gt; def by_length(query, segments):</span>
+<span class="sd">    ...     return [len(s[&#39;text&#39;]) for s in segments]</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(by_length, Reranker)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span> <span class="o">...</span></div>
+
+
+
+<div class="viewcode-block" id="rerank">
+<a class="viewcode-back" href="../../module_docs/ef/reranking.html#ef.rerank">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rerank</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">segments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span>
+    <span class="n">reranker</span><span class="p">:</span> <span class="n">Reranker</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Re-score ``segments`` against ``query`` with ``reranker`` and re-order them.</span>
+
+<span class="sd">    The pure heart of the module — no I/O, no retrieval. The ``reranker`` is</span>
+<span class="sd">    called once with the whole candidate list; the segments are returned sorted</span>
+<span class="sd">    by descending score (ties keep their incoming order), optionally trimmed to</span>
+<span class="sd">    ``limit``. Each returned segment is a copy carrying the reranker&#39;s score in</span>
+<span class="sd">    ``metadata[&quot;rerank_score&quot;]`` — so the new ranking is auditable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query: the search query the segments are scored against.</span>
+<span class="sd">        segments: the candidate segments (from a first-stage retriever).</span>
+<span class="sd">        reranker: a :class:`Reranker` — a callable ``(query, segments) -&gt; scores``.</span>
+<span class="sd">        limit: keep only the top ``limit`` after reranking; ``None`` keeps all.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the reranked segments — copies, best first.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if the reranker returns a number of scores that does not</span>
+<span class="sd">            match the number of segments.</span>
+
+<span class="sd">    &gt;&gt;&gt; segs = [{&#39;text&#39;: &#39;a&#39;, &#39;id&#39;: &#39;1&#39;}, {&#39;text&#39;: &#39;bbb&#39;, &#39;id&#39;: &#39;2&#39;}]</span>
+<span class="sd">    &gt;&gt;&gt; ranked = rerank(&#39;q&#39;, segs, lambda q, s: [len(x[&#39;text&#39;]) for x in s])</span>
+<span class="sd">    &gt;&gt;&gt; [r[&#39;text&#39;] for r in ranked]</span>
+<span class="sd">    [&#39;bbb&#39;, &#39;a&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; ranked[0][&#39;metadata&#39;][&#39;rerank_score&#39;]</span>
+<span class="sd">    3.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reranker</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">candidates</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Reranker returned </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="si">}</span><span class="s2"> score(s) for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;segment(s) — it must return exactly one score per segment.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">reranked</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span> <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">order</span><span class="p">[:</span><span class="n">limit</span><span class="p">]:</span>
+        <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># type: ignore[assignment]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;rerank_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">segment</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="n">reranked</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reranked</span></div>
+
+
+
+<div class="viewcode-block" id="with_reranker">
+<a class="viewcode-back" href="../../module_docs/ef/reranking.html#ef.with_reranker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">with_reranker</span><span class="p">(</span>
+    <span class="n">retriever</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">]],</span>
+    <span class="n">reranker</span><span class="p">:</span> <span class="n">Reranker</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">fetch_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorate a retrieve-style callable with a two-stage reranking pass.</span>
+
+<span class="sd">    Wraps ``retriever`` (e.g. :meth:`SourceManager.retrieve</span>
+<span class="sd">    &lt;ef.source_manager.SourceManager.retrieve&gt;`, or any callable</span>
+<span class="sd">    ``query -&gt; list[Segment]``) so every call over-fetches ``fetch_k``</span>
+<span class="sd">    candidates cheaply, :func:`rerank`\\ s them, and returns the top ``limit``.</span>
+<span class="sd">    The decorated callable keeps the retriever&#39;s interface — ``query`` plus a</span>
+<span class="sd">    keyword-only ``limit`` — so it is a drop-in replacement, including as the</span>
+<span class="sd">    ``retriever`` argument of :func:`~ef.evaluation.evaluate_retrieval`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        retriever: the first-stage retriever — a callable</span>
+<span class="sd">            ``retriever(query, *, limit=...) -&gt; segments``.</span>
+<span class="sd">        reranker: the :class:`Reranker` applied to the over-fetched candidates.</span>
+<span class="sd">        fetch_k: how many candidates to retrieve before reranking. Larger trades</span>
+<span class="sd">            latency for recall headroom; it should comfortably exceed the</span>
+<span class="sd">            ``limit`` callers ask for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a new callable ``(query, *, limit=10, **kwargs) -&gt; list[Segment]`` —</span>
+<span class="sd">        extra keyword arguments (e.g. ``filter``) pass straight through to</span>
+<span class="sd">        ``retriever``.</span>
+
+<span class="sd">    &gt;&gt;&gt; pool = [{&#39;text&#39;: t, &#39;id&#39;: t} for t in [&#39;ab&#39;, &#39;abcd&#39;, &#39;abc&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; def base(query, *, limit=10):</span>
+<span class="sd">    ...     return pool[:limit]</span>
+<span class="sd">    &gt;&gt;&gt; retrieve = with_reranker(</span>
+<span class="sd">    ...     base, lambda q, segs: [len(s[&#39;text&#39;]) for s in segs], fetch_k=10)</span>
+<span class="sd">    &gt;&gt;&gt; [s[&#39;text&#39;] for s in retrieve(&#39;a query&#39;, limit=2)]</span>
+<span class="sd">    [&#39;abcd&#39;, &#39;abc&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reranked_retrieve</span><span class="p">(</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Over-fetch, rerank, and return the top ``limit`` segments.&quot;&quot;&quot;</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">retriever</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rerank</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">reranker</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">reranked_retrieve</span></div>
+
+
+
+<div class="viewcode-block" id="cross_encoder_reranker">
+<a class="viewcode-back" href="../../module_docs/ef/reranking.html#ef.cross_encoder_reranker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cross_encoder_reranker</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cross-encoder/ms-marco-MiniLM-L-6-v2&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">predict_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Reranker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`Reranker` backed by a sentence-transformers ``CrossEncoder``.</span>
+
+<span class="sd">    A cross-encoder scores a ``(query, passage)`` pair *jointly* — it is the</span>
+<span class="sd">    accurate, slower second stage two-stage retrieval is built for. The model is</span>
+<span class="sd">    a heavy, optional dependency: it is imported only when this factory is</span>
+<span class="sd">    called, so importing :mod:`ef.reranking` itself stays cheap.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        from ef import ingest, with_reranker, cross_encoder_reranker</span>
+
+<span class="sd">        index = ingest(corpus, embedder=&quot;st:all-MiniLM-L6-v2&quot;)</span>
+<span class="sd">        retrieve = with_reranker(index.retrieve, cross_encoder_reranker())</span>
+<span class="sd">        segments = retrieve(&quot;a query&quot;, limit=5)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model_name: a sentence-transformers ``CrossEncoder`` model name.</span>
+<span class="sd">        device: torch device (``&quot;cuda&quot;`` / ``&quot;cpu&quot;`` / ``&quot;mps&quot;``); ``None``</span>
+<span class="sd">            auto-selects.</span>
+<span class="sd">        batch_size: how many pairs to score per forward pass.</span>
+<span class="sd">        predict_kwargs: extra keyword arguments forwarded to ``CrossEncoder.predict``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a :class:`Reranker` — ``(query, segments) -&gt; scores``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ImportError: if the optional ``sentence-transformers`` package is absent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossEncoder</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - optional dependency</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;cross_encoder_reranker needs the `sentence-transformers` package. &quot;</span>
+            <span class="s2">&quot;Install it with: pip install &#39;ef[sentence-transformers]&#39;&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">CrossEncoder</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reranker</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Score each segment&#39;s text against ``query`` with the cross-encoder.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">segments</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">query</span><span class="p">,</span> <span class="n">segment</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">predict_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]</span>
+
+    <span class="n">reranker</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span>  <span class="c1"># type: ignore[attr-defined]</span>
+    <span class="k">return</span> <span class="n">reranker</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

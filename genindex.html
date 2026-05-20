@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.8 documentation</title>
+  <title>Index &mdash; ef 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=22607128"></script>
+      <script src="_static/documentation_options.js?v=8618f531"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -56,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins.html">ef.plugins</a></li>
@@ -63,6 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/projects.html">ef.projects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/reranking.html">ef.reranking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a></li>
@@ -169,14 +171,14 @@
         <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactId">(in module ef.artifact_graph)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.as_corpus">as_corpus() (in module ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/corpus.html#ef.corpus.as_corpus">(in module ef.corpus)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.as_dict">as_dict() (ef.artifact_graph.ProducerSpec method)</a>
 
       <ul>
@@ -197,6 +199,12 @@
         <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.as_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef.html#ef.as_ragas_dataset">as_ragas_dataset() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.as_ragas_dataset">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.as_segment">as_segment() (in module ef)</a>
 
       <ul>
@@ -211,6 +219,12 @@
       </ul></li>
       <li><a href="module_docs/ef/dag.html#ef.dag.assemble_pipeline_dag">assemble_pipeline_dag() (in module ef.dag)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.average_precision">average_precision() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.average_precision">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -325,8 +339,6 @@
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.clusters">(ef.projects.Project property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.ComponentRegistry">ComponentRegistry (class in ef)</a>
 
       <ul>
@@ -339,6 +351,8 @@
         <li><a href="module_docs/ef.html#ef.IndexedSource.config_hashes">(ef.IndexedSource attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.config_id">config_id() (in module ef)</a>
 
       <ul>
@@ -361,6 +375,18 @@
 
       <ul>
         <li><a href="module_docs/ef/corpus.html#ef.corpus.content_hash">(in module ef.corpus)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.context_precision">context_precision() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.context_precision">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.context_recall">context_recall() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.context_recall">(in module ef.evaluation)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/corpus.html#ef.corpus.Corpus">Corpus (in module ef.corpus)</a>
@@ -391,6 +417,12 @@
         <li><a href="module_docs/ef/projects.html#ef.projects.Projects.create_project">(ef.projects.Projects method)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef.html#ef.cross_encoder_reranker">cross_encoder_reranker() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/reranking.html#ef.reranking.cross_encoder_reranker">(in module ef.reranking)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -399,6 +431,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/dag.html#ef.dag.DAG">DAG (class in ef.dag)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.dcg_at_k">dcg_at_k() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.dcg_at_k">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef/source_manager.html#ef.source_manager.DEFAULT_EMBEDDER">DEFAULT_EMBEDDER (in module ef.source_manager)</a>
 </li>
       <li><a href="module_docs/ef/segmenters.html#ef.segmenters.DEFAULT_SEPARATORS">DEFAULT_SEPARATORS (in module ef.segmenters)</a>
@@ -417,6 +455,8 @@
         <li><a href="module_docs/ef.html#ef.ArtifactGraph.descendants">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.diagnose">diagnose() (ef.source_manager.SourceManager method)</a>
 
       <ul>
@@ -427,8 +467,6 @@
         <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.diagnose">(in module ef.diagnostics)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus.diff">diff() (ef.ChangeDetectingCorpus method)</a>
 
       <ul>
@@ -524,6 +562,13 @@
 </li>
       </ul></li>
       <li>
+    ef.evaluation
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">module</a>
+</li>
+      </ul></li>
+      <li>
     ef.hashing
 
       <ul>
@@ -565,13 +610,20 @@
         <li><a href="module_docs/ef/projects.html#module-ef.projects">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.refresh
 
       <ul>
         <li><a href="module_docs/ef/refresh.html#module-ef.refresh">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    ef.reranking
+
+      <ul>
+        <li><a href="module_docs/ef/reranking.html#module-ef.reranking">module</a>
 </li>
       </ul></li>
       <li>
@@ -656,6 +708,24 @@
 
       <ul>
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.embeddings">(ef.projects.Project property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.evaluate_rag">evaluate_rag() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_rag">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.evaluate_retrieval">evaluate_retrieval() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_retrieval">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.exact_match">exact_match() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.exact_match">(in module ef.evaluation)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -744,6 +814,12 @@
 
       <ul>
         <li><a href="module_docs/ef/segmenters.html#ef.segmenters.hierarchical">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.hits_to_segments">hits_to_segments() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.hits_to_segments">(in module ef.source_manager)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.CachedEmbedder.honored_input_types">honored_input_types (ef.CachedEmbedder property)</a>
@@ -948,6 +1024,8 @@
 </li>
         <li><a href="module_docs/ef/embedders.html#module-ef.embedders">ef.embedders</a>
 </li>
+        <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">ef.evaluation</a>
+</li>
         <li><a href="module_docs/ef/hashing.html#module-ef.hashing">ef.hashing</a>
 </li>
         <li><a href="module_docs/ef/ops.html#module-ef.ops">ef.ops</a>
@@ -961,6 +1039,8 @@
         <li><a href="module_docs/ef/projects.html#module-ef.projects">ef.projects</a>
 </li>
         <li><a href="module_docs/ef/refresh.html#module-ef.refresh">ef.refresh</a>
+</li>
+        <li><a href="module_docs/ef/reranking.html#module-ef.reranking">ef.reranking</a>
 </li>
         <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">ef.segmenter_adapters</a>
 </li>
@@ -989,6 +1069,12 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ndcg_at_k">ndcg_at_k() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.ndcg_at_k">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.StalenessReport.needs_reindexing">needs_reindexing (ef.diagnostics.StalenessReport property)</a>
 
       <ul>
@@ -1003,6 +1089,8 @@
       </ul></li>
       <li><a href="module_docs/ef/hashing.html#ef.hashing.normalize_text">normalize_text() (in module ef.hashing)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.CachedEmbedder.normalized">normalized (ef.CachedEmbedder property)</a>
 
       <ul>
@@ -1017,8 +1105,6 @@
         <li><a href="module_docs/ef.html#ef.RetryingEmbedder.normalized">(ef.RetryingEmbedder property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.NormalizingEmbedder">NormalizingEmbedder (class in ef)</a>
 
       <ul>
@@ -1111,8 +1197,26 @@
         <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.poll">(ef.embedders.BatchHandle attribute)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef.html#ef.precision_at_k">precision_at_k() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.precision_at_k">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary">primary (ef.evaluation.RetrievalEvalReport property)</a>
+
+      <ul>
+        <li><a href="module_docs/ef.html#ef.RetrievalEvalReport.primary">(ef.RetrievalEvalReport property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary_at">primary_at() (ef.evaluation.RetrievalEvalReport method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef.html#ef.RetrievalEvalReport.primary_at">(ef.RetrievalEvalReport method)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.producer_spec">producer_spec() (in module ef)</a>
 
       <ul>
@@ -1153,6 +1257,10 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.Qrels">Qrels (in module ef.evaluation)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.Project.quick_embed">quick_embed() (ef.Project method)</a>
 
       <ul>
@@ -1165,6 +1273,24 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.RagEvalReport">RagEvalReport (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RagEvalReport">(class in ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.RagSample">RagSample (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RagSample">(class in ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.read_beir">read_beir() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.read_beir">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.ready_handle">ready_handle() (in module ef)</a>
 
       <ul>
@@ -1175,6 +1301,18 @@
 
       <ul>
         <li><a href="module_docs/ef.html#ef.SourceManager.rebuild">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.recall_at_k">recall_at_k() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.recall_at_k">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.reciprocal_rank">reciprocal_rank() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.reciprocal_rank">(in module ef.evaluation)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.RecursiveCharacterSegmenter">RecursiveCharacterSegmenter (class in ef)</a>
@@ -1219,6 +1357,8 @@
         <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register">(in module ef.plugins.imbed_plugin)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_all">register_all() (in module ef.plugins.imbed_plugin)</a>
 </li>
       <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.register_config">register_config() (ef.source_manager.SourceManager method)</a>
@@ -1227,8 +1367,6 @@
         <li><a href="module_docs/ef.html#ef.SourceManager.register_config">(ef.SourceManager method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_embedders_only">register_embedders_only() (in module ef.plugins.imbed_plugin)</a>
 </li>
       <li><a href="module_docs/ef/plugins/imbed_plugin.html#ef.plugins.imbed_plugin.register_ml_only">register_ml_only() (in module ef.plugins.imbed_plugin)</a>
@@ -1241,10 +1379,28 @@
       </ul></li>
       <li><a href="module_docs/ef/plugins/simple_plugin.html#ef.plugins.simple_plugin.register_simple_components">register_simple_components() (in module ef.plugins.simple_plugin)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.rerank">rerank() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/reranking.html#ef.reranking.rerank">(in module ef.reranking)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.Reranker">Reranker (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/reranking.html#ef.reranking.Reranker">(class in ef.reranking)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.BatchHandle.result">result (ef.BatchHandle attribute)</a>
 
       <ul>
         <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.result">(ef.embedders.BatchHandle attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.RetrievalEvalReport">RetrievalEvalReport (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport">(class in ef.evaluation)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.SearchableCorpus.retrieve">retrieve() (ef.SearchableCorpus method)</a>
@@ -1469,12 +1625,18 @@
         <li><a href="module_docs/ef.html#ef.RefreshPlan.to_materialize">(ef.RefreshPlan attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.SegmentRecord.to_segment">to_segment() (ef.SegmentRecord method)</a>
 
       <ul>
         <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord.to_segment">(ef.segments.SegmentRecord method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.token_f1">token_f1() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.token_f1">(in module ef.evaluation)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.TransformSpec">TransformSpec (class in ef)</a>
@@ -1493,6 +1655,20 @@
 
       <ul>
         <li><a href="module_docs/ef/segmenters.html#ef.segmenters.with_overlap">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.with_reranker">with_reranker() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/reranking.html#ef.reranking.with_reranker">(in module ef.reranking)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.write_beir">write_beir() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.write_beir">(in module ef.evaluation)</a>
 </li>
       </ul></li>
   </ul></td>

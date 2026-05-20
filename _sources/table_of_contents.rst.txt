@@ -12,6 +12,7 @@
    module_docs/ef/embedder_adapters
    module_docs/ef/embedder_wrappers
    module_docs/ef/embedders
+   module_docs/ef/evaluation
    module_docs/ef/hashing
    module_docs/ef/ops
    module_docs/ef/plugins
@@ -19,6 +20,7 @@
    module_docs/ef/plugins/simple_plugin
    module_docs/ef/projects
    module_docs/ef/refresh
+   module_docs/ef/reranking
    module_docs/ef/segmenter_adapters
    module_docs/ef/segmenters
    module_docs/ef/segments

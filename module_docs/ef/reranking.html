@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.reranking &mdash; ef 0.1.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.segmenter_adapters" href="segmenter_adapters.html" />
+    <link rel="prev" title="ef.refresh" href="refresh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh.html">ef.refresh</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.reranking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.reranking.Reranker"><code class="docutils literal notranslate"><span class="pre">Reranker</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.reranking.cross_encoder_reranker"><code class="docutils literal notranslate"><span class="pre">cross_encoder_reranker()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.reranking.rerank"><code class="docutils literal notranslate"><span class="pre">rerank()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.reranking.with_reranker"><code class="docutils literal notranslate"><span class="pre">with_reranker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.reranking</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/reranking.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.reranking">
+<span id="ef-reranking"></span><h1>ef.reranking<a class="headerlink" href="#module-ef.reranking" title="Link to this heading"></a></h1>
+<p>Reranking — a precision pass over retrieved segments (use case F6).</p>
+<p>First-stage retrieval (a dense ANN query over <code class="docutils literal notranslate"><span class="pre">vd</span></code>) is tuned for <em>recall</em>: it
+casts a wide, cheap net. A <strong>reranker</strong> is the precision counterpart — a slower,
+more accurate model that re-scores a handful of candidates against the query.
+The standard two-stage pattern is “retrieve <code class="docutils literal notranslate"><span class="pre">fetch_k</span></code> cheaply, rerank, keep
+the top <code class="docutils literal notranslate"><span class="pre">limit</span></code>”.</p>
+<p>This module keeps reranking a <em>decorator over a retriever</em>, never a new pipeline
+stage — it composes with the existing surface rather than complicating it:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a> — the structural protocol: a callable
+<code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">segments)</span> <span class="pre">-&gt;</span> <span class="pre">one</span> <span class="pre">score</span> <span class="pre">per</span> <span class="pre">segment</span></code>. Any plain function of that
+shape <em>is</em> a reranker; no base class to subclass.</p></li>
+<li><p><a class="reference internal" href="#ef.reranking.rerank" title="ef.reranking.rerank"><code class="xref py py-func docutils literal notranslate"><span class="pre">rerank()</span></code></a> — the pure operation: re-score and re-order a list of
+<a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>s. The reranker’s score is folded into each
+segment’s <code class="docutils literal notranslate"><span class="pre">metadata[&quot;rerank_score&quot;]</span></code>.</p></li>
+<li><p><a class="reference internal" href="#ef.reranking.with_reranker" title="ef.reranking.with_reranker"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_reranker()</span></code></a> — the decorator: wrap a retrieve-style callable (such as
+<a class="reference internal" href="source_manager.html#ef.source_manager.SourceManager.retrieve" title="ef.source_manager.SourceManager.retrieve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SourceManager.retrieve</span></code></a>) so
+every call over-fetches, reranks, and trims — transparently.</p></li>
+<li><p><a class="reference internal" href="#ef.reranking.cross_encoder_reranker" title="ef.reranking.cross_encoder_reranker"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_encoder_reranker()</span></code></a> — a ready reranker backed by a
+sentence-transformers <code class="docutils literal notranslate"><span class="pre">CrossEncoder</span></code> (an optional heavy dependency, imported
+lazily — the protocol and <a class="reference internal" href="#ef.reranking.rerank" title="ef.reranking.rerank"><code class="xref py py-func docutils literal notranslate"><span class="pre">rerank()</span></code></a> cost nothing).</p></li>
+</ul>
+<p>Example — rerank three segments by a toy length score, longest first:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;cathedral&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">by_length</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">segment</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">rerank</span><span class="p">(</span><span class="s1">&#39;a query&#39;</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">by_length</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)]</span>
+<span class="go">[&#39;cathedral&#39;, &#39;cat&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.reranking.Reranker">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.reranking.</span></span><span class="sig-name descname"><span class="pre">Reranker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/reranking.html#Reranker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.reranking.Reranker" title="Link to this definition"></a></dt>
+<dd><p>A callable that re-scores <code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">segments)</span></code> — higher means more relevant.</p>
+<p>The structural contract a reranker satisfies: given the query and a list of
+candidate <a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>s, return <strong>one score per
+segment</strong>, in the same order. <a class="reference internal" href="#ef.reranking.rerank" title="ef.reranking.rerank"><code class="xref py py-func docutils literal notranslate"><span class="pre">rerank()</span></code></a> sorts by these scores. It is a
+<code class="docutils literal notranslate"><span class="pre">&#64;runtime_checkable</span> <span class="pre">Protocol</span></code>, not a base class — a plain function of the
+right shape already <em>is</em> a <a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">by_length</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">by_length</span><span class="p">,</span> <span class="n">Reranker</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.reranking.cross_encoder_reranker">
+<span class="sig-prename descclassname"><span class="pre">ef.reranking.</span></span><span class="sig-name descname"><span class="pre">cross_encoder_reranker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cross-encoder/ms-marco-MiniLM-L-6-v2'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">predict_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><span class="pre">Reranker</span></a></span></span><a class="reference internal" href="../../_modules/ef/reranking.html#cross_encoder_reranker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.reranking.cross_encoder_reranker" title="Link to this definition"></a></dt>
+<dd><p>Build a <a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a> backed by a sentence-transformers <code class="docutils literal notranslate"><span class="pre">CrossEncoder</span></code>.</p>
+<p>A cross-encoder scores a <code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">passage)</span></code> pair <em>jointly</em> — it is the
+accurate, slower second stage two-stage retrieval is built for. The model is
+a heavy, optional dependency: it is imported only when this factory is
+called, so importing <a class="reference internal" href="#module-ef.reranking" title="ef.reranking"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.reranking</span></code></a> itself stays cheap.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">ingest</span><span class="p">,</span> <span class="n">with_reranker</span><span class="p">,</span> <span class="n">cross_encoder_reranker</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s2">&quot;st:all-MiniLM-L6-v2&quot;</span><span class="p">)</span>
+<span class="n">retrieve</span> <span class="o">=</span> <span class="n">with_reranker</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">,</span> <span class="n">cross_encoder_reranker</span><span class="p">())</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">retrieve</span><span class="p">(</span><span class="s2">&quot;a query&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_name</strong> – a sentence-transformers <code class="docutils literal notranslate"><span class="pre">CrossEncoder</span></code> model name.</p></li>
+<li><p><strong>device</strong> – torch device (<code class="docutils literal notranslate"><span class="pre">&quot;cuda&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;mps&quot;</span></code>); <code class="docutils literal notranslate"><span class="pre">None</span></code>
+auto-selects.</p></li>
+<li><p><strong>batch_size</strong> – how many pairs to score per forward pass.</p></li>
+<li><p><strong>predict_kwargs</strong> – extra keyword arguments forwarded to <code class="docutils literal notranslate"><span class="pre">CrossEncoder.predict</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a> — <code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">segments)</span> <span class="pre">-&gt;</span> <span class="pre">scores</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ImportError</strong> – if the optional <code class="docutils literal notranslate"><span class="pre">sentence-transformers</span></code> package is absent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.reranking.rerank">
+<span class="sig-prename descclassname"><span class="pre">ef.reranking.</span></span><span class="sig-name descname"><span class="pre">rerank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reranker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><span class="pre">Reranker</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/reranking.html#rerank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.reranking.rerank" title="Link to this definition"></a></dt>
+<dd><p>Re-score <code class="docutils literal notranslate"><span class="pre">segments</span></code> against <code class="docutils literal notranslate"><span class="pre">query</span></code> with <code class="docutils literal notranslate"><span class="pre">reranker</span></code> and re-order them.</p>
+<p>The pure heart of the module — no I/O, no retrieval. The <code class="docutils literal notranslate"><span class="pre">reranker</span></code> is
+called once with the whole candidate list; the segments are returned sorted
+by descending score (ties keep their incoming order), optionally trimmed to
+<code class="docutils literal notranslate"><span class="pre">limit</span></code>. Each returned segment is a copy carrying the reranker’s score in
+<code class="docutils literal notranslate"><span class="pre">metadata[&quot;rerank_score&quot;]</span></code> — so the new ranking is auditable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – the search query the segments are scored against.</p></li>
+<li><p><strong>segments</strong> – the candidate segments (from a first-stage retriever).</p></li>
+<li><p><strong>reranker</strong> – a <a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a> — a callable <code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">segments)</span> <span class="pre">-&gt;</span> <span class="pre">scores</span></code>.</p></li>
+<li><p><strong>limit</strong> – keep only the top <code class="docutils literal notranslate"><span class="pre">limit</span></code> after reranking; <code class="docutils literal notranslate"><span class="pre">None</span></code> keeps all.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the reranked segments — copies, best first.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the reranker returns a number of scores that does not
+    match the number of segments.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segs</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;bbb&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ranked</span> <span class="o">=</span> <span class="n">rerank</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">segs</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">]</span>
+<span class="go">[&#39;bbb&#39;, &#39;a&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ranked</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;rerank_score&#39;</span><span class="p">]</span>
+<span class="go">3.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.reranking.with_reranker">
+<span class="sig-prename descclassname"><span class="pre">ef.reranking.</span></span><span class="sig-name descname"><span class="pre">with_reranker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retriever</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reranker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><span class="pre">Reranker</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fetch_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/reranking.html#with_reranker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.reranking.with_reranker" title="Link to this definition"></a></dt>
+<dd><p>Decorate a retrieve-style callable with a two-stage reranking pass.</p>
+<p>Wraps <code class="docutils literal notranslate"><span class="pre">retriever</span></code> (e.g. <a class="reference internal" href="source_manager.html#ef.source_manager.SourceManager.retrieve" title="ef.source_manager.SourceManager.retrieve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SourceManager.retrieve</span></code></a>, or any callable
+<code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">-&gt;</span> <span class="pre">list[Segment]</span></code>) so every call over-fetches <code class="docutils literal notranslate"><span class="pre">fetch_k</span></code>
+candidates cheaply, <a class="reference internal" href="#ef.reranking.rerank" title="ef.reranking.rerank"><code class="xref py py-func docutils literal notranslate"><span class="pre">rerank()</span></code></a>s them, and returns the top <code class="docutils literal notranslate"><span class="pre">limit</span></code>.
+The decorated callable keeps the retriever’s interface — <code class="docutils literal notranslate"><span class="pre">query</span></code> plus a
+keyword-only <code class="docutils literal notranslate"><span class="pre">limit</span></code> — so it is a drop-in replacement, including as the
+<code class="docutils literal notranslate"><span class="pre">retriever</span></code> argument of <a class="reference internal" href="evaluation.html#ef.evaluation.evaluate_retrieval" title="ef.evaluation.evaluate_retrieval"><code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>retriever</strong> – the first-stage retriever — a callable
+<code class="docutils literal notranslate"><span class="pre">retriever(query,</span> <span class="pre">*,</span> <span class="pre">limit=...)</span> <span class="pre">-&gt;</span> <span class="pre">segments</span></code>.</p></li>
+<li><p><strong>reranker</strong> – the <a class="reference internal" href="#ef.reranking.Reranker" title="ef.reranking.Reranker"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reranker</span></code></a> applied to the over-fetched candidates.</p></li>
+<li><p><strong>fetch_k</strong> – how many candidates to retrieve before reranking. Larger trades
+latency for recall headroom; it should comfortably exceed the
+<code class="docutils literal notranslate"><span class="pre">limit</span></code> callers ask for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new callable <code class="docutils literal notranslate"><span class="pre">(query,</span> <span class="pre">*,</span> <span class="pre">limit=10,</span> <span class="pre">**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">list[Segment]</span></code> —
+extra keyword arguments (e.g. <code class="docutils literal notranslate"><span class="pre">filter</span></code>) pass straight through to
+<code class="docutils literal notranslate"><span class="pre">retriever</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pool</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">,</span> <span class="s1">&#39;abcd&#39;</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">base</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">pool</span><span class="p">[:</span><span class="n">limit</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">retrieve</span> <span class="o">=</span> <span class="n">with_reranker</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">base</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">,</span> <span class="n">segs</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segs</span><span class="p">],</span> <span class="n">fetch_k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">retrieve</span><span class="p">(</span><span class="s1">&#39;a query&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)]</span>
+<span class="go">[&#39;abcd&#39;, &#39;abc&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="refresh.html" class="btn btn-neutral float-left" title="ef.refresh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="segmenter_adapters.html" class="btn btn-neutral float-right" title="ef.segmenter_adapters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

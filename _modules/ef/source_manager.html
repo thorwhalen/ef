@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.source_manager &mdash; ef 0.1.8 documentation</title>
+  <title>ef.source_manager &mdash; ef 0.1.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -56,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
@@ -63,6 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/reranking.html">ef.reranking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
@@ -197,6 +199,7 @@
     <span class="s2">&quot;SearchHit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SearchableCorpus&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SourceManager&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hits_to_segments&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ingest&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -251,6 +254,46 @@
     <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span>
     <span class="n">score</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="hits_to_segments">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.hits_to_segments">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hits_to_segments</span><span class="p">(</span><span class="n">hits</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Project :class:`SearchHit`\\ s to plain :class:`~ef.segments.Segment`\\ s.</span>
+
+<span class="sd">    The shape :meth:`SearchableCorpus.retrieve` / :meth:`SourceManager.retrieve`</span>
+<span class="sd">    hand to an external RAG/agent framework — the RAG-plug-in surface (design</span>
+<span class="sd">    notes §F5). A :class:`SearchHit` carries an ``ef``-specific ``score`` and</span>
+<span class="sd">    ``source_id``; a :class:`~ef.segments.Segment` is a plain ``TypedDict`` an</span>
+<span class="sd">    external framework already understands (and trivially adapts to a LangChain</span>
+<span class="sd">    ``Document`` / LlamaIndex ``TextNode`` / a Ragas ``retrieved_contexts``</span>
+<span class="sd">    ``list[str]`` via ``[s[&quot;text&quot;] for s in segments]``).</span>
+
+<span class="sd">    The similarity ``score`` is dropped — :class:`~ef.segments.Segment` is the</span>
+<span class="sd">    interchange type and stays pure of a result-only key (call :meth:`search`</span>
+<span class="sd">    when the score matters). Provenance is *not* lost: each hit&#39;s ``source_id``</span>
+<span class="sd">    is folded into the segment&#39;s ``metadata`` under the conventional ``&quot;source&quot;``</span>
+<span class="sd">    key (one of :data:`~ef.segments.PROMOTED_METADATA_KEYS`), so a plain segment</span>
+<span class="sd">    still records which source document it was retrieved from. A segment that</span>
+<span class="sd">    already carries ``metadata[&quot;source&quot;]`` keeps its own value.</span>
+
+<span class="sd">    &gt;&gt;&gt; hit = SearchHit(segment={&#39;text&#39;: &#39;hi&#39;, &#39;id&#39;: &#39;x&#39;}, score=0.9, source_id=&#39;doc-1&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; segs = hits_to_segments([hit])</span>
+<span class="sd">    &gt;&gt;&gt; segs[0][&#39;text&#39;], segs[0][&#39;metadata&#39;][&#39;source&#39;]</span>
+<span class="sd">    (&#39;hi&#39;, &#39;doc-1&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;score&#39; in segs[0]                          # the score is not a Segment key</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">segments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">hits</span><span class="p">:</span>
+        <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">segment</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
+        <span class="k">if</span> <span class="n">hit</span><span class="o">.</span><span class="n">source_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">hit</span><span class="o">.</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="n">segment</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">segments</span></div>
 
 
 
@@ -377,14 +420,20 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked segments for ``query`` — the RAG-plug-in surface.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in surface.</span>
 
-<span class="sd">        Identical to :meth:`search` in Phase 5: it is the name an external</span>
-<span class="sd">        RAG/agent framework reaches for (``ef`` returns ranked segments; it does</span>
-<span class="sd">        not synthesize answers). Evaluation hookpoints land in a later phase.</span>
+<span class="sd">        The name an external RAG/agent framework reaches for. Where</span>
+<span class="sd">        :meth:`search` returns scored :class:`SearchHit`\\ s (for inspecting the</span>
+<span class="sd">        ranking), ``retrieve`` returns **plain segments** in rank order — clean</span>
+<span class="sd">        context to hand to an LLM, with no ``ef``-specific type to learn (design</span>
+<span class="sd">        notes §F5). ``ef`` returns the context; it does *not* synthesize answers.</span>
+<span class="sd">        See :func:`hits_to_segments` for how the score is dropped and the</span>
+<span class="sd">        ``source_id`` provenance is preserved in ``metadata[&quot;source&quot;]``.</span>
+
+<span class="sd">        &gt;&gt;&gt; # idx.retrieve(&#39;a query&#39;) -&gt; [{&#39;text&#39;: ..., &#39;id&#39;: ..., &#39;metadata&#39;: ...}, ...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">hits_to_segments</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">))</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -878,9 +927,17 @@
         <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked segments — the RAG-plug-in alias of :meth:`search`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span></div>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in surface.</span>
+
+<span class="sd">        The :class:`SourceManager` counterpart of</span>
+<span class="sd">        :meth:`SearchableCorpus.retrieve`: plain segments in rank order, the</span>
+<span class="sd">        clean context shape an external RAG/agent framework consumes (``ef``</span>
+<span class="sd">        does not synthesize answers). :meth:`search` is the scored counterpart.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">hits_to_segments</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SourceManager.searchable">

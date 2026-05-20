@@ -1,0 +1,1066 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.evaluation &mdash; ef 0.1.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8618f531"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/reranking.html">ef.reranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.evaluation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.evaluation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Evaluation hookpoints — measuring retrieval and RAG quality.</span>
+
+<span class="sd">Phase 7 makes an indexed ``ef`` corpus **measurable**. It stays a *facade*: it</span>
+<span class="sd">computes the standard, deterministic metrics and provides the standard data</span>
+<span class="sd">shapes, but it never synthesizes an answer and never requires an LLM (the §6</span>
+<span class="sd">boundary). LLM-judged metrics are reached through a thin Ragas bridge.</span>
+
+<span class="sd">Two journeys (``ef_use_cases.md`` §F7–F8), two evaluation conventions</span>
+<span class="sd">(``ef_design_notes.md`` §6):</span>
+
+<span class="sd">- **Retrieval evaluation** — :func:`evaluate_retrieval`, BEIR/MTEB-shaped. The</span>
+<span class="sd">  inputs are the BEIR triple — a corpus, a set of ``queries`` and ``qrels``</span>
+<span class="sd">  (graded relevance judgements) — and the primary metric is **NDCG@10**. The</span>
+<span class="sd">  metric primitives (:func:`ndcg_at_k`, :func:`recall_at_k`, …) are pure</span>
+<span class="sd">  functions, usable on their own. :func:`read_beir` / :func:`write_beir` move</span>
+<span class="sd">  the triple to and from the on-disk ``corpus.jsonl`` / ``queries.jsonl`` /</span>
+<span class="sd">  ``qrels.tsv`` format.</span>
+
+<span class="sd">- **RAG evaluation** — :func:`evaluate_rag`, Ragas ``SingleTurnSample``-shaped.</span>
+<span class="sd">  A sample is ``(user_input, response, retrieved_contexts, reference)``;</span>
+<span class="sd">  :class:`RagSample` names that shape. :func:`evaluate_rag` computes only</span>
+<span class="sd">  **deterministic, reference-based lexical metrics** (:func:`exact_match`,</span>
+<span class="sd">  :func:`token_f1`, :func:`context_recall`, :func:`context_precision`) — no LLM.</span>
+<span class="sd">  For the LLM-judged metrics (faithfulness, answer relevancy, …) hand the</span>
+<span class="sd">  samples to :func:`as_ragas_dataset` and run Ragas with your own LLM.</span>
+
+<span class="sd">Example — score a retriever against a tiny BEIR-shaped triple:</span>
+
+<span class="sd">&gt;&gt;&gt; qrels = {&#39;q1&#39;: {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, &#39;q2&#39;: {&#39;d3&#39;: 1.0}}</span>
+<span class="sd">&gt;&gt;&gt; queries = {&#39;q1&#39;: &#39;first query&#39;, &#39;q2&#39;: &#39;second query&#39;}</span>
+<span class="sd">&gt;&gt;&gt; rankings = {&#39;first query&#39;: [&#39;d1&#39;, &#39;d9&#39;, &#39;d2&#39;], &#39;second query&#39;: [&#39;d9&#39;, &#39;d3&#39;]}</span>
+<span class="sd">&gt;&gt;&gt; def retriever(query, *, limit=10):</span>
+<span class="sd">...     return rankings[query][:limit]</span>
+<span class="sd">&gt;&gt;&gt; report = evaluate_retrieval(retriever, qrels, queries, k_values=(1, 3))</span>
+<span class="sd">&gt;&gt;&gt; report.metrics[&#39;recall@3&#39;]</span>
+<span class="sd">1.0</span>
+<span class="sd">&gt;&gt;&gt; round(report.primary_at(1), 3)        # NDCG@1, averaged over the two queries</span>
+<span class="sd">0.5</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TypedDict</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># data shapes</span>
+    <span class="s2">&quot;Qrels&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RagSample&quot;</span><span class="p">,</span>
+    <span class="c1"># retrieval metric primitives</span>
+    <span class="s2">&quot;dcg_at_k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ndcg_at_k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;recall_at_k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precision_at_k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reciprocal_rank&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;average_precision&quot;</span><span class="p">,</span>
+    <span class="c1"># retrieval evaluation</span>
+    <span class="s2">&quot;RetrievalEvalReport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;evaluate_retrieval&quot;</span><span class="p">,</span>
+    <span class="c1"># BEIR interchange</span>
+    <span class="s2">&quot;read_beir&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;write_beir&quot;</span><span class="p">,</span>
+    <span class="c1"># RAG metric primitives</span>
+    <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;token_f1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;context_recall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;context_precision&quot;</span><span class="p">,</span>
+    <span class="c1"># RAG evaluation</span>
+    <span class="s2">&quot;RagEvalReport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;evaluate_rag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;as_ragas_dataset&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># Data shapes</span>
+<span class="c1"># ===========================================================================</span>
+
+<span class="c1">#: Graded relevance judgements — ``{query_id: {doc_id: relevance}}``. A</span>
+<span class="c1">#: ``relevance`` of ``0`` means *judged non-relevant*; ``&gt; 0`` means relevant</span>
+<span class="c1">#: (graded judgements feed :func:`ndcg_at_k`, binary relevance the rest). This</span>
+<span class="c1">#: is the in-memory form of a BEIR ``qrels.tsv``.</span>
+<span class="n">Qrels</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="RagSample">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.RagSample">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RagSample</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One end-to-end RAG interaction — the unit :func:`evaluate_rag` scores.</span>
+
+<span class="sd">    The field names match Ragas&#39; ``SingleTurnSample`` exactly, so a</span>
+<span class="sd">    :class:`RagSample` is the interchange shape ``app_ef`` / ``srag`` / ``raglab``</span>
+<span class="sd">    produce and :func:`as_ragas_dataset` forwards unchanged. ``ef`` itself fills</span>
+<span class="sd">    only ``retrieved_contexts`` (from :meth:`~ef.source_manager.SourceManager.retrieve`);</span>
+<span class="sd">    ``response`` is the *caller&#39;s* LLM output — ``ef`` does not synthesize it.</span>
+
+<span class="sd">    Keys:</span>
+<span class="sd">        user_input: the user&#39;s question.</span>
+<span class="sd">        response: the generated answer (the caller&#39;s LLM produced it).</span>
+<span class="sd">        retrieved_contexts: the context passages handed to the LLM — what</span>
+<span class="sd">            :meth:`~ef.source_manager.SourceManager.retrieve` returned, as text.</span>
+<span class="sd">        reference: the ground-truth answer, if known.</span>
+<span class="sd">        reference_contexts: the ground-truth context passages, if known.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user_input</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">retrieved_contexts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">reference_contexts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># Retrieval metric primitives — pure functions over a ranking + judgements</span>
+<span class="c1"># ===========================================================================</span>
+<span class="c1">#</span>
+<span class="c1"># Every metric takes ``ranked`` (doc ids best-first, already de-duplicated) and</span>
+<span class="c1"># ``relevant`` (a ``{doc_id: relevance}`` mapping) and returns a float in</span>
+<span class="c1"># ``[0, 1]``. They are deterministic and dependency-free — the testable core</span>
+<span class="c1"># that :func:`evaluate_retrieval` only aggregates.</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positives</span><span class="p">(</span><span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The doc ids judged relevant — those with a strictly positive grade.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">doc_id</span> <span class="k">for</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">grade</span> <span class="ow">in</span> <span class="n">relevant</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">grade</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="dcg_at_k">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.dcg_at_k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dcg_at_k</span><span class="p">(</span><span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Discounted cumulative gain of ``ranked`` at cutoff ``k``.</span>
+
+<span class="sd">    ``sum(grade_i / log2(i + 2))`` over the top ``k`` results (``i`` 0-indexed),</span>
+<span class="sd">    with ``grade_i`` the relevance of the ``i``-th doc (``0`` if unjudged) — the</span>
+<span class="sd">    linear-gain DCG that BEIR / ``pytrec_eval`` use.</span>
+
+<span class="sd">    &gt;&gt;&gt; round(dcg_at_k([&#39;d1&#39;, &#39;x&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, 3), 4)</span>
+<span class="sd">    1.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">grade</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranked</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">grade</span> <span class="o">:=</span> <span class="nb">float</span><span class="p">(</span><span class="n">relevant</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc_id</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)))</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ndcg_at_k">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.ndcg_at_k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ndcg_at_k</span><span class="p">(</span><span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalized DCG at cutoff ``k`` — ``ef``&#39;s **primary** retrieval metric.</span>
+
+<span class="sd">    :func:`dcg_at_k` divided by the ideal DCG (the DCG of the best possible</span>
+<span class="sd">    ranking of the judged docs). ``1.0`` is a perfect ranking; ``0.0`` when no</span>
+<span class="sd">    relevant doc was judged.</span>
+
+<span class="sd">    &gt;&gt;&gt; ndcg_at_k([&#39;d1&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, 2)   # perfect order</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; round(ndcg_at_k([&#39;x&#39;, &#39;d1&#39;], {&#39;d1&#39;: 1.0}, 2), 4)     # relevant doc at rank 2</span>
+<span class="sd">    0.6309</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ideal</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">relevant</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">idcg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">grade</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grade</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ideal</span><span class="p">[:</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">idcg</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">dcg_at_k</span><span class="p">(</span><span class="n">ranked</span><span class="p">,</span> <span class="n">relevant</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">idcg</span></div>
+
+
+
+<div class="viewcode-block" id="recall_at_k">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.recall_at_k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">recall_at_k</span><span class="p">(</span><span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of the relevant docs that appear in the top ``k`` results.</span>
+
+<span class="sd">    &gt;&gt;&gt; recall_at_k([&#39;d1&#39;, &#39;x&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, 2)</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &gt;&gt;&gt; recall_at_k([&#39;d1&#39;, &#39;x&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, 3)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positives</span> <span class="o">=</span> <span class="n">_positives</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">positives</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">positives</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">found</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">positives</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="precision_at_k">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.precision_at_k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">precision_at_k</span><span class="p">(</span>
+    <span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of the top ``k`` results that are relevant.</span>
+
+<span class="sd">    &gt;&gt;&gt; precision_at_k([&#39;d1&#39;, &#39;x&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0}, 2)</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">positives</span> <span class="o">=</span> <span class="n">_positives</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">positives</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">found</span> <span class="o">/</span> <span class="n">k</span></div>
+
+
+
+<div class="viewcode-block" id="reciprocal_rank">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.reciprocal_rank">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reciprocal_rank</span><span class="p">(</span>
+    <span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reciprocal of the rank of the first relevant result (``0`` if none).</span>
+
+<span class="sd">    Averaged over queries this is MRR. ``k`` optionally caps how far down the</span>
+<span class="sd">    ranking to look.</span>
+
+<span class="sd">    &gt;&gt;&gt; reciprocal_rank([&#39;x&#39;, &#39;d1&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0})</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &gt;&gt;&gt; reciprocal_rank([&#39;x&#39;, &#39;d1&#39;], {&#39;d1&#39;: 1.0}, k=1)       # relevant doc past the cutoff</span>
+<span class="sd">    0.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positives</span> <span class="o">=</span> <span class="n">_positives</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">k</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranked</span><span class="p">[:</span><span class="n">cutoff</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">positives</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.0</span></div>
+
+
+
+<div class="viewcode-block" id="average_precision">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.average_precision">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">average_precision</span><span class="p">(</span>
+    <span class="n">ranked</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">relevant</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Average precision of ``ranked`` — the per-query term of MAP.</span>
+
+<span class="sd">    The mean of the precision measured at each relevant result&#39;s rank. ``k``</span>
+<span class="sd">    optionally caps the ranking.</span>
+
+<span class="sd">    &gt;&gt;&gt; average_precision([&#39;d1&#39;, &#39;x&#39;, &#39;d2&#39;], {&#39;d1&#39;: 1.0, &#39;d2&#39;: 1.0})</span>
+<span class="sd">    0.8333333333333333</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positives</span> <span class="o">=</span> <span class="n">_positives</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">positives</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">k</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranked</span><span class="p">[:</span><span class="n">cutoff</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">positives</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="n">found</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">score</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">positives</span><span class="p">)</span></div>
+
+
+
+<span class="c1">#: The retrieval metrics :func:`evaluate_retrieval` can compute, each keyed by</span>
+<span class="c1">#: the short name used in the ``metrics=`` argument and in report keys.</span>
+<span class="n">_RETRIEVAL_METRICS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+    <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
+<span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ndcg&quot;</span><span class="p">:</span> <span class="n">ndcg_at_k</span><span class="p">,</span>
+    <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">recall_at_k</span><span class="p">,</span>
+    <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">precision_at_k</span><span class="p">,</span>
+    <span class="s2">&quot;mrr&quot;</span><span class="p">:</span> <span class="n">reciprocal_rank</span><span class="p">,</span>
+    <span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">average_precision</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># Retrieval evaluation</span>
+<span class="c1"># ===========================================================================</span>
+
+
+<div class="viewcode-block" id="RetrievalEvalReport">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.RetrievalEvalReport">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RetrievalEvalReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The outcome of :func:`evaluate_retrieval` — metrics over a query set.</span>
+
+<span class="sd">    ``metrics`` maps a ``&quot;&lt;name&gt;@&lt;k&gt;&quot;`` key (e.g. ``&quot;ndcg@10&quot;``) to the mean of</span>
+<span class="sd">    that metric over every scored query; ``per_query`` keeps the same keys per</span>
+<span class="sd">    query for drill-down. ``n_queries`` is how many queries were actually</span>
+<span class="sd">    scored (a query with no positive judgement is skipped).</span>
+
+<span class="sd">    &gt;&gt;&gt; report = RetrievalEvalReport(</span>
+<span class="sd">    ...     metrics={&#39;ndcg@10&#39;: 0.83}, per_query={}, n_queries=12, k_values=(10,))</span>
+<span class="sd">    &gt;&gt;&gt; report.primary</span>
+<span class="sd">    0.83</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metrics</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">per_query</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="n">n_queries</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">k_values</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">primary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The headline number — mean NDCG@10, or ``None`` if it was not computed.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ndcg@10&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RetrievalEvalReport.primary_at">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.RetrievalEvalReport.primary_at">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">primary_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mean NDCG at cutoff ``k`` — ``None`` if NDCG@``k`` was not computed.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ndcg@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;RetrievalEvalReport — </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_queries</span><span class="si">}</span><span class="s2"> queries&quot;</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">head</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">body</span> <span class="k">else</span> <span class="n">head</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_result_doc_id</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the *source document id* a single retrieval result points at.</span>
+
+<span class="sd">    Handles every shape an ``ef`` retriever yields: a :class:`~ef.source_manager.SearchHit`</span>
+<span class="sd">    (its ``source_id``), a plain :class:`~ef.segments.Segment` from</span>
+<span class="sd">    :meth:`~ef.source_manager.SourceManager.retrieve` (``metadata[&quot;source&quot;]``,</span>
+<span class="sd">    falling back to the segment ``id``), or a bare string id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;source_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+    <span class="n">segment</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">segment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">segment</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_dedup</span><span class="p">(</span><span class="n">doc_ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;De-duplicate ``doc_ids`` keeping the first (best-ranked) occurrence.</span>
+
+<span class="sd">    One source document is often cut into several segments; a retriever can</span>
+<span class="sd">    return several of them. For doc-level evaluation only the best rank of each</span>
+<span class="sd">    source counts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">ordered</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">doc_ids</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+            <span class="n">ordered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ordered</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_retrieve_ranking</span><span class="p">(</span><span class="n">retriever</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run ``retriever`` for one ``query`` — accepts a search facade or a callable.</span>
+
+<span class="sd">    A :class:`~ef.source_manager.SearchableCorpus` / :class:`~ef.source_manager.SourceManager`</span>
+<span class="sd">    is queried through its ``.search`` method; any other callable is called as</span>
+<span class="sd">    ``retriever(query, limit=limit)`` (falling back to ``retriever(query)`` for</span>
+<span class="sd">    a callable that takes no ``limit``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">search</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">search</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">retriever</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">retriever</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">retriever</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Cannot use </span><span class="si">{</span><span class="n">retriever</span><span class="si">!r}</span><span class="s2"> as a retriever. Pass a SearchableCorpus, a &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;SourceManager, or a callable query -&gt; ranked results.&quot;</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="evaluate_retrieval">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.evaluate_retrieval">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_retrieval</span><span class="p">(</span>
+    <span class="n">retriever</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">qrels</span><span class="p">:</span> <span class="n">Qrels</span><span class="p">,</span>
+    <span class="n">queries</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">k_values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="s2">&quot;mrr&quot;</span><span class="p">,</span> <span class="s2">&quot;map&quot;</span><span class="p">),</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RetrievalEvalReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Score a retriever against a BEIR-shaped evaluation set.</span>
+
+<span class="sd">    For every query judged in ``qrels``, the ``retriever`` is run, its results</span>
+<span class="sd">    are mapped back to *source document ids* (:func:`_result_doc_id`,</span>
+<span class="sd">    de-duplicated to the best rank per source), and each requested metric is</span>
+<span class="sd">    computed at each cutoff in ``k_values``. The report holds the mean of each</span>
+<span class="sd">    ``&quot;&lt;metric&gt;@&lt;k&gt;&quot;`` over all scored queries — primary metric **NDCG@10**.</span>
+
+<span class="sd">    The natural pairing with :func:`~ef.source_manager.ingest`::</span>
+
+<span class="sd">        corpus, queries, qrels = read_beir(&quot;path/to/beir/dataset&quot;)</span>
+<span class="sd">        index = ingest(corpus, embedder=&quot;st:all-MiniLM-L6-v2&quot;)</span>
+<span class="sd">        report = evaluate_retrieval(index, qrels, queries)</span>
+<span class="sd">        report.primary            # mean NDCG@10</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        retriever: what answers a query — a :class:`~ef.source_manager.SearchableCorpus`,</span>
+<span class="sd">            a :class:`~ef.source_manager.SourceManager`, or any callable</span>
+<span class="sd">            ``query -&gt; ranked results``. Results may be</span>
+<span class="sd">            :class:`~ef.source_manager.SearchHit`\\ s, :class:`~ef.segments.Segment`\\ s</span>
+<span class="sd">            or bare doc-id strings.</span>
+<span class="sd">        qrels: the relevance judgements — ``{query_id: {doc_id: relevance}}``.</span>
+<span class="sd">            Queries with no positive judgement are skipped.</span>
+<span class="sd">        queries: the query texts — ``{query_id: query_text}``. A judged query</span>
+<span class="sd">            absent here cannot be run and is skipped.</span>
+<span class="sd">        k_values: the rank cutoffs to evaluate at.</span>
+<span class="sd">        metrics: which metrics to compute — any of ``ndcg`` / ``recall`` /</span>
+<span class="sd">            ``precision`` / ``mrr`` / ``map``.</span>
+<span class="sd">        limit: how many results to retrieve per query. ``None`` uses</span>
+<span class="sd">            ``max(k_values)``; raise it when sources segment into many pieces</span>
+<span class="sd">            (de-duplication to source level can otherwise shorten the ranking).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a :class:`RetrievalEvalReport`.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: for an unknown metric name, or if no query can be scored.</span>
+
+<span class="sd">    &gt;&gt;&gt; qrels = {&#39;q1&#39;: {&#39;d1&#39;: 1.0}, &#39;q2&#39;: {&#39;d2&#39;: 1.0}}</span>
+<span class="sd">    &gt;&gt;&gt; queries = {&#39;q1&#39;: &#39;alpha&#39;, &#39;q2&#39;: &#39;beta&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; def retriever(query, *, limit=10):</span>
+<span class="sd">    ...     return {&#39;alpha&#39;: [&#39;d1&#39;, &#39;d2&#39;], &#39;beta&#39;: [&#39;d1&#39;, &#39;d2&#39;]}[query][:limit]</span>
+<span class="sd">    &gt;&gt;&gt; report = evaluate_retrieval(retriever, qrels, queries, k_values=(1, 2))</span>
+<span class="sd">    &gt;&gt;&gt; report.metrics[&#39;recall@2&#39;], report.n_queries</span>
+<span class="sd">    (1.0, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_RETRIEVAL_METRICS</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unknown retrieval metric(s) </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Choose from </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_RETRIEVAL_METRICS</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">k_values</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">scorable</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">qid</span> <span class="k">for</span> <span class="n">qid</span> <span class="ow">in</span> <span class="n">qrels</span> <span class="k">if</span> <span class="n">qid</span> <span class="ow">in</span> <span class="n">queries</span> <span class="ow">and</span> <span class="n">_positives</span><span class="p">(</span><span class="n">qrels</span><span class="p">[</span><span class="n">qid</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">scorable</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;No query could be scored: every judged query is either absent &quot;</span>
+            <span class="s2">&quot;from `queries` or has no positively-judged document.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">per_query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">qid</span> <span class="ow">in</span> <span class="n">scorable</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">_retrieve_ranking</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="n">queries</span><span class="p">[</span><span class="n">qid</span><span class="p">],</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="n">ranking</span> <span class="o">=</span> <span class="n">_dedup</span><span class="p">(</span><span class="n">_result_doc_id</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span>
+        <span class="n">relevant</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">grade</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">grade</span> <span class="ow">in</span> <span class="n">qrels</span><span class="p">[</span><span class="n">qid</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">scores</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="n">metric_fn</span> <span class="o">=</span> <span class="n">_RETRIEVAL_METRICS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_values</span><span class="p">:</span>
+                <span class="n">scores</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_fn</span><span class="p">(</span><span class="n">ranking</span><span class="p">,</span> <span class="n">relevant</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+        <span class="n">per_query</span><span class="p">[</span><span class="n">qid</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span>
+
+    <span class="n">metric_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_values</span><span class="p">]</span>
+    <span class="n">aggregated</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">mean</span><span class="p">(</span><span class="n">per_query</span><span class="p">[</span><span class="n">qid</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">qid</span> <span class="ow">in</span> <span class="n">per_query</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metric_keys</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">RetrievalEvalReport</span><span class="p">(</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="n">aggregated</span><span class="p">,</span>
+        <span class="n">per_query</span><span class="o">=</span><span class="n">per_query</span><span class="p">,</span>
+        <span class="n">n_queries</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">per_query</span><span class="p">),</span>
+        <span class="n">k_values</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">k_values</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># BEIR interchange — read / write corpus.jsonl, queries.jsonl, qrels.tsv</span>
+<span class="c1"># ===========================================================================</span>
+
+<span class="c1">#: The qrels file paths :func:`read_beir` looks for, in order, when the caller</span>
+<span class="c1">#: does not name one — a bare ``qrels.tsv`` or BEIR&#39;s ``qrels/&lt;split&gt;.tsv``.</span>
+<span class="n">_DEFAULT_QRELS_PATHS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;qrels.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;qrels/test.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;qrels/dev.tsv&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_jsonl</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield the JSON object on each non-blank line of a ``.jsonl`` file.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_beir_doc_text</span><span class="p">(</span><span class="n">record</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The text of one BEIR corpus record — ``title`` prepended to ``text``.&quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">title</span> <span class="k">else</span> <span class="n">text</span>
+
+
+<div class="viewcode-block" id="read_beir">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.read_beir">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_beir</span><span class="p">(</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">qrels</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a BEIR-format dataset from disk into the in-memory evaluation triple.</span>
+
+<span class="sd">    Reads ``corpus.jsonl`` (records ``{&quot;_id&quot;, &quot;title&quot;, &quot;text&quot;}``),</span>
+<span class="sd">    ``queries.jsonl`` (records ``{&quot;_id&quot;, &quot;text&quot;}``) and a ``qrels`` TSV</span>
+<span class="sd">    (``query-id``, ``corpus-id``, ``score`` columns). The corpus text is the</span>
+<span class="sd">    record&#39;s ``title`` and ``text`` joined — the BEIR convention.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory: the dataset directory.</span>
+<span class="sd">        qrels: the qrels file, relative to ``directory``. ``None`` tries</span>
+<span class="sd">            :data:`_DEFAULT_QRELS_PATHS` in order.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a ``(corpus, queries, qrels)`` triple — ``corpus`` and ``queries`` are</span>
+<span class="sd">        ``{id: text}`` dicts, ``qrels`` is ``{query_id: {doc_id: relevance}}``.</span>
+<span class="sd">        Feed it straight to :func:`evaluate_retrieval` (after indexing ``corpus``</span>
+<span class="sd">        with :func:`~ef.source_manager.ingest`).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: if ``corpus.jsonl``, ``queries.jsonl`` or the qrels</span>
+<span class="sd">            file is missing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))):</span> <span class="n">_beir_doc_text</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">_read_jsonl</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;corpus.jsonl&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))):</span> <span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">_read_jsonl</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;queries.jsonl&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">qrels_path</span> <span class="o">=</span> <span class="n">_resolve_qrels_path</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">qrels</span><span class="p">)</span>
+    <span class="n">judgements</span> <span class="o">=</span> <span class="n">_read_qrels_tsv</span><span class="p">(</span><span class="n">qrels_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">judgements</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_qrels_path</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">qrels</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve the qrels file under ``root`` — an explicit name or the defaults.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">qrels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">/</span> <span class="n">qrels</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qrels file not found: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span>
+    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">_DEFAULT_QRELS_PATHS</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">/</span> <span class="n">candidate</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">path</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;No qrels file under </span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2"> (looked for </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_DEFAULT_QRELS_PATHS</span><span class="p">)</span><span class="si">}</span><span class="s2">). &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Pass qrels=&#39;&lt;relative/path.tsv&gt;&#39;.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_qrels_tsv</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a qrels TSV — a leading non-numeric header row is skipped.&quot;&quot;&quot;</span>
+    <span class="n">judgements</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">query_id</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">raw_score</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw_score</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># the header row (`query-id  corpus-id  score`)</span>
+            <span class="n">judgements</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">query_id</span><span class="p">,</span> <span class="p">{})[</span><span class="n">doc_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+    <span class="k">return</span> <span class="n">judgements</span>
+
+
+<div class="viewcode-block" id="write_beir">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.write_beir">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_beir</span><span class="p">(</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">corpus</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">queries</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">qrels</span><span class="p">:</span> <span class="n">Qrels</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write an evaluation triple to disk in BEIR format — the inverse of :func:`read_beir`.</span>
+
+<span class="sd">    Creates ``directory`` (and parents) and writes ``corpus.jsonl``,</span>
+<span class="sd">    ``queries.jsonl`` and ``qrels.tsv``. Use it to snapshot an ``ef`` corpus as</span>
+<span class="sd">    a reusable benchmark (``ef_use_cases.md`` §H4).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory: the output directory — created if absent.</span>
+<span class="sd">        corpus: the documents — ``{doc_id: text}``.</span>
+<span class="sd">        queries: the queries — ``{query_id: query_text}``.</span>
+<span class="sd">        qrels: the relevance judgements — ``{query_id: {doc_id: relevance}}``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;corpus.jsonl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">corpus</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc_id</span><span class="p">),</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">})</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+    <span class="k">with</span> <span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;queries.jsonl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">queries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">query_id</span><span class="p">),</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">})</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;qrels.tsv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;query-id</span><span class="se">\t</span><span class="s2">corpus-id</span><span class="se">\t</span><span class="s2">score</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">judged</span> <span class="ow">in</span> <span class="n">qrels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">judged</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_id</span><span class="si">}</span><span class="se">\t</span><span class="si">{</span><span class="n">doc_id</span><span class="si">}</span><span class="se">\t</span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># RAG metric primitives — deterministic, reference-based, no LLM</span>
+<span class="c1"># ===========================================================================</span>
+
+<span class="n">_ARTICLES</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\b(a|an|the)\b&quot;</span><span class="p">)</span>
+<span class="n">_PUNCTUATION</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_answer</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a free-text answer for lexical comparison (the SQuAD recipe).</span>
+
+<span class="sd">    Lower-cases, drops punctuation, removes the articles ``a`` / ``an`` / ``the``</span>
+<span class="sd">    and collapses whitespace — so ``&quot;The Eiffel Tower.&quot;`` and ``&quot;eiffel tower&quot;``</span>
+<span class="sd">    compare equal.</span>
+
+<span class="sd">    &gt;&gt;&gt; _normalize_answer(&#39;The Eiffel Tower.&#39;)</span>
+<span class="sd">    &#39;eiffel tower&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">_PUNCTUATION</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_ARTICLES</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="exact_match">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.exact_match">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">exact_match</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``1.0`` if ``response`` equals ``reference`` after normalization, else ``0.0``.</span>
+
+<span class="sd">    &gt;&gt;&gt; exact_match(&#39;The Eiffel Tower&#39;, &#39;eiffel tower&#39;)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; exact_match(&#39;Paris&#39;, &#39;London&#39;)</span>
+<span class="sd">    0.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">_normalize_answer</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">==</span> <span class="n">_normalize_answer</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="token_f1">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.token_f1">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">token_f1</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Token-overlap F1 of ``response`` against ``reference`` (the SQuAD F1).</span>
+
+<span class="sd">    The harmonic mean of token precision and recall over the normalized token</span>
+<span class="sd">    bags — a graded credit where :func:`exact_match` is all-or-nothing.</span>
+
+<span class="sd">    &gt;&gt;&gt; token_f1(&#39;the quick brown fox&#39;, &#39;a quick brown fox&#39;)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; round(token_f1(&#39;quick brown fox&#39;, &#39;quick brown dog&#39;), 4)</span>
+<span class="sd">    0.6667</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">_normalize_answer</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="n">_normalize_answer</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">predicted</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">expected</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="ow">not</span> <span class="n">predicted</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">expected</span><span class="p">)</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">Counter</span><span class="p">(</span><span class="n">predicted</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Counter</span><span class="p">(</span><span class="n">expected</span><span class="p">))</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">overlap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">overlap</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicted</span><span class="p">)</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">overlap</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">/</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="context_recall">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.context_recall">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_recall</span><span class="p">(</span><span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">retrieved_contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lexical recall of the ``reference`` tokens by the retrieved contexts.</span>
+
+<span class="sd">    The fraction of the (normalized) reference&#39;s distinct tokens that appear</span>
+<span class="sd">    anywhere in ``retrieved_contexts`` — a deterministic *proxy* for &quot;did</span>
+<span class="sd">    retrieval surface the information the answer needs&quot;. For the LLM-judged</span>
+<span class="sd">    context recall, use :func:`as_ragas_dataset` and Ragas.</span>
+
+<span class="sd">    &gt;&gt;&gt; context_recall(&#39;paris france&#39;, [&#39;Paris is the capital of France.&#39;])</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; context_recall(&#39;paris france&#39;, [&#39;London is in England.&#39;])</span>
+<span class="sd">    0.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_normalize_answer</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">expected</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">covered</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">retrieved_contexts</span><span class="p">:</span>
+        <span class="n">covered</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_normalize_answer</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span> <span class="o">&amp;</span> <span class="n">covered</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="context_precision">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.context_precision">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_precision</span><span class="p">(</span><span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">retrieved_contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of the retrieved contexts that lexically overlap the ``reference``.</span>
+
+<span class="sd">    A deterministic *proxy* for retrieval precision — a context counts as useful</span>
+<span class="sd">    if it shares at least one (normalized) token with the reference answer.</span>
+
+<span class="sd">    &gt;&gt;&gt; context_precision(&#39;paris&#39;, [&#39;Paris is in France.&#39;, &#39;Unrelated text.&#39;])</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">retrieved_contexts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_normalize_answer</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">expected</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">useful</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">retrieved_contexts</span>
+        <span class="k">if</span> <span class="n">expected</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">_normalize_answer</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">useful</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">retrieved_contexts</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_m_exact_match</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">exact_match</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_m_token_f1</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">token_f1</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_m_context_recall</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">context_recall</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retrieved_contexts&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_m_context_precision</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">context_precision</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retrieved_contexts&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_m_non_empty_rate</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retrieved_contexts&quot;</span><span class="p">)))</span>
+
+
+<span class="c1">#: The RAG metrics :func:`evaluate_rag` can compute. Each maps a sample to a</span>
+<span class="c1">#: float, or to ``None`` when the metric does not apply (e.g. no ``reference``)</span>
+<span class="c1">#: — a ``None`` sample is excluded from that metric&#39;s mean.</span>
+<span class="n">_RAG_METRICS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;exact_match&quot;</span><span class="p">:</span> <span class="n">_m_exact_match</span><span class="p">,</span>
+    <span class="s2">&quot;token_f1&quot;</span><span class="p">:</span> <span class="n">_m_token_f1</span><span class="p">,</span>
+    <span class="s2">&quot;context_recall&quot;</span><span class="p">:</span> <span class="n">_m_context_recall</span><span class="p">,</span>
+    <span class="s2">&quot;context_precision&quot;</span><span class="p">:</span> <span class="n">_m_context_precision</span><span class="p">,</span>
+    <span class="s2">&quot;non_empty_rate&quot;</span><span class="p">:</span> <span class="n">_m_non_empty_rate</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># RAG evaluation</span>
+<span class="c1"># ===========================================================================</span>
+
+
+<div class="viewcode-block" id="RagEvalReport">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.RagEvalReport">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RagEvalReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The outcome of :func:`evaluate_rag` — lexical RAG metrics over a sample set.</span>
+
+<span class="sd">    ``metrics`` maps each metric to its mean over the samples it applied to;</span>
+<span class="sd">    ``coverage`` records how many samples that was (a metric needing a</span>
+<span class="sd">    ``reference`` skips samples without one). ``n_samples`` is the total scored.</span>
+
+<span class="sd">    &gt;&gt;&gt; report = RagEvalReport(</span>
+<span class="sd">    ...     metrics={&#39;exact_match&#39;: 0.5}, coverage={&#39;exact_match&#39;: 4}, n_samples=4)</span>
+<span class="sd">    &gt;&gt;&gt; report.metrics[&#39;exact_match&#39;]</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metrics</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;RagEvalReport — </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="si">}</span><span class="s2"> samples&quot;</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (n=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">head</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">body</span> <span class="k">else</span> <span class="n">head</span></div>
+
+
+
+<div class="viewcode-block" id="evaluate_rag">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.evaluate_rag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_rag</span><span class="p">(</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RagSample</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;token_f1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;context_recall&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;context_precision&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;non_empty_rate&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RagEvalReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Score RAG samples with deterministic, reference-based lexical metrics.</span>
+
+<span class="sd">    Each sample is a :class:`RagSample` — ``(user_input, response,</span>
+<span class="sd">    retrieved_contexts, reference)``. ``evaluate_rag`` computes only metrics</span>
+<span class="sd">    that need **no LLM**: :func:`exact_match`, :func:`token_f1`,</span>
+<span class="sd">    :func:`context_recall`, :func:`context_precision` and ``non_empty_rate``</span>
+<span class="sd">    (the share of samples that retrieved any context). This keeps ``ef`` a</span>
+<span class="sd">    facade — it never synthesizes an answer and never calls a model (§6).</span>
+
+<span class="sd">    For the LLM-judged metrics — faithfulness, answer relevancy, … — pass the</span>
+<span class="sd">    same samples to :func:`as_ragas_dataset` and run Ragas with your own LLM.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        samples: an iterable of :class:`RagSample`\\ s (or plain mappings of the</span>
+<span class="sd">            same shape).</span>
+<span class="sd">        metrics: which metrics to compute — any of ``exact_match`` /</span>
+<span class="sd">            ``token_f1`` / ``context_recall`` / ``context_precision`` /</span>
+<span class="sd">            ``non_empty_rate``. The reference-based ones skip samples that carry</span>
+<span class="sd">            no ``reference``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a :class:`RagEvalReport`.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: for an unknown metric name, or if ``samples`` is empty.</span>
+
+<span class="sd">    &gt;&gt;&gt; samples = [</span>
+<span class="sd">    ...     {&#39;user_input&#39;: &#39;capital of France?&#39;, &#39;response&#39;: &#39;Paris&#39;,</span>
+<span class="sd">    ...      &#39;reference&#39;: &#39;Paris&#39;,</span>
+<span class="sd">    ...      &#39;retrieved_contexts&#39;: [&#39;Paris is the capital of France.&#39;]},</span>
+<span class="sd">    ...     {&#39;user_input&#39;: &#39;2 + 2?&#39;, &#39;response&#39;: &#39;five&#39;, &#39;reference&#39;: &#39;four&#39;,</span>
+<span class="sd">    ...      &#39;retrieved_contexts&#39;: []},</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; report = evaluate_rag(samples)</span>
+<span class="sd">    &gt;&gt;&gt; report.metrics[&#39;exact_match&#39;]</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &gt;&gt;&gt; report.metrics[&#39;non_empty_rate&#39;]</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_RAG_METRICS</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unknown RAG metric(s) </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">. Choose from </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_RAG_METRICS</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;For LLM-judged metrics (faithfulness, answer relevancy, ...) use &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;as_ragas_dataset() and run Ragas.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;evaluate_rag got no samples.&quot;</span><span class="p">)</span>
+
+    <span class="n">aggregated</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="n">metric_fn</span> <span class="o">=</span> <span class="n">_RAG_METRICS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">:=</span> <span class="n">metric_fn</span><span class="p">(</span><span class="n">row</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">coverage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">aggregated</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">values</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">RagEvalReport</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">aggregated</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="as_ragas_dataset">
+<a class="viewcode-back" href="../../module_docs/ef/evaluation.html#ef.as_ragas_dataset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_ragas_dataset</span><span class="p">(</span><span class="n">samples</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RagSample</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert :class:`RagSample`\\ s into a Ragas ``EvaluationDataset``.</span>
+
+<span class="sd">    The hookpoint for the *LLM-judged* RAG metrics ``ef`` deliberately does not</span>
+<span class="sd">    compute itself (faithfulness, answer relevancy, …). :class:`RagSample`</span>
+<span class="sd">    already mirrors Ragas&#39; ``SingleTurnSample`` field-for-field, so this is a</span>
+<span class="sd">    thin, lossless adapter. Run the evaluation with your own LLM::</span>
+
+<span class="sd">        from ragas import evaluate</span>
+<span class="sd">        from ragas.metrics import faithfulness, answer_relevancy</span>
+
+<span class="sd">        dataset = as_ragas_dataset(samples)</span>
+<span class="sd">        result = evaluate(dataset, metrics=[faithfulness, answer_relevancy])</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        samples: an iterable of :class:`RagSample`\\ s (or plain mappings).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a ``ragas.EvaluationDataset``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ImportError: if the optional ``ragas`` package is not installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">ragas</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationDataset</span><span class="p">,</span> <span class="n">SingleTurnSample</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - optional dependency</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;as_ragas_dataset needs the optional `ragas` package for LLM-judged &quot;</span>
+            <span class="s2">&quot;RAG metrics. Install it with: pip install ragas&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+    <span class="n">turns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">turns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">SingleTurnSample</span><span class="p">(</span>
+                <span class="n">user_input</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_input&quot;</span><span class="p">),</span>
+                <span class="n">response</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">),</span>
+                <span class="n">retrieved_contexts</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retrieved_contexts&quot;</span><span class="p">),</span>
+                <span class="n">reference</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">),</span>
+                <span class="n">reference_contexts</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference_contexts&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">EvaluationDataset</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="n">turns</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
