@@ -236,6 +236,35 @@ rollback); collection aliases (Weaviate/Elasticsearch — atomic repoint);
 namespace-bump encoding embedder identity (lowest friction). Partial
 re-embedding is almost never mathematically valid.
 
+### 3.8 Building a `ProducerSpec` from an op call (the `i2.Sig` recipe)
+`artifact_graph.py` (Phase 4) lands `ProducerSpec` as a *fully serializable*
+node: `op` is a **string key**, not a `Callable` (a raw callable can't be
+persisted, and §3.5 wants the graph in SQLite). The `ArtifactGraph` resolves
+the key to a function through an injected `ops` registry at `materialize` time.
+`artifact_id` then content-addresses the spec: `sha256(canonical_json({op,
+op_version, inputs, params}))` (`canonical_json`/`sha256_hex` from
+`ef/hashing.py` — the SSOT).
+
+For content addressing to be *correct*, two semantically equal op calls must
+produce **identical** `params` — so `op(text)` and `op(text, size=512)` (512
+being the default) must hash the same. Normalize a call into a stable,
+fully-named, defaults-filled kwargs dict with the canonical `i2` idiom:
+
+```python
+from i2 import Sig
+
+def full_kwargs(op, args=(), kwargs=None):
+    """Call (args, kwargs) -> a canonical, defaults-filled, fully-named dict."""
+    return Sig(op).map_arguments(args, kwargs or {}, apply_defaults=True)
+```
+
+`Sig.map_arguments` is the current API (`kwargs_from_args_and_kwargs` is a
+deprecated alias). The *input* positional args (upstream artifact ids) are
+separated out into `ProducerSpec.inputs`; the remaining keyword args become
+`params`. Phase 5 (the config layer / `source_manager.py`) is where calls are
+turned into specs and this recipe is applied — Phase 4's `ArtifactGraph` takes
+specs as given. Full detail in the `i2-signatures` skill.
+
 ## 4. Canonical data model
 
 Field names: `text`, `metadata`, `id`, `embedding` (NOT `page_content` /

@@ -45,6 +45,16 @@ The **corpus facade** is ``ef``'s source layer (L0) — also always importable:
 - :class:`~ef.corpus.ChangeDetectingCorpus` — a corpus wrapper that detects and
   reports changes (:class:`~ef.corpus.ChangeEvent` / :class:`~ef.corpus.CorpusDiff`).
 
+The **artifact graph** is ``ef``'s corpus-indexing core (also always importable)
+— a content-addressed producer graph in which cascade invalidation and config
+branching are the same operation:
+
+- :class:`~ef.artifact_graph.ProducerSpec` — the declarative recipe for one
+  produced artifact; :func:`~ef.artifact_graph.artifact_id` is its content hash;
+  :func:`~ef.artifact_graph.producer_spec` builds one ergonomically.
+- :class:`~ef.artifact_graph.ArtifactGraph` — the graph: ``materialize`` (lazy
+  backward), ``mark_stale`` / ``delete_cascade`` (forward) and ``freshness``.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -120,6 +130,15 @@ from ef.corpus import (
     as_corpus,
     content_hash,
 )
+from ef.artifact_graph import (
+    ArtifactGraph,
+    ArtifactId,
+    Freshness,
+    OpKey,
+    ProducerSpec,
+    artifact_id,
+    producer_spec,
+)
 
 # ============================================================================
 # Public API — the embedder, segmenter & corpus facades (always available)
@@ -186,6 +205,14 @@ __all__ = [
     "ChangeEvent",
     "ChangeKind",
     "CorpusDiff",
+    # --- artifact graph (corpus-indexing core) ---
+    "ArtifactGraph",
+    "ArtifactId",
+    "OpKey",
+    "Freshness",
+    "ProducerSpec",
+    "artifact_id",
+    "producer_spec",
 ]
 
 # ============================================================================
