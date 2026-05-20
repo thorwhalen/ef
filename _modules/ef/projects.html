@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.projects &mdash; ef 0.1.1 documentation</title>
+  <title>ef.projects &mdash; ef 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -129,10 +129,10 @@
 <span class="sd">    works out-of-the-box without requiring heavy dependencies.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">registries</span> <span class="o">=</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
-        <span class="n">segmenters</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;segmenters&#39;</span><span class="p">),</span>
-        <span class="n">embedders</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;embedders&#39;</span><span class="p">),</span>
-        <span class="n">planarizers</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;planarizers&#39;</span><span class="p">),</span>
-        <span class="n">clusterers</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s1">&#39;clusterers&#39;</span><span class="p">),</span>
+        <span class="n">segmenters</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s2">&quot;segmenters&quot;</span><span class="p">),</span>
+        <span class="n">embedders</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s2">&quot;embedders&quot;</span><span class="p">),</span>
+        <span class="n">planarizers</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s2">&quot;planarizers&quot;</span><span class="p">),</span>
+        <span class="n">clusterers</span><span class="o">=</span><span class="n">ComponentRegistry</span><span class="p">(</span><span class="s2">&quot;clusterers&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="c1"># Auto-register simple components from plugin</span>
@@ -141,13 +141,13 @@
     <span class="n">simple</span><span class="o">.</span><span class="n">register_simple_components</span><span class="p">(</span>
         <span class="c1"># Create minimal project-like object for registration</span>
         <span class="nb">type</span><span class="p">(</span>
-            <span class="s1">&#39;_Project&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;_Project&quot;</span><span class="p">,</span>
             <span class="p">(),</span>
             <span class="p">{</span>
-                <span class="s1">&#39;segmenters&#39;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">segmenters</span><span class="p">,</span>
-                <span class="s1">&#39;embedders&#39;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">embedders</span><span class="p">,</span>
-                <span class="s1">&#39;planarizers&#39;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">planarizers</span><span class="p">,</span>
-                <span class="s1">&#39;clusterers&#39;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">clusterers</span><span class="p">,</span>
+                <span class="s2">&quot;segmenters&quot;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">segmenters</span><span class="p">,</span>
+                <span class="s2">&quot;embedders&quot;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">embedders</span><span class="p">,</span>
+                <span class="s2">&quot;planarizers&quot;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">planarizers</span><span class="p">,</span>
+                <span class="s2">&quot;clusterers&quot;</span><span class="p">:</span> <span class="n">registries</span><span class="o">.</span><span class="n">clusterers</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">)()</span>
     <span class="p">)</span>
@@ -196,9 +196,9 @@
         <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">root_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;files&#39;</span><span class="p">,</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
         <span class="n">registries</span><span class="p">:</span> <span class="n">SimpleNamespace</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Project&#39;</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Project&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new project with storage and component registries.</span>
 
@@ -255,22 +255,22 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">segments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">SegmentKey</span><span class="p">,</span> <span class="n">Segment</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access to segments store.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s1">&#39;segments&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s2">&quot;segments&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">SegmentKey</span><span class="p">,</span> <span class="n">Vector</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access to embeddings store.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s1">&#39;embeddings&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">planar_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">SegmentKey</span><span class="p">,</span> <span class="n">PlanarVector</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access to planar embeddings store.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s1">&#39;planar_embeddings&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s2">&quot;planar_embeddings&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">SegmentKey</span><span class="p">,</span> <span class="n">ClusterIndex</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access to clusters store.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mall</span><span class="p">[</span><span class="s2">&quot;clusters&quot;</span><span class="p">]</span>
 
     <span class="c1"># -------- Data Operations --------</span>
 
@@ -318,10 +318,10 @@
 <span class="sd">            True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">all_components</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;segmenters&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segmenters</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-            <span class="s1">&#39;embedders&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedders</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-            <span class="s1">&#39;planarizers&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planarizers</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-            <span class="s1">&#39;clusterers&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clusterers</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;segmenters&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segmenters</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;embedders&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedders</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;planarizers&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planarizers</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;clusterers&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clusterers</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">component_type</span><span class="p">:</span>
@@ -372,8 +372,8 @@
 
         <span class="c1"># Apply any parameters via partial</span>
         <span class="k">if</span> <span class="n">component_params</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">clu_func</span> <span class="ow">and</span> <span class="s1">&#39;n_clusters&#39;</span> <span class="ow">in</span> <span class="n">component_params</span><span class="p">:</span>
-                <span class="n">clu_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">clu_func</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="n">component_params</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">clu_func</span> <span class="ow">and</span> <span class="s2">&quot;n_clusters&quot;</span> <span class="ow">in</span> <span class="n">component_params</span><span class="p">:</span>
+                <span class="n">clu_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">clu_func</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="n">component_params</span><span class="p">[</span><span class="s2">&quot;n_clusters&quot;</span><span class="p">])</span>
 
         <span class="c1"># Assemble DAG</span>
         <span class="n">dag</span> <span class="o">=</span> <span class="n">assemble_pipeline_dag</span><span class="p">(</span>
@@ -428,7 +428,7 @@
         <span class="k">if</span> <span class="n">source_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Use provided source data</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">segments</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;main&#39;</span><span class="p">:</span> <span class="n">source_data</span><span class="p">}</span>
+                <span class="n">segments</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;main&quot;</span><span class="p">:</span> <span class="n">source_data</span><span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">segments</span> <span class="o">=</span> <span class="n">source_data</span>
         <span class="k">elif</span> <span class="n">source_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -443,14 +443,14 @@
 
         <span class="c1"># Persist results if requested</span>
         <span class="k">if</span> <span class="n">persist</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;segments&#39;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;segments&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s1">&#39;embeddings&#39;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;embeddings&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s1">&#39;planar_embeddings&#39;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">planar_embeddings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;planar_embeddings&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s1">&#39;clusters&#39;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clusters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;segments&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;segments&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;embeddings&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;planar_embeddings&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">planar_embeddings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;planar_embeddings&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;clusters&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clusters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;clusters&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">results</span></div>
 
@@ -478,7 +478,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;simple&#39;</span><span class="p">,</span>
+        <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;simple&quot;</span><span class="p">,</span>
         <span class="n">segmenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Vector</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -499,7 +499,7 @@
 <span class="sd">            True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create temporary pipeline</span>
-        <span class="n">temp_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;_temp_</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">temp_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_temp_</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span>
             <span class="n">temp_name</span><span class="p">,</span>
             <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
@@ -513,7 +513,7 @@
                 <span class="n">source_data</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
                 <span class="n">persist</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;embeddings&#39;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embeddings&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipelines</span><span class="p">[</span><span class="n">temp_name</span><span class="p">]</span></div>
 
@@ -534,13 +534,13 @@
 <span class="sd">            True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;project_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
-            <span class="s1">&#39;n_segments&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">),</span>
-            <span class="s1">&#39;n_embeddings&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">),</span>
-            <span class="s1">&#39;n_planar_embeddings&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planar_embeddings</span><span class="p">),</span>
-            <span class="s1">&#39;n_clusters&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clusters</span><span class="p">),</span>
-            <span class="s1">&#39;n_pipelines&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipelines</span><span class="p">),</span>
-            <span class="s1">&#39;available_components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_components</span><span class="p">(),</span>
+            <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+            <span class="s2">&quot;n_segments&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">),</span>
+            <span class="s2">&quot;n_embeddings&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">),</span>
+            <span class="s2">&quot;n_planar_embeddings&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planar_embeddings</span><span class="p">),</span>
+            <span class="s2">&quot;n_clusters&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clusters</span><span class="p">),</span>
+            <span class="s2">&quot;n_pipelines&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipelines</span><span class="p">),</span>
+            <span class="s2">&quot;available_components&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_components</span><span class="p">(),</span>
         <span class="p">}</span></div>
 </div>
 
@@ -574,7 +574,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            root_dir: Root directory for all projects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">root_dir</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s1">&#39;ef_projects&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">root_dir</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s2">&quot;ef_projects&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
@@ -583,7 +583,7 @@
             <span class="n">project_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">project_dir</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_projects</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-                    <span class="n">key</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;files&#39;</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;files&quot;</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span>

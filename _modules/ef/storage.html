@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.storage &mdash; ef 0.1.1 documentation</title>
+  <title>ef.storage &mdash; ef 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,7 +125,7 @@
 <span class="sd">    Provides MutableMapping interface to filesystem storage.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pkl&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pkl&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">rootdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">=</span> <span class="n">extension</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -139,12 +139,12 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;pkl&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pkl&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
@@ -155,14 +155,14 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;pkl&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pkl&quot;</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -170,8 +170,8 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">extension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">filename</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">extension</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">filename</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span></div>
@@ -180,7 +180,7 @@
 
 <div class="viewcode-block" id="mk_extension_based_store">
 <a class="viewcode-back" href="../../module_docs/ef/storage.html#ef.storage.mk_extension_based_store">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">mk_extension_based_store</span><span class="p">(</span><span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pkl&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mk_extension_based_store</span><span class="p">(</span><span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pkl&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a storage backend with extension-based serialization.</span>
 
@@ -209,10 +209,10 @@
         <span class="n">base_store</span> <span class="o">=</span> <span class="n">Files</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 
         <span class="c1"># Set up codec based on extension</span>
-        <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;pkl&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pkl&quot;</span><span class="p">:</span>
             <span class="n">encode</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span>
             <span class="n">decode</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span>
-        <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
             <span class="n">encode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
             <span class="n">decode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
@@ -224,7 +224,7 @@
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_remove_ext</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">k</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">else</span> <span class="n">k</span>
+            <span class="k">return</span> <span class="n">k</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">else</span> <span class="n">k</span>
 
         <span class="n">store</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span>
             <span class="n">base_store</span><span class="p">,</span>
@@ -252,7 +252,7 @@
     <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">root_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;files&#39;</span><span class="p">,</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a &quot;mall&quot; (store of stores) for a project.</span>
@@ -276,30 +276,30 @@
 <span class="sd">    [&#39;segments&#39;, &#39;embeddings&#39;, &#39;planar_embeddings&#39;, &#39;clusters&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">root_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s1">&#39;ef_projects&#39;</span><span class="p">,</span> <span class="n">project_id</span><span class="p">)</span>
+        <span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s2">&quot;ef_projects&quot;</span><span class="p">,</span> <span class="n">project_id</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;memory&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;memory&quot;</span><span class="p">:</span>
         <span class="c1"># Use simple dicts for in-memory storage</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;segments&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;planar_embeddings&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;clusters&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;planar_embeddings&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;clusters&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
-    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;files&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;files&quot;</span><span class="p">:</span>
         <span class="c1"># Use filesystem storage with appropriate serialization</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;segments&#39;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;segments&#39;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;txt&#39;</span>
+            <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;segments&quot;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;txt&quot;</span>
             <span class="p">),</span>
-            <span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;embeddings&#39;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;pkl&#39;</span>
+            <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;embeddings&quot;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;pkl&quot;</span>
             <span class="p">),</span>
-            <span class="s1">&#39;planar_embeddings&#39;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;planar_embeddings&#39;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+            <span class="s2">&quot;planar_embeddings&quot;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;planar_embeddings&quot;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
             <span class="p">),</span>
-            <span class="s1">&#39;clusters&#39;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;clusters&#39;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+            <span class="s2">&quot;clusters&quot;</span><span class="p">:</span> <span class="n">mk_extension_based_store</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;clusters&quot;</span><span class="p">),</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
             <span class="p">),</span>
         <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>

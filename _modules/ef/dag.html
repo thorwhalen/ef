@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.dag &mdash; ef 0.1.1 documentation</title>
+  <title>ef.dag &mdash; ef 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -111,7 +111,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">bind</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="ow">or</span> <span class="s1">&#39;result&#39;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="ow">or</span> <span class="s2">&quot;result&quot;</span></div>
 
 
 
@@ -224,16 +224,16 @@
 
     <span class="c1"># Add segmenter if provided</span>
     <span class="k">if</span> <span class="n">segmenter</span><span class="p">:</span>
-        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FuncNode</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;segment_func&#39;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;segments&#39;</span><span class="p">))</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FuncNode</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;segment_func&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s2">&quot;segments&quot;</span><span class="p">))</span>
 
     <span class="c1"># Add embedder if provided (depends on segments)</span>
     <span class="k">if</span> <span class="n">embedder</span><span class="p">:</span>
         <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">FuncNode</span><span class="p">(</span>
                 <span class="n">embedder</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;embed_func&#39;</span><span class="p">,</span>
-                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;segments&#39;</span><span class="p">:</span> <span class="s1">&#39;segments&#39;</span><span class="p">},</span>  <span class="c1"># Connect to segmenter output</span>
-                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;embeddings&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embed_func&quot;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="s2">&quot;segments&quot;</span><span class="p">},</span>  <span class="c1"># Connect to segmenter output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s2">&quot;embeddings&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
@@ -242,9 +242,9 @@
         <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">FuncNode</span><span class="p">(</span>
                 <span class="n">planarizer</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;planarize_func&#39;</span><span class="p">,</span>
-                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="s1">&#39;embeddings&#39;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
-                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;planar_embeddings&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;planarize_func&quot;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="s2">&quot;embeddings&quot;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s2">&quot;planar_embeddings&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
@@ -253,9 +253,9 @@
         <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">FuncNode</span><span class="p">(</span>
                 <span class="n">clusterer</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cluster_func&#39;</span><span class="p">,</span>
-                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;embeddings&#39;</span><span class="p">:</span> <span class="s1">&#39;embeddings&#39;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
-                <span class="n">out</span><span class="o">=</span><span class="s1">&#39;clusters&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cluster_func&quot;</span><span class="p">,</span>
+                <span class="n">bind</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="s2">&quot;embeddings&quot;</span><span class="p">},</span>  <span class="c1"># Connect to embedder output</span>
+                <span class="n">out</span><span class="o">=</span><span class="s2">&quot;clusters&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
