@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.artifact_graph &mdash; ef 0.1.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.artifact_graph</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.artifact_graph</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The ``ArtifactGraph`` — ``ef``&#39;s content-addressed corpus-indexing core.</span>
+
+<span class="sd">The corpus-indexing engine is **not a pipeline** — a pipeline is the wrong</span>
+<span class="sd">abstraction. It is a *declared, content-addressed producer graph* (a DAG). The</span>
+<span class="sd">one idea this module is built on::</span>
+
+<span class="sd">    Cascade invalidation and configuration branching are the same operation.</span>
+
+<span class="sd">A source edit changes a leaf&#39;s content hash; a parameter change changes a leaf&#39;s</span>
+<span class="sd">content hash. Both produce a new ``artifact_id`` whose downstream cone needs</span>
+<span class="sd">(re-)materialization — and the graph does not distinguish them. &quot;Incremental</span>
+<span class="sd">refresh&quot;, &quot;experiment tracking&quot;, &quot;hot reload&quot;, &quot;cache invalidation&quot; and</span>
+<span class="sd">&quot;reactivity&quot; are five names for that one operation.</span>
+
+<span class="sd">Every artifact is addressed by **what produced it**::</span>
+
+<span class="sd">    artifact_id = H(op, op_version, inputs, params)</span>
+
+<span class="sd">so two configs that share an upstream step (same ``op``, same ``params``, same</span>
+<span class="sd">``inputs``) share the *same* artifact id — each segment is computed once, each</span>
+<span class="sd">vector once, no matter how many configs branch through the graph. Bumping an</span>
+<span class="sd">``op_version`` (or any ``param``, or any input) yields a *new* id; the old</span>
+<span class="sd">artifact keeps its old id and its old cached value, still valid for the config</span>
+<span class="sd">that produced it. Config branching is therefore free.</span>
+
+<span class="sd">The module&#39;s surface:</span>
+
+<span class="sd">- :class:`ProducerSpec` — the declarative recipe for one produced artifact:</span>
+<span class="sd">  *which op*, *which version*, *over which inputs*, *with which params*. It is</span>
+<span class="sd">  fully serializable (string ``op`` key, not a raw callable — see below), so an</span>
+<span class="sd">  :class:`ArtifactGraph`&#39;s stores can be persisted.</span>
+<span class="sd">- :func:`artifact_id` — the content-addressed id of a :class:`ProducerSpec`.</span>
+<span class="sd">- :func:`producer_spec` — an ergonomic :class:`ProducerSpec` constructor</span>
+<span class="sd">  (positional inputs, keyword params).</span>
+<span class="sd">- :class:`ArtifactGraph` — the graph itself: four injectable</span>
+<span class="sd">  ``MutableMapping``\\ s (a content-addressed cache ``store``, the ``producers``</span>
+<span class="sd">  registry, a reverse-``edges`` index, an ``ops`` registry) and the four</span>
+<span class="sd">  contract operations :meth:`~ArtifactGraph.materialize` (lazy backward),</span>
+<span class="sd">  :meth:`~ArtifactGraph.mark_stale` / :meth:`~ArtifactGraph.delete_cascade`</span>
+<span class="sd">  (forward) and :meth:`~ArtifactGraph.freshness`.</span>
+
+<span class="sd">**Why ``op`` is a string, not a callable.** The design wants the dependency</span>
+<span class="sd">graph to scale to ~10⁷ nodes, which means the ``producers`` registry must be</span>
+<span class="sd">*persistable* (a ``dol`` store — SQLite-backed for the heavy case). A raw</span>
+<span class="sd">``Callable`` cannot be serialized; an op *name* can. So :class:`ProducerSpec`</span>
+<span class="sd">records a string op-key, and the :class:`ArtifactGraph` resolves it to the</span>
+<span class="sd">actual function through an injected ``ops`` registry at materialize time. Every</span>
+<span class="sd">store (``store`` / ``producers`` / ``edges``) is a plain ``MutableMapping``;</span>
+<span class="sd">``ef`` itself takes no SQLite dependency — you swap the backend in.</span>
+
+<span class="sd">This module is the *engine*. Wiring it to a corpus — turning a Phase-3</span>
+<span class="sd">:class:`~ef.corpus.ChangeEvent` into a :meth:`~ArtifactGraph.delete_cascade`,</span>
+<span class="sd">exposing the sources-and-configs facade — is the job of later phases</span>
+<span class="sd">(``source_manager.py`` / ``refresh.py``); :meth:`~ArtifactGraph.delete_cascade`</span>
+<span class="sd">is exactly the cascade a ``&quot;deleted&quot;`` / ``&quot;modified&quot;`` event will trigger.</span>
+
+<span class="sd">Example — a two-step graph, a source &quot;change&quot;, a recompute:</span>
+
+<span class="sd">&gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">&gt;&gt;&gt; _ = graph.register_op(&#39;upper&#39;, str.upper)</span>
+<span class="sd">&gt;&gt;&gt; _ = graph.register_op(&#39;repeat&#39;, lambda s, *, times: s * times)</span>
+<span class="sd">&gt;&gt;&gt; src = graph.put(&#39;src&#39;, &#39;ab&#39;)                       # a leaf source</span>
+<span class="sd">&gt;&gt;&gt; shout = graph.add(producer_spec(&#39;upper&#39;, src, op_version=&#39;1&#39;))</span>
+<span class="sd">&gt;&gt;&gt; echo = graph.add(producer_spec(&#39;repeat&#39;, shout, op_version=&#39;1&#39;, times=3))</span>
+<span class="sd">&gt;&gt;&gt; graph.materialize(echo)                            # lazy backward compute</span>
+<span class="sd">&#39;ABABAB&#39;</span>
+<span class="sd">&gt;&gt;&gt; graph.freshness(echo)</span>
+<span class="sd">&#39;materialized&#39;</span>
+<span class="sd">&gt;&gt;&gt; _ = graph.mark_stale(src)                          # the source &#39;changed&#39;</span>
+<span class="sd">&gt;&gt;&gt; graph.freshness(echo)                              # downstream invalidated</span>
+<span class="sd">&#39;stale&#39;</span>
+<span class="sd">&gt;&gt;&gt; graph.materialize(echo)                            # rebuilt from the recipe</span>
+<span class="sd">&#39;ABABAB&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">MutableMapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_json</span><span class="p">,</span> <span class="n">sha256_hex</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ArtifactId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OpKey&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Freshness&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ProducerSpec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;artifact_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;producer_spec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ArtifactGraph&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The contract — type aliases</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="c1">#: A content-addressed artifact identifier — a ``sha256`` hex digest for a</span>
+<span class="c1">#: produced artifact (:func:`artifact_id`), or a caller-supplied content hash</span>
+<span class="c1">#: for a leaf (e.g. :func:`ef.corpus.content_hash` of an L0 source).</span>
+<span class="n">ArtifactId</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1">#: The key an :class:`ArtifactGraph` resolves to a producer callable through its</span>
+<span class="c1">#: ``ops`` registry. A short, stable operation name, e.g. ``&quot;segment&quot;`` or</span>
+<span class="c1">#: ``&quot;embed&quot;``.</span>
+<span class="n">OpKey</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1">#: The state of an artifact, reported by :meth:`ArtifactGraph.freshness`:</span>
+<span class="c1">#: ``&quot;materialized&quot;`` (a value is cached), ``&quot;stale&quot;`` (a recipe exists but no</span>
+<span class="c1">#: cached value — :meth:`~ArtifactGraph.materialize` will (re)build it) or</span>
+<span class="c1">#: ``&quot;unknown&quot;`` (the graph has neither a value nor a recipe for the id).</span>
+<span class="n">Freshness</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;materialized&quot;</span><span class="p">,</span> <span class="s2">&quot;stale&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The producer recipe</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ProducerSpec">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ProducerSpec">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProducerSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A declarative recipe for one produced artifact — the graph&#39;s node type.</span>
+
+<span class="sd">    A :class:`ProducerSpec` says: *this artifact is produced by op* ``op`` *at</span>
+<span class="sd">    version* ``op_version``, *applied to the artifacts* ``inputs`` *(passed</span>
+<span class="sd">    positionally), with the keyword parameters* ``params``. It does **not**</span>
+<span class="sd">    hold the producer callable — only the string ``op`` key — so a spec is</span>
+<span class="sd">    fully serializable (:meth:`as_dict` / :meth:`from_dict`) and the graph&#39;s</span>
+<span class="sd">    ``producers`` registry can be persisted.</span>
+
+<span class="sd">    The recipe is the artifact&#39;s *identity*: :func:`artifact_id` hashes exactly</span>
+<span class="sd">    these four fields. Treat an instance as immutable — it is frozen, and</span>
+<span class="sd">    mutating ``params`` in place would silently desynchronize it from its id.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        op: the op key, resolved to a callable via the graph&#39;s ``ops`` registry.</span>
+<span class="sd">        op_version: the op&#39;s version string. It participates in the id, so a</span>
+<span class="sd">            behavior change to an op **must** be paired with a version bump —</span>
+<span class="sd">            reusing a version for changed behavior silently serves stale cached</span>
+<span class="sd">            values (the graph trusts the version; it cannot inspect the code).</span>
+<span class="sd">        inputs: the input artifact ids, in the order the op receives them</span>
+<span class="sd">            positionally. Order is significant — it is part of the id.</span>
+<span class="sd">        params: the op&#39;s keyword arguments. Key order is *not* significant</span>
+<span class="sd">            (the id is computed over canonical, sorted-key JSON); pass</span>
+<span class="sd">            defaults-filled, fully-named params so that two semantically equal</span>
+<span class="sd">            calls hash equal.</span>
+
+<span class="sd">    &gt;&gt;&gt; spec = producer_spec(&#39;embed&#39;, &#39;seg-1&#39;, op_version=&#39;3&#39;, model=&#39;small&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; spec.op, spec.inputs, spec.op_version</span>
+<span class="sd">    (&#39;embed&#39;, (&#39;seg-1&#39;,), &#39;3&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; spec.params == {&#39;model&#39;: &#39;small&#39;}</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">op</span><span class="p">:</span> <span class="n">OpKey</span>
+    <span class="n">op_version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProducerSpec.as_dict">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ProducerSpec.as_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a plain-``dict`` form of the spec — JSON-serializable.</span>
+
+<span class="sd">        The inverse of :meth:`from_dict`. Use it to persist a ``producers``</span>
+<span class="sd">        registry to a ``dol`` JSON store.</span>
+
+<span class="sd">        &gt;&gt;&gt; producer_spec(&#39;embed&#39;, &#39;a&#39;, &#39;b&#39;, op_version=&#39;1&#39;, dim=256).as_dict()</span>
+<span class="sd">        {&#39;op&#39;: &#39;embed&#39;, &#39;op_version&#39;: &#39;1&#39;, &#39;inputs&#39;: [&#39;a&#39;, &#39;b&#39;], &#39;params&#39;: {&#39;dim&#39;: 256}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+            <span class="s2">&quot;op_version&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span>
+            <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ProducerSpec.from_dict">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ProducerSpec.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;ProducerSpec&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rebuild a :class:`ProducerSpec` from its :meth:`as_dict` form.</span>
+
+<span class="sd">        &gt;&gt;&gt; spec = producer_spec(&#39;embed&#39;, &#39;a&#39;, &#39;b&#39;, op_version=&#39;1&#39;, dim=256)</span>
+<span class="sd">        &gt;&gt;&gt; ProducerSpec.from_dict(spec.as_dict()) == spec</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">op</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;op&quot;</span><span class="p">],</span>
+            <span class="n">op_version</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;op_version&quot;</span><span class="p">],</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="p">())),</span>
+            <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="p">{})),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="producer_spec">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.producer_spec">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">producer_spec</span><span class="p">(</span>
+    <span class="n">op</span><span class="p">:</span> <span class="n">OpKey</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">op_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProducerSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`ProducerSpec` ergonomically — inputs positional, params keyword.</span>
+
+<span class="sd">    The natural way to write a recipe: the input artifact ids are positional</span>
+<span class="sd">    (their order is significant — it is the order the op receives them), and</span>
+<span class="sd">    every keyword argument is an op parameter. ``op_version`` is keyword-only</span>
+<span class="sd">    and required — an op without a stated version cannot be content-addressed</span>
+<span class="sd">    safely.</span>
+
+<span class="sd">    &gt;&gt;&gt; spec = producer_spec(&#39;segment&#39;, &#39;doc-1&#39;, op_version=&#39;1&#39;, size=512, overlap=64)</span>
+<span class="sd">    &gt;&gt;&gt; spec.op, spec.inputs</span>
+<span class="sd">    (&#39;segment&#39;, (&#39;doc-1&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; spec.params == {&#39;size&#39;: 512, &#39;overlap&#39;: 64}</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ProducerSpec</span><span class="p">(</span>
+        <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="n">op_version</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="artifact_id">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.artifact_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">artifact_id</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="n">ProducerSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactId</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Content-addressed id of ``spec`` — ``sha256`` over its four fields.</span>
+
+<span class="sd">    The id is ``sha256`` of canonical (sorted-key) JSON of</span>
+<span class="sd">    ``{op, op_version, inputs, params}``. Two specs that describe the same</span>
+<span class="sd">    computation hash *identically*; any change to the op, its version, its</span>
+<span class="sd">    inputs (including their order) or its params yields a *different* id. That</span>
+<span class="sd">    is what makes the graph content-addressed: the id *is* the recipe.</span>
+
+<span class="sd">    &gt;&gt;&gt; a = producer_spec(&#39;embed&#39;, &#39;seg-1&#39;, op_version=&#39;2&#39;, model=&#39;small&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; artifact_id(a) == artifact_id(producer_spec(</span>
+<span class="sd">    ...     &#39;embed&#39;, &#39;seg-1&#39;, op_version=&#39;2&#39;, model=&#39;small&#39;))</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; len(artifact_id(a))</span>
+<span class="sd">    64</span>
+<span class="sd">    &gt;&gt;&gt; artifact_id(a) == artifact_id(producer_spec(</span>
+<span class="sd">    ...     &#39;embed&#39;, &#39;seg-1&#39;, op_version=&#39;3&#39;, model=&#39;small&#39;))   # version bump</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; artifact_id(producer_spec(&#39;op&#39;, &#39;x&#39;, &#39;y&#39;, op_version=&#39;1&#39;)) == artifact_id(</span>
+<span class="sd">    ...     producer_spec(&#39;op&#39;, &#39;y&#39;, &#39;x&#39;, op_version=&#39;1&#39;))      # input order matters</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span>
+        <span class="n">canonical_json</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+                <span class="s2">&quot;op_version&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span>
+                <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+                <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The graph</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ArtifactGraph">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArtifactGraph</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A content-addressed producer graph — the corpus-indexing &amp; refresh core.</span>
+
+<span class="sd">    The graph holds two kinds of node:</span>
+
+<span class="sd">    - **Leaves** — externally content-addressed inputs (an L0 source, hashed by</span>
+<span class="sd">      :func:`ef.corpus.content_hash`). A leaf has a *value* but no recipe; it is</span>
+<span class="sd">      supplied via :meth:`put`.</span>
+<span class="sd">    - **Produced artifacts** — a node with a :class:`ProducerSpec` recipe,</span>
+<span class="sd">      registered via :meth:`add`. Its id *is* :func:`artifact_id` of its recipe.</span>
+
+<span class="sd">    and four small ``MutableMapping`` stores, every one injectable so the graph</span>
+<span class="sd">    can be backed by RAM (the default) or by a persistent ``dol`` store:</span>
+
+<span class="sd">    - ``store`` — the content-addressed cache: ``artifact_id -&gt; value``.</span>
+<span class="sd">    - ``producers`` — the recipe registry: ``artifact_id -&gt; ProducerSpec``.</span>
+<span class="sd">    - ``edges`` — the reverse index: ``artifact_id -&gt; (dependent ids, ...)``,</span>
+<span class="sd">      so the *downstream* cone of any node is one lookup away.</span>
+<span class="sd">    - ``ops`` — the op registry: ``op_key -&gt; callable``. The one store that is</span>
+<span class="sd">      *not* persisted (callables are not serializable) — repopulate it with</span>
+<span class="sd">      :meth:`register_op` each process.</span>
+
+<span class="sd">    The four contract operations:</span>
+
+<span class="sd">    - :meth:`materialize` — lazy *backward*: compute a node by recursively</span>
+<span class="sd">      materializing its inputs, then memoize.</span>
+<span class="sd">    - :meth:`mark_stale` — *forward*: drop the cached values of a node&#39;s</span>
+<span class="sd">      produced downstream cone, keeping the recipes (they will rebuild).</span>
+<span class="sd">    - :meth:`delete_cascade` — *forward*: remove a node and its whole downstream</span>
+<span class="sd">      cone entirely (values, recipes and edges).</span>
+<span class="sd">    - :meth:`freshness` — query a node&#39;s state (:data:`Freshness`).</span>
+
+<span class="sd">    plus the reachability queries :meth:`descendants` (the downstream cone) and</span>
+<span class="sd">    :meth:`ancestors` (lineage — what an artifact was produced from).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        store: the content-addressed value cache. Defaults to a fresh ``dict``.</span>
+<span class="sd">        producers: the recipe registry. Defaults to a fresh ``dict``. If passed</span>
+<span class="sd">            already-populated (a resumed/persisted graph) and ``edges`` is left</span>
+<span class="sd">            empty, the reverse index is rebuilt from it on construction.</span>
+<span class="sd">        edges: the reverse-dependency index. Defaults to a fresh ``dict``; if</span>
+<span class="sd">            passed already-populated it is trusted as-is (not rebuilt).</span>
+<span class="sd">        ops: the op registry. Defaults to a fresh ``dict``; :meth:`register_op`</span>
+<span class="sd">            adds to it.</span>
+
+<span class="sd">    &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">    &gt;&gt;&gt; _ = graph.register_op(&#39;join&#39;, lambda a, b, *, sep: f&#39;{a}{sep}{b}&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; x = graph.put(&#39;x&#39;, &#39;hello&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; y = graph.put(&#39;y&#39;, &#39;world&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; both = graph.add(producer_spec(&#39;join&#39;, x, y, op_version=&#39;1&#39;, sep=&#39;, &#39;))</span>
+<span class="sd">    &gt;&gt;&gt; graph.materialize(both)</span>
+<span class="sd">    &#39;hello, world&#39;</span>
+<span class="sd">    &gt;&gt;&gt; sorted(graph.descendants(&#39;x&#39;))</span>
+<span class="sd">    [...]</span>
+<span class="sd">    &gt;&gt;&gt; graph.delete_cascade(&#39;y&#39;)                     # the &#39;y&#39; source is removed</span>
+<span class="sd">    frozenset(...)</span>
+<span class="sd">    &gt;&gt;&gt; graph.freshness(both)                         # its consumer is gone too</span>
+<span class="sd">    &#39;unknown&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">producers</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">ProducerSpec</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ops</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">OpKey</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">ProducerSpec</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">producers</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">producers</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">edges</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">edges</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">OpKey</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">ops</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ops</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="c1"># A resumed graph with persisted recipes but no persisted reverse</span>
+            <span class="c1"># index — derive the edges from the recipes (mirrors how</span>
+            <span class="c1"># ChangeDetectingCorpus adopts a baseline on construction).</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_edges</span><span class="p">()</span>
+
+    <span class="c1"># -- construction helpers -----------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_rebuild_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Derive the whole reverse-``edges`` index from the ``producers`` recipes.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">aid</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_link</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">aid</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_id</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">dependent_id</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Record that ``dependent_id`` consumes ``input_id`` (a reverse edge).&quot;&quot;&quot;</span>
+        <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="p">())</span>
+        <span class="k">if</span> <span class="n">dependent_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">input_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">((</span><span class="o">*</span><span class="n">existing</span><span class="p">,</span> <span class="n">dependent_id</span><span class="p">)))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_id</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">dependent_id</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop the reverse edge ``input_id -&gt; dependent_id`` (if present).&quot;&quot;&quot;</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="p">())</span> <span class="k">if</span> <span class="n">d</span> <span class="o">!=</span> <span class="n">dependent_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">remaining</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">input_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">remaining</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">input_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># -- registration -------------------------------------------------------</span>
+
+<div class="viewcode-block" id="ArtifactGraph.register_op">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.register_op">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">OpKey</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register the callable ``fn`` under the op key ``name``; return ``fn``.</span>
+
+<span class="sd">        :meth:`materialize` resolves a :class:`ProducerSpec`&#39;s string ``op``</span>
+<span class="sd">        through this registry. The op is called ``fn(*input_values, **params)``:</span>
+<span class="sd">        the materialized inputs positionally, the spec&#39;s ``params`` as keywords.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; graph.register_op(&#39;upper&#39;, str.upper)</span>
+<span class="sd">        &lt;method &#39;upper&#39; of &#39;str&#39; objects&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="k">return</span> <span class="n">fn</span></div>
+
+
+<div class="viewcode-block" id="ArtifactGraph.put">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.put">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactId</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store a **leaf** ``value`` (an external input) under ``key``; return ``key``.</span>
+
+<span class="sd">        A leaf has a value but no recipe — typically an L0 source keyed by its</span>
+<span class="sd">        :func:`ef.corpus.content_hash`. Returns ``key`` so the call composes::</span>
+
+<span class="sd">            src = graph.put(content_hash(text), text)</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; graph.put(&#39;doc-1&#39;, &#39;some text&#39;)</span>
+<span class="sd">        &#39;doc-1&#39;</span>
+<span class="sd">        &gt;&gt;&gt; graph.freshness(&#39;doc-1&#39;)</span>
+<span class="sd">        &#39;materialized&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+
+<div class="viewcode-block" id="ArtifactGraph.add">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.add">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">ProducerSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactId</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a producer recipe; return its content-addressed id.</span>
+
+<span class="sd">        Idempotent: the id *is* the recipe, so adding an equal :class:`ProducerSpec`</span>
+<span class="sd">        twice (or adding the shared upstream step of two branching configs)</span>
+<span class="sd">        registers one node and returns the same id — the basis of free config</span>
+<span class="sd">        branching. Inputs need not exist yet; the graph is declarative and</span>
+<span class="sd">        :meth:`materialize` resolves them lazily.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;op&#39;, &#39;leaf&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; a == graph.add(producer_spec(&#39;op&#39;, &#39;leaf&#39;, op_version=&#39;1&#39;))  # idempotent</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; len(graph.producers)</span>
+<span class="sd">        1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">aid</span> <span class="o">=</span> <span class="n">artifact_id</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">aid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">[</span><span class="n">aid</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span>
+            <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_link</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">aid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">aid</span></div>
+
+
+    <span class="c1"># -- the four contract operations ---------------------------------------</span>
+
+<div class="viewcode-block" id="ArtifactGraph.materialize">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.materialize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">materialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute (or fetch the cached value of) the artifact ``key`` — lazy *backward*.</span>
+
+<span class="sd">        If ``key`` is already cached in ``store`` its value is returned</span>
+<span class="sd">        directly. Otherwise its recipe&#39;s inputs are materialized recursively</span>
+<span class="sd">        (depth-first), the op is called ``op(*input_values, **params)``, and the</span>
+<span class="sd">        result is memoized in ``store`` before being returned — so a second</span>
+<span class="sd">        :meth:`materialize` is a cache hit, and a shared upstream artifact is</span>
+<span class="sd">        computed exactly once however many configs depend on it.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``key`` is neither cached nor has a producer recipe</span>
+<span class="sd">                (an unresolved leaf — supply it with :meth:`put`).</span>
+<span class="sd">            LookupError: if a recipe&#39;s ``op`` is not in the ``ops`` registry.</span>
+<span class="sd">            ValueError: if the producer graph contains a cycle (a content-</span>
+<span class="sd">                addressed graph cannot — this guards a hand-corrupted registry).</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;double&#39;, lambda x: x * 2)</span>
+<span class="sd">        &gt;&gt;&gt; graph.put(&#39;n&#39;, 21)</span>
+<span class="sd">        &#39;n&#39;</span>
+<span class="sd">        &gt;&gt;&gt; out = graph.add(producer_spec(&#39;double&#39;, &#39;n&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; graph.materialize(out)</span>
+<span class="sd">        42</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_materialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">_in_progress</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursive worker for :meth:`materialize`; ``_in_progress`` guards cycles.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_in_progress</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cycle detected in the artifact graph while materializing &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> — a content-addressed graph cannot cycle, so the &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;`producers` registry has been corrupted.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot materialize artifact </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">: it has no cached value &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and no producer recipe. A leaf artifact must be supplied via &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;put(); a produced one via add().&quot;</span>
+            <span class="p">)</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No op registered under </span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="si">!r}</span><span class="s2"> (needed to materialize &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">). Register it with register_op(</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="si">!r}</span><span class="s2">, ...).&quot;</span>
+            <span class="p">)</span>
+        <span class="n">_in_progress</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">input_values</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_materialize</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">_in_progress</span><span class="p">)</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">_in_progress</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">input_values</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">params</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ArtifactGraph.mark_stale">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.mark_stale">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mark_stale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Invalidate ``key``&#39;s produced downstream cone — *forward*; return that cone.</span>
+
+<span class="sd">        Drops the **cached values** of every produced artifact in</span>
+<span class="sd">        ``{key} ∪ descendants(key)``, *keeping the recipes* — so the next</span>
+<span class="sd">        :meth:`materialize` recomputes them. Leaf nodes (inputs, no recipe) are</span>
+<span class="sd">        never touched: they cannot be recomputed, so dropping their value would</span>
+<span class="sd">        be data loss — use :meth:`delete_cascade` to remove an input.</span>
+
+<span class="sd">        This is the invalidation half of a refresh: when an op&#39;s implementation</span>
+<span class="sd">        changes, or to force a recompute. (A *source* change is usually a</span>
+<span class="sd">        :meth:`delete_cascade` of the old content hash — the new content yields</span>
+<span class="sd">        a new leaf id.) Returns the produced artifacts that are now stale.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">        &gt;&gt;&gt; graph.put(&#39;s&#39;, &#39;v&#39;)</span>
+<span class="sd">        &#39;s&#39;</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;id&#39;, &#39;s&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.materialize(a)</span>
+<span class="sd">        &gt;&gt;&gt; graph.mark_stale(&#39;s&#39;) == {a}        # the leaf &#39;s&#39; itself is not &quot;stale&quot;</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; graph.freshness(a)</span>
+<span class="sd">        &#39;stale&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cone</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">descendants</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">produced</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cone</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">produced</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">produced</span></div>
+
+
+<div class="viewcode-block" id="ArtifactGraph.delete_cascade">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.delete_cascade">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_cascade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove ``key`` and its whole downstream cone — *forward*; return what was removed.</span>
+
+<span class="sd">        Deletes every artifact in ``{key} ∪ descendants(key)`` *entirely* —</span>
+<span class="sd">        cached value, recipe and edges — and detaches the cone from any upstream</span>
+<span class="sd">        inputs that survive it. Unlike :meth:`mark_stale` this removes the</span>
+<span class="sd">        recipes too: use it when an artifact can never be rebuilt, the canonical</span>
+<span class="sd">        case being a **deleted source** (its segments, vectors and index entries</span>
+<span class="sd">        cascade away with it).</span>
+
+<span class="sd">        Returns the ids actually removed (those that had a value or a recipe).</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">        &gt;&gt;&gt; graph.put(&#39;s&#39;, &#39;v&#39;)</span>
+<span class="sd">        &#39;s&#39;</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;id&#39;, &#39;s&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; graph.delete_cascade(&#39;s&#39;) == {&#39;s&#39;, a}</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; &#39;s&#39; in graph, a in graph</span>
+<span class="sd">        (False, False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cone</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">descendants</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cone</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="ow">or</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">cone</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">inp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cone</span><span class="p">:</span>  <span class="c1"># an upstream input that outlives the cone</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_unlink</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">removed</span></div>
+
+
+<div class="viewcode-block" id="ArtifactGraph.freshness">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.freshness">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">freshness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Freshness</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Report the state of ``key`` — :data:`Freshness`.</span>
+
+<span class="sd">        ``&quot;materialized&quot;`` if a value is cached; ``&quot;stale&quot;`` if a recipe exists</span>
+<span class="sd">        but no value (a :meth:`materialize` will build it); ``&quot;unknown&quot;`` if the</span>
+<span class="sd">        graph has neither.</span>
+
+<span class="sd">        Because the graph is content-addressed, a *cached* value is always</span>
+<span class="sd">        correct *for its id* — staleness here means &quot;not yet computed&quot;, never</span>
+<span class="sd">        &quot;computed wrong&quot;. The richer staleness conditions (orphan / missing /</span>
+<span class="sd">        misconfigured, computed against ``vd`` index metadata) belong to a later</span>
+<span class="sd">        diagnostics phase, not to the graph core.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">        &gt;&gt;&gt; graph.put(&#39;s&#39;, &#39;v&#39;)</span>
+<span class="sd">        &#39;s&#39;</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;id&#39;, &#39;s&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; graph.freshness(&#39;s&#39;), graph.freshness(a), graph.freshness(&#39;?&#39;)</span>
+<span class="sd">        (&#39;materialized&#39;, &#39;stale&#39;, &#39;unknown&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;materialized&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;stale&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;unknown&quot;</span></div>
+
+
+    <span class="c1"># -- reachability queries -----------------------------------------------</span>
+
+<div class="viewcode-block" id="ArtifactGraph.descendants">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.descendants">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">descendants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The downstream cone of ``key`` — every artifact transitively produced from it.</span>
+
+<span class="sd">        Excludes ``key`` itself. This is the set of artifacts a change to</span>
+<span class="sd">        ``key`` would invalidate; :meth:`mark_stale` and :meth:`delete_cascade`</span>
+<span class="sd">        are built on it.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;id&#39;, &#39;src&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; b = graph.add(producer_spec(&#39;id&#39;, a, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; graph.descendants(&#39;src&#39;) == {a, b}</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">frontier</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">()))</span>
+        <span class="k">while</span> <span class="n">frontier</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">frontier</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">()))</span>
+        <span class="n">seen</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArtifactGraph.ancestors">
+<a class="viewcode-back" href="../../module_docs/ef/artifact_graph.html#ef.ArtifactGraph.ancestors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ancestors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The lineage of ``key`` — every artifact it was transitively produced from.</span>
+
+<span class="sd">        Excludes ``key`` itself. Answers &quot;what produced this?&quot; — provenance /</span>
+<span class="sd">        lineage queries. The leaves of the returned set are the original</span>
+<span class="sd">        sources the artifact ultimately derives from.</span>
+
+<span class="sd">        &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">        &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">        &gt;&gt;&gt; a = graph.add(producer_spec(&#39;id&#39;, &#39;src&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; b = graph.add(producer_spec(&#39;id&#39;, a, op_version=&#39;1&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; graph.ancestors(b) == {&#39;src&#39;, a}</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">frontier</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">frontier</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">upstream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">upstream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">frontier</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">upstream</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">seen</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -- mapping-ish dunders ------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff ``key`` is a known artifact (has a cached value or a recipe).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">producers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of distinct known artifacts (cached values ∪ recipes).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">producers</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> artifact(s), &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span><span class="si">}</span><span class="s2"> materialized, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="p">)</span><span class="si">}</span><span class="s2"> op(s)&gt;&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+ef.artifact_graph
+=================
+.. automodule:: ef.artifact_graph
+   :members:

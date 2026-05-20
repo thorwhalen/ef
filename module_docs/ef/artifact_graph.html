@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.artifact_graph &mdash; ef 0.1.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.base" href="base.html" />
+    <link rel="prev" title="ef" href="../ef.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.artifact_graph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.add"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.ancestors"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.ancestors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.delete_cascade()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.descendants"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.descendants()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.freshness"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.freshness()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.mark_stale"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.mark_stale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.materialize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.put"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.put()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.register_op"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph.register_op()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.ArtifactId"><code class="docutils literal notranslate"><span class="pre">ArtifactId</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.Freshness"><code class="docutils literal notranslate"><span class="pre">Freshness</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.OpKey"><code class="docutils literal notranslate"><span class="pre">OpKey</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec"><code class="docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.op"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.op</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.op_version"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.op_version</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.inputs"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.inputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.params"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.params</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.as_dict"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.as_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ProducerSpec.from_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.artifact_id"><code class="docutils literal notranslate"><span class="pre">artifact_id()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.artifact_graph.producer_spec"><code class="docutils literal notranslate"><span class="pre">producer_spec()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.artifact_graph</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/artifact_graph.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.artifact_graph">
+<span id="ef-artifact-graph"></span><h1>ef.artifact_graph<a class="headerlink" href="#module-ef.artifact_graph" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code> — <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s content-addressed corpus-indexing core.</p>
+<p>The corpus-indexing engine is <strong>not a pipeline</strong> — a pipeline is the wrong
+abstraction. It is a <em>declared, content-addressed producer graph</em> (a DAG). The
+one idea this module is built on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cascade</span> <span class="n">invalidation</span> <span class="ow">and</span> <span class="n">configuration</span> <span class="n">branching</span> <span class="n">are</span> <span class="n">the</span> <span class="n">same</span> <span class="n">operation</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>A source edit changes a leaf’s content hash; a parameter change changes a leaf’s
+content hash. Both produce a new <code class="docutils literal notranslate"><span class="pre">artifact_id</span></code> whose downstream cone needs
+(re-)materialization — and the graph does not distinguish them. “Incremental
+refresh”, “experiment tracking”, “hot reload”, “cache invalidation” and
+“reactivity” are five names for that one operation.</p>
+<p>Every artifact is addressed by <strong>what produced it</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">artifact_id</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">op_version</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>so two configs that share an upstream step (same <code class="docutils literal notranslate"><span class="pre">op</span></code>, same <code class="docutils literal notranslate"><span class="pre">params</span></code>, same
+<code class="docutils literal notranslate"><span class="pre">inputs</span></code>) share the <em>same</em> artifact id — each segment is computed once, each
+vector once, no matter how many configs branch through the graph. Bumping an
+<code class="docutils literal notranslate"><span class="pre">op_version</span></code> (or any <code class="docutils literal notranslate"><span class="pre">param</span></code>, or any input) yields a <em>new</em> id; the old
+artifact keeps its old id and its old cached value, still valid for the config
+that produced it. Config branching is therefore free.</p>
+<p>The module’s surface:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> — the declarative recipe for one produced artifact:
+<em>which op</em>, <em>which version</em>, <em>over which inputs</em>, <em>with which params</em>. It is
+fully serializable (string <code class="docutils literal notranslate"><span class="pre">op</span></code> key, not a raw callable — see below), so an
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>’s stores can be persisted.</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a> — the content-addressed id of a <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.producer_spec" title="ef.artifact_graph.producer_spec"><code class="xref py py-func docutils literal notranslate"><span class="pre">producer_spec()</span></code></a> — an ergonomic <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> constructor
+(positional inputs, keyword params).</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> — the graph itself: four injectable
+<code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code>s (a content-addressed cache <code class="docutils literal notranslate"><span class="pre">store</span></code>, the <code class="docutils literal notranslate"><span class="pre">producers</span></code>
+registry, a reverse-<code class="docutils literal notranslate"><span class="pre">edges</span></code> index, an <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry) and the four
+contract operations <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> (lazy backward),
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.mark_stale" title="ef.artifact_graph.ArtifactGraph.mark_stale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark_stale()</span></code></a> / <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a>
+(forward) and <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.freshness" title="ef.artifact_graph.ArtifactGraph.freshness"><code class="xref py py-meth docutils literal notranslate"><span class="pre">freshness()</span></code></a>.</p></li>
+</ul>
+<p><strong>Why ``op`` is a string, not a callable.</strong> The design wants the dependency
+graph to scale to ~10⁷ nodes, which means the <code class="docutils literal notranslate"><span class="pre">producers</span></code> registry must be
+<em>persistable</em> (a <code class="docutils literal notranslate"><span class="pre">dol</span></code> store — SQLite-backed for the heavy case). A raw
+<code class="docutils literal notranslate"><span class="pre">Callable</span></code> cannot be serialized; an op <em>name</em> can. So <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>
+records a string op-key, and the <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> resolves it to the
+actual function through an injected <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry at materialize time. Every
+store (<code class="docutils literal notranslate"><span class="pre">store</span></code> / <code class="docutils literal notranslate"><span class="pre">producers</span></code> / <code class="docutils literal notranslate"><span class="pre">edges</span></code>) is a plain <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code>;
+<code class="docutils literal notranslate"><span class="pre">ef</span></code> itself takes no SQLite dependency — you swap the backend in.</p>
+<p>This module is the <em>engine</em>. Wiring it to a corpus — turning a Phase-3
+<a class="reference internal" href="corpus.html#ef.corpus.ChangeEvent" title="ef.corpus.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a> into a <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a>,
+exposing the sources-and-configs facade — is the job of later phases
+(<code class="docutils literal notranslate"><span class="pre">source_manager.py</span></code> / <code class="docutils literal notranslate"><span class="pre">refresh.py</span></code>); <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a>
+is exactly the cascade a <code class="docutils literal notranslate"><span class="pre">&quot;deleted&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;modified&quot;</span></code> event will trigger.</p>
+<p>Example — a two-step graph, a source “change”, a recompute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;repeat&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">s</span> <span class="o">*</span> <span class="n">times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="s1">&#39;ab&#39;</span><span class="p">)</span>                       <span class="c1"># a leaf source</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shout</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">echo</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;repeat&#39;</span><span class="p">,</span> <span class="n">shout</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">echo</span><span class="p">)</span>                            <span class="c1"># lazy backward compute</span>
+<span class="go">&#39;ABABAB&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="n">echo</span><span class="p">)</span>
+<span class="go">&#39;materialized&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">mark_stale</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>                          <span class="c1"># the source &#39;changed&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="n">echo</span><span class="p">)</span>                              <span class="c1"># downstream invalidated</span>
+<span class="go">&#39;stale&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">echo</span><span class="p">)</span>                            <span class="c1"># rebuilt from the recipe</span>
+<span class="go">&#39;ABABAB&#39;</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">ArtifactGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">producers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph" title="Link to this definition"></a></dt>
+<dd><p>A content-addressed producer graph — the corpus-indexing &amp; refresh core.</p>
+<p>The graph holds two kinds of node:</p>
+<ul class="simple">
+<li><p><strong>Leaves</strong> — externally content-addressed inputs (an L0 source, hashed by
+<a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.corpus.content_hash()</span></code></a>). A leaf has a <em>value</em> but no recipe; it is
+supplied via <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.put" title="ef.artifact_graph.ArtifactGraph.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a>.</p></li>
+<li><p><strong>Produced artifacts</strong> — a node with a <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> recipe,
+registered via <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.add" title="ef.artifact_graph.ArtifactGraph.add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add()</span></code></a>. Its id <em>is</em> <a class="reference internal" href="#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a> of its recipe.</p></li>
+</ul>
+<p>and four small <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> stores, every one injectable so the graph
+can be backed by RAM (the default) or by a persistent <code class="docutils literal notranslate"><span class="pre">dol</span></code> store:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">store</span></code> — the content-addressed cache: <code class="docutils literal notranslate"><span class="pre">artifact_id</span> <span class="pre">-&gt;</span> <span class="pre">value</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">producers</span></code> — the recipe registry: <code class="docutils literal notranslate"><span class="pre">artifact_id</span> <span class="pre">-&gt;</span> <span class="pre">ProducerSpec</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">edges</span></code> — the reverse index: <code class="docutils literal notranslate"><span class="pre">artifact_id</span> <span class="pre">-&gt;</span> <span class="pre">(dependent</span> <span class="pre">ids,</span> <span class="pre">...)</span></code>,
+so the <em>downstream</em> cone of any node is one lookup away.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ops</span></code> — the op registry: <code class="docutils literal notranslate"><span class="pre">op_key</span> <span class="pre">-&gt;</span> <span class="pre">callable</span></code>. The one store that is
+<em>not</em> persisted (callables are not serializable) — repopulate it with
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.register_op" title="ef.artifact_graph.ArtifactGraph.register_op"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_op()</span></code></a> each process.</p></li>
+</ul>
+<p>The four contract operations:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> — lazy <em>backward</em>: compute a node by recursively
+materializing its inputs, then memoize.</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.mark_stale" title="ef.artifact_graph.ArtifactGraph.mark_stale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark_stale()</span></code></a> — <em>forward</em>: drop the cached values of a node’s
+produced downstream cone, keeping the recipes (they will rebuild).</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a> — <em>forward</em>: remove a node and its whole downstream
+cone entirely (values, recipes and edges).</p></li>
+<li><p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.freshness" title="ef.artifact_graph.ArtifactGraph.freshness"><code class="xref py py-meth docutils literal notranslate"><span class="pre">freshness()</span></code></a> — query a node’s state (<a class="reference internal" href="#ef.artifact_graph.Freshness" title="ef.artifact_graph.Freshness"><code class="xref py py-data docutils literal notranslate"><span class="pre">Freshness</span></code></a>).</p></li>
+</ul>
+<p>plus the reachability queries <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.descendants" title="ef.artifact_graph.ArtifactGraph.descendants"><code class="xref py py-meth docutils literal notranslate"><span class="pre">descendants()</span></code></a> (the downstream cone) and
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.ancestors" title="ef.artifact_graph.ArtifactGraph.ancestors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ancestors()</span></code></a> (lineage — what an artifact was produced from).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>store</strong> – the content-addressed value cache. Defaults to a fresh <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+<li><p><strong>producers</strong> – the recipe registry. Defaults to a fresh <code class="docutils literal notranslate"><span class="pre">dict</span></code>. If passed
+already-populated (a resumed/persisted graph) and <code class="docutils literal notranslate"><span class="pre">edges</span></code> is left
+empty, the reverse index is rebuilt from it on construction.</p></li>
+<li><p><strong>edges</strong> – the reverse-dependency index. Defaults to a fresh <code class="docutils literal notranslate"><span class="pre">dict</span></code>; if
+passed already-populated it is trusted as-is (not rebuilt).</p></li>
+<li><p><strong>ops</strong> – the op registry. Defaults to a fresh <code class="docutils literal notranslate"><span class="pre">dict</span></code>; <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.register_op" title="ef.artifact_graph.ArtifactGraph.register_op"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_op()</span></code></a>
+adds to it.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">a</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">b</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">both</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">both</span><span class="p">)</span>
+<span class="go">&#39;hello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">descendants</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
+<span class="go">[...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">delete_cascade</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>                     <span class="c1"># the &#39;y&#39; source is removed</span>
+<span class="go">frozenset(...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="n">both</span><span class="p">)</span>                         <span class="c1"># its consumer is gone too</span>
+<span class="go">&#39;unknown&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.add" title="Link to this definition"></a></dt>
+<dd><p>Register a producer recipe; return its content-addressed id.</p>
+<p>Idempotent: the id <em>is</em> the recipe, so adding an equal <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>
+twice (or adding the shared upstream step of two branching configs)
+registers one node and returns the same id — the basis of free config
+branching. Inputs need not exist yet; the graph is declarative and
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> resolves them lazily.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="s1">&#39;leaf&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="s1">&#39;leaf&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>  <span class="c1"># idempotent</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">producers</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.ancestors">
+<span class="sig-name descname"><span class="pre">ancestors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.ancestors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.ancestors" title="Link to this definition"></a></dt>
+<dd><p>The lineage of <code class="docutils literal notranslate"><span class="pre">key</span></code> — every artifact it was transitively produced from.</p>
+<p>Excludes <code class="docutils literal notranslate"><span class="pre">key</span></code> itself. Answers “what produced this?” — provenance /
+lineage queries. The leaves of the returned set are the original
+sources the artifact ultimately derives from.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">ancestors</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.delete_cascade">
+<span class="sig-name descname"><span class="pre">delete_cascade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.delete_cascade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="Link to this definition"></a></dt>
+<dd><p>Remove <code class="docutils literal notranslate"><span class="pre">key</span></code> and its whole downstream cone — <em>forward</em>; return what was removed.</p>
+<p>Deletes every artifact in <code class="docutils literal notranslate"><span class="pre">{key}</span> <span class="pre">∪</span> <span class="pre">descendants(key)</span></code> <em>entirely</em> —
+cached value, recipe and edges — and detaches the cone from any upstream
+inputs that survive it. Unlike <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.mark_stale" title="ef.artifact_graph.ArtifactGraph.mark_stale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark_stale()</span></code></a> this removes the
+recipes too: use it when an artifact can never be rebuilt, the canonical
+case being a <strong>deleted source</strong> (its segments, vectors and index entries
+cascade away with it).</p>
+<p>Returns the ids actually removed (those that had a value or a recipe).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="go">&#39;s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">delete_cascade</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">}</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;s&#39;</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">graph</span>
+<span class="go">(False, False)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.descendants">
+<span class="sig-name descname"><span class="pre">descendants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.descendants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.descendants" title="Link to this definition"></a></dt>
+<dd><p>The downstream cone of <code class="docutils literal notranslate"><span class="pre">key</span></code> — every artifact transitively produced from it.</p>
+<p>Excludes <code class="docutils literal notranslate"><span class="pre">key</span></code> itself. This is the set of artifacts a change to
+<code class="docutils literal notranslate"><span class="pre">key</span></code> would invalidate; <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.mark_stale" title="ef.artifact_graph.ArtifactGraph.mark_stale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mark_stale()</span></code></a> and <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a>
+are built on it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">descendants</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.freshness">
+<span class="sig-name descname"><span class="pre">freshness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'materialized'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'stale'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'unknown'</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.freshness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.freshness" title="Link to this definition"></a></dt>
+<dd><p>Report the state of <code class="docutils literal notranslate"><span class="pre">key</span></code> — <a class="reference internal" href="#ef.artifact_graph.Freshness" title="ef.artifact_graph.Freshness"><code class="xref py py-data docutils literal notranslate"><span class="pre">Freshness</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;materialized&quot;</span></code> if a value is cached; <code class="docutils literal notranslate"><span class="pre">&quot;stale&quot;</span></code> if a recipe exists
+but no value (a <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> will build it); <code class="docutils literal notranslate"><span class="pre">&quot;unknown&quot;</span></code> if the
+graph has neither.</p>
+<p>Because the graph is content-addressed, a <em>cached</em> value is always
+correct <em>for its id</em> — staleness here means “not yet computed”, never
+“computed wrong”. The richer staleness conditions (orphan / missing /
+misconfigured, computed against <code class="docutils literal notranslate"><span class="pre">vd</span></code> index metadata) belong to a later
+diagnostics phase, not to the graph core.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="go">&#39;s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span> <span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
+<span class="go">(&#39;materialized&#39;, &#39;stale&#39;, &#39;unknown&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.mark_stale">
+<span class="sig-name descname"><span class="pre">mark_stale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.mark_stale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.mark_stale" title="Link to this definition"></a></dt>
+<dd><p>Invalidate <code class="docutils literal notranslate"><span class="pre">key</span></code>’s produced downstream cone — <em>forward</em>; return that cone.</p>
+<p>Drops the <strong>cached values</strong> of every produced artifact in
+<code class="docutils literal notranslate"><span class="pre">{key}</span> <span class="pre">∪</span> <span class="pre">descendants(key)</span></code>, <em>keeping the recipes</em> — so the next
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> recomputes them. Leaf nodes (inputs, no recipe) are
+never touched: they cannot be recomputed, so dropping their value would
+be data loss — use <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a> to remove an input.</p>
+<p>This is the invalidation half of a refresh: when an op’s implementation
+changes, or to force a recompute. (A <em>source</em> change is usually a
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.delete_cascade" title="ef.artifact_graph.ArtifactGraph.delete_cascade"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cascade()</span></code></a> of the old content hash — the new content yields
+a new leaf id.) Returns the produced artifacts that are now stale.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="go">&#39;s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">mark_stale</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="n">a</span><span class="p">}</span>        <span class="c1"># the leaf &#39;s&#39; itself is not &quot;stale&quot;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">&#39;stale&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.materialize">
+<span class="sig-name descname"><span class="pre">materialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.materialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.materialize" title="Link to this definition"></a></dt>
+<dd><p>Compute (or fetch the cached value of) the artifact <code class="docutils literal notranslate"><span class="pre">key</span></code> — lazy <em>backward</em>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">key</span></code> is already cached in <code class="docutils literal notranslate"><span class="pre">store</span></code> its value is returned
+directly. Otherwise its recipe’s inputs are materialized recursively
+(depth-first), the op is called <code class="docutils literal notranslate"><span class="pre">op(*input_values,</span> <span class="pre">**params)</span></code>, and the
+result is memoized in <code class="docutils literal notranslate"><span class="pre">store</span></code> before being returned — so a second
+<a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> is a cache hit, and a shared upstream artifact is
+computed exactly once however many configs depend on it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyError</strong> – if <code class="docutils literal notranslate"><span class="pre">key</span></code> is neither cached nor has a producer recipe
+    (an unresolved leaf — supply it with <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.put" title="ef.artifact_graph.ArtifactGraph.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a>).</p></li>
+<li><p><strong>LookupError</strong> – if a recipe’s <code class="docutils literal notranslate"><span class="pre">op</span></code> is not in the <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry.</p></li>
+<li><p><strong>ValueError</strong> – if the producer graph contains a cycle (a content-
+    addressed graph cannot — this guards a hand-corrupted registry).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+<span class="go">&#39;n&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">42</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.put"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.put" title="Link to this definition"></a></dt>
+<dd><p>Store a <strong>leaf</strong> <code class="docutils literal notranslate"><span class="pre">value</span></code> (an external input) under <code class="docutils literal notranslate"><span class="pre">key</span></code>; return <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+<p>A leaf has a value but no recipe — typically an L0 source keyed by its
+<a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.corpus.content_hash()</span></code></a>. Returns <code class="docutils literal notranslate"><span class="pre">key</span></code> so the call composes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">content_hash</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;doc-1&#39;</span><span class="p">,</span> <span class="s1">&#39;some text&#39;</span><span class="p">)</span>
+<span class="go">&#39;doc-1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">freshness</span><span class="p">(</span><span class="s1">&#39;doc-1&#39;</span><span class="p">)</span>
+<span class="go">&#39;materialized&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactGraph.register_op">
+<span class="sig-name descname"><span class="pre">register_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ArtifactGraph.register_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ArtifactGraph.register_op" title="Link to this definition"></a></dt>
+<dd><p>Register the callable <code class="docutils literal notranslate"><span class="pre">fn</span></code> under the op key <code class="docutils literal notranslate"><span class="pre">name</span></code>; return <code class="docutils literal notranslate"><span class="pre">fn</span></code>.</p>
+<p><a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> resolves a <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>’s string <code class="docutils literal notranslate"><span class="pre">op</span></code>
+through this registry. The op is called <code class="docutils literal notranslate"><span class="pre">fn(*input_values,</span> <span class="pre">**params)</span></code>:
+the materialized inputs positionally, the spec’s <code class="docutils literal notranslate"><span class="pre">params</span></code> as keywords.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span>
+<span class="go">&lt;method &#39;upper&#39; of &#39;str&#39; objects&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.ArtifactId">
+<span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">ArtifactId</span></span><a class="headerlink" href="#ef.artifact_graph.ArtifactId" title="Link to this definition"></a></dt>
+<dd><p>A content-addressed artifact identifier — a <code class="docutils literal notranslate"><span class="pre">sha256</span></code> hex digest for a
+produced artifact (<a class="reference internal" href="#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a>), or a caller-supplied content hash
+for a leaf (e.g. <a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.corpus.content_hash()</span></code></a> of an L0 source).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.artifact_graph.Freshness">
+<span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">Freshness</span></span><a class="headerlink" href="#ef.artifact_graph.Freshness" title="Link to this definition"></a></dt>
+<dd><p>The state of an artifact, reported by <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.freshness" title="ef.artifact_graph.ArtifactGraph.freshness"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ArtifactGraph.freshness()</span></code></a>:
+<code class="docutils literal notranslate"><span class="pre">&quot;materialized&quot;</span></code> (a value is cached), <code class="docutils literal notranslate"><span class="pre">&quot;stale&quot;</span></code> (a recipe exists but no
+cached value — <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph.materialize" title="ef.artifact_graph.ArtifactGraph.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a> will (re)build it) or
+<code class="docutils literal notranslate"><span class="pre">&quot;unknown&quot;</span></code> (the graph has neither a value nor a recipe for the id).</p>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Literal</span></code>[‘materialized’, ‘stale’, ‘unknown’]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.OpKey">
+<span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">OpKey</span></span><a class="headerlink" href="#ef.artifact_graph.OpKey" title="Link to this definition"></a></dt>
+<dd><p>The key an <a class="reference internal" href="#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> resolves to a producer callable through its
+<code class="docutils literal notranslate"><span class="pre">ops</span></code> registry. A short, stable operation name, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;segment&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;embed&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">ProducerSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Any]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ProducerSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ProducerSpec" title="Link to this definition"></a></dt>
+<dd><p>A declarative recipe for one produced artifact — the graph’s node type.</p>
+<p>A <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> says: <em>this artifact is produced by op</em> <code class="docutils literal notranslate"><span class="pre">op</span></code> <em>at
+version</em> <code class="docutils literal notranslate"><span class="pre">op_version</span></code>, <em>applied to the artifacts</em> <code class="docutils literal notranslate"><span class="pre">inputs</span></code> <em>(passed
+positionally), with the keyword parameters</em> <code class="docutils literal notranslate"><span class="pre">params</span></code>. It does <strong>not</strong>
+hold the producer callable — only the string <code class="docutils literal notranslate"><span class="pre">op</span></code> key — so a spec is
+fully serializable (<a class="reference internal" href="#ef.artifact_graph.ProducerSpec.as_dict" title="ef.artifact_graph.ProducerSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_dict()</span></code></a> / <a class="reference internal" href="#ef.artifact_graph.ProducerSpec.from_dict" title="ef.artifact_graph.ProducerSpec.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>) and the graph’s
+<code class="docutils literal notranslate"><span class="pre">producers</span></code> registry can be persisted.</p>
+<p>The recipe is the artifact’s <em>identity</em>: <a class="reference internal" href="#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a> hashes exactly
+these four fields. Treat an instance as immutable — it is frozen, and
+mutating <code class="docutils literal notranslate"><span class="pre">params</span></code> in place would silently desynchronize it from its id.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.op">
+<span class="sig-name descname"><span class="pre">op</span></span><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.op" title="Link to this definition"></a></dt>
+<dd><p>the op key, resolved to a callable via the graph’s <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.op_version">
+<span class="sig-name descname"><span class="pre">op_version</span></span><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.op_version" title="Link to this definition"></a></dt>
+<dd><p>the op’s version string. It participates in the id, so a
+behavior change to an op <strong>must</strong> be paired with a version bump —
+reusing a version for changed behavior silently serves stale cached
+values (the graph trusts the version; it cannot inspect the code).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.inputs" title="Link to this definition"></a></dt>
+<dd><p>the input artifact ids, in the order the op receives them
+positionally. Order is significant — it is part of the id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.params">
+<span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.params" title="Link to this definition"></a></dt>
+<dd><p>the op’s keyword arguments. Key order is <em>not</em> significant
+(the id is computed over canonical, sorted-key JSON); pass
+defaults-filled, fully-named params so that two semantically equal
+calls hash equal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>collections.abc.Mapping[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;seg-1&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">op_version</span>
+<span class="go">(&#39;embed&#39;, (&#39;seg-1&#39;,), &#39;3&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">params</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;small&#39;</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ProducerSpec.as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.as_dict" title="Link to this definition"></a></dt>
+<dd><p>Return a plain-<code class="docutils literal notranslate"><span class="pre">dict</span></code> form of the spec — JSON-serializable.</p>
+<p>The inverse of <a class="reference internal" href="#ef.artifact_graph.ProducerSpec.from_dict" title="ef.artifact_graph.ProducerSpec.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>. Use it to persist a <code class="docutils literal notranslate"><span class="pre">producers</span></code>
+registry to a <code class="docutils literal notranslate"><span class="pre">dol</span></code> JSON store.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="go">{&#39;op&#39;: &#39;embed&#39;, &#39;op_version&#39;: &#39;1&#39;, &#39;inputs&#39;: [&#39;a&#39;, &#39;b&#39;], &#39;params&#39;: {&#39;dim&#39;: 256}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.artifact_graph.ProducerSpec.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#ProducerSpec.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.ProducerSpec.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Rebuild a <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> from its <a class="reference internal" href="#ef.artifact_graph.ProducerSpec.as_dict" title="ef.artifact_graph.ProducerSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_dict()</span></code></a> form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ProducerSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">as_dict</span><span class="p">())</span> <span class="o">==</span> <span class="n">spec</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.artifact_graph.artifact_id">
+<span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">artifact_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#artifact_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.artifact_id" title="Link to this definition"></a></dt>
+<dd><p>Content-addressed id of <code class="docutils literal notranslate"><span class="pre">spec</span></code> — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> over its four fields.</p>
+<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of canonical (sorted-key) JSON of
+<code class="docutils literal notranslate"><span class="pre">{op,</span> <span class="pre">op_version,</span> <span class="pre">inputs,</span> <span class="pre">params}</span></code>. Two specs that describe the same
+computation hash <em>identically</em>; any change to the op, its version, its
+inputs (including their order) or its params yields a <em>different</em> id. That
+is what makes the graph content-addressed: the id <em>is</em> the recipe.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;seg-1&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artifact_id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="n">artifact_id</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;seg-1&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">))</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="go">64</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artifact_id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="n">artifact_id</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;embed&#39;</span><span class="p">,</span> <span class="s1">&#39;seg-1&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">))</span>   <span class="c1"># version bump</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artifact_id</span><span class="p">(</span><span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="n">artifact_id</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>      <span class="c1"># input order matters</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.artifact_graph.producer_spec">
+<span class="sig-prename descclassname"><span class="pre">ef.artifact_graph.</span></span><span class="sig-name descname"><span class="pre">producer_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a></span></span><a class="reference internal" href="../../_modules/ef/artifact_graph.html#producer_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.artifact_graph.producer_spec" title="Link to this definition"></a></dt>
+<dd><p>Build a <a class="reference internal" href="#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> ergonomically — inputs positional, params keyword.</p>
+<p>The natural way to write a recipe: the input artifact ids are positional
+(their order is significant — it is the order the op receives them), and
+every keyword argument is an op parameter. <code class="docutils literal notranslate"><span class="pre">op_version</span></code> is keyword-only
+and required — an op without a stated version cannot be content-addressed
+safely.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">producer_spec</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-1&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">inputs</span>
+<span class="go">(&#39;segment&#39;, (&#39;doc-1&#39;,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">params</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span> <span class="s1">&#39;overlap&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ef.html" class="btn btn-neutral float-left" title="ef" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="ef.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

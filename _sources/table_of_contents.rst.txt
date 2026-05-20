@@ -3,6 +3,7 @@
    :caption: Contents:
 
    module_docs/ef
+   module_docs/ef/artifact_graph
    module_docs/ef/base
    module_docs/ef/corpus
    module_docs/ef/dag
