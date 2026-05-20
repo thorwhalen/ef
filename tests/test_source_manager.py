@@ -74,9 +74,37 @@ def test_search_returns_search_hits():
     assert "id" in hit.segment
 
 
-def test_retrieve_is_an_alias_of_search():
+def test_retrieve_returns_plain_segments():
+    # retrieve() is the RAG-plug-in surface: plain Segment dicts, not SearchHits.
     idx = ingest(["alpha bean", "gamma leaf"], embedder=_toy())
-    assert idx.retrieve("alpha bean")[0].segment["text"] == "alpha bean"
+    segments = idx.retrieve("alpha bean")
+    assert segments[0]["text"] == "alpha bean"
+    assert all(
+        isinstance(seg, dict) and not isinstance(seg, SearchHit) for seg in segments
+    )
+    assert "score" not in segments[0]  # a Segment stays pure of result-only keys
+
+
+def test_retrieve_folds_source_id_into_metadata():
+    # provenance is preserved in metadata['source'] without an ef-specific type.
+    idx = ingest({"my-doc": "alpha bean"}, embedder=_toy())
+    segment = idx.retrieve("alpha bean")[0]
+    assert segment["metadata"]["source"] == "my-doc"
+
+
+def test_retrieve_matches_search_ranking():
+    idx = ingest(["alpha bean", "gamma leaf", "alpha leaf"], embedder=_toy())
+    hits = idx.search("alpha bean")
+    segments = idx.retrieve("alpha bean")
+    assert [seg["id"] for seg in segments] == [hit.segment["id"] for hit in hits]
+
+
+def test_source_manager_retrieve_returns_plain_segments():
+    sm = SourceManager({"d1": "alpha bean"}, embedder=_toy())
+    sm.materialize()
+    segments = sm.retrieve("alpha bean")
+    assert segments[0]["text"] == "alpha bean"
+    assert segments[0]["metadata"]["source"] == "d1"
 
 
 def test_search_by_precomputed_query_vector():

@@ -98,6 +98,7 @@ __all__ = [
     "SearchHit",
     "SearchableCorpus",
     "SourceManager",
+    "hits_to_segments",
     "ingest",
 ]
 
@@ -150,6 +151,43 @@ class SearchHit:
     segment: Segment
     score: float
     source_id: str | None = None
+
+
+def hits_to_segments(hits: Iterable[SearchHit]) -> list[Segment]:
+    """Project :class:`SearchHit`\\ s to plain :class:`~ef.segments.Segment`\\ s.
+
+    The shape :meth:`SearchableCorpus.retrieve` / :meth:`SourceManager.retrieve`
+    hand to an external RAG/agent framework — the RAG-plug-in surface (design
+    notes §F5). A :class:`SearchHit` carries an ``ef``-specific ``score`` and
+    ``source_id``; a :class:`~ef.segments.Segment` is a plain ``TypedDict`` an
+    external framework already understands (and trivially adapts to a LangChain
+    ``Document`` / LlamaIndex ``TextNode`` / a Ragas ``retrieved_contexts``
+    ``list[str]`` via ``[s["text"] for s in segments]``).
+
+    The similarity ``score`` is dropped — :class:`~ef.segments.Segment` is the
+    interchange type and stays pure of a result-only key (call :meth:`search`
+    when the score matters). Provenance is *not* lost: each hit's ``source_id``
+    is folded into the segment's ``metadata`` under the conventional ``"source"``
+    key (one of :data:`~ef.segments.PROMOTED_METADATA_KEYS`), so a plain segment
+    still records which source document it was retrieved from. A segment that
+    already carries ``metadata["source"]`` keeps its own value.
+
+    >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
+    >>> segs = hits_to_segments([hit])
+    >>> segs[0]['text'], segs[0]['metadata']['source']
+    ('hi', 'doc-1')
+    >>> 'score' in segs[0]                          # the score is not a Segment key
+    False
+    """
+    segments: list[Segment] = []
+    for hit in hits:
+        segment: Segment = dict(hit.segment)  # type: ignore[assignment]
+        if hit.source_id is not None:
+            metadata = dict(segment.get("metadata") or {})
+            metadata.setdefault("source", hit.source_id)
+            segment["metadata"] = metadata
+        segments.append(segment)
+    return segments
 
 
 # ---------------------------------------------------------------------------
@@ -268,14 +306,20 @@ class SearchableCorpus:
         *,
         limit: int = 10,
         filter: Mapping[str, Any] | None = None,
-    ) -> list[SearchHit]:
-        """Retrieve ranked segments for ``query`` — the RAG-plug-in surface.
+    ) -> list[Segment]:
+        """Retrieve ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in surface.
 
-        Identical to :meth:`search` in Phase 5: it is the name an external
-        RAG/agent framework reaches for (``ef`` returns ranked segments; it does
-        not synthesize answers). Evaluation hookpoints land in a later phase.
+        The name an external RAG/agent framework reaches for. Where
+        :meth:`search` returns scored :class:`SearchHit`\\ s (for inspecting the
+        ranking), ``retrieve`` returns **plain segments** in rank order — clean
+        context to hand to an LLM, with no ``ef``-specific type to learn (design
+        notes §F5). ``ef`` returns the context; it does *not* synthesize answers.
+        See :func:`hits_to_segments` for how the score is dropped and the
+        ``source_id`` provenance is preserved in ``metadata["source"]``.
+
+        >>> # idx.retrieve('a query') -> [{'text': ..., 'id': ..., 'metadata': ...}, ...]
         """
-        return self.search(query, limit=limit, filter=filter)
+        return hits_to_segments(self.search(query, limit=limit, filter=filter))
 
     def __repr__(self) -> str:
         return f"<{type(self).__name__}: {len(self.collection)} segment(s) indexed>"
@@ -736,9 +780,17 @@ class SourceManager:
         config: str | ConfigId | None = None,
         limit: int = 10,
         filter: Mapping[str, Any] | None = None,
-    ) -> list[SearchHit]:
-        """Retrieve ranked segments — the RAG-plug-in alias of :meth:`search`."""
-        return self.search(query, config=config, limit=limit, filter=filter)
+    ) -> list[Segment]:
+        """Retrieve ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in surface.
+
+        The :class:`SourceManager` counterpart of
+        :meth:`SearchableCorpus.retrieve`: plain segments in rank order, the
+        clean context shape an external RAG/agent framework consumes (``ef``
+        does not synthesize answers). :meth:`search` is the scored counterpart.
+        """
+        return hits_to_segments(
+            self.search(query, config=config, limit=limit, filter=filter)
+        )
 
     def searchable(self, config: str | ConfigId | None = None) -> SearchableCorpus:
         """Return a thin :class:`SearchableCorpus` bound to one config's index."""

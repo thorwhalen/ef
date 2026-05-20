@@ -64,9 +64,9 @@ embed → ``vd`` → ranked search, with progressive disclosure:
 - :func:`~ef.source_manager.ingest` — the one-shot light path: a corpus in, a
   :class:`~ef.source_manager.SearchableCorpus` out, ``search(query)`` ready.
 - :class:`~ef.source_manager.SearchableCorpus` — the thin ready-search object;
-  :meth:`~ef.source_manager.SearchableCorpus.search` /
-  :meth:`~ef.source_manager.SearchableCorpus.retrieve` return ranked
-  :class:`~ef.source_manager.SearchHit`\\ s.
+  :meth:`~ef.source_manager.SearchableCorpus.search` returns scored
+  :class:`~ef.source_manager.SearchHit`\\ s, :meth:`~ef.source_manager.SearchableCorpus.retrieve`
+  returns plain ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in shape.
 - :class:`~ef.source_manager.SourceManager` — the heavy facade: multi-config
   corpus indexing, where configs sharing a step share its artifacts for free.
 - :class:`~ef.config.PipelineSpec` / :class:`~ef.config.TransformSpec` /
@@ -80,6 +80,23 @@ The **refresh layer** keeps an indexed corpus in sync as its sources change:
   re-sync the index, returning a :class:`~ef.refresh.RefreshReport`; one of four
   :data:`~ef.refresh.RefreshMode`\\ s. ``SourceManager(auto_refresh=True)`` keeps
   the index live as the corpus is edited.
+
+The **RAG-plug-in & evaluation layer** hands a corpus to an external RAG/agent
+framework and measures its quality — ``ef`` returns ranked context, it does not
+synthesize answers:
+
+- :meth:`SourceManager.retrieve <ef.source_manager.SourceManager.retrieve>`
+  returns plain ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in shape;
+  :func:`~ef.source_manager.hits_to_segments` is the projection from
+  :class:`~ef.source_manager.SearchHit`\\ s.
+- :func:`~ef.evaluation.evaluate_retrieval` — BEIR/MTEB-shaped retrieval scoring
+  (primary metric NDCG@10); :func:`~ef.evaluation.read_beir` /
+  :func:`~ef.evaluation.write_beir` move the corpus/queries/qrels triple to disk.
+- :func:`~ef.evaluation.evaluate_rag` — deterministic lexical RAG metrics over
+  :class:`~ef.evaluation.RagSample`\\ s; :func:`~ef.evaluation.as_ragas_dataset`
+  bridges to Ragas for the LLM-judged metrics.
+- :func:`~ef.reranking.with_reranker` — a two-stage reranking decorator over any
+  retriever; :func:`~ef.reranking.cross_encoder_reranker` is a ready reranker.
 
 Example — wrap a plain function and embed two strings:
 
@@ -191,7 +208,35 @@ from ef.source_manager import (
     SearchHit,
     SearchableCorpus,
     SourceManager,
+    hits_to_segments,
     ingest,
+)
+from ef.evaluation import (
+    Qrels,
+    RagEvalReport,
+    RagSample,
+    RetrievalEvalReport,
+    as_ragas_dataset,
+    average_precision,
+    context_precision,
+    context_recall,
+    dcg_at_k,
+    evaluate_rag,
+    evaluate_retrieval,
+    exact_match,
+    ndcg_at_k,
+    precision_at_k,
+    read_beir,
+    recall_at_k,
+    reciprocal_rank,
+    token_f1,
+    write_beir,
+)
+from ef.reranking import (
+    Reranker,
+    cross_encoder_reranker,
+    rerank,
+    with_reranker,
 )
 
 # ============================================================================
@@ -280,6 +325,7 @@ __all__ = [
     "SearchableCorpus",
     "SourceManager",
     "SearchHit",
+    "hits_to_segments",
     "DEFAULT_EMBEDDER",
     # --- diagnostics & refresh (keeping an index in sync) ---
     "StalenessReport",
@@ -290,6 +336,31 @@ __all__ = [
     "RefreshMode",
     "plan_refresh",
     "refresh_on_change",
+    # --- evaluation (retrieval + RAG quality measurement) ---
+    "evaluate_retrieval",
+    "RetrievalEvalReport",
+    "evaluate_rag",
+    "RagEvalReport",
+    "RagSample",
+    "Qrels",
+    "read_beir",
+    "write_beir",
+    "as_ragas_dataset",
+    "ndcg_at_k",
+    "dcg_at_k",
+    "recall_at_k",
+    "precision_at_k",
+    "reciprocal_rank",
+    "average_precision",
+    "exact_match",
+    "token_f1",
+    "context_recall",
+    "context_precision",
+    # --- reranking (a precision pass over retrieved segments) ---
+    "Reranker",
+    "rerank",
+    "with_reranker",
+    "cross_encoder_reranker",
 ]
 
 # ============================================================================

@@ -95,7 +95,7 @@ is a `MutableMapping`.
 
 ## Refactor order
 
-Phases 1–6 are **done**; 7–8 remain.
+Phases 1–7 are **done**; 8 remains.
 
 1. ✅ `Embedder` protocol + wrappers + 2 adapters (OpenAI, sentence-transformers).
 2. ✅ `Segmenter` facade on `imbed.components.segmentation`; canonical `Segment`.
@@ -105,7 +105,10 @@ Phases 1–6 are **done**; 7–8 remain.
 6. ✅ Refresh — `ef/diagnostics.py` (the four staleness conditions) +
    `ef/refresh.py` (four refresh modes, `plan_refresh`, auto-refresh); the
    `SourceManager` surface `diagnose`/`refresh`/`rebuild`/`gc_orphans`/`lineage`.
-7. RAG-plug-in `retrieve()` + evaluation hookpoints.
+7. ✅ RAG-plug-in `retrieve()` (returns plain `Segment`s — `hits_to_segments`)
+   + evaluation hookpoints — `ef/evaluation.py` (`evaluate_retrieval` BEIR-shaped
+   / NDCG@10, `evaluate_rag` Ragas-shaped, `read_beir`/`write_beir`,
+   `as_ragas_dataset`) and `ef/reranking.py` (`rerank` / `with_reranker`).
 8. Demote viz to L5 "explore".
 
 When in doubt, re-read `ef_design_notes.md` — it has the verbatim contracts and
