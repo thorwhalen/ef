@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 
 from ef import (
+    HashingEmbedder,
     SearchableCorpus,
     SearchHit,
     SourceManager,
@@ -94,6 +95,35 @@ def test_source_id_is_recorded():
 def test_empty_corpus_search_is_empty():
     idx = ingest([], embedder=_toy())
     assert idx.search("anything") == []
+
+
+# ---------------------------------------------------------------------------
+# ingest — the dependency-free default embedder (thorwhalen/ef#12)
+# ---------------------------------------------------------------------------
+
+
+def test_ingest_with_no_embedder_returns_searchable_corpus():
+    # the headline one-liner must work on a bare `pip install ef` — no extras
+    idx = ingest(["alpha bean", "gamma leaf"])
+    assert isinstance(idx, SearchableCorpus)
+
+
+def test_ingest_with_no_embedder_uses_the_hashing_default():
+    idx = ingest(["alpha bean"])
+    assert isinstance(idx.embedder, HashingEmbedder)
+
+
+def test_ingest_with_no_embedder_finds_exact_match():
+    idx = ingest(["machine code", "ocean wave", "forest path"])
+    hits = idx.search("ocean wave")
+    assert hits[0].segment["text"] == "ocean wave"
+    assert round(hits[0].score, 5) == 1.0
+
+
+def test_ingest_with_no_embedder_ranks_by_lexical_overlap():
+    idx = ingest(["green ocean wave", "dry desert sand"])
+    hits = idx.search("a big ocean wave")
+    assert hits[0].segment["text"] == "green ocean wave"
 
 
 # ---------------------------------------------------------------------------

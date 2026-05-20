@@ -47,6 +47,7 @@ from ef.embedders import (
     Embedder,
     EmbedderError,
     FunctionEmbedder,
+    HashingEmbedder,
     InputType,
     embed_length_sorted,
 )
@@ -478,9 +479,11 @@ def as_embedder(x: Any, **kwargs: Any) -> Embedder:
     1. an existing :class:`~ef.embedders.Embedder` — returned unchanged;
     2. a URL string (``http://`` / ``https://``) — :func:`http_embedder`;
     3. an ``"openai:<model>"`` string — :func:`openai_embedder`;
-    4. an ``"st:<model>"`` string, or any other bare model name —
-       :func:`sentence_transformers_embedder` (the local default);
-    5. a bare callable — wrapped in
+    4. the bare string ``"hashing"`` — the dependency-free
+       :class:`~ef.embedders.HashingEmbedder` (``ef``'s zero-install default);
+    5. an ``"st:<model>"`` string, or any other bare model name —
+       :func:`sentence_transformers_embedder` (the local neural default);
+    6. a bare callable — wrapped in
        :class:`~ef.embedders.FunctionEmbedder` (the ``imbed``-embedder bridge).
 
     Extra ``**kwargs`` are forwarded to the chosen factory.
@@ -500,6 +503,8 @@ def as_embedder(x: Any, **kwargs: Any) -> Embedder:
             return http_embedder(x, **kwargs)
         if x.startswith("openai:"):
             return openai_embedder(x[len("openai:") :], **kwargs)
+        if x == "hashing":
+            return HashingEmbedder(**kwargs)
         if x.startswith("st:"):
             return sentence_transformers_embedder(x[len("st:") :], **kwargs)
         return sentence_transformers_embedder(x, **kwargs)

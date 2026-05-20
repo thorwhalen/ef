@@ -19,6 +19,8 @@ This module defines the small, structural core of the facade:
   is optional; satisfying :class:`Embedder` structurally is what matters.
 - :class:`FunctionEmbedder` — wraps a bare ``texts -> vectors`` callable into a
   full :class:`Embedder` (the bridge for e.g. ``imbed``'s embedder functions).
+- :class:`HashingEmbedder` — a dependency-free embedder (the feature-hashing
+  trick, numpy only); ``ef``'s zero-install default when no embedder is given.
 - :func:`cache_key` — a deterministic key pinning everything that changes a
   vector, for :class:`~ef.embedder_wrappers.CachedEmbedder`.
 - :func:`embed_length_sorted` — length-sorted batching with order
@@ -47,11 +49,15 @@ True
 from __future__ import annotations
 
 import hashlib
+import math
+import re
+from collections import Counter
 from dataclasses import dataclass, field
 from typing import (
     Any,
     Callable,
     Iterable,
+    Iterator,
     Literal,
     Protocol,
     Sequence,
@@ -68,6 +74,7 @@ __all__ = [
     "Embedder",
     "BaseEmbedder",
     "FunctionEmbedder",
+    "HashingEmbedder",
     "EmbedderError",
     "cache_key",
     "embed_length_sorted",
@@ -300,6 +307,176 @@ class FunctionEmbedder(BaseEmbedder):
                 f"{self.model_id}: expected dim {self.dim}, got {arr.shape[1]}"
             )
         return arr
+
+
+# ---------------------------------------------------------------------------
+# HashingEmbedder — the dependency-free default
+# ---------------------------------------------------------------------------
+
+#: Algorithm version of :class:`HashingEmbedder`. It is baked into the
+#: ``model_id`` — and therefore into every cached vector and every
+#: :class:`~ef.artifact_graph.ArtifactGraph` artifact id. **Bump it on any
+#: change** to how a vector is produced (tokenization, hashing, weighting) so
+#: stale vectors from an older algorithm are never silently reused.
+_HASHING_EMBEDDER_VERSION = 1
+
+#: Default output width of :class:`HashingEmbedder` — wide enough that token
+#: collisions are rare on ordinary corpora, small enough to stay cheap.
+_HASHING_DEFAULT_DIM = 512
+
+#: Splits text into word tokens for :class:`HashingEmbedder`: Unicode-aware
+#: runs of "word" characters (the caller lowercases first).
+_WORD_RE = re.compile(r"\w+", re.UNICODE)
+
+
+def _word_ngrams(text: str, ngram_range: tuple[int, int]) -> Iterator[str]:
+    """Yield the lowercased word n-grams of ``text`` for ``ngram_range``.
+
+    >>> list(_word_ngrams('The quick fox', (1, 2)))
+    ['the', 'quick', 'fox', 'the quick', 'quick fox']
+    >>> list(_word_ngrams('one two', (2, 2)))
+    ['one two']
+    """
+    words = _WORD_RE.findall(text.lower())
+    n_min, n_max = ngram_range
+    for n in range(n_min, n_max + 1):
+        if n == 1:
+            yield from words
+        else:
+            for i in range(len(words) - n + 1):
+                yield " ".join(words[i : i + n])
+
+
+def _hash_bucket(token: str, dim: int) -> tuple[int, float]:
+    """Hash ``token`` to a ``(bucket, sign)`` pair — the feature-hashing trick.
+
+    Uses ``blake2b`` rather than the builtin ``hash()``: the latter is salted
+    per process (``PYTHONHASHSEED``), but ``ef``'s vectors must be byte-identical
+    across runs and machines for content addressing to hold. The low bit is the
+    sign — signed hashing makes bucket collisions cancel in expectation rather
+    than compound (Weinberger et al., 2009).
+    """
+    digest = hashlib.blake2b(token.encode("utf-8"), digest_size=8).digest()
+    h = int.from_bytes(digest, "big")
+    return (h >> 1) % dim, (1.0 if h & 1 else -1.0)
+
+
+def _hashing_model_id(
+    dim: int, ngram_range: tuple[int, int], sublinear_tf: bool
+) -> str:
+    """Build a :class:`HashingEmbedder` ``model_id`` — ``"hashing:<name>@<dim>"``.
+
+    Every vector-affecting parameter is encoded, so two embedders with the same
+    ``model_id`` truly produce the same vectors. The default configuration
+    yields the clean ``"hashing:v1@512"``; each non-default appends a marker.
+
+    >>> _hashing_model_id(512, (1, 2), True)
+    'hashing:v1@512'
+    >>> _hashing_model_id(256, (1, 3), False)
+    'hashing:v1-ng1_3-tflin@256'
+    """
+    name = f"v{_HASHING_EMBEDDER_VERSION}"
+    if ngram_range != (1, 2):
+        name += f"-ng{ngram_range[0]}_{ngram_range[1]}"
+    if not sublinear_tf:
+        name += "-tflin"
+    return f"hashing:{name}@{dim}"
+
+
+class HashingEmbedder(BaseEmbedder):
+    """A dependency-free embedder — the feature-hashing trick, numpy only.
+
+    :class:`HashingEmbedder` is ``ef``'s **zero-install default**: the embedder
+    :func:`~ef.source_manager.ingest` resolves to when none is given, so the
+    headline ``ingest([...]).search(query)`` works on a bare ``pip install ef``
+    — no torch, no model download, no network.
+
+    It is a *lexical* embedder, not a neural one. Each text is tokenized into
+    lowercased word n-grams; every token is hashed into one of ``dim`` buckets
+    with a sign (the hashing trick — no vocabulary, no fitting, fixed memory);
+    the signed, sublinear-tf-weighted bucket counts are L2-normalized. The
+    cosine similarity of two vectors then ranks by shared vocabulary — enough
+    for demos, doctests and offline tests, and a sane fallback in production.
+    For genuine semantic quality install a real embedder (``ef[sentence-transformers]``,
+    ``ef[openai]``) and pass it explicitly.
+
+    Every parameter that changes a vector is baked into :attr:`model_id`, so a
+    :class:`HashingEmbedder`'s artifacts stay correctly content-addressed in the
+    :class:`~ef.artifact_graph.ArtifactGraph`.
+
+    Args:
+        dim: Output width. Wider → fewer hash collisions, larger vectors.
+        ngram_range: Inclusive ``(min, max)`` word-n-gram sizes. The default
+            ``(1, 2)`` mixes single words with adjacent pairs — a little phrase
+            sensitivity at no real cost.
+        sublinear_tf: Weight a token by ``1 + log(count)`` rather than its raw
+            ``count``, damping a word repeated many times in one text.
+
+    >>> e = HashingEmbedder()
+    >>> e.model_id
+    'hashing:v1@512'
+    >>> import numpy as np
+    >>> v = e(['the quick brown fox'])
+    >>> v.shape
+    (1, 512)
+    >>> bool(np.isclose(np.linalg.norm(v[0]), 1.0))  # rows are L2-normalized
+    True
+    >>> a, b = e(['hello world']), e(['hello world'])
+    >>> round(float(a[0] @ b[0]), 5)  # identical text → cosine similarity 1.0
+    1.0
+    >>> isinstance(e, Embedder)
+    True
+    """
+
+    normalized = True
+    honored_input_types: tuple[InputType, ...] = ()  # a lexical, task-agnostic model
+
+    def __init__(
+        self,
+        *,
+        dim: int = _HASHING_DEFAULT_DIM,
+        ngram_range: tuple[int, int] = (1, 2),
+        sublinear_tf: bool = True,
+    ) -> None:
+        n_min, n_max = ngram_range
+        if n_min < 1 or n_max < n_min:
+            raise ValueError(
+                f"ngram_range must satisfy 1 <= min <= max, got {ngram_range!r}"
+            )
+        if dim < 1:
+            raise ValueError(f"dim must be a positive integer, got {dim!r}")
+        self.dim = int(dim)
+        self.ngram_range = (int(n_min), int(n_max))
+        self.sublinear_tf = bool(sublinear_tf)
+        self.model_id = _hashing_model_id(self.dim, self.ngram_range, self.sublinear_tf)
+
+    def __call__(
+        self,
+        texts: Iterable[str],
+        *,
+        input_type: InputType | None = None,
+        **backend: Any,
+    ) -> np.ndarray:
+        texts = list(texts)
+        out = np.zeros((len(texts), self.dim), dtype=np.float32)
+        for row, text in enumerate(texts):
+            self._vectorize_into(text, out[row])
+        return out
+
+    def _vectorize_into(self, text: str, row: np.ndarray) -> None:
+        """Fill ``row`` in place with the L2-normalized hashed vector of ``text``.
+
+        An empty (or token-free) text leaves ``row`` a zero vector — it has no
+        unit direction, and a zero vector is the honest representation.
+        """
+        counts = Counter(_word_ngrams(text, self.ngram_range))
+        for token, count in counts.items():
+            bucket, sign = _hash_bucket(token, self.dim)
+            weight = 1.0 + math.log(count) if self.sublinear_tf else float(count)
+            row[bucket] += sign * weight
+        norm = float(np.linalg.norm(row))
+        if norm > 0.0:
+            row /= norm
 
 
 # ---------------------------------------------------------------------------

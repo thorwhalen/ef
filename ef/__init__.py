@@ -11,6 +11,9 @@ only numpy):
 
 - :class:`~ef.embedders.Embedder` — the structural protocol for a batch
   ``Iterable[str] -> ndarray(n, dim)`` callable.
+- :class:`~ef.embedders.HashingEmbedder` — the dependency-free default embedder
+  (the feature-hashing trick, numpy only); what :func:`~ef.source_manager.ingest`
+  resolves to when given no embedder, so the light path needs nothing to install.
 - :func:`~ef.embedder_adapters.as_embedder` — the dependency-injection seam
   (string / callable / URL / existing embedder → ``Embedder``).
 - Adapters: :func:`~ef.embedder_adapters.openai_embedder`,
@@ -93,6 +96,7 @@ from ef.embedders import (
     Embedder,
     EmbedderError,
     FunctionEmbedder,
+    HashingEmbedder,
     InputType,
     cache_key,
     embed_length_sorted,
@@ -183,6 +187,7 @@ __all__ = [
     "ready_handle",
     "EmbedderError",
     "FunctionEmbedder",
+    "HashingEmbedder",
     "cache_key",
     "embed_length_sorted",
     # composition wrappers
