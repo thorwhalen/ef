@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.corpus &mdash; ef 0.1.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.corpus</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.corpus</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The ``Corpus`` abstraction — ``ef``&#39;s source layer (L0) — and change detection.</span>
+
+<span class="sd">A *corpus* is the entry point of the pipeline: the set of source documents to</span>
+<span class="sd">be segmented, embedded and indexed. In ``ef`` a corpus is deliberately *not* a</span>
+<span class="sd">new class — it is just a mapping::</span>
+
+<span class="sd">    Corpus = MutableMapping[source_id, Source]</span>
+
+<span class="sd">Any ``dol``-style mapping is a corpus: a plain ``dict`` (RAM), a filesystem</span>
+<span class="sd">folder, an S3 bucket, an API-backed store. The backing store is swappable</span>
+<span class="sd">because the rest of ``ef`` only ever sees a ``MutableMapping``. This module</span>
+<span class="sd">provides:</span>
+
+<span class="sd">- :data:`Source` / :data:`Corpus` — the type aliases that name the contract.</span>
+<span class="sd">- :func:`as_corpus` — the dependency-injection seam: ``None`` / a mapping / a</span>
+<span class="sd">  directory path / an iterable of strings → a corpus. Mirrors</span>
+<span class="sd">  :func:`~ef.embedder_adapters.as_embedder` and</span>
+<span class="sd">  :func:`~ef.segmenter_adapters.as_segmenter`.</span>
+<span class="sd">- :func:`content_hash` — the content hash of a source, the basis of change</span>
+<span class="sd">  detection. Hashes *normalized* content (via :mod:`ef.hashing`); for a</span>
+<span class="sd">  structured source it hashes the text only, so metadata-only edits never</span>
+<span class="sd">  trigger a spurious re-embed.</span>
+<span class="sd">- :class:`ChangeDetectingCorpus` — a corpus *wrapper* that content-hashes</span>
+<span class="sd">  values and reports what changed, both through-the-wrapper (via an</span>
+<span class="sd">  ``on_change`` callback) and out-of-band (via :meth:`~ChangeDetectingCorpus.scan`).</span>
+
+<span class="sd">:class:`ChangeDetectingCorpus` is the *&quot;something changed&quot;* half of incremental</span>
+<span class="sd">refresh; the downstream cascade is the ``ArtifactGraph`` (a later phase). The</span>
+<span class="sd">``on_change`` callback is the seam those two halves meet at.</span>
+
+<span class="sd">Example — detect changes as they are written:</span>
+
+<span class="sd">&gt;&gt;&gt; events = []</span>
+<span class="sd">&gt;&gt;&gt; corpus = ChangeDetectingCorpus(on_change=events.append)</span>
+<span class="sd">&gt;&gt;&gt; corpus[&#39;doc1&#39;] = &#39;hello world&#39;</span>
+<span class="sd">&gt;&gt;&gt; corpus[&#39;doc1&#39;] = &#39;hello world&#39;      # identical content — idempotent, no event</span>
+<span class="sd">&gt;&gt;&gt; corpus[&#39;doc1&#39;] = &#39;hello there&#39;      # a real change</span>
+<span class="sd">&gt;&gt;&gt; del corpus[&#39;doc1&#39;]</span>
+<span class="sd">&gt;&gt;&gt; [(e.source_id, e.kind) for e in events]</span>
+<span class="sd">[(&#39;doc1&#39;, &#39;added&#39;), (&#39;doc1&#39;, &#39;modified&#39;), (&#39;doc1&#39;, &#39;deleted&#39;)]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Hashable</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">MutableMapping</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_json</span><span class="p">,</span> <span class="n">normalize_text</span><span class="p">,</span> <span class="n">sha256_hex</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Source&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Corpus&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content_hash&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;as_corpus&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ChangeKind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ChangeEvent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CorpusDiff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ChangeDetectingCorpus&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The contract — type aliases</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="c1">#: A source document. Either plain ``text``, or a ``Mapping`` carrying a</span>
+<span class="c1">#: ``text`` key alongside metadata — the same shape a</span>
+<span class="c1">#: :class:`~ef.segmenters.Segmenter` accepts as input.</span>
+<span class="n">Source</span> <span class="o">=</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+<span class="c1">#: A corpus: a mapping from ``source_id`` to :data:`Source`. ``ef`` never</span>
+<span class="c1">#: requires a dedicated class — any ``dol``-style ``MutableMapping`` (RAM,</span>
+<span class="c1">#: filesystem, S3, API) *is* a corpus. :func:`as_corpus` builds one.</span>
+<span class="n">Corpus</span> <span class="o">=</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Source</span><span class="p">]</span>
+
+
+<span class="c1">#: A sentinel distinct from every real value, including ``None``.</span>
+<span class="n">_MISSING</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Content hashing</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_source_field</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look ``key`` up at the top level of ``source``, then inside ``metadata``.</span>
+
+<span class="sd">    Returns :data:`_MISSING` if the key is present in neither place — so an</span>
+<span class="sd">    absent ``content_keys`` entry simply contributes nothing to the hash.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">source</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_MISSING</span>
+
+
+<div class="viewcode-block" id="content_hash">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.content_hash">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">content_hash</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">content_keys</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Content hash of a source document — ``sha256`` of its normalized content.</span>
+
+<span class="sd">    This is the basis of change detection: re-reading an unchanged source</span>
+<span class="sd">    yields an identical hash, so a refresh that finds the same hash does</span>
+<span class="sd">    nothing. Hashing *normalized* content (NFC, no BOM, ``\\n`` line endings —</span>
+<span class="sd">    see :mod:`ef.hashing`) means cosmetic encoding differences never look like</span>
+<span class="sd">    a change.</span>
+
+<span class="sd">    The treatment of a ``Mapping`` source is deliberate:</span>
+
+<span class="sd">    - a plain ``str`` source — the hash covers the text;</span>
+<span class="sd">    - a ``Mapping`` with a ``text`` key — the hash covers ``source[&#39;text&#39;]``</span>
+<span class="sd">      **only**. A change to title, tags, ACL or any other metadata does *not*</span>
+<span class="sd">      change the hash, so it never triggers a spurious re-segment/re-embed</span>
+<span class="sd">      (embedding is the pipeline&#39;s most expensive step). Name the metadata keys</span>
+<span class="sd">      that *do* feed downstream in ``content_keys`` and changes to those keys</span>
+<span class="sd">      will be detected;</span>
+<span class="sd">    - a ``Mapping`` *without* a ``text`` key — treated as a structured document</span>
+<span class="sd">      and hashed via canonical (sorted-key) JSON of the whole mapping;</span>
+<span class="sd">    - ``bytes`` — hashed raw (no text normalization is possible pre-parse).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source: a ``str``, ``bytes``, or a ``Mapping`` (ideally with a ``text``</span>
+<span class="sd">            key).</span>
+<span class="sd">        content_keys: metadata keys whose values join the text in the hash.</span>
+<span class="sd">            Each key is looked up at the top level of ``source`` or inside a</span>
+<span class="sd">            ``source[&#39;metadata&#39;]`` sub-mapping. Use this *only* for metadata</span>
+<span class="sd">            that genuinely affects the L1–L4 pipeline (e.g. a title prepended</span>
+<span class="sd">            to the text before embedding); key order does not matter.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: if ``source`` is not a ``str``, ``bytes`` or ``Mapping``.</span>
+
+<span class="sd">    &gt;&gt;&gt; content_hash(&#39;hello&#39;) == content_hash(&#39;hello&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; content_hash(&#39;hello&#39;) == content_hash(&#39;hello world&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; content_hash(&#39;a\\r\\nb&#39;) == content_hash(&#39;a\\nb&#39;)   # line endings normalized</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; a = {&#39;text&#39;: &#39;body&#39;, &#39;metadata&#39;: {&#39;tags&#39;: [&#39;x&#39;]}}</span>
+<span class="sd">    &gt;&gt;&gt; b = {&#39;text&#39;: &#39;body&#39;, &#39;metadata&#39;: {&#39;tags&#39;: [&#39;y&#39;]}}</span>
+<span class="sd">    &gt;&gt;&gt; content_hash(a) == content_hash(b)                # metadata ignored by default</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; content_hash(a, content_keys=[&#39;tags&#39;]) == content_hash(b, content_keys=[&#39;tags&#39;])</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; content_hash({&#39;text&#39;: &#39;body&#39;}) == content_hash(&#39;body&#39;)  # wrapper is transparent</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;text&quot;</span> <span class="ow">in</span> <span class="n">source</span><span class="p">:</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">content_keys</span><span class="p">:</span>
+                <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">content_keys</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">:=</span> <span class="n">_source_field</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MISSING</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
+                    <span class="n">payload</span> <span class="o">+=</span> <span class="n">canonical_json</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="c1"># A structured document with no text body — hash it whole, canonically.</span>
+        <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">canonical_json</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">source</span><span class="p">)))</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Cannot content-hash a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. A source must be a &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;str, bytes, or a Mapping (ideally with a &#39;text&#39; key).&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The dependency-injection seam</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_filesystem_corpus</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``dol`` filesystem corpus over the text files under ``directory``.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextFiles</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - dol is a core dependency</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;as_corpus needs the `dol` package to build a filesystem corpus. &quot;</span>
+            <span class="s2">&quot;Install it with: pip install dol&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">return</span> <span class="n">TextFiles</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="as_corpus">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.as_corpus">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_corpus</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize ``x`` into a corpus (``MutableMapping[source_id, Source]``).</span>
+
+<span class="sd">    The single dependency-injection seam through which every ``ef`` entry point</span>
+<span class="sd">    accepts a user-supplied corpus — the mirror of</span>
+<span class="sd">    :func:`~ef.embedder_adapters.as_embedder` and</span>
+<span class="sd">    :func:`~ef.segmenter_adapters.as_segmenter`. Accepts, in order:</span>
+
+<span class="sd">    1. ``None`` — a fresh empty in-RAM ``dict``;</span>
+<span class="sd">    2. a ``Mapping`` — returned **unchanged** (a ``dict``, a ``dol`` store,</span>
+<span class="sd">       another corpus: it already *is* a corpus);</span>
+<span class="sd">    3. a directory path (``str`` / ``os.PathLike`` naming an existing</span>
+<span class="sd">       directory) — a ``dol`` filesystem store of the text files under it</span>
+<span class="sd">       (``dol`` is imported lazily; only this branch needs it);</span>
+<span class="sd">    4. an iterable of sources (strings or mappings) — an in-RAM ``dict`` keyed</span>
+<span class="sd">       by each source&#39;s :func:`content_hash` (content-addressed, so duplicate</span>
+<span class="sd">       sources collapse to one entry).</span>
+
+<span class="sd">    Extra ``**kwargs`` are forwarded to the ``dol`` filesystem store (the</span>
+<span class="sd">    directory branch only) and ignored otherwise.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: if ``x`` is a non-directory string, or none of the above.</span>
+
+<span class="sd">    &gt;&gt;&gt; as_corpus()</span>
+<span class="sd">    {}</span>
+<span class="sd">    &gt;&gt;&gt; as_corpus({&#39;a&#39;: &#39;x&#39;})                 # a mapping passes straight through</span>
+<span class="sd">    {&#39;a&#39;: &#39;x&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; sorted(as_corpus([&#39;alpha&#39;, &#39;beta&#39;]).values())</span>
+<span class="sd">    [&#39;alpha&#39;, &#39;beta&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(as_corpus([&#39;dup&#39;, &#39;dup&#39;]))        # content-addressed: duplicates collapse</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_filesystem_corpus</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;as_corpus got the path </span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2">, which is not an existing &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;directory. Pass a directory path, a Mapping, an iterable of &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;sources, or None.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">content_hash</span><span class="p">(</span><span class="n">source</span><span class="p">):</span> <span class="n">source</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">x</span><span class="p">}</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Cannot interpret </span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> as a corpus. Pass a Mapping, a directory &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;path, an iterable of sources, or None.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Change-detection data model</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="c1">#: The kinds of change :class:`ChangeDetectingCorpus` reports.</span>
+<span class="n">ChangeKind</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ChangeEvent">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.ChangeEvent">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChangeEvent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single detected change to a source in a corpus.</span>
+
+<span class="sd">    Emitted by :class:`ChangeDetectingCorpus` to its ``on_change`` callback.</span>
+<span class="sd">    ``old_hash`` is ``None`` for an ``&quot;added&quot;`` event, ``new_hash`` is ``None``</span>
+<span class="sd">    for a ``&quot;deleted&quot;`` one.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        source_id: the key of the source that changed.</span>
+<span class="sd">        kind: ``&quot;added&quot;``, ``&quot;modified&quot;`` or ``&quot;deleted&quot;``.</span>
+<span class="sd">        old_hash: the source&#39;s previous content hash, if any.</span>
+<span class="sd">        new_hash: the source&#39;s new content hash, if any.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">ChangeKind</span>
+    <span class="n">old_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">new_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="CorpusDiff">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.CorpusDiff">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CorpusDiff</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of comparing a corpus&#39;s content against known content hashes.</span>
+
+<span class="sd">    The four fields partition the corpus&#39;s source ids; each is a sorted tuple,</span>
+<span class="sd">    so a :class:`CorpusDiff` is deterministic and JSON-friendly. Truthiness</span>
+<span class="sd">    reports whether *anything* changed.</span>
+
+<span class="sd">    &gt;&gt;&gt; d = CorpusDiff(added=(&#39;b&#39;,), modified=(&#39;a&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; bool(d), d.changed</span>
+<span class="sd">    (True, (&#39;b&#39;, &#39;a&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; bool(CorpusDiff(unchanged=(&#39;a&#39;, &#39;b&#39;)))</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">added</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">modified</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">deleted</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">unchanged</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The source ids that are new or modified — the set to (re-)materialize.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">added</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">modified</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff anything was added, modified or deleted.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">added</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The change-detecting wrapper</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_noop</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">ChangeEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default ``on_change`` callback — ignore the event.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="ChangeDetectingCorpus">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.ChangeDetectingCorpus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChangeDetectingCorpus</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A corpus wrapper that content-hashes values and reports what changed.</span>
+
+<span class="sd">    Wraps any inner corpus (a ``MutableMapping[source_id, Source]``) and adds</span>
+<span class="sd">    change detection *without* altering its mapping behavior — reads, writes and</span>
+<span class="sd">    deletes pass straight through to the inner store. It is to a corpus what</span>
+<span class="sd">    :class:`~ef.embedder_wrappers.CachedEmbedder` is to an embedder: a</span>
+<span class="sd">    transparent, composable layer.</span>
+
+<span class="sd">    Changes are noticed two ways:</span>
+
+<span class="sd">    - **Through the wrapper.** A ``corpus[id] = source`` or ``del corpus[id]``</span>
+<span class="sd">      that actually changes content fires the injected ``on_change`` callback</span>
+<span class="sd">      with a :class:`ChangeEvent`. Writing *identical* content is a no-op (no</span>
+<span class="sd">      event) — the basis of idempotent ingestion.</span>
+<span class="sd">    - **Out of band.** When the backing store is edited directly (a file</span>
+<span class="sd">      changed on disk, an S3 object replaced), :meth:`scan` re-reads every</span>
+<span class="sd">      source, compares hashes, fires events for what differs and returns a</span>
+<span class="sd">      :class:`CorpusDiff`. :meth:`diff` runs the same comparison with no side</span>
+<span class="sd">      effects.</span>
+
+<span class="sd">    The ``on_change`` callback is the seam the downstream ``ArtifactGraph``</span>
+<span class="sd">    plugs into: a ``&quot;modified&quot;`` / ``&quot;deleted&quot;`` event is exactly the trigger</span>
+<span class="sd">    for a cascade invalidation.</span>
+
+<span class="sd">    On construction a *baseline* is established: the current content hashes of</span>
+<span class="sd">    the inner corpus are recorded silently (no events). Pass an already-populated</span>
+<span class="sd">    ``hashes`` registry to instead resume from a persisted baseline — then call</span>
+<span class="sd">    :meth:`scan` to reconcile any drift.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        corpus: the inner corpus to wrap. Coerced via :func:`as_corpus`, so a</span>
+<span class="sd">            directory path / ``dict`` / iterable of sources / ``None`` all work.</span>
+<span class="sd">        on_change: called with each :class:`ChangeEvent`. Defaults to a no-op.</span>
+<span class="sd">            It should be cheap and not raise; an exception propagates to the</span>
+<span class="sd">            caller *after* the corpus and registry are already consistent.</span>
+<span class="sd">        hashes: the hash registry — a ``MutableMapping[source_id, str]`` of the</span>
+<span class="sd">            last-known content hash per source. Injectable so it can be</span>
+<span class="sd">            persisted (e.g. a ``dol`` store); defaults to an in-RAM ``dict``.</span>
+<span class="sd">            If passed already-populated it is trusted as the baseline.</span>
+<span class="sd">        content_keys: forwarded to :func:`content_hash` — metadata keys that</span>
+<span class="sd">            participate in the hash.</span>
+<span class="sd">        fingerprint: an optional cheap ``source_id -&gt; Hashable`` callback (an</span>
+<span class="sd">            mtime / etag prefilter). When given, :meth:`scan` / :meth:`diff`</span>
+<span class="sd">            skip re-hashing a source whose fingerprint is unchanged. The</span>
+<span class="sd">            content hash always remains the source of truth — the fingerprint</span>
+<span class="sd">            is only a speed optimization, never trusted to *declare* a change.</span>
+
+<span class="sd">    &gt;&gt;&gt; backing = {&#39;a&#39;: &#39;one&#39;, &#39;b&#39;: &#39;two&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; corpus = ChangeDetectingCorpus(backing)   # baseline adopts &#39;a&#39; and &#39;b&#39;</span>
+<span class="sd">    &gt;&gt;&gt; backing[&#39;a&#39;] = &#39;ONE&#39;                      # edited behind the wrapper&#39;s back</span>
+<span class="sd">    &gt;&gt;&gt; backing[&#39;c&#39;] = &#39;three&#39;</span>
+<span class="sd">    &gt;&gt;&gt; del backing[&#39;b&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; d = corpus.scan()</span>
+<span class="sd">    &gt;&gt;&gt; (d.added, d.modified, d.deleted)</span>
+<span class="sd">    ((&#39;c&#39;,), (&#39;a&#39;,), (&#39;b&#39;,))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">corpus</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">on_change</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ChangeEvent</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hashes</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">content_keys</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fingerprint</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Hashable</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">as_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_change</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ChangeEvent</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">on_change</span> <span class="ow">or</span> <span class="n">_noop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">hashes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">hashes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content_keys</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">content_keys</span><span class="p">)</span> <span class="k">if</span> <span class="n">content_keys</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">fingerprint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">:</span>
+            <span class="c1"># No persisted baseline — adopt the inner corpus&#39;s current content</span>
+            <span class="c1"># as the baseline, silently (no events for pre-existing sources).</span>
+            <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+
+    <span class="c1"># -- content hashing helpers --------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Content hash of ``source`` honoring this corpus&#39;s ``content_keys``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">content_keys</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content_keys</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">ChangeEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deliver ``event`` to the ``on_change`` callback.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="c1"># -- the mtime/etag prefilter -------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store the current cheap fingerprint of ``source_id`` (if any).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - a flaky prefilter must not break us</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">fp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fingerprint_unchanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff a cheap fingerprint proves ``source_id`` need not be re-hashed.</span>
+
+<span class="sd">        Conservative: a missing prefilter, a missing stored fingerprint, a</span>
+<span class="sd">        ``None`` reading or any exception all return ``False`` — the content</span>
+<span class="sd">        hash is then recomputed, because it is the only source of truth.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - a flaky prefilter must not break us</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">fp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="n">_MISSING</span><span class="p">)</span> <span class="o">==</span> <span class="n">fp</span>
+
+    <span class="c1"># -- MutableMapping interface (pass-through + change detection) ----------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Source</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">new_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">old_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>  <span class="c1"># write through first</span>
+        <span class="k">if</span> <span class="n">old_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">old_hash</span> <span class="o">==</span> <span class="n">new_hash</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>  <span class="c1"># content same — no event</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old_hash</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span><span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_hash</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span><span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">,</span> <span class="n">new_hash</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>  <span class="c1"># raises KeyError if absent</span>
+        <span class="n">old_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span><span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> over </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;tracking </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">)</span><span class="si">}</span><span class="s2"> source(s)&gt;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># -- out-of-band change detection ---------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_diff</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">CorpusDiff</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare current corpus content against the registry — no side effects.</span>
+
+<span class="sd">        Returns the :class:`CorpusDiff` and the map of freshly-computed content</span>
+<span class="sd">        hashes (so :meth:`scan` can update the registry without re-hashing).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">added</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">modified</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unchanged</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_hashes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">current_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">current_ids</span><span class="p">:</span>
+            <span class="n">old_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprint_unchanged</span><span class="p">(</span><span class="n">source_id</span><span class="p">):</span>
+                <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_hash</span>  <span class="c1"># prefilter: skip re-hashing</span>
+                <span class="n">unchanged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">new_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">])</span>
+            <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_hash</span>
+            <span class="k">if</span> <span class="n">old_hash</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">new_hash</span> <span class="o">!=</span> <span class="n">old_hash</span><span class="p">:</span>
+                <span class="n">modified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">unchanged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="n">deleted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">)</span> <span class="o">-</span> <span class="n">current_ids</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">CorpusDiff</span><span class="p">(</span>
+            <span class="n">added</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">added</span><span class="p">)),</span>
+            <span class="n">modified</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">modified</span><span class="p">)),</span>
+            <span class="n">deleted</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">deleted</span><span class="p">),</span>
+            <span class="n">unchanged</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unchanged</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">diff</span><span class="p">,</span> <span class="n">new_hashes</span>
+
+<div class="viewcode-block" id="ChangeDetectingCorpus.diff">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.ChangeDetectingCorpus.diff">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diff</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusDiff</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare current corpus content against the registry — **no side effects**.</span>
+
+<span class="sd">        Detects out-of-band edits (changes made to the backing store directly)</span>
+<span class="sd">        without firing events or updating the registry. :meth:`scan` is the</span>
+<span class="sd">        effectful counterpart.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_diff</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ChangeDetectingCorpus.scan">
+<a class="viewcode-back" href="../../module_docs/ef/corpus.html#ef.ChangeDetectingCorpus.scan">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusDiff</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reconcile the registry with the corpus, fire events, return the diff.</span>
+
+<span class="sd">        Use this to pick up **out-of-band** edits — changes made to the backing</span>
+<span class="sd">        store directly rather than through this wrapper. Every detected change</span>
+<span class="sd">        fires a :class:`ChangeEvent` and the registry (and fingerprints) are</span>
+<span class="sd">        advanced to the new state, so a second :meth:`scan` with nothing</span>
+<span class="sd">        further changed is a no-op. :meth:`diff` is the side-effect-free version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diff</span><span class="p">,</span> <span class="n">new_hashes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_diff</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">diff</span><span class="o">.</span><span class="n">added</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span><span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">diff</span><span class="o">.</span><span class="n">modified</span><span class="p">:</span>
+            <span class="n">old_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_fingerprint</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span>
+                <span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">,</span> <span class="n">new_hashes</span><span class="p">[</span><span class="n">source_id</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">diff</span><span class="o">.</span><span class="n">deleted</span><span class="p">:</span>
+            <span class="n">old_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fingerprints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_emit</span><span class="p">(</span><span class="n">ChangeEvent</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">diff</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

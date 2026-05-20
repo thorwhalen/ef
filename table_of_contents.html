@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; ef 0.1.4 documentation</title>
+  <title>&lt;no title&gt; &mdash; ef 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=fd825880"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,10 +49,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -98,8 +100,11 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BatchedSegmenter"><code class="docutils literal notranslate"><span class="pre">BatchedSegmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ChangeDetectingCorpus"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ChangeEvent"><code class="docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ClusterIndex"><code class="docutils literal notranslate"><span class="pre">ClusterIndex</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ComponentRegistry"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
@@ -116,10 +121,12 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.SegmentRecord"><code class="docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.approx_token_count"><code class="docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_corpus"><code class="docutils literal notranslate"><span class="pre">as_corpus()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_segment"><code class="docutils literal notranslate"><span class="pre">as_segment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
@@ -137,6 +144,17 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/base.html">ef.base</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef/base.html#ef.base.ComponentRegistry"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent"><code class="docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeKind"><code class="docutils literal notranslate"><span class="pre">ChangeKind</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.Corpus"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.as_corpus"><code class="docutils literal notranslate"><span class="pre">as_corpus()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/dag.html">ef.dag</a><ul>
@@ -171,6 +189,12 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.canonical_json"><code class="docutils literal notranslate"><span class="pre">canonical_json()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.normalize_text"><code class="docutils literal notranslate"><span class="pre">normalize_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.sha256_hex"><code class="docutils literal notranslate"><span class="pre">sha256_hex()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins.html">ef.plugins</a></li>

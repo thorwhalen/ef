@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.4 documentation</title>
+  <title>Index &mdash; ef 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=fd825880"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,10 +48,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -101,6 +103,7 @@
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -130,14 +133,20 @@
       </ul></li>
       <li><a href="module_docs/ef/segmenters.html#ef.segmenters.APPROX_TOKENIZER">APPROX_TOKENIZER (in module ef.segmenters)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.as_corpus">as_corpus() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.as_corpus">(in module ef.corpus)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.as_embedder">as_embedder() (in module ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.as_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.as_segment">as_segment() (in module ef)</a>
 
       <ul>
@@ -226,16 +235,38 @@
         <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.cancel">(ef.embedders.BatchHandle attribute)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef/hashing.html#ef.hashing.canonical_json">canonical_json() (in module ef.hashing)</a>
+</li>
+      <li><a href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff.changed">changed (ef.corpus.CorpusDiff property)</a>
+
+      <ul>
+        <li><a href="module_docs/ef.html#ef.CorpusDiff.changed">(ef.CorpusDiff property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus">ChangeDetectingCorpus (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus">(class in ef.corpus)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.ChangeEvent">ChangeEvent (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent">(class in ef.corpus)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeKind">ChangeKind (in module ef.corpus)</a>
+</li>
       <li><a href="module_docs/ef.html#ef.Project.clusterers">clusterers (ef.Project property)</a>
 
       <ul>
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.clusterers">(ef.projects.Project property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.ClusterIndex">ClusterIndex (in module ef)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ClusterIndex">ClusterIndex (in module ef)</a>
+</li>
       <li><a href="module_docs/ef.html#ef.Project.clusters">clusters (ef.Project property)</a>
 
       <ul>
@@ -246,6 +277,20 @@
 
       <ul>
         <li><a href="module_docs/ef/base.html#ef.base.ComponentRegistry">(class in ef.base)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.content_hash">content_hash() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.content_hash">(in module ef.corpus)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef/corpus.html#ef.corpus.Corpus">Corpus (in module ef.corpus)</a>
+</li>
+      <li><a href="module_docs/ef.html#ef.CorpusDiff">CorpusDiff (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff">(class in ef.corpus)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.Project.create">create() (ef.Project class method)</a>
@@ -276,6 +321,12 @@
 </li>
       <li><a href="module_docs/ef/segmenters.html#ef.segmenters.DEFAULT_SEPARATORS">DEFAULT_SEPARATORS (in module ef.segmenters)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus.diff">diff() (ef.ChangeDetectingCorpus method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus.diff">(ef.corpus.ChangeDetectingCorpus method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.Embedder.dim">dim (ef.Embedder attribute)</a>
@@ -302,6 +353,13 @@
 
       <ul>
         <li><a href="module_docs/ef/base.html#module-ef.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    ef.corpus
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#module-ef.corpus">module</a>
 </li>
       </ul></li>
       <li>
@@ -333,6 +391,13 @@
 </li>
       </ul></li>
       <li>
+    ef.hashing
+
+      <ul>
+        <li><a href="module_docs/ef/hashing.html#module-ef.hashing">module</a>
+</li>
+      </ul></li>
+      <li>
     ef.plugins
 
       <ul>
@@ -360,6 +425,8 @@
         <li><a href="module_docs/ef/projects.html#module-ef.projects">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segmenter_adapters
 
@@ -367,8 +434,6 @@
         <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segmenters
 
@@ -536,6 +601,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ChangeEvent.kind">kind (ef.ChangeEvent attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.kind">(ef.corpus.ChangeEvent attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -607,6 +684,8 @@
 </li>
         <li><a href="module_docs/ef/base.html#module-ef.base">ef.base</a>
 </li>
+        <li><a href="module_docs/ef/corpus.html#module-ef.corpus">ef.corpus</a>
+</li>
         <li><a href="module_docs/ef/dag.html#module-ef.dag">ef.dag</a>
 </li>
         <li><a href="module_docs/ef/embedder_adapters.html#module-ef.embedder_adapters">ef.embedder_adapters</a>
@@ -614,6 +693,8 @@
         <li><a href="module_docs/ef/embedder_wrappers.html#module-ef.embedder_wrappers">ef.embedder_wrappers</a>
 </li>
         <li><a href="module_docs/ef/embedders.html#module-ef.embedders">ef.embedders</a>
+</li>
+        <li><a href="module_docs/ef/hashing.html#module-ef.hashing">ef.hashing</a>
 </li>
         <li><a href="module_docs/ef/plugins.html#module-ef.plugins">ef.plugins</a>
 </li>
@@ -648,6 +729,14 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ChangeEvent.new_hash">new_hash (ef.ChangeEvent attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.new_hash">(ef.corpus.ChangeEvent attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef/hashing.html#ef.hashing.normalize_text">normalize_text() (in module ef.hashing)</a>
+</li>
       <li><a href="module_docs/ef.html#ef.CachedEmbedder.normalized">normalized (ef.CachedEmbedder property)</a>
 
       <ul>
@@ -675,6 +764,14 @@
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ChangeEvent.old_hash">old_hash (ef.ChangeEvent attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.old_hash">(ef.corpus.ChangeEvent attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.openai_embedder">openai_embedder() (in module ef)</a>
 
@@ -812,6 +909,12 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus.scan">scan() (ef.ChangeDetectingCorpus method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus.scan">(ef.corpus.ChangeDetectingCorpus method)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.Segment">Segment (class in ef)</a>
 
       <ul>
@@ -842,10 +945,10 @@
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.segmenters">(ef.projects.Project property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.SegmentKey">SegmentKey (in module ef)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.SegmentRecord">SegmentRecord (class in ef)</a>
 
       <ul>
@@ -864,8 +967,18 @@
         <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef/hashing.html#ef.hashing.sha256_hex">sha256_hex() (in module ef.hashing)</a>
+</li>
       <li><a href="module_docs/ef/storage.html#ef.storage.SimpleFileStore">SimpleFileStore (class in ef.storage)</a>
 </li>
+      <li><a href="module_docs/ef/corpus.html#ef.corpus.Source">Source (in module ef.corpus)</a>
+</li>
+      <li><a href="module_docs/ef.html#ef.ChangeEvent.source_id">source_id (ef.ChangeEvent attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.source_id">(ef.corpus.ChangeEvent attribute)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.Project.summary">summary() (ef.Project method)</a>
 
       <ul>

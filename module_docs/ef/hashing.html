@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.hashing &mdash; ef 0.1.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.plugins" href="plugins.html" />
+    <link rel="prev" title="ef.embedders" href="embedders.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.hashing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.hashing.canonical_json"><code class="docutils literal notranslate"><span class="pre">canonical_json()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.hashing.normalize_text"><code class="docutils literal notranslate"><span class="pre">normalize_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.hashing.sha256_hex"><code class="docutils literal notranslate"><span class="pre">sha256_hex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.hashing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/hashing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.hashing">
+<span id="ef-hashing"></span><h1>ef.hashing<a class="headerlink" href="#module-ef.hashing" title="Link to this heading"></a></h1>
+<p>Content-hashing primitives shared across <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s layers.</p>
+<p>Content addressing is the backbone of <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s identity and change-detection
+model: a segment’s id (L2, <a class="reference internal" href="segments.html#ef.segments.segment_id" title="ef.segments.segment_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.segments.segment_id()</span></code></a>), a source’s content
+hash (L0, <a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.corpus.content_hash()</span></code></a>) and — from the <code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code> on —
+every artifact id are all <code class="docutils literal notranslate"><span class="pre">SHA-256</span></code> over <em>normalized</em> content.</p>
+<p>Normalizing <em>before</em> hashing is the point. Cosmetically-different encodings of
+the same content — NFD vs NFC, a stray BOM, CRLF vs LF line endings, JSON with
+keys in a different order — must hash <em>identically</em>, so that re-ingesting
+unchanged data is a no-op rather than a spurious “change” that re-runs the
+expensive downstream pipeline. This module is the <strong>single source of truth</strong>
+for that normalization; every other <code class="docutils literal notranslate"><span class="pre">ef</span></code> module hashes through it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sha256_hex</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\r\n</span><span class="s1">b&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\n</span><span class="s1">b&#39;</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.hashing.canonical_json">
+<span class="sig-prename descclassname"><span class="pre">ef.hashing.</span></span><span class="sig-name descname"><span class="pre">canonical_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/hashing.html#canonical_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.hashing.canonical_json" title="Link to this definition"></a></dt>
+<dd><p>Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> to deterministic JSON: sorted keys, compact separators.</p>
+<p>Two mappings that are equal but were built in a different key order produce
+the <em>same</em> string — so they hash identically. Non-JSON values fall back to
+their <code class="docutils literal notranslate"><span class="pre">str</span></code> form, so the function never raises on exotic input (at the
+cost of those values not round-tripping).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">canonical_json</span><span class="p">({</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="go">&#39;{&quot;a&quot;:2,&quot;b&quot;:1}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">canonical_json</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span> <span class="o">==</span> <span class="n">canonical_json</span><span class="p">({</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.hashing.normalize_text">
+<span class="sig-prename descclassname"><span class="pre">ef.hashing.</span></span><span class="sig-name descname"><span class="pre">normalize_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/hashing.html#normalize_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.hashing.normalize_text" title="Link to this definition"></a></dt>
+<dd><p>Normalize <code class="docutils literal notranslate"><span class="pre">text</span></code> for hashing: Unicode NFC, no BOM, <code class="docutils literal notranslate"><span class="pre">\n</span></code> line endings.</p>
+<p>The normalization makes hashing robust to differences that carry no
+meaning: a composed vs decomposed accent, a leading byte-order mark, or
+Windows vs Unix line endings. Only the <em>hash input</em> is normalized — callers
+keep the original <code class="docutils literal notranslate"><span class="pre">text</span></code> verbatim.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\r\n</span><span class="s1">b</span><span class="se">\r</span><span class="s1">c&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;a</span><span class="se">\n</span><span class="s1">b</span><span class="se">\n</span><span class="s1">c&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\ufeff</span><span class="s1">hi&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hi&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;café&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">normalize_text</span><span class="p">(</span><span class="s1">&#39;cafe</span><span class="se">\u0301</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># NFC vs NFD</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.hashing.sha256_hex">
+<span class="sig-prename descclassname"><span class="pre">ef.hashing.</span></span><span class="sig-name descname"><span class="pre">sha256_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/hashing.html#sha256_hex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.hashing.sha256_hex" title="Link to this definition"></a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">SHA-256</span></code> hex digest of <code class="docutils literal notranslate"><span class="pre">payload</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code> is UTF-8 encoded).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sha256_hex</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="go">&#39;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sha256_hex</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;abc&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="embedders.html" class="btn btn-neutral float-left" title="ef.embedders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plugins.html" class="btn btn-neutral float-right" title="ef.plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

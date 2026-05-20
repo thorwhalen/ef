@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.segments &mdash; ef 0.1.4 documentation</title>
+  <title>ef.segments &mdash; ef 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -51,10 +51,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -248,12 +250,14 @@ a default fills a field only when <code class="docutils literal notranslate"><sp
 <dt class="sig sig-object py" id="ef.segments.segment_id">
 <span class="sig-prename descclassname"><span class="pre">ef.segments.</span></span><span class="sig-name descname"><span class="pre">segment_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/segments.html#segment_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.segments.segment_id" title="Link to this definition"></a></dt>
 <dd><p>Content-derived id for a segment — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of its normalized content.</p>
-<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256(normalize(text)</span> <span class="pre">+</span> <span class="pre">canonical_json(metadata))</span></code>. Because it
-depends only on content, re-segmenting an unchanged document produces
-identical ids — which is what makes ingestion idempotent (a re-run is a
-no-op, not a duplicate). Pass <code class="docutils literal notranslate"><span class="pre">metadata</span></code> only when two segments could
-share identical <code class="docutils literal notranslate"><span class="pre">text</span></code> yet must stay distinct (e.g. same boilerplate from
-different sources).</p>
+<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256(normalize(text)</span> <span class="pre">+</span> <span class="pre">canonical_json(metadata))</span></code> — the
+normalization and hashing primitives live in <a class="reference internal" href="hashing.html#module-ef.hashing" title="ef.hashing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.hashing</span></code></a>, the single
+source of truth <code class="docutils literal notranslate"><span class="pre">ef</span></code> content-addresses through. Because the id depends
+only on content, re-segmenting an unchanged document produces identical ids
+— which is what makes ingestion idempotent (a re-run is a no-op, not a
+duplicate). Pass <code class="docutils literal notranslate"><span class="pre">metadata</span></code> only when two segments could share identical
+<code class="docutils literal notranslate"><span class="pre">text</span></code> yet must stay distinct (e.g. same boilerplate from different
+sources).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">)</span>

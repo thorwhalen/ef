@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.segments &mdash; ef 0.1.4 documentation</title>
+  <title>ef.segments &mdash; ef 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,10 +48,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -128,11 +130,10 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">unicodedata</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">TypedDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_json</span><span class="p">,</span> <span class="n">normalize_text</span><span class="p">,</span> <span class="n">sha256_hex</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
@@ -207,38 +208,19 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize ``text`` for hashing: NFC, no BOM, ``\\n`` line endings.</span>
-
-<span class="sd">    Normalizing *before* hashing means cosmetically-different encodings of the</span>
-<span class="sd">    same content (NFD vs NFC, a stray BOM, CRLF vs LF) hash identically — so</span>
-<span class="sd">    re-ingesting the same document does not spuriously change segment ids.</span>
-<span class="sd">    Only the *hash input* is normalized; the stored ``text`` is left verbatim.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFC&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;﻿&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># strip BOM</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">text</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_canonical_json</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deterministic JSON: sorted keys, compact, ``str``-coerced fallbacks.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-        <span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span>
-    <span class="p">)</span>
-
-
 <div class="viewcode-block" id="segment_id">
 <a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.segment_id">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">segment_id</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Content-derived id for a segment — ``sha256`` of its normalized content.</span>
 
-<span class="sd">    The id is ``sha256(normalize(text) + canonical_json(metadata))``. Because it</span>
-<span class="sd">    depends only on content, re-segmenting an unchanged document produces</span>
-<span class="sd">    identical ids — which is what makes ingestion idempotent (a re-run is a</span>
-<span class="sd">    no-op, not a duplicate). Pass ``metadata`` only when two segments could</span>
-<span class="sd">    share identical ``text`` yet must stay distinct (e.g. same boilerplate from</span>
-<span class="sd">    different sources).</span>
+<span class="sd">    The id is ``sha256(normalize(text) + canonical_json(metadata))`` — the</span>
+<span class="sd">    normalization and hashing primitives live in :mod:`ef.hashing`, the single</span>
+<span class="sd">    source of truth ``ef`` content-addresses through. Because the id depends</span>
+<span class="sd">    only on content, re-segmenting an unchanged document produces identical ids</span>
+<span class="sd">    — which is what makes ingestion idempotent (a re-run is a no-op, not a</span>
+<span class="sd">    duplicate). Pass ``metadata`` only when two segments could share identical</span>
+<span class="sd">    ``text`` yet must stay distinct (e.g. same boilerplate from different</span>
+<span class="sd">    sources).</span>
 
 <span class="sd">    &gt;&gt;&gt; segment_id(&#39;hello&#39;) == segment_id(&#39;hello&#39;)</span>
 <span class="sd">    True</span>
@@ -247,8 +229,8 @@
 <span class="sd">    &gt;&gt;&gt; segment_id(&#39;x&#39;, {&#39;source&#39;: &#39;a&#39;}) == segment_id(&#39;x&#39;, {&#39;source&#39;: &#39;b&#39;})</span>
 <span class="sd">    False</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="n">_normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">_canonical_json</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}))</span>
-    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">canonical_json</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}))</span>
+    <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
 
 
 

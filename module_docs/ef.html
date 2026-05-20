@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.4 documentation</title>
+  <title>ef &mdash; ef 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -73,10 +73,26 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.CachedEmbedder.normalized"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder.normalized</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ChangeDetectingCorpus"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeDetectingCorpus.diff"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus.diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeDetectingCorpus.scan"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus.scan()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ChangeEvent"><code class="docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeEvent.source_id"><code class="docutils literal notranslate"><span class="pre">ChangeEvent.source_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeEvent.kind"><code class="docutils literal notranslate"><span class="pre">ChangeEvent.kind</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeEvent.old_hash"><code class="docutils literal notranslate"><span class="pre">ChangeEvent.old_hash</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.ChangeEvent.new_hash"><code class="docutils literal notranslate"><span class="pre">ChangeEvent.new_hash</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ClusterIndex"><code class="docutils literal notranslate"><span class="pre">ClusterIndex</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ComponentRegistry"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.get_metadata"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.get_metadata()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.register"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.CorpusDiff.changed"><code class="docutils literal notranslate"><span class="pre">CorpusDiff.changed</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a><ul>
@@ -141,10 +157,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.approx_token_count"><code class="docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.as_corpus"><code class="docutils literal notranslate"><span class="pre">as_corpus()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.as_segment"><code class="docutils literal notranslate"><span class="pre">as_segment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
@@ -161,10 +179,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -237,6 +257,16 @@ dataclass convenience surface).</p></li>
 <li><p><a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a> — the dependency-injection seam.</p></li>
 <li><p>Composition helpers: <a class="reference internal" href="ef/segmenters.html#ef.segmenters.with_overlap" title="ef.segmenters.with_overlap"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_overlap()</span></code></a>,
 <a class="reference internal" href="ef/segmenters.html#ef.segmenters.hierarchical" title="ef.segmenters.hierarchical"><code class="xref py py-func docutils literal notranslate"><span class="pre">hierarchical()</span></code></a>, <a class="reference internal" href="ef/segmenters.html#ef.segmenters.materialise" title="ef.segmenters.materialise"><code class="xref py py-func docutils literal notranslate"><span class="pre">materialise()</span></code></a>.</p></li>
+</ul>
+<p>The <strong>corpus facade</strong> is <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s source layer (L0) — also always importable:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/corpus.html#ef.corpus.Corpus" title="ef.corpus.Corpus"><code class="xref py py-data docutils literal notranslate"><span class="pre">Corpus</span></code></a> / <a class="reference internal" href="ef/corpus.html#ef.corpus.Source" title="ef.corpus.Source"><code class="xref py py-data docutils literal notranslate"><span class="pre">Source</span></code></a> — the type aliases: a
+corpus is just a <code class="docutils literal notranslate"><span class="pre">MutableMapping[source_id,</span> <span class="pre">Source]</span></code> (any <code class="docutils literal notranslate"><span class="pre">dol</span></code> store).</p></li>
+<li><p><a class="reference internal" href="ef/corpus.html#ef.corpus.as_corpus" title="ef.corpus.as_corpus"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_corpus()</span></code></a> — the dependency-injection seam (<code class="docutils literal notranslate"><span class="pre">None</span></code> /
+mapping / directory path / iterable of sources → a corpus).</p></li>
+<li><p><a class="reference internal" href="ef/corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">content_hash()</span></code></a> — the content hash of a source.</p></li>
+<li><p><a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeDetectingCorpus" title="ef.corpus.ChangeDetectingCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a> — a corpus wrapper that detects and
+reports changes (<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeEvent" title="ef.corpus.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a> / <a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a>).</p></li>
 </ul>
 <p>Example — wrap a plain function and embed two strings:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -388,6 +418,141 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.ChangeDetectingCorpus">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ChangeDetectingCorpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_change</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeEvent" title="ef.corpus.ChangeEvent"><span class="pre">ChangeEvent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fingerprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/corpus.html#ChangeDetectingCorpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ChangeDetectingCorpus" title="Link to this definition"></a></dt>
+<dd><p>A corpus wrapper that content-hashes values and reports what changed.</p>
+<p>Wraps any inner corpus (a <code class="docutils literal notranslate"><span class="pre">MutableMapping[source_id,</span> <span class="pre">Source]</span></code>) and adds
+change detection <em>without</em> altering its mapping behavior — reads, writes and
+deletes pass straight through to the inner store. It is to a corpus what
+<a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a> is to an embedder: a
+transparent, composable layer.</p>
+<p>Changes are noticed two ways:</p>
+<ul class="simple">
+<li><p><strong>Through the wrapper.</strong> A <code class="docutils literal notranslate"><span class="pre">corpus[id]</span> <span class="pre">=</span> <span class="pre">source</span></code> or <code class="docutils literal notranslate"><span class="pre">del</span> <span class="pre">corpus[id]</span></code>
+that actually changes content fires the injected <code class="docutils literal notranslate"><span class="pre">on_change</span></code> callback
+with a <a class="reference internal" href="#ef.ChangeEvent" title="ef.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a>. Writing <em>identical</em> content is a no-op (no
+event) — the basis of idempotent ingestion.</p></li>
+<li><p><strong>Out of band.</strong> When the backing store is edited directly (a file
+changed on disk, an S3 object replaced), <a class="reference internal" href="#ef.ChangeDetectingCorpus.scan" title="ef.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> re-reads every
+source, compares hashes, fires events for what differs and returns a
+<a class="reference internal" href="#ef.CorpusDiff" title="ef.CorpusDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a>. <a class="reference internal" href="#ef.ChangeDetectingCorpus.diff" title="ef.ChangeDetectingCorpus.diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> runs the same comparison with no side
+effects.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">on_change</span></code> callback is the seam the downstream <code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code>
+plugs into: a <code class="docutils literal notranslate"><span class="pre">&quot;modified&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;deleted&quot;</span></code> event is exactly the trigger
+for a cascade invalidation.</p>
+<p>On construction a <em>baseline</em> is established: the current content hashes of
+the inner corpus are recorded silently (no events). Pass an already-populated
+<code class="docutils literal notranslate"><span class="pre">hashes</span></code> registry to instead resume from a persisted baseline — then call
+<a class="reference internal" href="#ef.ChangeDetectingCorpus.scan" title="ef.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> to reconcile any drift.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> – the inner corpus to wrap. Coerced via <a class="reference internal" href="#ef.as_corpus" title="ef.as_corpus"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_corpus()</span></code></a>, so a
+directory path / <code class="docutils literal notranslate"><span class="pre">dict</span></code> / iterable of sources / <code class="docutils literal notranslate"><span class="pre">None</span></code> all work.</p></li>
+<li><p><strong>on_change</strong> – called with each <a class="reference internal" href="#ef.ChangeEvent" title="ef.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a>. Defaults to a no-op.
+It should be cheap and not raise; an exception propagates to the
+caller <em>after</em> the corpus and registry are already consistent.</p></li>
+<li><p><strong>hashes</strong> – the hash registry — a <code class="docutils literal notranslate"><span class="pre">MutableMapping[source_id,</span> <span class="pre">str]</span></code> of the
+last-known content hash per source. Injectable so it can be
+persisted (e.g. a <code class="docutils literal notranslate"><span class="pre">dol</span></code> store); defaults to an in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code>.
+If passed already-populated it is trusted as the baseline.</p></li>
+<li><p><strong>content_keys</strong> – forwarded to <a class="reference internal" href="#ef.content_hash" title="ef.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">content_hash()</span></code></a> — metadata keys that
+participate in the hash.</p></li>
+<li><p><strong>fingerprint</strong> – an optional cheap <code class="docutils literal notranslate"><span class="pre">source_id</span> <span class="pre">-&gt;</span> <span class="pre">Hashable</span></code> callback (an
+mtime / etag prefilter). When given, <a class="reference internal" href="#ef.ChangeDetectingCorpus.scan" title="ef.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> / <a class="reference internal" href="#ef.ChangeDetectingCorpus.diff" title="ef.ChangeDetectingCorpus.diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a>
+skip re-hashing a source whose fingerprint is unchanged. The
+content hash always remains the source of truth — the fingerprint
+is only a speed optimization, never trusted to <em>declare</em> a change.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">backing</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;two&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus</span> <span class="o">=</span> <span class="n">ChangeDetectingCorpus</span><span class="p">(</span><span class="n">backing</span><span class="p">)</span>   <span class="c1"># baseline adopts &#39;a&#39; and &#39;b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">backing</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ONE&#39;</span>                      <span class="c1"># edited behind the wrapper&#39;s back</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">backing</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;three&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">backing</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">added</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">modified</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">deleted</span><span class="p">)</span>
+<span class="go">((&#39;c&#39;,), (&#39;a&#39;,), (&#39;b&#39;,))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.ChangeDetectingCorpus.diff">
+<span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><span class="pre">CorpusDiff</span></a></span></span><a class="reference internal" href="../_modules/ef/corpus.html#ChangeDetectingCorpus.diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ChangeDetectingCorpus.diff" title="Link to this definition"></a></dt>
+<dd><p>Compare current corpus content against the registry — <strong>no side effects</strong>.</p>
+<p>Detects out-of-band edits (changes made to the backing store directly)
+without firing events or updating the registry. <a class="reference internal" href="#ef.ChangeDetectingCorpus.scan" title="ef.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> is the
+effectful counterpart.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.ChangeDetectingCorpus.scan">
+<span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><span class="pre">CorpusDiff</span></a></span></span><a class="reference internal" href="../_modules/ef/corpus.html#ChangeDetectingCorpus.scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ChangeDetectingCorpus.scan" title="Link to this definition"></a></dt>
+<dd><p>Reconcile the registry with the corpus, fire events, return the diff.</p>
+<p>Use this to pick up <strong>out-of-band</strong> edits — changes made to the backing
+store directly rather than through this wrapper. Every detected change
+fires a <a class="reference internal" href="#ef.ChangeEvent" title="ef.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a> and the registry (and fingerprints) are
+advanced to the new state, so a second <a class="reference internal" href="#ef.ChangeDetectingCorpus.scan" title="ef.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> with nothing
+further changed is a no-op. <a class="reference internal" href="#ef.ChangeDetectingCorpus.diff" title="ef.ChangeDetectingCorpus.diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diff()</span></code></a> is the side-effect-free version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.ChangeEvent">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ChangeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'added'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'modified'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'deleted'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/corpus.html#ChangeEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ChangeEvent" title="Link to this definition"></a></dt>
+<dd><p>A single detected change to a source in a corpus.</p>
+<p>Emitted by <a class="reference internal" href="#ef.ChangeDetectingCorpus" title="ef.ChangeDetectingCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a> to its <code class="docutils literal notranslate"><span class="pre">on_change</span></code> callback.
+<code class="docutils literal notranslate"><span class="pre">old_hash</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> for an <code class="docutils literal notranslate"><span class="pre">&quot;added&quot;</span></code> event, <code class="docutils literal notranslate"><span class="pre">new_hash</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>
+for a <code class="docutils literal notranslate"><span class="pre">&quot;deleted&quot;</span></code> one.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.ChangeEvent.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><a class="headerlink" href="#ef.ChangeEvent.source_id" title="Link to this definition"></a></dt>
+<dd><p>the key of the source that changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.ChangeEvent.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><a class="headerlink" href="#ef.ChangeEvent.kind" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">&quot;added&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;modified&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;deleted&quot;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Literal[‘added’, ‘modified’, ‘deleted’]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.ChangeEvent.old_hash">
+<span class="sig-name descname"><span class="pre">old_hash</span></span><a class="headerlink" href="#ef.ChangeEvent.old_hash" title="Link to this definition"></a></dt>
+<dd><p>the source’s previous content hash, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.ChangeEvent.new_hash">
+<span class="sig-name descname"><span class="pre">new_hash</span></span><a class="headerlink" href="#ef.ChangeEvent.new_hash" title="Link to this definition"></a></dt>
+<dd><p>the source’s new content hash, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ef.ClusterIndex">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ClusterIndex</span></span><a class="headerlink" href="#ef.ClusterIndex" title="Link to this definition"></a></dt>
@@ -425,6 +590,28 @@ additional metadata about each component.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.CorpusDiff">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">CorpusDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">added</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deleted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unchanged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/corpus.html#CorpusDiff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.CorpusDiff" title="Link to this definition"></a></dt>
+<dd><p>The result of comparing a corpus’s content against known content hashes.</p>
+<p>The four fields partition the corpus’s source ids; each is a sorted tuple,
+so a <a class="reference internal" href="#ef.CorpusDiff" title="ef.CorpusDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a> is deterministic and JSON-friendly. Truthiness
+reports whether <em>anything</em> changed.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">CorpusDiff</span><span class="p">(</span><span class="n">added</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,),</span> <span class="n">modified</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">changed</span>
+<span class="go">(True, (&#39;b&#39;, &#39;a&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">CorpusDiff</span><span class="p">(</span><span class="n">unchanged</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.CorpusDiff.changed">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">changed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.CorpusDiff.changed" title="Link to this definition"></a></dt>
+<dd><p>The source ids that are new or modified — the set to (re-)materialize.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1139,6 +1326,44 @@ a segmenter when an exact count matters.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.as_corpus">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">as_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/corpus.html#as_corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.as_corpus" title="Link to this definition"></a></dt>
+<dd><p>Normalize <code class="docutils literal notranslate"><span class="pre">x</span></code> into a corpus (<code class="docutils literal notranslate"><span class="pre">MutableMapping[source_id,</span> <span class="pre">Source]</span></code>).</p>
+<p>The single dependency-injection seam through which every <code class="docutils literal notranslate"><span class="pre">ef</span></code> entry point
+accepts a user-supplied corpus — the mirror of
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_embedder()</span></code></a> and
+<a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a>. Accepts, in order:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> — a fresh empty in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code>;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> — returned <strong>unchanged</strong> (a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, a <code class="docutils literal notranslate"><span class="pre">dol</span></code> store,
+another corpus: it already <em>is</em> a corpus);</p></li>
+<li><p>a directory path (<code class="docutils literal notranslate"><span class="pre">str</span></code> / <code class="docutils literal notranslate"><span class="pre">os.PathLike</span></code> naming an existing
+directory) — a <code class="docutils literal notranslate"><span class="pre">dol</span></code> filesystem store of the text files under it
+(<code class="docutils literal notranslate"><span class="pre">dol</span></code> is imported lazily; only this branch needs it);</p></li>
+<li><p>an iterable of sources (strings or mappings) — an in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code> keyed
+by each source’s <a class="reference internal" href="#ef.content_hash" title="ef.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">content_hash()</span></code></a> (content-addressed, so duplicate
+sources collapse to one entry).</p></li>
+</ol>
+<p>Extra <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> are forwarded to the <code class="docutils literal notranslate"><span class="pre">dol</span></code> filesystem store (the
+directory branch only) and ignored otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a non-directory string, or none of the above.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">as_corpus</span><span class="p">()</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">as_corpus</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">})</span>                 <span class="c1"># a mapping passes straight through</span>
+<span class="go">{&#39;a&#39;: &#39;x&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">as_corpus</span><span class="p">([</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="go">[&#39;alpha&#39;, &#39;beta&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">as_corpus</span><span class="p">([</span><span class="s1">&#39;dup&#39;</span><span class="p">,</span> <span class="s1">&#39;dup&#39;</span><span class="p">]))</span>        <span class="c1"># content-addressed: duplicates collapse</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.as_embedder">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">as_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#as_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.as_embedder" title="Link to this definition"></a></dt>
 <dd><p>Normalize <code class="docutils literal notranslate"><span class="pre">x</span></code> into an <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — the DI seam.</p>
@@ -1247,6 +1472,62 @@ inner’s <code class="docutils literal notranslate"><span class="pre">model_id<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span> <span class="o">==</span> <span class="n">k2</span>  <span class="c1"># input_type participates</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;m@8/&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.content_hash">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">content_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ef/corpus.html#content_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.content_hash" title="Link to this definition"></a></dt>
+<dd><p>Content hash of a source document — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of its normalized content.</p>
+<p>This is the basis of change detection: re-reading an unchanged source
+yields an identical hash, so a refresh that finds the same hash does
+nothing. Hashing <em>normalized</em> content (NFC, no BOM, <code class="docutils literal notranslate"><span class="pre">\n</span></code> line endings —
+see <a class="reference internal" href="ef/hashing.html#module-ef.hashing" title="ef.hashing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.hashing</span></code></a>) means cosmetic encoding differences never look like
+a change.</p>
+<p>The treatment of a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> source is deliberate:</p>
+<ul class="simple">
+<li><p>a plain <code class="docutils literal notranslate"><span class="pre">str</span></code> source — the hash covers the text;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> with a <code class="docutils literal notranslate"><span class="pre">text</span></code> key — the hash covers <code class="docutils literal notranslate"><span class="pre">source['text']</span></code>
+<strong>only</strong>. A change to title, tags, ACL or any other metadata does <em>not</em>
+change the hash, so it never triggers a spurious re-segment/re-embed
+(embedding is the pipeline’s most expensive step). Name the metadata keys
+that <em>do</em> feed downstream in <code class="docutils literal notranslate"><span class="pre">content_keys</span></code> and changes to those keys
+will be detected;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> <em>without</em> a <code class="docutils literal notranslate"><span class="pre">text</span></code> key — treated as a structured document
+and hashed via canonical (sorted-key) JSON of the whole mapping;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> — hashed raw (no text normalization is possible pre-parse).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – a <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes</span></code>, or a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> (ideally with a <code class="docutils literal notranslate"><span class="pre">text</span></code>
+key).</p></li>
+<li><p><strong>content_keys</strong> – metadata keys whose values join the text in the hash.
+Each key is looked up at the top level of <code class="docutils literal notranslate"><span class="pre">source</span></code> or inside a
+<code class="docutils literal notranslate"><span class="pre">source['metadata']</span></code> sub-mapping. Use this <em>only</em> for metadata
+that genuinely affects the L1–L4 pipeline (e.g. a title prepended
+to the text before embedding); key order does not matter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not a <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes</span></code> or <code class="docutils literal notranslate"><span class="pre">Mapping</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\r\n</span><span class="s1">b&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\n</span><span class="s1">b&#39;</span><span class="p">)</span>   <span class="c1"># line endings normalized</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>                <span class="c1"># metadata ignored by default</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">content_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">content_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">])</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_hash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;body&#39;</span><span class="p">})</span> <span class="o">==</span> <span class="n">content_hash</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>  <span class="c1"># wrapper is transparent</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -1443,12 +1724,14 @@ embedder’s identity — set it once here, not per call.</p></li>
 <dt class="sig sig-object py" id="ef.segment_id">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">segment_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ef/segments.html#segment_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.segment_id" title="Link to this definition"></a></dt>
 <dd><p>Content-derived id for a segment — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of its normalized content.</p>
-<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256(normalize(text)</span> <span class="pre">+</span> <span class="pre">canonical_json(metadata))</span></code>. Because it
-depends only on content, re-segmenting an unchanged document produces
-identical ids — which is what makes ingestion idempotent (a re-run is a
-no-op, not a duplicate). Pass <code class="docutils literal notranslate"><span class="pre">metadata</span></code> only when two segments could
-share identical <code class="docutils literal notranslate"><span class="pre">text</span></code> yet must stay distinct (e.g. same boilerplate from
-different sources).</p>
+<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256(normalize(text)</span> <span class="pre">+</span> <span class="pre">canonical_json(metadata))</span></code> — the
+normalization and hashing primitives live in <a class="reference internal" href="ef/hashing.html#module-ef.hashing" title="ef.hashing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.hashing</span></code></a>, the single
+source of truth <code class="docutils literal notranslate"><span class="pre">ef</span></code> content-addresses through. Because the id depends
+only on content, re-segmenting an unchanged document produces identical ids
+— which is what makes ingestion idempotent (a re-run is a no-op, not a
+duplicate). Pass <code class="docutils literal notranslate"><span class="pre">metadata</span></code> only when two segments could share identical
+<code class="docutils literal notranslate"><span class="pre">text</span></code> yet must stay distinct (e.g. same boilerplate from different
+sources).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">)</span>

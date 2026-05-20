@@ -4,10 +4,12 @@
 
    module_docs/ef
    module_docs/ef/base
+   module_docs/ef/corpus
    module_docs/ef/dag
    module_docs/ef/embedder_adapters
    module_docs/ef/embedder_wrappers
    module_docs/ef/embedders
+   module_docs/ef/hashing
    module_docs/ef/plugins
    module_docs/ef/plugins/imbed_plugin
    module_docs/ef/plugins/simple_plugin
