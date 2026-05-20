@@ -380,8 +380,7 @@ def embed_length_sorted(
         encoded = np.asarray(encode([t for _, t in batch]), dtype=np.float32)
         if encoded.shape[0] != len(batch):
             raise EmbedderError(
-                f"encode returned {encoded.shape[0]} vectors for "
-                f"{len(batch)} texts"
+                f"encode returned {encoded.shape[0]} vectors for {len(batch)} texts"
             )
         for (orig_idx, _), vector in zip(batch, encoded):
             vectors[orig_idx] = vector

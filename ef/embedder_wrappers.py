@@ -335,9 +335,7 @@ class MultiEmbedder(BaseEmbedder):
         out: np.ndarray | None = None
         for route_key, (positions, grp_texts) in groups.items():
             embedded = np.asarray(
-                self._route_for(route_key)(
-                    grp_texts, input_type=input_type, **backend
-                ),
+                self._route_for(route_key)(grp_texts, input_type=input_type, **backend),
                 dtype=np.float32,
             )
             if out is None:
