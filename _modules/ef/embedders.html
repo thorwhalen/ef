@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.embedders &mdash; ef 0.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=360bc84d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.embedders</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.embedders</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The ``Embedder`` facade — ``ef``&#39;s embed layer (L3).</span>
+
+<span class="sd">An *embedder* is, fundamentally, a batch callable::</span>
+
+<span class="sd">    Iterable[str] -&gt; ndarray of shape (n, dim)</span>
+
+<span class="sd">Everything else — batching, async/batch-APIs, normalization, task hints,</span>
+<span class="sd">caching, retries — is *layered scaffolding* over that one contract.</span>
+
+<span class="sd">This module defines the small, structural core of the facade:</span>
+
+<span class="sd">- :class:`Embedder` — the ``@runtime_checkable`` protocol (a callable plus four</span>
+<span class="sd">  introspectable metadata attributes). It is a protocol, **not** an ABC: any</span>
+<span class="sd">  object with the right shape *is* an embedder.</span>
+<span class="sd">- :class:`BatchHandle` / :func:`ready_handle` — a uniform poll/result shape that</span>
+<span class="sd">  collapses synchronous embedding and provider Batch APIs into one thing.</span>
+<span class="sd">- :class:`BaseEmbedder` — an implementation convenience base (supplies a default</span>
+<span class="sd">  synchronous :meth:`~BaseEmbedder.embed_batch` and a ``repr``). Subclassing it</span>
+<span class="sd">  is optional; satisfying :class:`Embedder` structurally is what matters.</span>
+<span class="sd">- :class:`FunctionEmbedder` — wraps a bare ``texts -&gt; vectors`` callable into a</span>
+<span class="sd">  full :class:`Embedder` (the bridge for e.g. ``imbed``&#39;s embedder functions).</span>
+<span class="sd">- :func:`cache_key` — a deterministic key pinning everything that changes a</span>
+<span class="sd">  vector, for :class:`~ef.embedder_wrappers.CachedEmbedder`.</span>
+<span class="sd">- :func:`embed_length_sorted` — length-sorted batching with order</span>
+<span class="sd">  reconstruction; a 5–10× throughput win that ``ef`` owns so users never have</span>
+<span class="sd">  to think about padding or sort order.</span>
+
+<span class="sd">Composition wrappers live in :mod:`ef.embedder_wrappers`; concrete provider /</span>
+<span class="sd">local adapters and the :func:`~ef.embedder_adapters.as_embedder` dependency</span>
+<span class="sd">-injection seam live in :mod:`ef.embedder_adapters`.</span>
+
+<span class="sd">Example — wrap a plain function and embed two strings:</span>
+
+<span class="sd">&gt;&gt;&gt; import numpy as np</span>
+<span class="sd">&gt;&gt;&gt; def toy(texts):  # a bare callable: list[str] -&gt; array(n, 3)</span>
+<span class="sd">...     return np.array([[len(t), t.count(&#39; &#39;), 1.0] for t in texts])</span>
+<span class="sd">&gt;&gt;&gt; embedder = FunctionEmbedder(toy, model_id=&#39;toy@3&#39;)</span>
+<span class="sd">&gt;&gt;&gt; vectors = embedder([&#39;hello&#39;, &#39;a b c&#39;])</span>
+<span class="sd">&gt;&gt;&gt; vectors.shape</span>
+<span class="sd">(2, 3)</span>
+<span class="sd">&gt;&gt;&gt; embedder.dim  # inferred on first call</span>
+<span class="sd">3</span>
+<span class="sd">&gt;&gt;&gt; isinstance(embedder, Embedder)</span>
+<span class="sd">True</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Protocol</span><span class="p">,</span>
+    <span class="n">Sequence</span><span class="p">,</span>
+    <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;InputType&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BatchStatus&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BatchHandle&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ready_handle&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Embedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BaseEmbedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FunctionEmbedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EmbedderError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cache_key&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;embed_length_sorted&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Vocabulary</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="c1">#: Canonical embedding-task vocabulary. Every provider names the same</span>
+<span class="c1">#: distinction differently (``input_type`` / ``task_type`` / ``task`` /</span>
+<span class="c1">#: ``prompt_name``); ``ef`` defines *one* canonical set and each adapter</span>
+<span class="c1">#: translates it at its boundary. This is the facade&#39;s single most valuable</span>
+<span class="c1">#: normalization. Backends that ignore the hint advertise an empty</span>
+<span class="c1">#: ``honored_input_types``.</span>
+<span class="n">InputType</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;document&quot;</span><span class="p">,</span> <span class="s2">&quot;classification&quot;</span><span class="p">,</span> <span class="s2">&quot;clustering&quot;</span><span class="p">]</span>
+
+<span class="c1">#: The lifecycle states of a :class:`BatchHandle`.</span>
+<span class="n">BatchStatus</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="s2">&quot;failed&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="EmbedderError">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.EmbedderError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbedderError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised for embedder-specific failures (shape mismatch, batch job failure).&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># BatchHandle — sync and provider Batch APIs, one shape</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="BatchHandle">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.BatchHandle">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchHandle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A poll/result handle over an in-flight (or already-finished) embed job.</span>
+
+<span class="sd">    Batch-and-poll is just a special case of async. A synchronous backend</span>
+<span class="sd">    returns a *ready* handle (via :func:`ready_handle`); a provider Batch API</span>
+<span class="sd">    returns a genuinely pending one. Either way the caller sees one shape.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        poll: ``() -&gt; BatchStatus`` — non-blocking status check.</span>
+<span class="sd">        result: ``() -&gt; np.ndarray`` — blocks until done, returns ``(n, dim)``.</span>
+<span class="sd">        cancel: ``() -&gt; None`` — best-effort cancellation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">poll</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">BatchStatus</span><span class="p">]</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="n">cancel</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ready_handle">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.ready_handle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ready_handle</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchHandle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap an already-computed array in a finished :class:`BatchHandle`.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; h = ready_handle(np.zeros((2, 3)))</span>
+<span class="sd">    &gt;&gt;&gt; h.poll()</span>
+<span class="sd">    &#39;done&#39;</span>
+<span class="sd">    &gt;&gt;&gt; h.result().shape</span>
+<span class="sd">    (2, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BatchHandle</span><span class="p">(</span><span class="n">poll</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">arr</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The Embedder protocol</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="Embedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.Embedder">[docs]</a>
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Embedder</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Structural type for an embedder: a batch callable plus metadata.</span>
+
+<span class="sd">    An embedder maps ``Iterable[str]`` to an ``ndarray`` of shape ``(n, dim)``.</span>
+<span class="sd">    The four metadata attributes are the single source of truth *on the object</span>
+<span class="sd">    itself* — no global registry, no config singleton.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        model_id: Identity that bakes in everything affecting the vector —</span>
+<span class="sd">            ``&quot;openai:text-embedding-3-large@1024&quot;`` (``provider:model@dim``).</span>
+<span class="sd">            Works directly as a cache namespace.</span>
+<span class="sd">        dim: Output dimensionality. May be ``None`` until first call for</span>
+<span class="sd">            lazily-probed embedders (e.g. a bare callable of unknown width).</span>
+<span class="sd">        normalized: ``True`` iff ``||v|| == 1`` by construction.</span>
+<span class="sd">        honored_input_types: The :data:`InputType` values this embedder acts on</span>
+<span class="sd">            (empty if it ignores the task hint).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">normalized</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">honored_input_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Embed ``texts`` synchronously, returning ``(n, dim)`` float32.&quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+<div class="viewcode-block" id="Embedder.embed_batch">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.Embedder.embed_batch">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">embed_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchHandle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Submit an embed job, returning a :class:`BatchHandle`.&quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BaseEmbedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.BaseEmbedder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseEmbedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation base for embedders (optional — :class:`Embedder` is structural).</span>
+
+<span class="sd">    Subclasses set ``model_id`` / ``dim`` / ``normalized`` /</span>
+<span class="sd">    ``honored_input_types`` and implement ``__call__``; they then satisfy</span>
+<span class="sd">    :class:`Embedder` structurally. In return they get:</span>
+
+<span class="sd">    - a default *synchronous* :meth:`embed_batch` (``ready_handle(self(...))``) —</span>
+<span class="sd">      override it only for a genuinely async provider Batch API;</span>
+<span class="sd">    - a readable ``repr``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">honored_input_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+<div class="viewcode-block" id="BaseEmbedder.embed_batch">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.BaseEmbedder.embed_batch">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">embed_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchHandle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Default: embed synchronously and return a finished handle.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ready_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">,</span> <span class="o">**</span><span class="n">backend</span><span class="p">))</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;model_id=</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;model_id&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;dim=</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dim&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># FunctionEmbedder — wrap a bare callable</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="FunctionEmbedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.FunctionEmbedder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FunctionEmbedder</span><span class="p">(</span><span class="n">BaseEmbedder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Promote a bare ``texts -&gt; vectors`` callable to a full :class:`Embedder`.</span>
+
+<span class="sd">    This is the bridge for embedder *functions* that carry no metadata — most</span>
+<span class="sd">    importantly ``imbed``&#39;s registered embedders. The wrapped callable is asked</span>
+<span class="sd">    only for ``func(texts)`` (it knows nothing of ``input_type``); the wrapper</span>
+<span class="sd">    advertises ``honored_input_types=()`` accordingly.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func: A callable mapping a list of strings to an array-like of shape</span>
+<span class="sd">            ``(n, dim)`` (a numpy array or a nested sequence — both accepted).</span>
+<span class="sd">        model_id: Vector-identity string. Defaults to ``&quot;function:&lt;name&gt;&quot;``.</span>
+<span class="sd">        dim: Output width. If ``None`` it is inferred (and frozen) on the first</span>
+<span class="sd">            call.</span>
+<span class="sd">        normalized: Whether ``func`` already returns unit vectors.</span>
+<span class="sd">        honored_input_types: Task hints ``func`` honors (usually none).</span>
+<span class="sd">        pass_backend: If ``True`` (default), forward any ``**backend`` kwargs to</span>
+<span class="sd">            ``func``; set ``False`` for callables with a strict ``(texts,)``</span>
+<span class="sd">            signature.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; e = FunctionEmbedder(lambda ts: np.ones((len(ts), 4)), model_id=&#39;ones@4&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; e([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]).shape</span>
+<span class="sd">    (3, 4)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">honored_input_types</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">InputType</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">pass_backend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FunctionEmbedder needs a callable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="n">model_id</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;function:</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;__name__&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">repr</span><span class="p">(</span><span class="n">func</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span> <span class="o">=</span> <span class="n">normalized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">honored_input_types</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">honored_input_types</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pass_backend</span> <span class="o">=</span> <span class="n">pass_backend</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_func</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">backend</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pass_backend</span> <span class="ow">and</span> <span class="n">backend</span><span class="p">)</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_func</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">: expected a 2-D (n, dim) output, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got an array of shape </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">: got </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> vectors for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span><span class="si">}</span><span class="s2"> input texts&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">: expected dim </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">arr</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Caching primitive</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="cache_key">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.cache_key">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cache_key</span><span class="p">(</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deterministic cache key for one ``(embedder, text, input_type)`` triple.</span>
+
+<span class="sd">    The key pins everything that changes the resulting vector. ``model_id`` is</span>
+<span class="sd">    the embedder-identity SSOT — it already bakes in provider, model and ``dim``</span>
+<span class="sd">    — so ``dim`` is *not* keyed separately (keying it would also break</span>
+<span class="sd">    :class:`FunctionEmbedder`&#39;s lazy ``dim`` inference). ``normalized`` is keyed</span>
+<span class="sd">    because a :class:`~ef.embedder_wrappers.NormalizingEmbedder` shares its</span>
+<span class="sd">    inner&#39;s ``model_id`` yet yields different vectors.</span>
+
+<span class="sd">    Returns ``&quot;&lt;model_id&gt;/&lt;sha256&gt;&quot;`` — a namespaced key safe for any</span>
+<span class="sd">    ``MutableMapping`` store.</span>
+
+<span class="sd">    &gt;&gt;&gt; class _E:</span>
+<span class="sd">    ...     model_id, normalized = &#39;m@8&#39;, False</span>
+<span class="sd">    &gt;&gt;&gt; k1 = cache_key(_E(), &#39;hello&#39;, &#39;document&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; k2 = cache_key(_E(), &#39;hello&#39;, &#39;query&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; k1 == k2  # input_type participates</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; k1.startswith(&#39;m@8/&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">embedder</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">embedder</span><span class="o">.</span><span class="n">normalized</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">input_type</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">embedder</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">digest</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Throughput: length-sorted batching</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="embed_length_sorted">
+<a class="viewcode-back" href="../../module_docs/ef/embedders.html#ef.embed_length_sorted">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">embed_length_sorted</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">encode</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode ``texts`` in length-sorted batches; return vectors in caller order.</span>
+
+<span class="sd">    Transformer self-attention is O(n²) in sequence length and a batch is padded</span>
+<span class="sd">    to its longest member, so grouping similar-length texts together avoids</span>
+<span class="sd">    wasted compute — a 5–10× speedup on skewed corpora. ``ef`` owns this so</span>
+<span class="sd">    callers never sort, pad, or un-sort themselves.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        texts: The strings to embed.</span>
+<span class="sd">        encode: Maps a list of strings to an array-like of shape ``(k, dim)``.</span>
+<span class="sd">        batch_size: Texts per call to ``encode``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A ``float32`` array of shape ``(len(texts), dim)`` in the *original*</span>
+<span class="sd">        order of ``texts``.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; def enc(batch):  # toy encoder: vector = [length]</span>
+<span class="sd">    ...     return np.array([[len(t)] for t in batch], dtype=np.float32)</span>
+<span class="sd">    &gt;&gt;&gt; out = embed_length_sorted([&#39;aaa&#39;, &#39;a&#39;, &#39;aaaaa&#39;, &#39;aa&#39;], enc, batch_size=2)</span>
+<span class="sd">    &gt;&gt;&gt; out.ravel().tolist()  # order preserved despite internal sorting</span>
+<span class="sd">    [3.0, 1.0, 5.0, 2.0]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">texts</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">it</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">vectors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">]</span>
+        <span class="n">encoded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">encode</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">encoded</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;encode returned </span><span class="si">{</span><span class="n">encoded</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> vectors for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span><span class="si">}</span><span class="s2"> texts&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">orig_idx</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">encoded</span><span class="p">):</span>
+            <span class="n">vectors</span><span class="p">[</span><span class="n">orig_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

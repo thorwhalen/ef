@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.embedder_wrappers &mdash; ef 0.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=360bc84d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.embedders" href="embedders.html" />
+    <link rel="prev" title="ef.embedder_adapters" href="embedder_adapters.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.embedder_wrappers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedder_wrappers.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.CachedEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder.honored_input_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.CachedEmbedder.normalized"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder.normalized</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedder_wrappers.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedder_wrappers.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.NormalizingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder.honored_input_types</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy.max_attempts"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_attempts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy.base_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.base_delay</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy.max_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_delay</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy.jitter"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.jitter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy.retry_on"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.retry_on</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.retry_on()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedder_wrappers.RetryingEmbedder"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder.honored_input_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.embedder_wrappers.RetryingEmbedder.normalized"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder.normalized</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.embedder_wrappers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/embedder_wrappers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.embedder_wrappers">
+<span id="ef-embedder-wrappers"></span><h1>ef.embedder_wrappers<a class="headerlink" href="#module-ef.embedder_wrappers" title="Link to this heading"></a></h1>
+<p>Composition wrappers for <a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>Each wrapper <em>takes an inner embedder and is itself an embedder</em> — they compose
+freely (<code class="docutils literal notranslate"><span class="pre">CachedEmbedder(RetryingEmbedder(NormalizingEmbedder(inner)),</span> <span class="pre">store)</span></code>).
+This keeps the core protocol tiny: caching, retries, routing and normalization
+are opt-in layers, not protocol obligations.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a> — memoize vectors in any <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> store.</p></li>
+<li><p><a class="reference internal" href="#ef.embedder_wrappers.RetryingEmbedder" title="ef.embedder_wrappers.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a> — exponential backoff + jitter, retryable-aware.</p></li>
+<li><p><a class="reference internal" href="#ef.embedder_wrappers.MultiEmbedder" title="ef.embedder_wrappers.MultiEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a> — route texts to different embedders by a predicate.</p></li>
+<li><p><a class="reference internal" href="#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a> — L2-normalize an inner embedder’s output.</p></li>
+</ul>
+<p>All four delegate their metadata (<code class="docutils literal notranslate"><span class="pre">model_id</span></code> / <code class="docutils literal notranslate"><span class="pre">dim</span></code> / <code class="docutils literal notranslate"><span class="pre">normalized</span></code> /
+<code class="docutils literal notranslate"><span class="pre">honored_input_types</span></code>) to the inner embedder, except where the wrapper changes
+the vector (<a class="reference internal" href="#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a> reports <code class="docutils literal notranslate"><span class="pre">normalized=True</span></code>).</p>
+<p>The inner argument must already be an <a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>; use
+<a class="reference internal" href="embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">ef.embedder_adapters.as_embedder()</span></code></a> to coerce a string / callable first.</p>
+<p>Example — cache an embedder so repeats are free:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionEmbedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">toy</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">calls</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cached</span> <span class="o">=</span> <span class="n">CachedEmbedder</span><span class="p">(</span><span class="n">FunctionEmbedder</span><span class="p">(</span><span class="n">toy</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;toy@3&#39;</span><span class="p">),</span> <span class="n">store</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">cached</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">cached</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>   <span class="c1"># &#39;b&#39; served from cache</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calls</span>                    <span class="c1"># &#39;b&#39; embedded once</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.CachedEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedder_wrappers.</span></span><span class="sig-name descname"><span class="pre">CachedEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_queries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedder_wrappers.html#CachedEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedder_wrappers.CachedEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Memoize embeddings in a <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> store.</p>
+<p>On each call, texts already in the store are served from it; only the misses
+are forwarded to the inner embedder (in a single batch) and then written
+back. The store can be any <code class="docutils literal notranslate"><span class="pre">dol</span></code>-style mapping — an in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code>, a
+directory of <code class="docutils literal notranslate"><span class="pre">.npy</span></code> files, a key-value DB.</p>
+<p>Document embeddings are cached unconditionally; <em>query</em> embeddings are
+skipped by default (they are rarely repeated) — pass <code class="docutils literal notranslate"><span class="pre">cache_queries=True</span></code>
+to cache them too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inner</strong> – The embedder to memoize.</p></li>
+<li><p><strong>store</strong> – A <code class="docutils literal notranslate"><span class="pre">MutableMapping[str,</span> <span class="pre">ndarray]</span></code> keyed by <code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code>.</p></li>
+<li><p><strong>cache_queries</strong> – Whether to also cache <code class="docutils literal notranslate"><span class="pre">input_type=&quot;query&quot;</span></code> calls.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.CachedEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.embedder_wrappers.CachedEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.CachedEmbedder.normalized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#ef.embedder_wrappers.CachedEmbedder.normalized" title="Link to this definition"></a></dt>
+<dd><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.MultiEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedder_wrappers.</span></span><span class="sig-name descname"><span class="pre">MultiEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">routes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedder_wrappers.html#MultiEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedder_wrappers.MultiEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Route each text to one of several embedders by a predicate.</p>
+<p>Useful for domain-specific models (e.g. a code embedder for code, a prose
+embedder for prose). All routes must share the same <code class="docutils literal notranslate"><span class="pre">dim</span></code> — the output is
+a single <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code> array, with each row produced by its text’s route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>routes</strong> – <code class="docutils literal notranslate"><span class="pre">{route_key:</span> <span class="pre">Embedder}</span></code>.</p></li>
+<li><p><strong>predicate</strong> – <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">-&gt;</span> <span class="pre">route_key</span></code> — picks a route per text.</p></li>
+<li><p><strong>default</strong> – Embedder for texts whose <code class="docutils literal notranslate"><span class="pre">route_key</span></code> is not in <code class="docutils literal notranslate"><span class="pre">routes</span></code>
+(otherwise an unknown key raises <code class="xref py py-class docutils literal notranslate"><span class="pre">EmbedderError</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionEmbedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">short</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;s@2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">long</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;l@2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MultiEmbedder</span><span class="p">({</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">short</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="n">long</span><span class="p">},</span>
+<span class="gp">... </span>                  <span class="n">predicate</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="s1">&#39;s&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="s1">&#39;l&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">([</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[[0.0, 0.0], [1.0, 1.0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.NormalizingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedder_wrappers.</span></span><span class="sig-name descname"><span class="pre">NormalizingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedder_wrappers.html#NormalizingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedder_wrappers.NormalizingEmbedder" title="Link to this definition"></a></dt>
+<dd><p>L2-normalize an inner embedder’s output.</p>
+<p>Use this for MRL-truncated vectors (which lose unit norm when sliced to a
+smaller dimension) or any backend that does not normalize by construction.
+Reports <code class="docutils literal notranslate"><span class="pre">normalized=True</span></code>; <code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code> keys on <code class="docutils literal notranslate"><span class="pre">normalized</span></code>, so a
+normalized and an un-normalized view of the same model never collide in a
+shared cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inner</strong> – The embedder whose output to renormalize.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.NormalizingEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.embedder_wrappers.NormalizingEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedder_wrappers.</span></span><span class="sig-name descname"><span class="pre">RetryPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">max_attempts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">base_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">max_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">jitter:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.3,</span> <span class="pre">retry_on:</span> <span class="pre">~typing.Callable[[BaseException],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_default_is_retryable&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedder_wrappers.html#RetryPolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy" title="Link to this definition"></a></dt>
+<dd><p>Exponential-backoff retry policy for <a class="reference internal" href="#ef.embedder_wrappers.RetryingEmbedder" title="ef.embedder_wrappers.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy.max_attempts">
+<span class="sig-name descname"><span class="pre">max_attempts</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy.max_attempts" title="Link to this definition"></a></dt>
+<dd><p>Total tries (the first call counts as attempt 1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy.base_delay">
+<span class="sig-name descname"><span class="pre">base_delay</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy.base_delay" title="Link to this definition"></a></dt>
+<dd><p>Seconds before the first retry; doubles each attempt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy.max_delay">
+<span class="sig-name descname"><span class="pre">max_delay</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy.max_delay" title="Link to this definition"></a></dt>
+<dd><p>Upper bound on any single backoff sleep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy.jitter">
+<span class="sig-name descname"><span class="pre">jitter</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy.jitter" title="Link to this definition"></a></dt>
+<dd><p>Random fraction (<code class="docutils literal notranslate"><span class="pre">0..1</span></code>) of the delay added on top, to
+de-correlate concurrent clients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryPolicy.retry_on">
+<span class="sig-name descname"><span class="pre">retry_on</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryPolicy.retry_on" title="Link to this definition"></a></dt>
+<dd><p>Predicate deciding whether an exception is worth retrying.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[BaseException], bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">retry_on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Heuristic: retry transient failures (429, 5xx, connection/timeout).</p>
+<p>Per-request 400-class errors are <em>not</em> retried — the same request would fail
+identically. Recognizes the <code class="docutils literal notranslate"><span class="pre">status_code</span></code>/<code class="docutils literal notranslate"><span class="pre">status</span></code> attribute carried by
+most HTTP-client SDK exceptions (incl. the OpenAI SDK).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedder_wrappers.</span></span><span class="sig-name descname"><span class="pre">RetryingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inner:</span> <span class="pre">~ef.embedders.Embedder,</span> <span class="pre">policy:</span> <span class="pre">~ef.embedder_wrappers.RetryPolicy</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">sleep:</span> <span class="pre">~typing.Callable[[float],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">sleep&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedder_wrappers.html#RetryingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedder_wrappers.RetryingEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Retry an inner embedder’s calls on transient failures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inner</strong> – The embedder to guard.</p></li>
+<li><p><strong>policy</strong> – A <a class="reference internal" href="#ef.embedder_wrappers.RetryPolicy" title="ef.embedder_wrappers.RetryPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a> (sensible defaults if omitted).</p></li>
+<li><p><strong>sleep</strong> – The sleep function — injectable so tests run instantly.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryingEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryingEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.embedder_wrappers.RetryingEmbedder.normalized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#ef.embedder_wrappers.RetryingEmbedder.normalized" title="Link to this definition"></a></dt>
+<dd><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="embedder_adapters.html" class="btn btn-neutral float-left" title="ef.embedder_adapters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="embedders.html" class="btn btn-neutral float-right" title="ef.embedders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

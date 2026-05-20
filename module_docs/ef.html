@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.2 documentation</title>
+  <title>ef &mdash; ef 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=92734c54"></script>
+      <script src="../_static/documentation_options.js?v=360bc84d"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -50,10 +50,40 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ef</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.BaseEmbedder"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BaseEmbedder.embed_batch"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder.embed_batch()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.poll"><code class="docutils literal notranslate"><span class="pre">BatchHandle.poll</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.result"><code class="docutils literal notranslate"><span class="pre">BatchHandle.result</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.cancel"><code class="docutils literal notranslate"><span class="pre">BatchHandle.cancel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.CachedEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder.honored_input_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.CachedEmbedder.normalized"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder.normalized</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ClusterIndex"><code class="docutils literal notranslate"><span class="pre">ClusterIndex</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ComponentRegistry"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.get_metadata"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.get_metadata()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.ComponentRegistry.register"><code class="docutils literal notranslate"><span class="pre">ComponentRegistry.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.Embedder.model_id"><code class="docutils literal notranslate"><span class="pre">Embedder.model_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.Embedder.dim"><code class="docutils literal notranslate"><span class="pre">Embedder.dim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.Embedder.normalized"><code class="docutils literal notranslate"><span class="pre">Embedder.normalized</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.Embedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">Embedder.honored_input_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.Embedder.embed_batch"><code class="docutils literal notranslate"><span class="pre">Embedder.embed_batch()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.NormalizingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder.honored_input_types</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
@@ -79,12 +109,36 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.Projects.create_project"><code class="docutils literal notranslate"><span class="pre">Projects.create_project()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.max_attempts"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_attempts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.base_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.base_delay</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.max_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_delay</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.jitter"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.jitter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.retry_on"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.retry_on</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.retry_on()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.RetryingEmbedder"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder.honored_input_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RetryingEmbedder.normalized"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder.normalized</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.SegmentKey"><code class="docutils literal notranslate"><span class="pre">SegmentKey</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.openai_embedder"><code class="docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ef/base.html">ef.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -120,31 +174,144 @@
              
   <section id="module-ef">
 <span id="ef"></span><h1>ef<a class="headerlink" href="#module-ef" title="Link to this heading"></a></h1>
-<p>ef (Embedding Flow) - Lightweight framework for embedding pipelines.</p>
-<p>This package provides:
-- Easy project creation with flexible storage
-- Component registries as mapping stores
-- Automatic pipeline composition
-- Flexible “out of the box” for simple situations
-- Plugin system for adding production implementations</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">Project</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create project (works immediately with built-in components)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;my_project&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;memory&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add data</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="s1">&#39;doc1&#39;</span><span class="p">,</span> <span class="s1">&#39;Sample text to analyze&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create and run pipeline</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">clusterer</span><span class="o">=</span><span class="s1">&#39;simple_kmeans&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access persisted results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">embeddings</span><span class="p">)</span>
-<span class="go">1</span>
+<p>ef (Embedding Flow) — a facade for semantic-embeddings user journeys.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ef</span></code> makes the modern semantic-search pipeline — corpus, segmenter, embedder,
+vector store, retriever — usable with progressive disclosure: the light case
+(a list of strings, search in one or two lines) and the heavy case (huge
+corpora, many segmentations/embedders, varied sources and vector DBs) share one
+facade. <code class="docutils literal notranslate"><span class="pre">ef</span></code> is <em>not</em> RAG — it returns ranked segments; bring your own LLM.</p>
+<p>The <strong>embedder facade</strong> is the core surface and is always importable (it costs
+only numpy):</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — the structural protocol for a batch
+<code class="docutils literal notranslate"><span class="pre">Iterable[str]</span> <span class="pre">-&gt;</span> <span class="pre">ndarray(n,</span> <span class="pre">dim)</span></code> callable.</p></li>
+<li><p><a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_embedder()</span></code></a> — the dependency-injection seam
+(string / callable / URL / existing embedder → <code class="docutils literal notranslate"><span class="pre">Embedder</span></code>).</p></li>
+<li><p>Adapters: <a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.openai_embedder" title="ef.embedder_adapters.openai_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a>,
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder" title="ef.embedder_adapters.sentence_transformers_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a>,
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.http_embedder" title="ef.embedder_adapters.http_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">http_embedder()</span></code></a>.</p></li>
+<li><p>Composition wrappers: <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a>,
+<a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder" title="ef.embedder_wrappers.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>,
+<a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder" title="ef.embedder_wrappers.MultiEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a>,
+<a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a>.</p></li>
+</ul>
+<p>Example — wrap a plain function and embed two strings:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedder</span> <span class="o">=</span> <span class="n">as_embedder</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="k">lambda</span> <span class="n">texts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;len@1&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedder</span><span class="p">([</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;hi&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[5.0, 2.0]</span>
 </pre></div>
 </div>
+<p>The legacy embedding-<em>visualization</em> pipeline (<code class="docutils literal notranslate"><span class="pre">Project</span></code> / <code class="docutils literal notranslate"><span class="pre">Projects</span></code> —
+<code class="docutils literal notranslate"><span class="pre">segment</span> <span class="pre">→</span> <span class="pre">embed</span> <span class="pre">→</span> <span class="pre">planarize</span> <span class="pre">→</span> <span class="pre">cluster</span></code>) is being demoted to one secondary
+use case of the refactored <code class="docutils literal notranslate"><span class="pre">ef</span></code>. It needs the <code class="docutils literal notranslate"><span class="pre">full</span></code> / <code class="docutils literal notranslate"><span class="pre">imbed</span></code> extras and
+is imported best-effort: if those dependencies are absent, the embedder facade
+above still works.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.BaseEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">BaseEmbedder</span></span><a class="reference internal" href="../_modules/ef/embedders.html#BaseEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BaseEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Implementation base for embedders (optional — <a class="reference internal" href="#ef.Embedder" title="ef.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> is structural).</p>
+<p>Subclasses set <code class="docutils literal notranslate"><span class="pre">model_id</span></code> / <code class="docutils literal notranslate"><span class="pre">dim</span></code> / <code class="docutils literal notranslate"><span class="pre">normalized</span></code> /
+<code class="docutils literal notranslate"><span class="pre">honored_input_types</span></code> and implement <code class="docutils literal notranslate"><span class="pre">__call__</span></code>; they then satisfy
+<a class="reference internal" href="#ef.Embedder" title="ef.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> structurally. In return they get:</p>
+<ul class="simple">
+<li><p>a default <em>synchronous</em> <a class="reference internal" href="#ef.BaseEmbedder.embed_batch" title="ef.BaseEmbedder.embed_batch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">embed_batch()</span></code></a> (<code class="docutils literal notranslate"><span class="pre">ready_handle(self(...))</span></code>) —
+override it only for a genuinely async provider Batch API;</p></li>
+<li><p>a readable <code class="docutils literal notranslate"><span class="pre">repr</span></code>.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.BaseEmbedder.embed_batch">
+<span class="sig-name descname"><span class="pre">embed_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><span class="pre">BatchHandle</span></a></span></span><a class="reference internal" href="../_modules/ef/embedders.html#BaseEmbedder.embed_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BaseEmbedder.embed_batch" title="Link to this definition"></a></dt>
+<dd><p>Default: embed synchronously and return a finished handle.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.BatchHandle">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">BatchHandle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">poll:</span> <span class="pre">~typing.Callable[[],</span> <span class="pre">~typing.Literal['pending',</span> <span class="pre">'done',</span> <span class="pre">'failed']],</span> <span class="pre">result:</span> <span class="pre">~typing.Callable[[],</span> <span class="pre">~numpy.ndarray],</span> <span class="pre">cancel:</span> <span class="pre">~typing.Callable[[],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">BatchHandle.&lt;lambda&gt;&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#BatchHandle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BatchHandle" title="Link to this definition"></a></dt>
+<dd><p>A poll/result handle over an in-flight (or already-finished) embed job.</p>
+<p>Batch-and-poll is just a special case of async. A synchronous backend
+returns a <em>ready</em> handle (via <a class="reference internal" href="#ef.ready_handle" title="ef.ready_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">ready_handle()</span></code></a>); a provider Batch API
+returns a genuinely pending one. Either way the caller sees one shape.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.BatchHandle.poll">
+<span class="sig-name descname"><span class="pre">poll</span></span><a class="headerlink" href="#ef.BatchHandle.poll" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">BatchStatus</span></code> — non-blocking status check.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[], Literal[‘pending’, ‘done’, ‘failed’]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.BatchHandle.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#ef.BatchHandle.result" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">np.ndarray</span></code> — blocks until done, returns <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[], numpy.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.BatchHandle.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><a class="headerlink" href="#ef.BatchHandle.cancel" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code> — best-effort cancellation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[], None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.CachedEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">CachedEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_queries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#CachedEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.CachedEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Memoize embeddings in a <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> store.</p>
+<p>On each call, texts already in the store are served from it; only the misses
+are forwarded to the inner embedder (in a single batch) and then written
+back. The store can be any <code class="docutils literal notranslate"><span class="pre">dol</span></code>-style mapping — an in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code>, a
+directory of <code class="docutils literal notranslate"><span class="pre">.npy</span></code> files, a key-value DB.</p>
+<p>Document embeddings are cached unconditionally; <em>query</em> embeddings are
+skipped by default (they are rarely repeated) — pass <code class="docutils literal notranslate"><span class="pre">cache_queries=True</span></code>
+to cache them too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inner</strong> – The embedder to memoize.</p></li>
+<li><p><strong>store</strong> – A <code class="docutils literal notranslate"><span class="pre">MutableMapping[str,</span> <span class="pre">ndarray]</span></code> keyed by <a class="reference internal" href="#ef.cache_key" title="ef.cache_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code></a>.</p></li>
+<li><p><strong>cache_queries</strong> – Whether to also cache <code class="docutils literal notranslate"><span class="pre">input_type=&quot;query&quot;</span></code> calls.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.CachedEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.CachedEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.CachedEmbedder.normalized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#ef.CachedEmbedder.normalized" title="Link to this definition"></a></dt>
+<dd><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ef.ClusterIndex">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ClusterIndex</span></span><a class="headerlink" href="#ef.ClusterIndex" title="Link to this definition"></a></dt>
@@ -182,6 +349,161 @@ additional metadata about each component.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.Embedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#Embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Embedder" title="Link to this definition"></a></dt>
+<dd><p>Structural type for an embedder: a batch callable plus metadata.</p>
+<p>An embedder maps <code class="docutils literal notranslate"><span class="pre">Iterable[str]</span></code> to an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code>.
+The four metadata attributes are the single source of truth <em>on the object
+itself</em> — no global registry, no config singleton.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.Embedder.model_id">
+<span class="sig-name descname"><span class="pre">model_id</span></span><a class="headerlink" href="#ef.Embedder.model_id" title="Link to this definition"></a></dt>
+<dd><p>Identity that bakes in everything affecting the vector —
+<code class="docutils literal notranslate"><span class="pre">&quot;openai:text-embedding-3-large&#64;1024&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">provider:model&#64;dim</span></code>).
+Works directly as a cache namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.Embedder.dim">
+<span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#ef.Embedder.dim" title="Link to this definition"></a></dt>
+<dd><p>Output dimensionality. May be <code class="docutils literal notranslate"><span class="pre">None</span></code> until first call for
+lazily-probed embedders (e.g. a bare callable of unknown width).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.Embedder.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><a class="headerlink" href="#ef.Embedder.normalized" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> iff <code class="docutils literal notranslate"><span class="pre">||v||</span> <span class="pre">==</span> <span class="pre">1</span></code> by construction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.Embedder.honored_input_types">
+<span class="sig-name descname"><span class="pre">honored_input_types</span></span><a class="headerlink" href="#ef.Embedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>The <code class="xref py py-data docutils literal notranslate"><span class="pre">InputType</span></code> values this embedder acts on
+(empty if it ignores the task hint).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[Literal[‘query’, ‘document’, ‘classification’, ‘clustering’], …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.Embedder.embed_batch">
+<span class="sig-name descname"><span class="pre">embed_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><span class="pre">BatchHandle</span></a></span></span><a class="reference internal" href="../_modules/ef/embedders.html#Embedder.embed_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Embedder.embed_batch" title="Link to this definition"></a></dt>
+<dd><p>Submit an embed job, returning a <a class="reference internal" href="#ef.BatchHandle" title="ef.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="ef.EmbedderError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">EmbedderError</span></span><a class="reference internal" href="../_modules/ef/embedders.html#EmbedderError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EmbedderError" title="Link to this definition"></a></dt>
+<dd><p>Raised for embedder-specific failures (shape mismatch, batch job failure).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.FunctionEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">FunctionEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">honored_input_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pass_backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#FunctionEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.FunctionEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Promote a bare <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">vectors</span></code> callable to a full <a class="reference internal" href="#ef.Embedder" title="ef.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>This is the bridge for embedder <em>functions</em> that carry no metadata — most
+importantly <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s registered embedders. The wrapped callable is asked
+only for <code class="docutils literal notranslate"><span class="pre">func(texts)</span></code> (it knows nothing of <code class="docutils literal notranslate"><span class="pre">input_type</span></code>); the wrapper
+advertises <code class="docutils literal notranslate"><span class="pre">honored_input_types=()</span></code> accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – A callable mapping a list of strings to an array-like of shape
+<code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code> (a numpy array or a nested sequence — both accepted).</p></li>
+<li><p><strong>model_id</strong> – Vector-identity string. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;function:&lt;name&gt;&quot;</span></code>.</p></li>
+<li><p><strong>dim</strong> – Output width. If <code class="docutils literal notranslate"><span class="pre">None</span></code> it is inferred (and frozen) on the first
+call.</p></li>
+<li><p><strong>normalized</strong> – Whether <code class="docutils literal notranslate"><span class="pre">func</span></code> already returns unit vectors.</p></li>
+<li><p><strong>honored_input_types</strong> – Task hints <code class="docutils literal notranslate"><span class="pre">func</span></code> honors (usually none).</p></li>
+<li><p><strong>pass_backend</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), forward any <code class="docutils literal notranslate"><span class="pre">**backend</span></code> kwargs to
+<code class="docutils literal notranslate"><span class="pre">func</span></code>; set <code class="docutils literal notranslate"><span class="pre">False</span></code> for callables with a strict <code class="docutils literal notranslate"><span class="pre">(texts,)</span></code>
+signature.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;ones@4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.MultiEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">MultiEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">routes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#MultiEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.MultiEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Route each text to one of several embedders by a predicate.</p>
+<p>Useful for domain-specific models (e.g. a code embedder for code, a prose
+embedder for prose). All routes must share the same <code class="docutils literal notranslate"><span class="pre">dim</span></code> — the output is
+a single <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code> array, with each row produced by its text’s route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>routes</strong> – <code class="docutils literal notranslate"><span class="pre">{route_key:</span> <span class="pre">Embedder}</span></code>.</p></li>
+<li><p><strong>predicate</strong> – <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">-&gt;</span> <span class="pre">route_key</span></code> — picks a route per text.</p></li>
+<li><p><strong>default</strong> – Embedder for texts whose <code class="docutils literal notranslate"><span class="pre">route_key</span></code> is not in <code class="docutils literal notranslate"><span class="pre">routes</span></code>
+(otherwise an unknown key raises <a class="reference internal" href="#ef.EmbedderError" title="ef.EmbedderError"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmbedderError</span></code></a>).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionEmbedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">short</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;s@2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">long</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;l@2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MultiEmbedder</span><span class="p">({</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">short</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="n">long</span><span class="p">},</span>
+<span class="gp">... </span>                  <span class="n">predicate</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="s1">&#39;s&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="s1">&#39;l&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">([</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[[0.0, 0.0], [1.0, 1.0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.NormalizingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">NormalizingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#NormalizingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.NormalizingEmbedder" title="Link to this definition"></a></dt>
+<dd><p>L2-normalize an inner embedder’s output.</p>
+<p>Use this for MRL-truncated vectors (which lose unit norm when sliced to a
+smaller dimension) or any backend that does not normalize by construction.
+Reports <code class="docutils literal notranslate"><span class="pre">normalized=True</span></code>; <a class="reference internal" href="#ef.cache_key" title="ef.cache_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code></a> keys on <code class="docutils literal notranslate"><span class="pre">normalized</span></code>, so a
+normalized and an un-normalized view of the same model never collide in a
+shared cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inner</strong> – The embedder whose output to renormalize.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.NormalizingEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.NormalizingEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
 </dd></dl>
 
 </dd></dl>
@@ -478,6 +800,110 @@ If None, returns all components</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.RetryPolicy">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RetryPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">max_attempts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">base_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">max_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">jitter:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.3,</span> <span class="pre">retry_on:</span> <span class="pre">~typing.Callable[[BaseException],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_default_is_retryable&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#RetryPolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RetryPolicy" title="Link to this definition"></a></dt>
+<dd><p>Exponential-backoff retry policy for <a class="reference internal" href="#ef.RetryingEmbedder" title="ef.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RetryPolicy.max_attempts">
+<span class="sig-name descname"><span class="pre">max_attempts</span></span><a class="headerlink" href="#ef.RetryPolicy.max_attempts" title="Link to this definition"></a></dt>
+<dd><p>Total tries (the first call counts as attempt 1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RetryPolicy.base_delay">
+<span class="sig-name descname"><span class="pre">base_delay</span></span><a class="headerlink" href="#ef.RetryPolicy.base_delay" title="Link to this definition"></a></dt>
+<dd><p>Seconds before the first retry; doubles each attempt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RetryPolicy.max_delay">
+<span class="sig-name descname"><span class="pre">max_delay</span></span><a class="headerlink" href="#ef.RetryPolicy.max_delay" title="Link to this definition"></a></dt>
+<dd><p>Upper bound on any single backoff sleep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RetryPolicy.jitter">
+<span class="sig-name descname"><span class="pre">jitter</span></span><a class="headerlink" href="#ef.RetryPolicy.jitter" title="Link to this definition"></a></dt>
+<dd><p>Random fraction (<code class="docutils literal notranslate"><span class="pre">0..1</span></code>) of the delay added on top, to
+de-correlate concurrent clients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RetryPolicy.retry_on">
+<span class="sig-name descname"><span class="pre">retry_on</span></span><a class="headerlink" href="#ef.RetryPolicy.retry_on" title="Link to this definition"></a></dt>
+<dd><p>Predicate deciding whether an exception is worth retrying.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[BaseException], bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">retry_on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Heuristic: retry transient failures (429, 5xx, connection/timeout).</p>
+<p>Per-request 400-class errors are <em>not</em> retried — the same request would fail
+identically. Recognizes the <code class="docutils literal notranslate"><span class="pre">status_code</span></code>/<code class="docutils literal notranslate"><span class="pre">status</span></code> attribute carried by
+most HTTP-client SDK exceptions (incl. the OpenAI SDK).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.RetryingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RetryingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inner:</span> <span class="pre">~ef.embedders.Embedder,</span> <span class="pre">policy:</span> <span class="pre">~ef.embedder_wrappers.RetryPolicy</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">sleep:</span> <span class="pre">~typing.Callable[[float],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">sleep&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#RetryingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RetryingEmbedder" title="Link to this definition"></a></dt>
+<dd><p>Retry an inner embedder’s calls on transient failures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inner</strong> – The embedder to guard.</p></li>
+<li><p><strong>policy</strong> – A <a class="reference internal" href="#ef.RetryPolicy" title="ef.RetryPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a> (sensible defaults if omitted).</p></li>
+<li><p><strong>sleep</strong> – The sleep function — injectable so tests run instantly.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.RetryingEmbedder.honored_input_types">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">honored_input_types</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.RetryingEmbedder.honored_input_types" title="Link to this definition"></a></dt>
+<dd><p>Built-in immutable sequence.</p>
+<p>If no argument is given, the constructor returns an empty tuple.
+If iterable is specified the tuple is initialized from iterable’s items.</p>
+<p>If the argument is a tuple, the return value is the same object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.RetryingEmbedder.normalized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#ef.RetryingEmbedder.normalized" title="Link to this definition"></a></dt>
+<dd><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ef.Segment">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Segment</span></span><a class="headerlink" href="#ef.Segment" title="Link to this definition"></a></dt>
@@ -488,6 +914,177 @@ If None, returns all components</p>
 <dt class="sig sig-object py" id="ef.SegmentKey">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SegmentKey</span></span><a class="headerlink" href="#ef.SegmentKey" title="Link to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.as_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">as_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#as_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.as_embedder" title="Link to this definition"></a></dt>
+<dd><p>Normalize <code class="docutils literal notranslate"><span class="pre">x</span></code> into an <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — the DI seam.</p>
+<p>The single place every <code class="docutils literal notranslate"><span class="pre">ef</span></code> entry point coerces a user-supplied embedder
+argument. Accepts, in order:</p>
+<ol class="arabic simple">
+<li><p>an existing <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — returned unchanged;</p></li>
+<li><p>a URL string (<code class="docutils literal notranslate"><span class="pre">http://</span></code> / <code class="docutils literal notranslate"><span class="pre">https://</span></code>) — <a class="reference internal" href="#ef.http_embedder" title="ef.http_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">http_embedder()</span></code></a>;</p></li>
+<li><p>an <code class="docutils literal notranslate"><span class="pre">&quot;openai:&lt;model&gt;&quot;</span></code> string — <a class="reference internal" href="#ef.openai_embedder" title="ef.openai_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a>;</p></li>
+<li><p>an <code class="docutils literal notranslate"><span class="pre">&quot;st:&lt;model&gt;&quot;</span></code> string, or any other bare model name —
+<a class="reference internal" href="#ef.sentence_transformers_embedder" title="ef.sentence_transformers_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a> (the local default);</p></li>
+<li><p>a bare callable — wrapped in
+<a class="reference internal" href="ef/embedders.html#ef.embedders.FunctionEmbedder" title="ef.embedders.FunctionEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a> (the <code class="docutils literal notranslate"><span class="pre">imbed</span></code>-embedder bridge).</p></li>
+</ol>
+<p>Extra <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> are forwarded to the chosen factory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – if <code class="docutils literal notranslate"><span class="pre">x</span></code> is none of the above.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;zero@2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="go">&#39;FunctionEmbedder&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.cache_key">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">cache_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ef/embedders.html#cache_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.cache_key" title="Link to this definition"></a></dt>
+<dd><p>Deterministic cache key for one <code class="docutils literal notranslate"><span class="pre">(embedder,</span> <span class="pre">text,</span> <span class="pre">input_type)</span></code> triple.</p>
+<p>The key pins everything that changes the resulting vector. <code class="docutils literal notranslate"><span class="pre">model_id</span></code> is
+the embedder-identity SSOT — it already bakes in provider, model and <code class="docutils literal notranslate"><span class="pre">dim</span></code>
+— so <code class="docutils literal notranslate"><span class="pre">dim</span></code> is <em>not</em> keyed separately (keying it would also break
+<a class="reference internal" href="#ef.FunctionEmbedder" title="ef.FunctionEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a>’s lazy <code class="docutils literal notranslate"><span class="pre">dim</span></code> inference). <code class="docutils literal notranslate"><span class="pre">normalized</span></code> is keyed
+because a <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a> shares its
+inner’s <code class="docutils literal notranslate"><span class="pre">model_id</span></code> yet yields different vectors.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">&quot;&lt;model_id&gt;/&lt;sha256&gt;&quot;</span></code> — a namespaced key safe for any
+<code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> store.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">_E</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">model_id</span><span class="p">,</span> <span class="n">normalized</span> <span class="o">=</span> <span class="s1">&#39;m@8&#39;</span><span class="p">,</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span> <span class="o">=</span> <span class="n">cache_key</span><span class="p">(</span><span class="n">_E</span><span class="p">(),</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;document&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k2</span> <span class="o">=</span> <span class="n">cache_key</span><span class="p">(</span><span class="n">_E</span><span class="p">(),</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span> <span class="o">==</span> <span class="n">k2</span>  <span class="c1"># input_type participates</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;m@8/&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.embed_length_sorted">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">embed_length_sorted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/ef/embedders.html#embed_length_sorted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embed_length_sorted" title="Link to this definition"></a></dt>
+<dd><p>Encode <code class="docutils literal notranslate"><span class="pre">texts</span></code> in length-sorted batches; return vectors in caller order.</p>
+<p>Transformer self-attention is O(n²) in sequence length and a batch is padded
+to its longest member, so grouping similar-length texts together avoids
+wasted compute — a 5–10× speedup on skewed corpora. <code class="docutils literal notranslate"><span class="pre">ef</span></code> owns this so
+callers never sort, pad, or un-sort themselves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texts</strong> – The strings to embed.</p></li>
+<li><p><strong>encode</strong> – Maps a list of strings to an array-like of shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">dim)</span></code>.</p></li>
+<li><p><strong>batch_size</strong> – Texts per call to <code class="docutils literal notranslate"><span class="pre">encode</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">float32</span></code> array of shape <code class="docutils literal notranslate"><span class="pre">(len(texts),</span> <span class="pre">dim)</span></code> in the <em>original</em>
+order of <code class="docutils literal notranslate"><span class="pre">texts</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">enc</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>  <span class="c1"># toy encoder: vector = [length]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">embed_length_sorted</span><span class="p">([</span><span class="s1">&#39;aaa&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;aaaaa&#39;</span><span class="p">,</span> <span class="s1">&#39;aa&#39;</span><span class="p">],</span> <span class="n">enc</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>  <span class="c1"># order preserved despite internal sorting</span>
+<span class="go">[3.0, 1.0, 5.0, 2.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.http_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">http_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">url:</span> <span class="pre">str,</span> <span class="pre">*,</span> <span class="pre">model_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dim:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">normalized:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">64,</span> <span class="pre">headers:</span> <span class="pre">dict[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">timeout:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">payload_builder:</span> <span class="pre">~typing.Callable[[~typing.Sequence[str]],</span> <span class="pre">bytes]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_tei_payload&gt;,</span> <span class="pre">response_parser:</span> <span class="pre">~typing.Callable[[~typing.Any],</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_tei_parse&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#http_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.http_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build an <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> over a remote HTTP service.</p>
+<p>Defaults target the Text-Embeddings-Inference / infinity shape (a POST of
+<code class="docutils literal notranslate"><span class="pre">{&quot;inputs&quot;:</span> <span class="pre">[...]}</span></code> returning a JSON list of vectors). For a different
+service, override <code class="docutils literal notranslate"><span class="pre">payload_builder</span></code> and/or <code class="docutils literal notranslate"><span class="pre">response_parser</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – The embedding endpoint.</p></li>
+<li><p><strong>model_id</strong> – Vector-identity string (defaults to <code class="docutils literal notranslate"><span class="pre">&quot;http:&lt;url&gt;&quot;</span></code>).</p></li>
+<li><p><strong>dim</strong> – Output width; inferred from the first response if omitted.</p></li>
+<li><p><strong>normalized</strong> – Whether the service returns unit vectors.</p></li>
+<li><p><strong>batch_size</strong> – Texts per request (used with length-sorted batching).</p></li>
+<li><p><strong>headers</strong> – Extra HTTP headers (e.g. an auth token).</p></li>
+<li><p><strong>timeout</strong> – Per-request timeout in seconds.</p></li>
+<li><p><strong>payload_builder</strong> – <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">request</span> <span class="pre">body</span> <span class="pre">bytes</span></code>.</p></li>
+<li><p><strong>response_parser</strong> – <code class="docutils literal notranslate"><span class="pre">decoded</span> <span class="pre">JSON</span> <span class="pre">-&gt;</span> <span class="pre">array-like</span> <span class="pre">(n,</span> <span class="pre">dim)</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Uses only the stdlib — no extra dependency.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.openai_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">openai_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text-embedding-3-small'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#openai_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.openai_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build an OpenAI-embeddings <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – An OpenAI embedding model name.</p></li>
+<li><p><strong>dim</strong> – Matryoshka-truncated output width (<code class="docutils literal notranslate"><span class="pre">text-embedding-3-*</span></code> only).
+Omit for the model’s native dimension. The dim is part of the
+embedder’s identity — set it once here, not per call.</p></li>
+<li><p><strong>api_key</strong> – OpenAI API key (else the SDK’s usual env-var resolution).</p></li>
+<li><p><strong>client</strong> – A pre-built <code class="docutils literal notranslate"><span class="pre">openai.OpenAI</span></code> client (overrides <code class="docutils literal notranslate"><span class="pre">api_key</span></code>).</p></li>
+<li><p><strong>batch_size</strong> – Texts per request (capped at OpenAI’s 2048 limit).</p></li>
+<li><p><strong>poll_interval</strong> – Seconds between polls when blocking on a Batch-API job.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An embedder whose <code class="docutils literal notranslate"><span class="pre">embed_batch</span></code> uses the async OpenAI Batch API.</p>
+</dd>
+</dl>
+<p>Requires the <code class="docutils literal notranslate"><span class="pre">openai</span></code> package (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'ef[openai]'</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ready_handle">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">ready_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><span class="pre">BatchHandle</span></a></span></span><a class="reference internal" href="../_modules/ef/embedders.html#ready_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ready_handle" title="Link to this definition"></a></dt>
+<dd><p>Wrap an already-computed array in a finished <a class="reference internal" href="#ef.BatchHandle" title="ef.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">ready_handle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+<span class="go">&#39;done&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.sentence_transformers_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">sentence_transformers_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all-MiniLM-L6-v2'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">st_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#sentence_transformers_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.sentence_transformers_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build a local sentence-transformers <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_name</strong> – A sentence-transformers model name (also used in
+<code class="docutils literal notranslate"><span class="pre">model_id</span></code>).</p></li>
+<li><p><strong>device</strong> – Torch device (<code class="docutils literal notranslate"><span class="pre">&quot;cuda&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;mps&quot;</span></code>); <code class="docutils literal notranslate"><span class="pre">None</span></code>
+auto-selects.</p></li>
+<li><p><strong>normalize</strong> – Whether to L2-normalize outputs. sentence-transformers does
+<strong>not</strong> normalize by default — set this truthfully.</p></li>
+<li><p><strong>batch_size</strong> – Encoding batch size (smaller on CPU).</p></li>
+<li><p><strong>model_path</strong> – A local filesystem path to load from instead of the hub —
+for air-gapped use. Loading still records <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
+<code class="docutils literal notranslate"><span class="pre">model_id</span></code>.</p></li>
+<li><p><strong>**st_kwargs</strong> – Forwarded to the <code class="docutils literal notranslate"><span class="pre">SentenceTransformer</span></code> constructor.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">sentence-transformers</span></code> (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'ef[sentence-transformers]'</span></code>).</p>
 </dd></dl>
 
 </section>

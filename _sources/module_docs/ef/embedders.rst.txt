@@ -1,0 +1,4 @@
+ef.embedders
+============
+.. automodule:: ef.embedders
+   :members:

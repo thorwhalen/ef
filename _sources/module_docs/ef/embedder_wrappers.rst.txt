@@ -1,0 +1,4 @@
+ef.embedder_wrappers
+====================
+.. automodule:: ef.embedder_wrappers
+   :members:
