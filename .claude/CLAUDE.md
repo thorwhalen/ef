@@ -170,8 +170,8 @@ ingestion.
 
 ## 8. Refactor roadmap (suggested phases)
 
-**Status:** phases 1–6 are implemented (ef#3 · #5 · #7 · #9 · #11 · #14, plus
-the zero-install default embedder ef#13). Phases 7–8 remain.
+**Status:** phases 1–7 are implemented (ef#3 · #5 · #7 · #9 · #11 · #14 · #16,
+plus the zero-install default embedder ef#13). Phase 8 remains.
 
 1. **`Embedder` protocol + composition wrappers + 2 adapters** (OpenAI,
    sentence-transformers). `as_embedder(x)` normalizer (str/callable/url).
@@ -189,7 +189,13 @@ the zero-install default embedder ef#13). Phases 7–8 remain.
    `SourceManager` surface `diagnose`/`refresh`/`rebuild`/`gc_orphans`/
    `lineage`/`scan` + `auto_refresh=True`.
 7. **RAG-plug-in surface** (`retrieve()`) + evaluation hookpoints
-   (`evaluate_retrieval` BEIR-shaped, `evaluate_rag` Ragas-shaped).
+   (`evaluate_retrieval` BEIR-shaped, `evaluate_rag` Ragas-shaped). *Done:*
+   `retrieve()` reconciled to return plain `Segment`s (provenance folded into
+   `metadata["source"]` by `hits_to_segments`); `ef/evaluation.py`
+   (`evaluate_retrieval` + NDCG@10/recall/precision/MRR/MAP primitives,
+   `evaluate_rag` + deterministic lexical metrics, `read_beir`/`write_beir`,
+   `as_ragas_dataset` bridge); `ef/reranking.py` (`Reranker` protocol, `rerank`,
+   `with_reranker` decorator, lazy `cross_encoder_reranker`).
 8. **Demote viz to "explore"** — keep planarize/cluster/label as L5.
 
 ## 9. Conventions
