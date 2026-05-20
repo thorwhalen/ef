@@ -21,6 +21,20 @@ only numpy):
   :class:`~ef.embedder_wrappers.MultiEmbedder`,
   :class:`~ef.embedder_wrappers.NormalizingEmbedder`.
 
+The **segmenter facade** is the other always-importable core surface (it needs
+no numpy at all):
+
+- :class:`~ef.segments.Segment` — the canonical segment data model (the
+  ``TypedDict`` interchange type; :class:`~ef.segments.SegmentRecord` is its
+  dataclass convenience surface).
+- :class:`~ef.segmenters.Segmenter` — the structural protocol for a
+  ``str | Mapping -> Iterable[Segment]`` callable.
+- :class:`~ef.segmenters.RecursiveCharacterSegmenter` — the default splitter;
+  :func:`~ef.segmenters.line_segmenter` a builtin line splitter.
+- :func:`~ef.segmenter_adapters.as_segmenter` — the dependency-injection seam.
+- Composition helpers: :func:`~ef.segmenters.with_overlap`,
+  :func:`~ef.segmenters.hierarchical`, :func:`~ef.segmenters.materialise`.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -63,9 +77,32 @@ from ef.embedder_adapters import (
     openai_embedder,
     sentence_transformers_embedder,
 )
+from ef.segments import (
+    Segment,
+    SegmentRecord,
+    as_segment,
+    make_segment,
+    segment_id,
+    segment_record,
+)
+from ef.segmenters import (
+    APPROX_TOKENIZER,
+    DEFAULT_SEPARATORS,
+    BaseSegmenter,
+    BatchedSegmenter,
+    FunctionSegmenter,
+    RecursiveCharacterSegmenter,
+    Segmenter,
+    approx_token_count,
+    hierarchical,
+    line_segmenter,
+    materialise,
+    with_overlap,
+)
+from ef.segmenter_adapters import as_segmenter, imbed_segmenter
 
 # ============================================================================
-# Public API — the embedder facade (always available)
+# Public API — the embedder & segmenter facades (always available)
 # ============================================================================
 
 __all__ = [
@@ -91,19 +128,48 @@ __all__ = [
     "openai_embedder",
     "sentence_transformers_embedder",
     "http_embedder",
+    # --- segmenter facade ---
+    # data model
+    "Segment",
+    "SegmentRecord",
+    "segment_id",
+    "make_segment",
+    "as_segment",
+    "segment_record",
+    # protocols & core types
+    "Segmenter",
+    "BatchedSegmenter",
+    "BaseSegmenter",
+    "approx_token_count",
+    "APPROX_TOKENIZER",
+    "DEFAULT_SEPARATORS",
+    # segmenters
+    "RecursiveCharacterSegmenter",
+    "FunctionSegmenter",
+    "line_segmenter",
+    # composition helpers
+    "with_overlap",
+    "hierarchical",
+    "materialise",
+    # adapters & the DI seam
+    "as_segmenter",
+    "imbed_segmenter",
 ]
 
 # ============================================================================
 # Legacy visualization pipeline — optional (needs `ef[full]` / `ef[imbed]`)
 # ============================================================================
 
+# Note: the viz-era ``ef.base`` defines a ``Segment = str`` alias; it is
+# deliberately *not* re-exported here — ``ef.Segment`` is the canonical segment
+# data model (the ``TypedDict`` from :mod:`ef.segments`). The legacy alias is
+# removed entirely when the visualization code is demoted to layer L5.
 try:
     from ef.projects import Project, Projects
     from ef.base import (
         ClusterIndex,
         ComponentRegistry,
         PlanarVector,
-        Segment,
         SegmentKey,
         Vector,
     )
@@ -113,7 +179,6 @@ try:
         "Projects",
         "ComponentRegistry",
         "SegmentKey",
-        "Segment",
         "Vector",
         "PlanarVector",
         "ClusterIndex",
