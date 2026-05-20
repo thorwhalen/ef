@@ -48,6 +48,14 @@ Example — the light path, end to end, offline:
 1.0
 >>> hits[0].source_id is not None
 True
+
+And the true light path — no ``embedder`` at all, nothing to install beyond
+``ef`` itself (the default is the dependency-free
+:class:`~ef.embedders.HashingEmbedder`):
+
+>>> idx = ingest(['apple orchard', 'ocean breeze', 'green meadow'])
+>>> idx.search('ocean breeze', limit=1)[0].segment['text']
+'ocean breeze'
 """
 
 from __future__ import annotations
@@ -75,9 +83,11 @@ __all__ = [
 
 
 #: The model name :func:`ingest` / :class:`SourceManager` resolve an absent
-#: ``embedder`` to — the local ``sentence-transformers`` default. It needs the
-#: ``ef[st]`` extra; pass an explicit ``embedder`` to avoid that dependency.
-DEFAULT_EMBEDDER = "all-MiniLM-L6-v2"
+#: ``embedder`` to — :class:`~ef.embedders.HashingEmbedder`, the dependency-free
+#: default (numpy only, no extra to install). It is a lexical embedder; pass an
+#: explicit ``embedder`` (``"st:..."``, ``"openai:..."``, …) for neural
+#: semantic quality.
+DEFAULT_EMBEDDER = "hashing"
 
 #: Metadata keys ``ef`` reserves on every ``vd`` document it writes. Provenance
 #: (``source_id`` / ``source_hash`` / ``config_hash`` — the latter two are
@@ -620,8 +630,10 @@ def ingest(
         segmenter: the segmenter — :func:`~ef.segmenter_adapters.as_segmenter`
             coerces it (``None`` → the recursive default).
         embedder: the embedder — :func:`~ef.embedder_adapters.as_embedder`
-            coerces it; ``None`` → :data:`DEFAULT_EMBEDDER` (needs ``ef[st]``).
-            Pass an explicit embedder for an offline / dependency-free run.
+            coerces it; ``None`` → :data:`DEFAULT_EMBEDDER`, the dependency-free
+            :class:`~ef.embedders.HashingEmbedder` (so this call needs nothing
+            beyond ``pip install ef``). Pass an explicit embedder — e.g.
+            ``"st:all-MiniLM-L6-v2"`` — for neural semantic quality.
         store: the vector store — ``None`` → an in-memory ``vd`` backend. See
             :class:`SourceManager` for the other accepted forms.
         cache: the artifact-graph value cache — any ``MutableMapping``.
@@ -631,8 +643,16 @@ def ingest(
 
     See the module docstring for a complete offline example.
     """
+    # The light path always indexes, so it always needs a concrete embedder —
+    # resolve ``None`` to :data:`DEFAULT_EMBEDDER` here rather than relying on
+    # ``SourceManager``, which deliberately registers *no* config when given no
+    # embedder (its explicit multi-config mode).
     manager = SourceManager(
-        sources, segmenter=segmenter, embedder=embedder, store=store, cache=cache
+        sources,
+        segmenter=segmenter,
+        embedder=_coerce_embedder(embedder),
+        store=store,
+        cache=cache,
     )
     manager.materialize()
     return manager.searchable()
