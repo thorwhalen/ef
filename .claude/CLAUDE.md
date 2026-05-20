@@ -170,6 +170,9 @@ ingestion.
 
 ## 8. Refactor roadmap (suggested phases)
 
+**Status:** phases 1–6 are implemented (ef#3 · #5 · #7 · #9 · #11 · #14, plus
+the zero-install default embedder ef#13). Phases 7–8 remain.
+
 1. **`Embedder` protocol + composition wrappers + 2 adapters** (OpenAI,
    sentence-transformers). `as_embedder(x)` normalizer (str/callable/url).
 2. **`Segmenter` facade** on top of `imbed.components.segmentation`; default
@@ -180,7 +183,11 @@ ingestion.
 5. **"Ready search" + one-shot `ingest`** wiring corpus→segment→embed→`vd`.
 6. **Refresh** — explicit + auto (the "something changed" detector + "what
    changed" differ); the four staleness conditions; refresh modes
-   (`none`/`incremental`/`full`/`scoped_full`, mirroring LangChain).
+   (`none`/`incremental`/`full`/`scoped_full`, mirroring LangChain). *Done:*
+   `ef/diagnostics.py` (`diagnose`, `StalenessReport`), `ef/refresh.py`
+   (`plan_refresh`, `RefreshReport`, `refresh_on_change`), and the
+   `SourceManager` surface `diagnose`/`refresh`/`rebuild`/`gc_orphans`/
+   `lineage`/`scan` + `auto_refresh=True`.
 7. **RAG-plug-in surface** (`retrieve()`) + evaluation hookpoints
    (`evaluate_retrieval` BEIR-shaped, `evaluate_rag` Ragas-shaped).
 8. **Demote viz to "explore"** — keep planarize/cluster/label as L5.
