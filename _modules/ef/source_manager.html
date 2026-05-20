@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.source_manager &mdash; ef 0.1.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.source_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.source_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The search facade — one-shot :func:`ingest`, :class:`SearchableCorpus`, :class:`SourceManager`.</span>
+
+<span class="sd">This is where ``ef``&#39;s layers come together. Phases 1–4 built the parts — a</span>
+<span class="sd">:class:`~ef.corpus.Corpus`, a :class:`~ef.segmenters.Segmenter`, an</span>
+<span class="sd">:class:`~ef.embedders.Embedder`, the content-addressed</span>
+<span class="sd">:class:`~ef.artifact_graph.ArtifactGraph` — and this module wires</span>
+<span class="sd">**corpus → segment → embed → vd** into a usable search facade with the</span>
+<span class="sd">progressive disclosure ``ef`` promises:</span>
+
+<span class="sd">- **The light path** — :func:`ingest` — one line. A list of strings (or any</span>
+<span class="sd">  corpus) in, a :class:`SearchableCorpus` out, ``search(query)`` ready.</span>
+<span class="sd">- **The heavy path** — :class:`SourceManager` — the same machinery with the</span>
+<span class="sd">  components named explicitly and **multiple configs** (a config is one</span>
+<span class="sd">  segmenter+embedder pipeline). Two configs that share a step share that step&#39;s</span>
+<span class="sd">  artifacts in the :class:`~ef.artifact_graph.ArtifactGraph` for free — config</span>
+<span class="sd">  branching costs only the divergent cone.</span>
+
+<span class="sd">How the wiring works (one source, one config):</span>
+
+<span class="sd">1. the source is a graph **leaf**, keyed by :func:`~ef.corpus.content_hash`;</span>
+<span class="sd">2. a ``segment`` :class:`~ef.artifact_graph.ProducerSpec` over that leaf →</span>
+<span class="sd">   a ``list`` of :class:`~ef.segments.Segment`\\ s;</span>
+<span class="sd">3. an ``embed`` :class:`~ef.artifact_graph.ProducerSpec` over the segment</span>
+<span class="sd">   artifact → an ``(n, dim)`` array;</span>
+<span class="sd">4. each ``(segment, vector)`` pair is written into a ``vd`` collection as a</span>
+<span class="sd">   :class:`vd.Document`, with ``source_id`` / ``source_hash`` / ``config_hash``</span>
+<span class="sd">   recorded in its metadata.</span>
+
+<span class="sd">``ef`` owns the embedding: it always supplies vectors to ``vd`` (the index is</span>
+<span class="sd">``vd``&#39;s job, the vectors are ``ef``&#39;s — design notes §7), and at query time it</span>
+<span class="sd">embeds the query with ``input_type=&quot;query&quot;`` and hands ``vd`` the vector.</span>
+
+<span class="sd">Example — the light path, end to end, offline:</span>
+
+<span class="sd">&gt;&gt;&gt; import numpy as np</span>
+<span class="sd">&gt;&gt;&gt; from ef import ingest, as_embedder</span>
+<span class="sd">&gt;&gt;&gt; toy = as_embedder(</span>
+<span class="sd">...     lambda texts: np.array(</span>
+<span class="sd">...         [[t.count(&#39;a&#39;), t.count(&#39;e&#39;), t.count(&#39;o&#39;)] for t in texts], dtype=float</span>
+<span class="sd">...     ),</span>
+<span class="sd">...     model_id=&#39;toy-vowels@3&#39;,</span>
+<span class="sd">... )</span>
+<span class="sd">&gt;&gt;&gt; idx = ingest([&#39;apple orchard&#39;, &#39;ocean breeze&#39;, &#39;green meadow&#39;], embedder=toy)</span>
+<span class="sd">&gt;&gt;&gt; hits = idx.search(&#39;ocean breeze&#39;, limit=2)</span>
+<span class="sd">&gt;&gt;&gt; hits[0].segment[&#39;text&#39;]</span>
+<span class="sd">&#39;ocean breeze&#39;</span>
+<span class="sd">&gt;&gt;&gt; round(hits[0].score, 6)</span>
+<span class="sd">1.0</span>
+<span class="sd">&gt;&gt;&gt; hits[0].source_id is not None</span>
+<span class="sd">True</span>
+
+<span class="sd">And the true light path — no ``embedder`` at all, nothing to install beyond</span>
+<span class="sd">``ef`` itself (the default is the dependency-free</span>
+<span class="sd">:class:`~ef.embedders.HashingEmbedder`):</span>
+
+<span class="sd">&gt;&gt;&gt; idx = ingest([&#39;apple orchard&#39;, &#39;ocean breeze&#39;, &#39;green meadow&#39;])</span>
+<span class="sd">&gt;&gt;&gt; idx.search(&#39;ocean breeze&#39;, limit=1)[0].segment[&#39;text&#39;]</span>
+<span class="sd">&#39;ocean breeze&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">MutableMapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.artifact_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArtifactGraph</span><span class="p">,</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">producer_spec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigId</span><span class="p">,</span> <span class="n">PipelineSpec</span><span class="p">,</span> <span class="n">config_id</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_corpus</span><span class="p">,</span> <span class="n">content_hash</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedder_adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embedder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">embed_step</span><span class="p">,</span> <span class="n">segment_step</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segmenter_adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_segmenter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">make_segment</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DEFAULT_EMBEDDER&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SearchHit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SearchableCorpus&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SourceManager&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ingest&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">#: The model name :func:`ingest` / :class:`SourceManager` resolve an absent</span>
+<span class="c1">#: ``embedder`` to — :class:`~ef.embedders.HashingEmbedder`, the dependency-free</span>
+<span class="c1">#: default (numpy only, no extra to install). It is a lexical embedder; pass an</span>
+<span class="c1">#: explicit ``embedder`` (``&quot;st:...&quot;``, ``&quot;openai:...&quot;``, …) for neural</span>
+<span class="c1">#: semantic quality.</span>
+<span class="n">DEFAULT_EMBEDDER</span> <span class="o">=</span> <span class="s2">&quot;hashing&quot;</span>
+
+<span class="c1">#: Metadata keys ``ef`` reserves on every ``vd`` document it writes. Provenance</span>
+<span class="c1">#: (``source_id`` / ``source_hash`` / ``config_hash`` — the latter two are</span>
+<span class="c1">#: Phase-6 staleness-filter keys) and the promoted :class:`~ef.segments.Segment`</span>
+<span class="c1">#: fields that ``vd``&#39;s flat document model cannot hold top-level. A segment&#39;s</span>
+<span class="c1">#: own ``metadata`` must not use these keys — they would not round-trip.</span>
+<span class="n">_RESERVED_METADATA_KEYS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;source_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_hash&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;config_hash&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_PROMOTED_SEGMENT_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="s2">&quot;tokens&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The search result</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SearchHit">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SearchHit">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchHit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One ranked search result — a :class:`~ef.segments.Segment` and its score.</span>
+
+<span class="sd">    :meth:`SearchableCorpus.search` / :meth:`SourceManager.search` return a</span>
+<span class="sd">    ranked ``list`` of these. Keeping :class:`~ef.segments.Segment` (the</span>
+<span class="sd">    interchange ``TypedDict``) pure of a result-only ``score`` key, a</span>
+<span class="sd">    :class:`SearchHit` *wraps* it alongside the similarity ``score`` and the</span>
+<span class="sd">    ``source_id`` of the document the segment was cut from.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        segment: the matched segment — the canonical :class:`~ef.segments.Segment`.</span>
+<span class="sd">        score: the similarity score from the vector store (higher = closer).</span>
+<span class="sd">        source_id: the corpus key of the source document, if recorded.</span>
+
+<span class="sd">    &gt;&gt;&gt; hit = SearchHit(segment={&#39;text&#39;: &#39;hi&#39;, &#39;id&#39;: &#39;x&#39;}, score=0.9, source_id=&#39;doc-1&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; hit.segment[&#39;text&#39;], hit.score, hit.source_id</span>
+<span class="sd">    (&#39;hi&#39;, 0.9, &#39;doc-1&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span>
+    <span class="n">score</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Small helpers</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_floats</span><span class="p">(</span><span class="n">vector</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce a vector (``ndarray`` row, list, …) into a plain ``list[float]``.&quot;&quot;&quot;</span>
+    <span class="n">tolist</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="s2">&quot;tolist&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="n">tolist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">vector</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce an embedder argument, defaulting ``None`` to :data:`DEFAULT_EMBEDDER`.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">as_embedder</span><span class="p">(</span><span class="n">DEFAULT_EMBEDDER</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">as_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_doc_metadata</span><span class="p">(</span>
+    <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config_hash</span><span class="p">:</span> <span class="n">ConfigId</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the ``vd`` document metadata for ``segment`` — provenance + promoted fields.&quot;&quot;&quot;</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;source_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_id</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;source_hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_hash</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;config_hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_hash</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_PROMOTED_SEGMENT_FIELDS</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">meta</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_hit_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SearchHit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rebuild a :class:`SearchHit` (segment + score + source) from a ``vd`` result.&quot;&quot;&quot;</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">source_id</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;source_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;source_hash&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;config_hash&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">promoted</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_PROMOTED_SEGMENT_FIELDS</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">}</span>
+    <span class="n">segment</span> <span class="o">=</span> <span class="n">make_segment</span><span class="p">(</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">metadata</span><span class="o">=</span><span class="n">meta</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">promoted</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">SearchHit</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">segment</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]),</span> <span class="n">source_id</span><span class="o">=</span><span class="n">source_id</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_search_collection</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Embed ``query`` (if it is text) and search ``collection`` — return ranked hits.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">query_vector</span> <span class="o">=</span> <span class="n">_as_floats</span><span class="p">(</span><span class="n">embedder</span><span class="p">([</span><span class="n">query</span><span class="p">],</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># a pre-computed query vector</span>
+        <span class="n">query_vector</span> <span class="o">=</span> <span class="n">_as_floats</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query_vector</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_hit_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The thin facade — what `ingest` returns</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SearchableCorpus">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SearchableCorpus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchableCorpus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ready-to-search view over one indexed config — the thin facade.</span>
+
+<span class="sd">    What :func:`ingest` returns and what :meth:`SourceManager.searchable` hands</span>
+<span class="sd">    out: a small, read-mostly object that knows just enough to answer a query —</span>
+<span class="sd">    the ``vd`` collection holding the vectors and the :class:`~ef.embedders.Embedder`</span>
+<span class="sd">    that embeds the query. It does **not** re-index; mutation, refresh and</span>
+<span class="sd">    multi-config live on :class:`SourceManager`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        collection: the ``vd`` collection holding this config&#39;s vectors.</span>
+<span class="sd">        embedder: the embedder — used to embed queries with ``input_type=&quot;query&quot;``.</span>
+<span class="sd">        config: the :class:`~ef.config.ConfigId` of the indexed pipeline, if known.</span>
+
+<span class="sd">    &gt;&gt;&gt; # built for you by ingest(); see the module docstring for a full example.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="n">collection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedder</span> <span class="o">=</span> <span class="n">embedder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="SearchableCorpus.search">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SearchableCorpus.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search the indexed corpus — return up to ``limit`` ranked :class:`SearchHit`\\ s.</span>
+
+<span class="sd">        ``query`` is text (embedded with ``input_type=&quot;query&quot;``) or an already</span>
+<span class="sd">        computed query vector. ``filter`` is a ``vd`` metadata filter</span>
+<span class="sd">        (MongoDB-style) — see :mod:`vd.filters`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_search_collection</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedder</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchableCorpus.retrieve">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SearchableCorpus.retrieve">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked segments for ``query`` — the RAG-plug-in surface.</span>
+
+<span class="sd">        Identical to :meth:`search` in Phase 5: it is the name an external</span>
+<span class="sd">        RAG/agent framework reaches for (``ef`` returns ranked segments; it does</span>
+<span class="sd">        not synthesize answers). Evaluation hookpoints land in a later phase.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span><span class="si">}</span><span class="s2"> segment(s) indexed&gt;&quot;</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The heavy facade — multi-config indexing</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Config</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A registered config: its pipeline spec, its embedder, its ``vd`` collection.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">pipeline</span><span class="p">:</span> <span class="n">PipelineSpec</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="SourceManager">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SourceManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The heavy search facade — multi-config corpus indexing over one corpus.</span>
+
+<span class="sd">    A :class:`SourceManager` holds a corpus, an :class:`~ef.artifact_graph.ArtifactGraph`</span>
+<span class="sd">    and one or more **configs**. A config is a named segmenter+embedder pipeline</span>
+<span class="sd">    (:class:`~ef.config.PipelineSpec`); :meth:`register_config` adds one,</span>
+<span class="sd">    :meth:`materialize` runs the corpus through it into a ``vd`` collection, and</span>
+<span class="sd">    :meth:`search` queries it. Because every artifact is content-addressed in</span>
+<span class="sd">    the shared graph, two configs that share a step (e.g. the same segmenter)</span>
+<span class="sd">    compute that step&#39;s artifacts **once** — config branching is free.</span>
+
+<span class="sd">    The constructor optionally registers a ``&quot;default&quot;`` config: pass an</span>
+<span class="sd">    ``embedder`` (and optionally a ``segmenter``) and it is registered eagerly;</span>
+<span class="sd">    omit ``embedder`` to build every config explicitly via :meth:`register_config`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        corpus: the source corpus — coerced by :func:`~ef.corpus.as_corpus`</span>
+<span class="sd">            (a mapping, a directory path, an iterable of sources, or ``None``).</span>
+<span class="sd">        segmenter: the default config&#39;s segmenter — coerced by</span>
+<span class="sd">            :func:`~ef.segmenter_adapters.as_segmenter` (``None`` → the recursive</span>
+<span class="sd">            default). Used only when ``embedder`` is also given.</span>
+<span class="sd">        embedder: the default config&#39;s embedder — coerced by</span>
+<span class="sd">            :func:`~ef.embedder_adapters.as_embedder`. If given, a ``&quot;default&quot;``</span>
+<span class="sd">            config is registered; if ``None``, no default config is registered.</span>
+<span class="sd">        store: where the vectors go. ``None`` → an in-memory ``vd`` backend; a</span>
+<span class="sd">            ``vd`` client → collections are created on it; a ``vd`` collection →</span>
+<span class="sd">            used directly (then only one config is supported); a backend-name</span>
+<span class="sd">            string → ``vd.connect`` of that backend.</span>
+<span class="sd">        cache: the :class:`~ef.artifact_graph.ArtifactGraph`&#39;s value cache — any</span>
+<span class="sd">            ``MutableMapping``; ``None`` → an in-RAM ``dict``.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from ef import as_embedder</span>
+<span class="sd">    &gt;&gt;&gt; e1 = as_embedder(lambda ts: np.array([[len(t)] for t in ts], float), model_id=&#39;len@1&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; sm = SourceManager([&#39;hello&#39;, &#39;hi there&#39;], embedder=e1)</span>
+<span class="sd">    &gt;&gt;&gt; report = sm.materialize()</span>
+<span class="sd">    &gt;&gt;&gt; report[&#39;segments&#39;]</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; len(sm.search(&#39;hello&#39;)) &gt;= 1</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">corpus</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">segmenter</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cache</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">as_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">cache</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_collection</span> <span class="o">=</span> <span class="n">_open_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConfigId</span><span class="p">,</span> <span class="n">_Config</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ConfigId</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_config</span><span class="p">:</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_config</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
+
+    <span class="c1"># -- config registration ------------------------------------------------</span>
+
+<div class="viewcode-block" id="SourceManager.register_config">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.register_config">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_config</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">segmenter</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigId</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a named segmenter+embedder pipeline; return its :class:`~ef.config.ConfigId`.</span>
+
+<span class="sd">        The segmenter and embedder are coerced through ``ef``&#39;s DI seams</span>
+<span class="sd">        (:func:`~ef.segmenter_adapters.as_segmenter` /</span>
+<span class="sd">        :func:`~ef.embedder_adapters.as_embedder`; an absent ``embedder``</span>
+<span class="sd">        defaults to :data:`DEFAULT_EMBEDDER`). Their ops are registered into the</span>
+<span class="sd">        shared :class:`~ef.artifact_graph.ArtifactGraph` and a ``vd`` collection</span>
+<span class="sd">        is created for the config. Registering a config does *not* index it —</span>
+<span class="sd">        call :meth:`materialize`.</span>
+
+<span class="sd">        Re-registering the same ``name`` replaces it. Two configs that resolve</span>
+<span class="sd">        to the same :class:`~ef.config.PipelineSpec` share one</span>
+<span class="sd">        :class:`~ef.config.ConfigId` (and one collection).</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from ef import as_embedder</span>
+<span class="sd">        &gt;&gt;&gt; sm = SourceManager([&#39;a&#39;, &#39;b&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; cid = sm.register_config(</span>
+<span class="sd">        ...     &#39;mini&#39;, embedder=as_embedder(</span>
+<span class="sd">        ...         lambda ts: np.ones((len(ts), 2)), model_id=&#39;ones@2&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; len(cid)</span>
+<span class="sd">        64</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">segmenter_obj</span> <span class="o">=</span> <span class="n">as_segmenter</span><span class="p">(</span><span class="n">segmenter</span><span class="p">)</span>
+        <span class="n">embedder_obj</span> <span class="o">=</span> <span class="n">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span>
+        <span class="n">seg_spec</span><span class="p">,</span> <span class="n">seg_fn</span> <span class="o">=</span> <span class="n">segment_step</span><span class="p">(</span><span class="n">segmenter_obj</span><span class="p">)</span>
+        <span class="n">emb_spec</span><span class="p">,</span> <span class="n">emb_fn</span> <span class="o">=</span> <span class="n">embed_step</span><span class="p">(</span><span class="n">embedder_obj</span><span class="p">)</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg_spec</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb_spec</span><span class="p">)</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="n">config_id</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="n">seg_spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">seg_fn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">register_op</span><span class="p">(</span><span class="n">emb_spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">emb_fn</span><span class="p">)</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection_for</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">_Config</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder_obj</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">cid</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_config</span> <span class="o">=</span> <span class="n">cid</span>
+        <span class="k">return</span> <span class="n">cid</span></div>
+
+
+    <span class="c1"># -- materialization ----------------------------------------------------</span>
+
+<div class="viewcode-block" id="SourceManager.materialize">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.materialize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">materialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Index the corpus through one config (or all) — corpus → segment → embed → ``vd``.</span>
+
+<span class="sd">        For each source and each selected config: the source is added to the</span>
+<span class="sd">        :class:`~ef.artifact_graph.ArtifactGraph` as a content-addressed leaf,</span>
+<span class="sd">        its ``segment`` and ``embed`` artifacts are :meth:`~ef.artifact_graph.ArtifactGraph.materialize`\\ d</span>
+<span class="sd">        (a cache hit if already computed — so a shared segment step runs once</span>
+<span class="sd">        across configs), and every ``(segment, vector)`` pair is written into</span>
+<span class="sd">        the config&#39;s ``vd`` collection. Idempotent: re-materializing rewrites</span>
+<span class="sd">        identical documents.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config: the config to index — a name, a :class:`~ef.config.ConfigId`,</span>
+<span class="sd">                or ``None`` for *every* registered config.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a report ``dict`` with ``configs`` / ``sources`` / ``segments`` counts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">configs</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">)</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">total_segments</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+            <span class="n">total_segments</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;configs&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">configs</span><span class="p">),</span>
+            <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">),</span>
+            <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="n">total_segments</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_materialize_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cid</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Index every source through config ``cid``; return the segment count written.&quot;&quot;&quot;</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span>
+        <span class="n">written</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
+            <span class="n">leaf</span> <span class="o">=</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+            <span class="n">seg_aid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">producer_spec</span><span class="p">(</span>
+                    <span class="n">pipeline</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+                    <span class="n">leaf</span><span class="p">,</span>
+                    <span class="n">op_version</span><span class="o">=</span><span class="n">pipeline</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">pipeline</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">emb_aid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">producer_spec</span><span class="p">(</span>
+                    <span class="n">pipeline</span><span class="o">.</span><span class="n">embed</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+                    <span class="n">seg_aid</span><span class="p">,</span>
+                    <span class="n">op_version</span><span class="o">=</span><span class="n">pipeline</span><span class="o">.</span><span class="n">embed</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">pipeline</span><span class="o">.</span><span class="n">embed</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">seg_aid</span><span class="p">)</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">materialize</span><span class="p">(</span><span class="n">emb_aid</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_document</span><span class="p">(</span>
+                    <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_id</span><span class="p">),</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">cid</span>
+                <span class="p">)</span>
+                <span class="n">written</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">written</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_document</span><span class="p">(</span>
+        <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">segment</span><span class="p">:</span> <span class="n">Segment</span><span class="p">,</span>
+        <span class="n">vector</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">source_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">config_hash</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write one ``(segment, vector)`` pair into ``collection`` as a ``vd`` document.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">vd</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_doc_metadata</span><span class="p">(</span>
+            <span class="n">segment</span><span class="p">,</span>
+            <span class="n">source_id</span><span class="o">=</span><span class="n">source_id</span><span class="p">,</span>
+            <span class="n">source_hash</span><span class="o">=</span><span class="n">source_hash</span><span class="p">,</span>
+            <span class="n">config_hash</span><span class="o">=</span><span class="n">config_hash</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">collection</span><span class="p">[</span><span class="n">segment</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">segment</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">segment</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
+            <span class="n">vector</span><span class="o">=</span><span class="n">_as_floats</span><span class="p">(</span><span class="n">vector</span><span class="p">),</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># -- querying -----------------------------------------------------------</span>
+
+<div class="viewcode-block" id="SourceManager.search">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search one config&#39;s index — return up to ``limit`` ranked :class:`SearchHit`\\ s.</span>
+
+<span class="sd">        ``config`` selects which config to query (a name / :class:`~ef.config.ConfigId`,</span>
+<span class="sd">        or ``None`` for the default or sole config). ``query`` is text or a</span>
+<span class="sd">        pre-computed query vector; ``filter`` is a ``vd`` metadata filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">_search_collection</span><span class="p">(</span>
+            <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">embedder</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.retrieve">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.retrieve">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked segments — the RAG-plug-in alias of :meth:`search`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.searchable">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.searchable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">searchable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SearchableCorpus</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a thin :class:`SearchableCorpus` bound to one config&#39;s index.&quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">SearchableCorpus</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">embedder</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">cid</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -- introspection ------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">configs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ConfigId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The registered configs as a ``{name: config_id}`` mapping.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SourceManager.pipeline">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.pipeline">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PipelineSpec</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :class:`~ef.config.PipelineSpec` of a registered config.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)]</span><span class="o">.</span><span class="n">pipeline</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span><span class="si">}</span><span class="s2"> source(s), &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">)</span><span class="si">}</span><span class="s2"> config(s), </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span><span class="si">}</span><span class="s2"> artifact(s)&gt;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># -- internals ----------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigId</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a config name / id / ``None`` to a registered :class:`~ef.config.ConfigId`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;No config registered. Pass an `embedder` to SourceManager(...) &quot;</span>
+                <span class="s2">&quot;or call register_config(...) before materializing/searching.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_config</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Several configs are registered (</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span><span class="si">}</span><span class="s2">); &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;pass config= to choose one.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">config</span>  <span class="c1"># already a ConfigId</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">[</span><span class="n">config</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown config </span><span class="si">{</span><span class="n">config</span><span class="si">!r}</span><span class="s2">. Registered: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_collection_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cid</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or create the ``vd`` collection backing config ``cid``.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_collection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span> <span class="ow">and</span> <span class="n">cid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;This SourceManager was given an explicit `vd` collection, &quot;</span>
+                    <span class="s2">&quot;which holds one config&#39;s vectors; register only one config &quot;</span>
+                    <span class="s2">&quot;(or pass a `vd` client / store= to branch configs).&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_collection</span>
+        <span class="n">collection_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ef:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">collection_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="n">collection_name</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unused_embedding_model</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``vd`` ``embedding_model`` that must never be called.</span>
+
+<span class="sd">    ``ef`` always supplies vectors to ``vd`` (documents on write, the query</span>
+<span class="sd">    vector on search), so ``vd``&#39;s own ``embedding_model`` is dead code in</span>
+<span class="sd">    ``ef``&#39;s flow. If it *is* reached, that is a bug — fail loudly rather than</span>
+<span class="sd">    embed silently with the wrong model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="s2">&quot;vd&#39;s embedding_model was called, but ef supplies all vectors itself. &quot;</span>
+        <span class="s2">&quot;This indicates a document or query reached vd without a vector.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_store</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve a ``store`` argument into a ``(vd_client, explicit_collection)`` pair.</span>
+
+<span class="sd">    Exactly one of the two is non-``None``: a client (collections are created on</span>
+<span class="sd">    demand, one per config) or a single pre-made collection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">vd</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">store</span> <span class="ow">or</span> <span class="s2">&quot;memory&quot;</span><span class="p">,</span> <span class="n">embedding_model</span><span class="o">=</span><span class="n">_unused_embedding_model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">client</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;create_collection&quot;</span><span class="p">):</span>  <span class="c1"># a vd client</span>
+        <span class="k">return</span> <span class="n">store</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;__setitem__&quot;</span><span class="p">):</span>  <span class="c1"># a vd collection</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">store</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Cannot interpret </span><span class="si">{</span><span class="n">store</span><span class="si">!r}</span><span class="s2"> as a vector store. Pass None, a backend-name &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;string, a vd client, or a vd collection.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The one-shot light path</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ingest">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.ingest">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ingest</span><span class="p">(</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">segmenter</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SearchableCorpus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index ``sources`` and return a ready-to-search :class:`SearchableCorpus` — one call.</span>
+
+<span class="sd">    The light path: corpus in, ``search``-ready object out, every component</span>
+<span class="sd">    defaulted. ``ingest([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]).search(&#39;query&#39;)`` is the whole story.</span>
+<span class="sd">    It builds a single-config :class:`SourceManager`, :meth:`~SourceManager.materialize`\\ s</span>
+<span class="sd">    it, and hands back the thin :class:`SearchableCorpus`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sources: the corpus — coerced by :func:`~ef.corpus.as_corpus` (a mapping,</span>
+<span class="sd">            a directory path, an iterable of strings/mappings, or ``None``).</span>
+<span class="sd">        segmenter: the segmenter — :func:`~ef.segmenter_adapters.as_segmenter`</span>
+<span class="sd">            coerces it (``None`` → the recursive default).</span>
+<span class="sd">        embedder: the embedder — :func:`~ef.embedder_adapters.as_embedder`</span>
+<span class="sd">            coerces it; ``None`` → :data:`DEFAULT_EMBEDDER`, the dependency-free</span>
+<span class="sd">            :class:`~ef.embedders.HashingEmbedder` (so this call needs nothing</span>
+<span class="sd">            beyond ``pip install ef``). Pass an explicit embedder — e.g.</span>
+<span class="sd">            ``&quot;st:all-MiniLM-L6-v2&quot;`` — for neural semantic quality.</span>
+<span class="sd">        store: the vector store — ``None`` → an in-memory ``vd`` backend. See</span>
+<span class="sd">            :class:`SourceManager` for the other accepted forms.</span>
+<span class="sd">        cache: the artifact-graph value cache — any ``MutableMapping``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a :class:`SearchableCorpus` over the freshly indexed corpus.</span>
+
+<span class="sd">    See the module docstring for a complete offline example.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The light path always indexes, so it always needs a concrete embedder —</span>
+    <span class="c1"># resolve ``None`` to :data:`DEFAULT_EMBEDDER` here rather than relying on</span>
+    <span class="c1"># ``SourceManager``, which deliberately registers *no* config when given no</span>
+    <span class="c1"># embedder (its explicit multi-config mode).</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span>
+        <span class="n">sources</span><span class="p">,</span>
+        <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
+        <span class="n">embedder</span><span class="o">=</span><span class="n">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">),</span>
+        <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">,</span>
+        <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">searchable</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

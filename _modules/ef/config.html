@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.config &mdash; ef 0.1.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The config layer — declarative, content-addressable pipeline specs.</span>
+
+<span class="sd">A *pipeline* in ``ef`` is not an object graph you wire by hand — it is **data**.</span>
+<span class="sd">A :class:`PipelineSpec` declares the segment→embed chain; each step is a</span>
+<span class="sd">:class:`TransformSpec` (an op key, an op version, and the keyword params that</span>
+<span class="sd">feed the content hash). Because a spec is fully serializable and content-hashed</span>
+<span class="sd">(:func:`config_id`), two configs that share a step share that step&#39;s artifacts</span>
+<span class="sd">in the :class:`~ef.artifact_graph.ArtifactGraph` for free — config branching</span>
+<span class="sd">costs nothing beyond the divergent cone (design notes §3.1).</span>
+
+<span class="sd">This module is the *bridge* between an ordinary Python call and a content-</span>
+<span class="sd">addressed graph node. For content addressing to be **correct**, two</span>
+<span class="sd">semantically-equal calls must produce identical params — so ``op(text)`` and</span>
+<span class="sd">``op(text, size=512)`` (``512`` being the default) must hash the same. The</span>
+<span class="sd">canonical ``i2`` idiom does exactly that normalization:</span>
+
+<span class="sd">- :func:`full_kwargs` — the raw recipe (design notes §3.8): a call ``(args,</span>
+<span class="sd">  kwargs)`` → a fully-named, defaults-filled kwargs dict.</span>
+<span class="sd">- :func:`step_params` — its spec-building application: the canonical *keyword*</span>
+<span class="sd">  params of an op, with the leading positional *input* slots (the upstream</span>
+<span class="sd">  artifact ids) dropped, since those become :attr:`ProducerSpec.inputs</span>
+<span class="sd">  &lt;ef.artifact_graph.ProducerSpec.inputs&gt;`, not params.</span>
+
+<span class="sd">Phase 4&#39;s :class:`~ef.artifact_graph.ArtifactGraph` takes :class:`ProducerSpec</span>
+<span class="sd">&lt;ef.artifact_graph.ProducerSpec&gt;`\\ s as given; this module (and</span>
+<span class="sd">:mod:`ef.ops` / :mod:`ef.source_manager`) is where ordinary calls *become*</span>
+<span class="sd">those specs.</span>
+
+<span class="sd">Example — two pipelines, equal segment step, divergent embed step:</span>
+
+<span class="sd">&gt;&gt;&gt; seg = TransformSpec(op=&#39;segment:recursive&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">&gt;&gt;&gt; embed_a = TransformSpec(op=&#39;embed:m-a&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">&gt;&gt;&gt; embed_b = TransformSpec(op=&#39;embed:m-b&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">&gt;&gt;&gt; pa = PipelineSpec(segment=seg, embed=embed_a)</span>
+<span class="sd">&gt;&gt;&gt; pb = PipelineSpec(segment=seg, embed=embed_b)</span>
+<span class="sd">&gt;&gt;&gt; config_id(pa) == config_id(pb)        # different embedders → different config</span>
+<span class="sd">False</span>
+<span class="sd">&gt;&gt;&gt; config_id(pa) == config_id(PipelineSpec.from_dict(pa.as_dict()))</span>
+<span class="sd">True</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_json</span><span class="p">,</span> <span class="n">sha256_hex</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ConfigId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;full_kwargs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;step_params&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TransformSpec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PipelineSpec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;config_id&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">#: A content-addressed pipeline identifier — the ``sha256`` hex digest of a</span>
+<span class="c1">#: :class:`PipelineSpec` (:func:`config_id`). It is what ``ef`` writes into</span>
+<span class="c1">#: ``vd`` index metadata as ``config_hash`` so a later phase can tell which</span>
+<span class="c1">#: pipeline produced a vector.</span>
+<span class="n">ConfigId</span> <span class="o">=</span> <span class="nb">str</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Call normalization — turning an op call into hashable params</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="full_kwargs">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.full_kwargs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">full_kwargs</span><span class="p">(</span>
+    <span class="n">op</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a call into a canonical, fully-named, defaults-filled kwargs dict.</span>
+
+<span class="sd">    The ``i2.Sig`` recipe of design notes §3.8. A call expressed as positional</span>
+<span class="sd">    ``args`` + keyword ``kwargs`` is mapped onto ``op``&#39;s signature: every</span>
+<span class="sd">    parameter is named, and any parameter the call left implicit is filled with</span>
+<span class="sd">    its default. The result is therefore *stable* — ``op(x)`` and</span>
+<span class="sd">    ``op(x, size=512)`` (``512`` the default) yield the **same** dict, which is</span>
+<span class="sd">    what makes a content hash built from it correct.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        op: the callable whose signature defines the parameter names/defaults.</span>
+<span class="sd">        args: the call&#39;s positional arguments — for an :mod:`ef.ops` op these</span>
+<span class="sd">            are the upstream artifact ids; :func:`step_params` drops them again.</span>
+<span class="sd">        kwargs: the call&#39;s keyword arguments.</span>
+
+<span class="sd">    &gt;&gt;&gt; def embed(segments, *, input_type=&#39;document&#39;, dim=None): ...</span>
+<span class="sd">    &gt;&gt;&gt; full_kwargs(embed, (&#39;seg-1&#39;,), {&#39;input_type&#39;: &#39;query&#39;})</span>
+<span class="sd">    {&#39;segments&#39;: &#39;seg-1&#39;, &#39;input_type&#39;: &#39;query&#39;, &#39;dim&#39;: None}</span>
+<span class="sd">    &gt;&gt;&gt; full_kwargs(embed, (&#39;seg-1&#39;,))                 # defaults filled in</span>
+<span class="sd">    {&#39;segments&#39;: &#39;seg-1&#39;, &#39;input_type&#39;: &#39;document&#39;, &#39;dim&#39;: None}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">Sig</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
+            <span class="n">apply_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">allow_excess</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="step_params">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.step_params">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">step_params</span><span class="p">(</span>
+    <span class="n">op</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">raw_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">n_inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The canonical *keyword* params of an op step — its inputs dropped.</span>
+
+<span class="sd">    An :mod:`ef.ops` op is called ``op(*input_values, **params)``: the first</span>
+<span class="sd">    ``n_inputs`` positional parameters are upstream artifacts (they belong in</span>
+<span class="sd">    :attr:`ProducerSpec.inputs &lt;ef.artifact_graph.ProducerSpec.inputs&gt;`, not in</span>
+<span class="sd">    the params), and every remaining parameter is a hashable step param. This</span>
+<span class="sd">    runs :func:`full_kwargs` with placeholder inputs, then drops those input</span>
+<span class="sd">    slots — leaving exactly the params, defaults filled, ready for a</span>
+<span class="sd">    :class:`TransformSpec`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        op: the op callable whose signature is the param contract.</span>
+<span class="sd">        raw_params: the keyword params the caller actually supplied; anything</span>
+<span class="sd">            omitted is defaulted.</span>
+<span class="sd">        n_inputs: how many leading positional parameters are upstream inputs.</span>
+
+<span class="sd">    &gt;&gt;&gt; def embed(segments, *, input_type=&#39;document&#39;): ...</span>
+<span class="sd">    &gt;&gt;&gt; step_params(embed, {&#39;input_type&#39;: &#39;query&#39;})</span>
+<span class="sd">    {&#39;input_type&#39;: &#39;query&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; step_params(embed)                              # default filled in</span>
+<span class="sd">    {&#39;input_type&#39;: &#39;document&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; def segment(source): ...</span>
+<span class="sd">    &gt;&gt;&gt; step_params(segment)                            # no params at all</span>
+<span class="sd">    {}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sig</span>
+
+    <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Sig</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()][:</span><span class="n">n_inputs</span><span class="p">]</span>
+    <span class="n">placeholders</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inputs</span><span class="p">))</span>
+    <span class="n">mapped</span> <span class="o">=</span> <span class="n">full_kwargs</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">placeholders</span><span class="p">,</span> <span class="n">raw_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mapped</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">}</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The specs</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="TransformSpec">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.TransformSpec">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransformSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One step of a pipeline — a serializable recipe for an op application.</span>
+
+<span class="sd">    A :class:`TransformSpec` names *which op* (``op``, a key resolved through</span>
+<span class="sd">    the :class:`~ef.artifact_graph.ArtifactGraph`&#39;s ``ops`` registry), *at which</span>
+<span class="sd">    version* (``op_version`` — it participates in every downstream hash), and</span>
+<span class="sd">    *with which keyword params* (``params``). It does **not** record the step&#39;s</span>
+<span class="sd">    inputs: those are wired structurally by the :class:`PipelineSpec` (the embed</span>
+<span class="sd">    step consumes the segment step&#39;s output). It is the per-step counterpart of</span>
+<span class="sd">    a :class:`~ef.artifact_graph.ProducerSpec`.</span>
+
+<span class="sd">    The op key carries the *component identity* — e.g. ``&quot;embed:openai:text-</span>
+<span class="sd">    embedding-3-large@1024&quot;`` or ``&quot;segment:&lt;segmenter-identity&gt;&quot;`` (see</span>
+<span class="sd">    :mod:`ef.ops`) — so two configs with different components get disjoint</span>
+<span class="sd">    artifact cones automatically.</span>
+
+<span class="sd">    &gt;&gt;&gt; ts = TransformSpec(op=&#39;embed:m@8&#39;, op_version=&#39;2&#39;, params={&#39;input_type&#39;: &#39;document&#39;})</span>
+<span class="sd">    &gt;&gt;&gt; ts.op, ts.op_version</span>
+<span class="sd">    (&#39;embed:m@8&#39;, &#39;2&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; TransformSpec.from_dict(ts.as_dict()) == ts</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">op</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">op_version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TransformSpec.as_dict">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.TransformSpec.as_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a plain-``dict`` (JSON-serializable) form of the spec.</span>
+
+<span class="sd">        &gt;&gt;&gt; TransformSpec(op=&#39;segment:r&#39;, op_version=&#39;1&#39;, params={}).as_dict()</span>
+<span class="sd">        {&#39;op&#39;: &#39;segment:r&#39;, &#39;op_version&#39;: &#39;1&#39;, &#39;params&#39;: {}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+            <span class="s2">&quot;op_version&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="TransformSpec.from_dict">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.TransformSpec.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;TransformSpec&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rebuild a :class:`TransformSpec` from its :meth:`as_dict` form.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">op</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;op&quot;</span><span class="p">],</span>
+            <span class="n">op_version</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;op_version&quot;</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="p">{})),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PipelineSpec">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.PipelineSpec">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PipelineSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A whole indexing pipeline as data — the segment→embed chain.</span>
+
+<span class="sd">    A :class:`PipelineSpec` is the declarative description of one *config*: a</span>
+<span class="sd">    :class:`TransformSpec` for the segmenter and one for the embedder. It is</span>
+<span class="sd">    fully serializable (:meth:`as_dict` / :meth:`from_dict`) and content-hashed</span>
+<span class="sd">    by :func:`config_id`. Registering a second :class:`PipelineSpec` that</span>
+<span class="sd">    differs only in its embed step shares the segment artifacts in the</span>
+<span class="sd">    :class:`~ef.artifact_graph.ArtifactGraph` — that is config branching, and</span>
+<span class="sd">    the graph gives it for free.</span>
+
+<span class="sd">    The ``segment``→``embed`` ordering *is* the input wiring: the embed step</span>
+<span class="sd">    consumes the segment step&#39;s output. (Phase 5 fixes this two-step shape; a</span>
+<span class="sd">    later phase may generalize it to an arbitrary step list.)</span>
+
+<span class="sd">    &gt;&gt;&gt; seg = TransformSpec(op=&#39;segment:r&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">    &gt;&gt;&gt; emb = TransformSpec(op=&#39;embed:m@8&#39;, op_version=&#39;1&#39;, params={&#39;input_type&#39;: &#39;document&#39;})</span>
+<span class="sd">    &gt;&gt;&gt; spec = PipelineSpec(segment=seg, embed=emb)</span>
+<span class="sd">    &gt;&gt;&gt; spec.embed.params[&#39;input_type&#39;]</span>
+<span class="sd">    &#39;document&#39;</span>
+<span class="sd">    &gt;&gt;&gt; PipelineSpec.from_dict(spec.as_dict()) == spec</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">segment</span><span class="p">:</span> <span class="n">TransformSpec</span>
+    <span class="n">embed</span><span class="p">:</span> <span class="n">TransformSpec</span>
+
+<div class="viewcode-block" id="PipelineSpec.as_dict">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.PipelineSpec.as_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a plain-``dict`` (JSON-serializable) form of the pipeline.</span>
+
+<span class="sd">        &gt;&gt;&gt; seg = TransformSpec(op=&#39;segment:r&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">        &gt;&gt;&gt; emb = TransformSpec(op=&#39;embed:m&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">        &gt;&gt;&gt; PipelineSpec(segment=seg, embed=emb).as_dict()[&#39;segment&#39;][&#39;op&#39;]</span>
+<span class="sd">        &#39;segment:r&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">as_dict</span><span class="p">(),</span> <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()}</span></div>
+
+
+<div class="viewcode-block" id="PipelineSpec.from_dict">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.PipelineSpec.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;PipelineSpec&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rebuild a :class:`PipelineSpec` from its :meth:`as_dict` form.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">segment</span><span class="o">=</span><span class="n">TransformSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;segment&quot;</span><span class="p">]),</span>
+            <span class="n">embed</span><span class="o">=</span><span class="n">TransformSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;embed&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="config_id">
+<a class="viewcode-back" href="../../module_docs/ef/config.html#ef.config_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">config_id</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="n">PipelineSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigId</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Content-addressed id of a :class:`PipelineSpec` — ``sha256`` over its steps.</span>
+
+<span class="sd">    The id is ``sha256`` of the canonical (sorted-key) JSON of</span>
+<span class="sd">    :meth:`PipelineSpec.as_dict`. Two pipelines that describe the same</span>
+<span class="sd">    computation hash identically; any change to a step&#39;s op, version or params</span>
+<span class="sd">    yields a different id. ``ef`` writes this digest into ``vd`` index metadata</span>
+<span class="sd">    as ``config_hash``.</span>
+
+<span class="sd">    &gt;&gt;&gt; seg = TransformSpec(op=&#39;segment:r&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">    &gt;&gt;&gt; emb = TransformSpec(op=&#39;embed:m@8&#39;, op_version=&#39;1&#39;, params={})</span>
+<span class="sd">    &gt;&gt;&gt; cid = config_id(PipelineSpec(segment=seg, embed=emb))</span>
+<span class="sd">    &gt;&gt;&gt; len(cid)</span>
+<span class="sd">    64</span>
+<span class="sd">    &gt;&gt;&gt; cid == config_id(PipelineSpec(segment=seg, embed=emb))</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sha256_hex</span><span class="p">(</span><span class="n">canonical_json</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

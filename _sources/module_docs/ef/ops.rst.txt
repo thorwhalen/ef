@@ -1,0 +1,4 @@
+ef.ops
+======
+.. automodule:: ef.ops
+   :members:

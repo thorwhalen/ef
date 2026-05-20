@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.embedder_adapters &mdash; ef 0.1.6 documentation</title>
+  <title>ef.embedder_adapters &mdash; ef 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,12 +49,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -62,6 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
@@ -141,6 +144,7 @@
     <span class="n">Embedder</span><span class="p">,</span>
     <span class="n">EmbedderError</span><span class="p">,</span>
     <span class="n">FunctionEmbedder</span><span class="p">,</span>
+    <span class="n">HashingEmbedder</span><span class="p">,</span>
     <span class="n">InputType</span><span class="p">,</span>
     <span class="n">embed_length_sorted</span><span class="p">,</span>
 <span class="p">)</span>
@@ -583,9 +587,11 @@
 <span class="sd">    1. an existing :class:`~ef.embedders.Embedder` — returned unchanged;</span>
 <span class="sd">    2. a URL string (``http://`` / ``https://``) — :func:`http_embedder`;</span>
 <span class="sd">    3. an ``&quot;openai:&lt;model&gt;&quot;`` string — :func:`openai_embedder`;</span>
-<span class="sd">    4. an ``&quot;st:&lt;model&gt;&quot;`` string, or any other bare model name —</span>
-<span class="sd">       :func:`sentence_transformers_embedder` (the local default);</span>
-<span class="sd">    5. a bare callable — wrapped in</span>
+<span class="sd">    4. the bare string ``&quot;hashing&quot;`` — the dependency-free</span>
+<span class="sd">       :class:`~ef.embedders.HashingEmbedder` (``ef``&#39;s zero-install default);</span>
+<span class="sd">    5. an ``&quot;st:&lt;model&gt;&quot;`` string, or any other bare model name —</span>
+<span class="sd">       :func:`sentence_transformers_embedder` (the local neural default);</span>
+<span class="sd">    6. a bare callable — wrapped in</span>
 <span class="sd">       :class:`~ef.embedders.FunctionEmbedder` (the ``imbed``-embedder bridge).</span>
 
 <span class="sd">    Extra ``**kwargs`` are forwarded to the chosen factory.</span>
@@ -605,6 +611,8 @@
             <span class="k">return</span> <span class="n">http_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;openai:&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">openai_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;openai:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;hashing&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HashingEmbedder</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;st:&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">sentence_transformers_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;st:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sentence_transformers_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

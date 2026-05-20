@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.config &mdash; ef 0.1.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.corpus" href="corpus.html" />
+    <link rel="prev" title="ef.base" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.config</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.ConfigId"><code class="docutils literal notranslate"><span class="pre">ConfigId</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.PipelineSpec"><code class="docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.config.PipelineSpec.as_dict"><code class="docutils literal notranslate"><span class="pre">PipelineSpec.as_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.config.PipelineSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">PipelineSpec.from_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.TransformSpec"><code class="docutils literal notranslate"><span class="pre">TransformSpec</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.config.TransformSpec.as_dict"><code class="docutils literal notranslate"><span class="pre">TransformSpec.as_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.config.TransformSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">TransformSpec.from_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.config.step_params"><code class="docutils literal notranslate"><span class="pre">step_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.config</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.config">
+<span id="ef-config"></span><h1>ef.config<a class="headerlink" href="#module-ef.config" title="Link to this heading"></a></h1>
+<p>The config layer — declarative, content-addressable pipeline specs.</p>
+<p>A <em>pipeline</em> in <code class="docutils literal notranslate"><span class="pre">ef</span></code> is not an object graph you wire by hand — it is <strong>data</strong>.
+A <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> declares the segment→embed chain; each step is a
+<a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> (an op key, an op version, and the keyword params that
+feed the content hash). Because a spec is fully serializable and content-hashed
+(<a class="reference internal" href="#ef.config.config_id" title="ef.config.config_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">config_id()</span></code></a>), two configs that share a step share that step’s artifacts
+in the <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> for free — config branching
+costs nothing beyond the divergent cone (design notes §3.1).</p>
+<p>This module is the <em>bridge</em> between an ordinary Python call and a content-
+addressed graph node. For content addressing to be <strong>correct</strong>, two
+semantically-equal calls must produce identical params — so <code class="docutils literal notranslate"><span class="pre">op(text)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">op(text,</span> <span class="pre">size=512)</span></code> (<code class="docutils literal notranslate"><span class="pre">512</span></code> being the default) must hash the same. The
+canonical <code class="docutils literal notranslate"><span class="pre">i2</span></code> idiom does exactly that normalization:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.config.full_kwargs" title="ef.config.full_kwargs"><code class="xref py py-func docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a> — the raw recipe (design notes §3.8): a call <code class="docutils literal notranslate"><span class="pre">(args,</span>
+<span class="pre">kwargs)</span></code> → a fully-named, defaults-filled kwargs dict.</p></li>
+<li><p><a class="reference internal" href="#ef.config.step_params" title="ef.config.step_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">step_params()</span></code></a> — its spec-building application: the canonical <em>keyword</em>
+params of an op, with the leading positional <em>input</em> slots (the upstream
+artifact ids) dropped, since those become <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ProducerSpec.inputs" title="ef.artifact_graph.ProducerSpec.inputs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ProducerSpec.inputs</span></code></a>, not params.</p></li>
+</ul>
+<p>Phase 4’s <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> takes <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>s as given; this module (and
+<a class="reference internal" href="ops.html#module-ef.ops" title="ef.ops"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.ops</span></code></a> / <a class="reference internal" href="source_manager.html#module-ef.source_manager" title="ef.source_manager"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.source_manager</span></code></a>) is where ordinary calls <em>become</em>
+those specs.</p>
+<p>Example — two pipelines, equal segment step, divergent embed step:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;segment:recursive&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embed_a</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m-a&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embed_b</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m-b&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pa</span> <span class="o">=</span> <span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">embed_a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pb</span> <span class="o">=</span> <span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">embed_b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config_id</span><span class="p">(</span><span class="n">pa</span><span class="p">)</span> <span class="o">==</span> <span class="n">config_id</span><span class="p">(</span><span class="n">pb</span><span class="p">)</span>        <span class="c1"># different embedders → different config</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config_id</span><span class="p">(</span><span class="n">pa</span><span class="p">)</span> <span class="o">==</span> <span class="n">config_id</span><span class="p">(</span><span class="n">PipelineSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.config.ConfigId">
+<span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">ConfigId</span></span><a class="headerlink" href="#ef.config.ConfigId" title="Link to this definition"></a></dt>
+<dd><p>A content-addressed pipeline identifier — the <code class="docutils literal notranslate"><span class="pre">sha256</span></code> hex digest of a
+<a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> (<a class="reference internal" href="#ef.config.config_id" title="ef.config.config_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">config_id()</span></code></a>). It is what <code class="docutils literal notranslate"><span class="pre">ef</span></code> writes into
+<code class="docutils literal notranslate"><span class="pre">vd</span></code> index metadata as <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> so a later phase can tell which
+pipeline produced a vector.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.config.PipelineSpec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">PipelineSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><span class="pre">TransformSpec</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">embed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><span class="pre">TransformSpec</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/config.html#PipelineSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.PipelineSpec" title="Link to this definition"></a></dt>
+<dd><p>A whole indexing pipeline as data — the segment→embed chain.</p>
+<p>A <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> is the declarative description of one <em>config</em>: a
+<a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> for the segmenter and one for the embedder. It is
+fully serializable (<a class="reference internal" href="#ef.config.PipelineSpec.as_dict" title="ef.config.PipelineSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_dict()</span></code></a> / <a class="reference internal" href="#ef.config.PipelineSpec.from_dict" title="ef.config.PipelineSpec.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>) and content-hashed
+by <a class="reference internal" href="#ef.config.config_id" title="ef.config.config_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">config_id()</span></code></a>. Registering a second <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> that
+differs only in its embed step shares the segment artifacts in the
+<a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> — that is config branching, and
+the graph gives it for free.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">segment``→``embed</span></code> ordering <em>is</em> the input wiring: the embed step
+consumes the segment step’s output. (Phase 5 fixes this two-step shape; a
+later phase may generalize it to an arbitrary step list.)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;segment:r&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m@8&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span> <span class="s1">&#39;document&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">embed</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;input_type&#39;</span><span class="p">]</span>
+<span class="go">&#39;document&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PipelineSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">as_dict</span><span class="p">())</span> <span class="o">==</span> <span class="n">spec</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.config.PipelineSpec.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/config.html#PipelineSpec.as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.PipelineSpec.as_dict" title="Link to this definition"></a></dt>
+<dd><p>Return a plain-<code class="docutils literal notranslate"><span class="pre">dict</span></code> (JSON-serializable) form of the pipeline.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;segment:r&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb</span><span class="p">)</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()[</span><span class="s1">&#39;segment&#39;</span><span class="p">][</span><span class="s1">&#39;op&#39;</span><span class="p">]</span>
+<span class="go">&#39;segment:r&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.config.PipelineSpec.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><span class="pre">PipelineSpec</span></a></span></span><a class="reference internal" href="../../_modules/ef/config.html#PipelineSpec.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.PipelineSpec.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Rebuild a <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> from its <a class="reference internal" href="#ef.config.PipelineSpec.as_dict" title="ef.config.PipelineSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_dict()</span></code></a> form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.config.TransformSpec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">TransformSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Any]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/config.html#TransformSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.TransformSpec" title="Link to this definition"></a></dt>
+<dd><p>One step of a pipeline — a serializable recipe for an op application.</p>
+<p>A <a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> names <em>which op</em> (<code class="docutils literal notranslate"><span class="pre">op</span></code>, a key resolved through
+the <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>’s <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry), <em>at which
+version</em> (<code class="docutils literal notranslate"><span class="pre">op_version</span></code> — it participates in every downstream hash), and
+<em>with which keyword params</em> (<code class="docutils literal notranslate"><span class="pre">params</span></code>). It does <strong>not</strong> record the step’s
+inputs: those are wired structurally by the <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> (the embed
+step consumes the segment step’s output). It is the per-step counterpart of
+a <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>.</p>
+<p>The op key carries the <em>component identity</em> — e.g. <code class="docutils literal notranslate"><span class="pre">&quot;embed:openai:text-</span>
+<span class="pre">embedding-3-large&#64;1024&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;segment:&lt;segmenter-identity&gt;&quot;</span></code> (see
+<a class="reference internal" href="ops.html#module-ef.ops" title="ef.ops"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.ops</span></code></a>) — so two configs with different components get disjoint
+artifact cones automatically.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m@8&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span> <span class="s1">&#39;document&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">op_version</span>
+<span class="go">(&#39;embed:m@8&#39;, &#39;2&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TransformSpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">as_dict</span><span class="p">())</span> <span class="o">==</span> <span class="n">ts</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.config.TransformSpec.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/config.html#TransformSpec.as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.TransformSpec.as_dict" title="Link to this definition"></a></dt>
+<dd><p>Return a plain-<code class="docutils literal notranslate"><span class="pre">dict</span></code> (JSON-serializable) form of the spec.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;segment:r&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="go">{&#39;op&#39;: &#39;segment:r&#39;, &#39;op_version&#39;: &#39;1&#39;, &#39;params&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.config.TransformSpec.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><span class="pre">TransformSpec</span></a></span></span><a class="reference internal" href="../../_modules/ef/config.html#TransformSpec.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.TransformSpec.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Rebuild a <a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> from its <a class="reference internal" href="#ef.config.TransformSpec.as_dict" title="ef.config.TransformSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_dict()</span></code></a> form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.config.config_id">
+<span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">config_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><span class="pre">PipelineSpec</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/config.html#config_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.config_id" title="Link to this definition"></a></dt>
+<dd><p>Content-addressed id of a <a class="reference internal" href="#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> over its steps.</p>
+<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of the canonical (sorted-key) JSON of
+<a class="reference internal" href="#ef.config.PipelineSpec.as_dict" title="ef.config.PipelineSpec.as_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PipelineSpec.as_dict()</span></code></a>. Two pipelines that describe the same
+computation hash identically; any change to a step’s op, version or params
+yields a different id. <code class="docutils literal notranslate"><span class="pre">ef</span></code> writes this digest into <code class="docutils literal notranslate"><span class="pre">vd</span></code> index metadata
+as <code class="docutils literal notranslate"><span class="pre">config_hash</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;segment:r&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s1">&#39;embed:m@8&#39;</span><span class="p">,</span> <span class="n">op_version</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cid</span> <span class="o">=</span> <span class="n">config_id</span><span class="p">(</span><span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+<span class="go">64</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cid</span> <span class="o">==</span> <span class="n">config_id</span><span class="p">(</span><span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.config.full_kwargs">
+<span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">full_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/config.html#full_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.full_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Normalize a call into a canonical, fully-named, defaults-filled kwargs dict.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">i2.Sig</span></code> recipe of design notes §3.8. A call expressed as positional
+<code class="docutils literal notranslate"><span class="pre">args</span></code> + keyword <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> is mapped onto <code class="docutils literal notranslate"><span class="pre">op</span></code>’s signature: every
+parameter is named, and any parameter the call left implicit is filled with
+its default. The result is therefore <em>stable</em> — <code class="docutils literal notranslate"><span class="pre">op(x)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">op(x,</span> <span class="pre">size=512)</span></code> (<code class="docutils literal notranslate"><span class="pre">512</span></code> the default) yield the <strong>same</strong> dict, which is
+what makes a content hash built from it correct.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>op</strong> – the callable whose signature defines the parameter names/defaults.</p></li>
+<li><p><strong>args</strong> – the call’s positional arguments — for an <a class="reference internal" href="ops.html#module-ef.ops" title="ef.ops"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.ops</span></code></a> op these
+are the upstream artifact ids; <a class="reference internal" href="#ef.config.step_params" title="ef.config.step_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">step_params()</span></code></a> drops them again.</p></li>
+<li><p><strong>kwargs</strong> – the call’s keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s1">&#39;document&#39;</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">full_kwargs</span><span class="p">(</span><span class="n">embed</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;seg-1&#39;</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span> <span class="s1">&#39;query&#39;</span><span class="p">})</span>
+<span class="go">{&#39;segments&#39;: &#39;seg-1&#39;, &#39;input_type&#39;: &#39;query&#39;, &#39;dim&#39;: None}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">full_kwargs</span><span class="p">(</span><span class="n">embed</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;seg-1&#39;</span><span class="p">,))</span>                 <span class="c1"># defaults filled in</span>
+<span class="go">{&#39;segments&#39;: &#39;seg-1&#39;, &#39;input_type&#39;: &#39;document&#39;, &#39;dim&#39;: None}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.config.step_params">
+<span class="sig-prename descclassname"><span class="pre">ef.config.</span></span><span class="sig-name descname"><span class="pre">step_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/config.html#step_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.config.step_params" title="Link to this definition"></a></dt>
+<dd><p>The canonical <em>keyword</em> params of an op step — its inputs dropped.</p>
+<p>An <a class="reference internal" href="ops.html#module-ef.ops" title="ef.ops"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.ops</span></code></a> op is called <code class="docutils literal notranslate"><span class="pre">op(*input_values,</span> <span class="pre">**params)</span></code>: the first
+<code class="docutils literal notranslate"><span class="pre">n_inputs</span></code> positional parameters are upstream artifacts (they belong in
+<a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ProducerSpec.inputs" title="ef.artifact_graph.ProducerSpec.inputs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ProducerSpec.inputs</span></code></a>, not in
+the params), and every remaining parameter is a hashable step param. This
+runs <a class="reference internal" href="#ef.config.full_kwargs" title="ef.config.full_kwargs"><code class="xref py py-func docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a> with placeholder inputs, then drops those input
+slots — leaving exactly the params, defaults filled, ready for a
+<a class="reference internal" href="#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>op</strong> – the op callable whose signature is the param contract.</p></li>
+<li><p><strong>raw_params</strong> – the keyword params the caller actually supplied; anything
+omitted is defaulted.</p></li>
+<li><p><strong>n_inputs</strong> – how many leading positional parameters are upstream inputs.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s1">&#39;document&#39;</span><span class="p">):</span> <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step_params</span><span class="p">(</span><span class="n">embed</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span> <span class="s1">&#39;query&#39;</span><span class="p">})</span>
+<span class="go">{&#39;input_type&#39;: &#39;query&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step_params</span><span class="p">(</span><span class="n">embed</span><span class="p">)</span>                              <span class="c1"># default filled in</span>
+<span class="go">{&#39;input_type&#39;: &#39;document&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">segment</span><span class="p">(</span><span class="n">source</span><span class="p">):</span> <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">step_params</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>                            <span class="c1"># no params at all</span>
+<span class="go">{}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="base.html" class="btn btn-neutral float-left" title="ef.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="corpus.html" class="btn btn-neutral float-right" title="ef.corpus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

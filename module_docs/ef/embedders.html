@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.embedders &mdash; ef 0.1.6 documentation</title>
+  <title>ef.embedders &mdash; ef 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -52,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
 <li class="toctree-l1"><a class="reference internal" href="artifact_graph.html">ef.artifact_graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
 <li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
@@ -78,6 +79,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embedders.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embedders.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.embedders.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embedders.InputType"><code class="docutils literal notranslate"><span class="pre">InputType</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embedders.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embedders.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
@@ -85,6 +87,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
@@ -92,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_manager.html">ef.source_manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
@@ -142,6 +146,8 @@ synchronous <a class="reference internal" href="#ef.embedders.BaseEmbedder.embed
 is optional; satisfying <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> structurally is what matters.</p></li>
 <li><p><a class="reference internal" href="#ef.embedders.FunctionEmbedder" title="ef.embedders.FunctionEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a> — wraps a bare <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">vectors</span></code> callable into a
 full <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> (the bridge for e.g. <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s embedder functions).</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a> — a dependency-free embedder (the feature-hashing
+trick, numpy only); <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s zero-install default when no embedder is given.</p></li>
 <li><p><a class="reference internal" href="#ef.embedders.cache_key" title="ef.embedders.cache_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code></a> — a deterministic key pinning everything that changes a
 vector, for <a class="reference internal" href="embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a>.</p></li>
 <li><p><a class="reference internal" href="#ef.embedders.embed_length_sorted" title="ef.embedders.embed_length_sorted"><code class="xref py py-func docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a> — length-sorted batching with order
@@ -331,6 +337,55 @@ signature.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;ones@4&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(3, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.HashingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">HashingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sublinear_tf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/embedders.html#HashingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embedders.HashingEmbedder" title="Link to this definition"></a></dt>
+<dd><p>A dependency-free embedder — the feature-hashing trick, numpy only.</p>
+<p><a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a> is <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s <strong>zero-install default</strong>: the embedder
+<a class="reference internal" href="source_manager.html#ef.source_manager.ingest" title="ef.source_manager.ingest"><code class="xref py py-func docutils literal notranslate"><span class="pre">ingest()</span></code></a> resolves to when none is given, so the
+headline <code class="docutils literal notranslate"><span class="pre">ingest([...]).search(query)</span></code> works on a bare <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ef</span></code>
+— no torch, no model download, no network.</p>
+<p>It is a <em>lexical</em> embedder, not a neural one. Each text is tokenized into
+lowercased word n-grams; every token is hashed into one of <code class="docutils literal notranslate"><span class="pre">dim</span></code> buckets
+with a sign (the hashing trick — no vocabulary, no fitting, fixed memory);
+the signed, sublinear-tf-weighted bucket counts are L2-normalized. The
+cosine similarity of two vectors then ranks by shared vocabulary — enough
+for demos, doctests and offline tests, and a sane fallback in production.
+For genuine semantic quality install a real embedder (<code class="docutils literal notranslate"><span class="pre">ef[sentence-transformers]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ef[openai]</span></code>) and pass it explicitly.</p>
+<p>Every parameter that changes a vector is baked into <code class="xref py py-attr docutils literal notranslate"><span class="pre">model_id</span></code>, so a
+<a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>’s artifacts stay correctly content-addressed in the
+<a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> – Output width. Wider → fewer hash collisions, larger vectors.</p></li>
+<li><p><strong>ngram_range</strong> – Inclusive <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code> word-n-gram sizes. The default
+<code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2)</span></code> mixes single words with adjacent pairs — a little phrase
+sensitivity at no real cost.</p></li>
+<li><p><strong>sublinear_tf</strong> – Weight a token by <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">log(count)</span></code> rather than its raw
+<code class="docutils literal notranslate"><span class="pre">count</span></code>, damping a word repeated many times in one text.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">HashingEmbedder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="o">.</span><span class="n">model_id</span>
+<span class="go">&#39;hashing:v1@512&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="p">([</span><span class="s1">&#39;the quick brown fox&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1, 512)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">1.0</span><span class="p">))</span>  <span class="c1"># rows are L2-normalized</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">e</span><span class="p">([</span><span class="s1">&#39;hello world&#39;</span><span class="p">]),</span> <span class="n">e</span><span class="p">([</span><span class="s1">&#39;hello world&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># identical text → cosine similarity 1.0</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Embedder</span><span class="p">)</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>

@@ -1,0 +1,4 @@
+ef.source_manager
+=================
+.. automodule:: ef.source_manager
+   :members:

@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.ops &mdash; ef 0.1.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.plugins" href="plugins.html" />
+    <link rel="prev" title="ef.hashing" href="hashing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.EMBED_OP_VERSION"><code class="docutils literal notranslate"><span class="pre">EMBED_OP_VERSION</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.SEGMENT_OP_VERSION"><code class="docutils literal notranslate"><span class="pre">SEGMENT_OP_VERSION</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.embed_step"><code class="docutils literal notranslate"><span class="pre">embed_step()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.embedder_identity"><code class="docutils literal notranslate"><span class="pre">embedder_identity()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.make_embed_op"><code class="docutils literal notranslate"><span class="pre">make_embed_op()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.make_segment_op"><code class="docutils literal notranslate"><span class="pre">make_segment_op()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.segment_step"><code class="docutils literal notranslate"><span class="pre">segment_step()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.ops.segmenter_identity"><code class="docutils literal notranslate"><span class="pre">segmenter_identity()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.ops</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/ops.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.ops">
+<span id="ef-ops"></span><h1>ef.ops<a class="headerlink" href="#module-ef.ops" title="Link to this heading"></a></h1>
+<p>The pipeline ops — the callables an <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> runs.</p>
+<p>The <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> resolves a <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a>’s string <code class="docutils literal notranslate"><span class="pre">op</span></code> key to a callable through its
+injectable <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry, then calls <code class="docutils literal notranslate"><span class="pre">op(*input_values,</span> <span class="pre">**params)</span></code>. This
+module supplies the two ops Phase 5’s pipeline needs and the machinery that
+turns a <em>live component</em> (a <a class="reference internal" href="segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> /
+<a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>) into a serializable <a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a>
+<em>plus</em> the bound callable to register.</p>
+<p>The split is deliberate:</p>
+<ul class="simple">
+<li><p>a <a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> is <strong>data</strong> — an op <em>key</em>, a version,
+params — so it can be persisted (the recipe is content-addressed);</p></li>
+<li><p>the callable is <strong>not</strong> data — it closes over a live component — so it is
+re-registered into the graph’s <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry each process.</p></li>
+</ul>
+<p>The op key carries the <strong>component identity</strong> (<a class="reference internal" href="#ef.ops.segmenter_identity" title="ef.ops.segmenter_identity"><code class="xref py py-func docutils literal notranslate"><span class="pre">segmenter_identity()</span></code></a>,
+<code class="docutils literal notranslate"><span class="pre">embedder.model_id</span></code>): <code class="docutils literal notranslate"><span class="pre">&quot;segment:&lt;identity&gt;&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;embed:&lt;model_id&gt;&quot;</span></code>.
+Because <code class="docutils literal notranslate"><span class="pre">op</span></code> participates in <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a>, two
+configs with different components get disjoint artifact cones automatically,
+and two configs with the <em>same</em> component share every upstream artifact — which
+is what makes config branching free (design notes §3.1).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span><span class="p">,</span> <span class="n">as_segmenter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;recursive&#39;</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_spec</span><span class="p">,</span> <span class="n">seg_fn</span> <span class="o">=</span> <span class="n">segment_step</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_spec</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;segment:recursive-char&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seg_fn</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;hello world&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb</span> <span class="o">=</span> <span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;ones@4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb_spec</span><span class="p">,</span> <span class="n">emb_fn</span> <span class="o">=</span> <span class="n">embed_step</span><span class="p">(</span><span class="n">emb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb_spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">emb_spec</span><span class="o">.</span><span class="n">params</span>
+<span class="go">(&#39;embed:ones@4&#39;, {&#39;input_type&#39;: &#39;document&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emb_fn</span><span class="p">([{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">}])</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 4)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.ops.EMBED_OP_VERSION">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">EMBED_OP_VERSION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1'</span></span><a class="headerlink" href="#ef.ops.EMBED_OP_VERSION" title="Link to this definition"></a></dt>
+<dd><p>Version of the <a class="reference internal" href="#ef.ops.make_embed_op" title="ef.ops.make_embed_op"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_embed_op()</span></code></a> wrapper. Bump on any behavior change —
+see <a class="reference internal" href="#ef.ops.SEGMENT_OP_VERSION" title="ef.ops.SEGMENT_OP_VERSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SEGMENT_OP_VERSION</span></code></a>. (This is the <em>wrapper</em> version; the embedding
+<em>model</em>’s identity already lives in the op key via <code class="docutils literal notranslate"><span class="pre">embedder.model_id</span></code>.)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.ops.SEGMENT_OP_VERSION">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">SEGMENT_OP_VERSION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1'</span></span><a class="headerlink" href="#ef.ops.SEGMENT_OP_VERSION" title="Link to this definition"></a></dt>
+<dd><p>Version of the <a class="reference internal" href="#ef.ops.make_segment_op" title="ef.ops.make_segment_op"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_segment_op()</span></code></a> wrapper. It participates in every
+downstream <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.artifact_id" title="ef.artifact_graph.artifact_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">artifact_id()</span></code></a>, so <strong>bump it on any
+behavior change</strong> to how a segment artifact is produced — the graph trusts
+the version and cannot inspect the code (a silent change serves stale cache).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.embed_step">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">embed_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><span class="pre">TransformSpec</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#embed_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.embed_step" title="Link to this definition"></a></dt>
+<dd><p>An embedder → its <a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> and bound op callable.</p>
+<p>The mirror of <a class="reference internal" href="#ef.ops.segment_step" title="ef.ops.segment_step"><code class="xref py py-func docutils literal notranslate"><span class="pre">segment_step()</span></code></a> for the embed layer. The op key is
+<code class="docutils literal notranslate"><span class="pre">&quot;embed:&lt;model_id&gt;&quot;</span></code> — the model identity already content-addresses the
+vector — and <code class="docutils literal notranslate"><span class="pre">params</span></code> carries the defaults-filled <code class="docutils literal notranslate"><span class="pre">input_type</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">embed_step</span><span class="p">(</span><span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;m@2&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">params</span>
+<span class="go">(&#39;embed:m@2&#39;, {&#39;input_type&#39;: &#39;document&#39;})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.embedder_identity">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">embedder_identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#embedder_identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.embedder_identity" title="Link to this definition"></a></dt>
+<dd><p>The content-addressing identity of an embedder — its <code class="docutils literal notranslate"><span class="pre">model_id</span></code>.</p>
+<p><a class="reference internal" href="embedders.html#ef.embedders.Embedder.model_id" title="ef.embedders.Embedder.model_id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Embedder.model_id</span></code></a> already bakes in
+everything that changes the vector (provider, model, dimensionality), so it
+<em>is</em> the identity — this function just names that fact for symmetry with
+<a class="reference internal" href="#ef.ops.segmenter_identity" title="ef.ops.segmenter_identity"><code class="xref py py-func docutils literal notranslate"><span class="pre">segmenter_identity()</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedder_identity</span><span class="p">(</span><span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;m@2&#39;</span><span class="p">))</span>
+<span class="go">&#39;m@2&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.make_embed_op">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">make_embed_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#make_embed_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.make_embed_op" title="Link to this definition"></a></dt>
+<dd><p>Build the <strong>embed</strong> op — a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code>s → an <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code> array.</p>
+<p>The returned callable closes over <code class="docutils literal notranslate"><span class="pre">embedder</span></code> and embeds the segments’
+<code class="docutils literal notranslate"><span class="pre">text</span></code> in caller order; row <code class="docutils literal notranslate"><span class="pre">i</span></code> of the result is the vector of segment
+<code class="docutils literal notranslate"><span class="pre">i</span></code>. <code class="docutils literal notranslate"><span class="pre">input_type</span></code> is a hashable step param (it changes the vector for
+task-aware embedders) — it defaults to <code class="docutils literal notranslate"><span class="pre">&quot;document&quot;</span></code>, the indexing role.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">make_embed_op</span><span class="p">(</span><span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;m@3&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="p">([{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">}])</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="p">([])</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                     <span class="c1"># an empty doc embeds to zero rows</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.make_segment_op">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">make_segment_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#make_segment_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.make_segment_op" title="Link to this definition"></a></dt>
+<dd><p>Build the <strong>segment</strong> op — a leaf source → its list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code>s.</p>
+<p>The returned callable closes over <code class="docutils literal notranslate"><span class="pre">segmenter</span></code>; it is what gets registered
+into the <a class="reference internal" href="artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>’s <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry under
+the key <a class="reference internal" href="#ef.ops.segment_step" title="ef.ops.segment_step"><code class="xref py py-func docutils literal notranslate"><span class="pre">segment_step()</span></code></a> computes. It materializes the (streaming)
+segmenter output into a <code class="docutils literal notranslate"><span class="pre">list</span></code> — a graph artifact must be a concrete,
+re-readable value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_segmenter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">make_segment_op</span><span class="p">(</span><span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">op</span><span class="p">(</span><span class="s1">&#39;one</span><span class="se">\n</span><span class="s1">two&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;one&#39;, &#39;two&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.segment_step">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">segment_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><span class="pre">TransformSpec</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#segment_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.segment_step" title="Link to this definition"></a></dt>
+<dd><p>A segmenter → its <a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> and bound op callable.</p>
+<p>The <a class="reference internal" href="config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> is serializable data (op key + version
++ params); the callable closes over the live <code class="docutils literal notranslate"><span class="pre">segmenter</span></code> and is registered
+into the graph’s <code class="docutils literal notranslate"><span class="pre">ops</span></code> registry under <code class="docutils literal notranslate"><span class="pre">spec.op</span></code>. Pair them: persist the
+spec, re-register the callable each process.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_segmenter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">segment_step</span><span class="p">(</span><span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;recursive&#39;</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">op_version</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">params</span>
+<span class="go">(&#39;1&#39;, {})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.ops.segmenter_identity">
+<span class="sig-prename descclassname"><span class="pre">ef.ops.</span></span><span class="sig-name descname"><span class="pre">segmenter_identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/ef/ops.html#segmenter_identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.ops.segmenter_identity" title="Link to this definition"></a></dt>
+<dd><p>A stable identity string for a segmenter — the content-addressing key.</p>
+<p>The segmenter’s counterpart of <a class="reference internal" href="embedders.html#ef.embedders.Embedder.model_id" title="ef.embedders.Embedder.model_id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Embedder.model_id</span></code></a>. Two segmenters that segment identically
+must return the <em>same</em> identity; any difference that changes the segments
+(chunk size, overlap, separators, tokenizer) must change it. Resolution
+order:</p>
+<ol class="arabic simple">
+<li><p>an explicit <code class="docutils literal notranslate"><span class="pre">segmenter_id</span></code> attribute, if the segmenter advertises one;</p></li>
+<li><p>a <a class="reference internal" href="segmenters.html#ef.segmenters.RecursiveCharacterSegmenter" title="ef.segmenters.RecursiveCharacterSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a> — identified by its
+config-bearing attributes (<code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> / <code class="docutils literal notranslate"><span class="pre">chunk_overlap</span></code> /
+<code class="docutils literal notranslate"><span class="pre">separators</span></code> / <code class="docutils literal notranslate"><span class="pre">tokenizer</span></code>);</p></li>
+<li><p>a <a class="reference internal" href="segmenters.html#ef.segmenters.FunctionSegmenter" title="ef.segmenters.FunctionSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a> — by its wrapped callable;</p></li>
+<li><p>otherwise the segmenter’s own <code class="docutils literal notranslate"><span class="pre">__qualname__</span></code> / <code class="docutils literal notranslate"><span class="pre">__name__</span></code> / type name.</p></li>
+</ol>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_segmenter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">segmenter_identity</span><span class="p">(</span><span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;recursive&#39;</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">256</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">segmenter_identity</span><span class="p">(</span><span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;recursive&#39;</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">512</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span>                              <span class="c1"># different chunk_size → different id</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">segmenter_identity</span><span class="p">(</span><span class="n">as_segmenter</span><span class="p">(</span><span class="s1">&#39;recursive&#39;</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">256</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hashing.html" class="btn btn-neutral float-left" title="ef.hashing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plugins.html" class="btn btn-neutral float-right" title="ef.plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

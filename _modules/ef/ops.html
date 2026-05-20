@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.ops &mdash; ef 0.1.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.ops</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.ops</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The pipeline ops — the callables an :class:`~ef.artifact_graph.ArtifactGraph` runs.</span>
+
+<span class="sd">The :class:`~ef.artifact_graph.ArtifactGraph` resolves a :class:`ProducerSpec</span>
+<span class="sd">&lt;ef.artifact_graph.ProducerSpec&gt;`&#39;s string ``op`` key to a callable through its</span>
+<span class="sd">injectable ``ops`` registry, then calls ``op(*input_values, **params)``. This</span>
+<span class="sd">module supplies the two ops Phase 5&#39;s pipeline needs and the machinery that</span>
+<span class="sd">turns a *live component* (a :class:`~ef.segmenters.Segmenter` /</span>
+<span class="sd">:class:`~ef.embedders.Embedder`) into a serializable :class:`~ef.config.TransformSpec`</span>
+<span class="sd">*plus* the bound callable to register.</span>
+
+<span class="sd">The split is deliberate:</span>
+
+<span class="sd">- a :class:`~ef.config.TransformSpec` is **data** — an op *key*, a version,</span>
+<span class="sd">  params — so it can be persisted (the recipe is content-addressed);</span>
+<span class="sd">- the callable is **not** data — it closes over a live component — so it is</span>
+<span class="sd">  re-registered into the graph&#39;s ``ops`` registry each process.</span>
+
+<span class="sd">The op key carries the **component identity** (:func:`segmenter_identity`,</span>
+<span class="sd">``embedder.model_id``): ``&quot;segment:&lt;identity&gt;&quot;`` / ``&quot;embed:&lt;model_id&gt;&quot;``.</span>
+<span class="sd">Because ``op`` participates in :func:`~ef.artifact_graph.artifact_id`, two</span>
+<span class="sd">configs with different components get disjoint artifact cones automatically,</span>
+<span class="sd">and two configs with the *same* component share every upstream artifact — which</span>
+<span class="sd">is what makes config branching free (design notes §3.1).</span>
+
+<span class="sd">&gt;&gt;&gt; import numpy as np</span>
+<span class="sd">&gt;&gt;&gt; from ef import as_embedder, as_segmenter</span>
+<span class="sd">&gt;&gt;&gt; seg = as_segmenter(&#39;recursive&#39;, chunk_size=128)</span>
+<span class="sd">&gt;&gt;&gt; seg_spec, seg_fn = segment_step(seg)</span>
+<span class="sd">&gt;&gt;&gt; seg_spec.op.startswith(&#39;segment:recursive-char&#39;)</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; [s[&#39;text&#39;] for s in seg_fn(&#39;hello world&#39;)]</span>
+<span class="sd">[&#39;hello world&#39;]</span>
+<span class="sd">&gt;&gt;&gt; emb = as_embedder(lambda ts: np.ones((len(ts), 4)), model_id=&#39;ones@4&#39;)</span>
+<span class="sd">&gt;&gt;&gt; emb_spec, emb_fn = embed_step(emb)</span>
+<span class="sd">&gt;&gt;&gt; emb_spec.op, emb_spec.params</span>
+<span class="sd">(&#39;embed:ones@4&#39;, {&#39;input_type&#39;: &#39;document&#39;})</span>
+<span class="sd">&gt;&gt;&gt; emb_fn([{&#39;text&#39;: &#39;a&#39;}, {&#39;text&#39;: &#39;b&#39;}]).shape</span>
+<span class="sd">(2, 4)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransformSpec</span><span class="p">,</span> <span class="n">step_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embedder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.hashing</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segmenters</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FunctionSegmenter</span><span class="p">,</span>
+    <span class="n">RecursiveCharacterSegmenter</span><span class="p">,</span>
+    <span class="n">Segmenter</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;SEGMENT_OP_VERSION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMBED_OP_VERSION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segmenter_identity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;embedder_identity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_segment_op&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_embed_op&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segment_step&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;embed_step&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">#: Version of the :func:`make_segment_op` wrapper. It participates in every</span>
+<span class="c1">#: downstream :func:`~ef.artifact_graph.artifact_id`, so **bump it on any</span>
+<span class="c1">#: behavior change** to how a segment artifact is produced — the graph trusts</span>
+<span class="c1">#: the version and cannot inspect the code (a silent change serves stale cache).</span>
+<span class="n">SEGMENT_OP_VERSION</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+
+<span class="c1">#: Version of the :func:`make_embed_op` wrapper. Bump on any behavior change —</span>
+<span class="c1">#: see :data:`SEGMENT_OP_VERSION`. (This is the *wrapper* version; the embedding</span>
+<span class="c1">#: *model*&#39;s identity already lives in the op key via ``embedder.model_id``.)</span>
+<span class="n">EMBED_OP_VERSION</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Component identity — the content-addressing key for an op</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_callable_identity</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A best-effort stable identity string for a plain callable.</span>
+
+<span class="sd">    Uses ``module.qualname`` when available. An anonymous ``lambda`` has the</span>
+<span class="sd">    qualname ``&quot;&lt;lambda&gt;&quot;`` — distinct lambdas then collide, so a lambda</span>
+<span class="sd">    segmenter is *not* safely content-addressable across definitions; pass a</span>
+<span class="sd">    named function (or a :class:`~ef.segmenters.Segmenter` with an explicit</span>
+<span class="sd">    ``segmenter_id``) when persistence/branching correctness matters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;__module__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;?&quot;</span>
+    <span class="n">qualname</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">module</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">qualname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">qualname</span> <span class="k">else</span> <span class="nb">repr</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="segmenter_identity">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.segmenter_identity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">segmenter_identity</span><span class="p">(</span><span class="n">segmenter</span><span class="p">:</span> <span class="n">Segmenter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A stable identity string for a segmenter — the content-addressing key.</span>
+
+<span class="sd">    The segmenter&#39;s counterpart of :attr:`Embedder.model_id</span>
+<span class="sd">    &lt;ef.embedders.Embedder.model_id&gt;`. Two segmenters that segment identically</span>
+<span class="sd">    must return the *same* identity; any difference that changes the segments</span>
+<span class="sd">    (chunk size, overlap, separators, tokenizer) must change it. Resolution</span>
+<span class="sd">    order:</span>
+
+<span class="sd">    1. an explicit ``segmenter_id`` attribute, if the segmenter advertises one;</span>
+<span class="sd">    2. a :class:`~ef.segmenters.RecursiveCharacterSegmenter` — identified by its</span>
+<span class="sd">       config-bearing attributes (``chunk_size`` / ``chunk_overlap`` /</span>
+<span class="sd">       ``separators`` / ``tokenizer``);</span>
+<span class="sd">    3. a :class:`~ef.segmenters.FunctionSegmenter` — by its wrapped callable;</span>
+<span class="sd">    4. otherwise the segmenter&#39;s own ``__qualname__`` / ``__name__`` / type name.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef import as_segmenter</span>
+<span class="sd">    &gt;&gt;&gt; a = segmenter_identity(as_segmenter(&#39;recursive&#39;, chunk_size=256))</span>
+<span class="sd">    &gt;&gt;&gt; b = segmenter_identity(as_segmenter(&#39;recursive&#39;, chunk_size=512))</span>
+<span class="sd">    &gt;&gt;&gt; a == b                              # different chunk_size → different id</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; a == segmenter_identity(as_segmenter(&#39;recursive&#39;, chunk_size=256))</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">explicit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="s2">&quot;segmenter_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">explicit</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">explicit</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">RecursiveCharacterSegmenter</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;recursive-char:&quot;</span> <span class="o">+</span> <span class="n">canonical_json</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;chunk_size&quot;</span><span class="p">:</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span>
+                <span class="s2">&quot;chunk_overlap&quot;</span><span class="p">:</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">chunk_overlap</span><span class="p">,</span>
+                <span class="s2">&quot;separators&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">segmenter</span><span class="o">.</span><span class="n">separators</span><span class="p">),</span>
+                <span class="s2">&quot;tokenizer&quot;</span><span class="p">:</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">FunctionSegmenter</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;function:&quot;</span> <span class="o">+</span> <span class="n">_callable_identity</span><span class="p">(</span><span class="n">segmenter</span><span class="o">.</span><span class="n">_func</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">segmenter</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span>
+        <span class="n">segmenter</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="nb">type</span><span class="p">(</span><span class="n">segmenter</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span></div>
+
+
+
+<div class="viewcode-block" id="embedder_identity">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.embedder_identity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">embedder_identity</span><span class="p">(</span><span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The content-addressing identity of an embedder — its ``model_id``.</span>
+
+<span class="sd">    :attr:`Embedder.model_id &lt;ef.embedders.Embedder.model_id&gt;` already bakes in</span>
+<span class="sd">    everything that changes the vector (provider, model, dimensionality), so it</span>
+<span class="sd">    *is* the identity — this function just names that fact for symmetry with</span>
+<span class="sd">    :func:`segmenter_identity`.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef import as_embedder</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; embedder_identity(as_embedder(lambda ts: np.ones((len(ts), 2)), model_id=&#39;m@2&#39;))</span>
+<span class="sd">    &#39;m@2&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">embedder</span><span class="o">.</span><span class="n">model_id</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The ops — bound callables the ArtifactGraph runs</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="make_segment_op">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.make_segment_op">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_segment_op</span><span class="p">(</span><span class="n">segmenter</span><span class="p">:</span> <span class="n">Segmenter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the **segment** op — a leaf source → its list of :class:`Segment`\\ s.</span>
+
+<span class="sd">    The returned callable closes over ``segmenter``; it is what gets registered</span>
+<span class="sd">    into the :class:`~ef.artifact_graph.ArtifactGraph`&#39;s ``ops`` registry under</span>
+<span class="sd">    the key :func:`segment_step` computes. It materializes the (streaming)</span>
+<span class="sd">    segmenter output into a ``list`` — a graph artifact must be a concrete,</span>
+<span class="sd">    re-readable value.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef import as_segmenter</span>
+<span class="sd">    &gt;&gt;&gt; op = make_segment_op(as_segmenter(&#39;lines&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; [s[&#39;text&#39;] for s in op(&#39;one\\ntwo&#39;)]</span>
+<span class="sd">    [&#39;one&#39;, &#39;two&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">segment_op</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Segment one source document into a list of segments.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">segmenter</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">segment_op</span></div>
+
+
+
+<div class="viewcode-block" id="make_embed_op">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.make_embed_op">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_embed_op</span><span class="p">(</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the **embed** op — a list of :class:`Segment`\\ s → an ``(n, dim)`` array.</span>
+
+<span class="sd">    The returned callable closes over ``embedder`` and embeds the segments&#39;</span>
+<span class="sd">    ``text`` in caller order; row ``i`` of the result is the vector of segment</span>
+<span class="sd">    ``i``. ``input_type`` is a hashable step param (it changes the vector for</span>
+<span class="sd">    task-aware embedders) — it defaults to ``&quot;document&quot;``, the indexing role.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from ef import as_embedder</span>
+<span class="sd">    &gt;&gt;&gt; op = make_embed_op(as_embedder(lambda ts: np.ones((len(ts), 3)), model_id=&#39;m@3&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; op([{&#39;text&#39;: &#39;a&#39;}, {&#39;text&#39;: &#39;b&#39;}]).shape</span>
+<span class="sd">    (2, 3)</span>
+<span class="sd">    &gt;&gt;&gt; op([]).shape[0]                     # an empty doc embeds to zero rows</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">embed_op</span><span class="p">(</span><span class="n">segments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;document&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Embed a list of segments into an ``(n, dim)`` array.&quot;&quot;&quot;</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">segment</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">embedder</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+    <span class="k">return</span> <span class="n">embed_op</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Step builders — a live component → (TransformSpec, bound callable)</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="segment_step">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.segment_step">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">segment_step</span><span class="p">(</span><span class="n">segmenter</span><span class="p">:</span> <span class="n">Segmenter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TransformSpec</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A segmenter → its :class:`~ef.config.TransformSpec` and bound op callable.</span>
+
+<span class="sd">    The :class:`~ef.config.TransformSpec` is serializable data (op key + version</span>
+<span class="sd">    + params); the callable closes over the live ``segmenter`` and is registered</span>
+<span class="sd">    into the graph&#39;s ``ops`` registry under ``spec.op``. Pair them: persist the</span>
+<span class="sd">    spec, re-register the callable each process.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef import as_segmenter</span>
+<span class="sd">    &gt;&gt;&gt; spec, fn = segment_step(as_segmenter(&#39;recursive&#39;, chunk_size=128))</span>
+<span class="sd">    &gt;&gt;&gt; spec.op_version, spec.params</span>
+<span class="sd">    (&#39;1&#39;, {})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">op_callable</span> <span class="o">=</span> <span class="n">make_segment_op</span><span class="p">(</span><span class="n">segmenter</span><span class="p">)</span>
+    <span class="n">op_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;segment:</span><span class="si">{</span><span class="n">segmenter_identity</span><span class="p">(</span><span class="n">segmenter</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span>
+        <span class="n">op</span><span class="o">=</span><span class="n">op_key</span><span class="p">,</span>
+        <span class="n">op_version</span><span class="o">=</span><span class="n">SEGMENT_OP_VERSION</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">step_params</span><span class="p">(</span><span class="n">op_callable</span><span class="p">,</span> <span class="n">n_inputs</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">spec</span><span class="p">,</span> <span class="n">op_callable</span></div>
+
+
+
+<div class="viewcode-block" id="embed_step">
+<a class="viewcode-back" href="../../module_docs/ef/ops.html#ef.ops.embed_step">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">embed_step</span><span class="p">(</span><span class="n">embedder</span><span class="p">:</span> <span class="n">Embedder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TransformSpec</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An embedder → its :class:`~ef.config.TransformSpec` and bound op callable.</span>
+
+<span class="sd">    The mirror of :func:`segment_step` for the embed layer. The op key is</span>
+<span class="sd">    ``&quot;embed:&lt;model_id&gt;&quot;`` — the model identity already content-addresses the</span>
+<span class="sd">    vector — and ``params`` carries the defaults-filled ``input_type``.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from ef import as_embedder</span>
+<span class="sd">    &gt;&gt;&gt; spec, fn = embed_step(as_embedder(lambda ts: np.ones((len(ts), 2)), model_id=&#39;m@2&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; spec.op, spec.params</span>
+<span class="sd">    (&#39;embed:m@2&#39;, {&#39;input_type&#39;: &#39;document&#39;})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">op_callable</span> <span class="o">=</span> <span class="n">make_embed_op</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span>
+    <span class="n">op_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;embed:</span><span class="si">{</span><span class="n">embedder_identity</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">TransformSpec</span><span class="p">(</span>
+        <span class="n">op</span><span class="o">=</span><span class="n">op_key</span><span class="p">,</span>
+        <span class="n">op_version</span><span class="o">=</span><span class="n">EMBED_OP_VERSION</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">step_params</span><span class="p">(</span><span class="n">op_callable</span><span class="p">,</span> <span class="n">n_inputs</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">spec</span><span class="p">,</span> <span class="n">op_callable</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
