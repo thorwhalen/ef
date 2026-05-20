@@ -33,6 +33,9 @@ principles.
 
 ## 2. Current state vs. target — this is a real refactor
 
+> **The refactor is complete (Phase 8, ef#18).** This section is the historical
+> framing — `ef` *is* the target facade now; kept for context.
+
 **Current `ef`** (~1000 LOC) is a *prototype* of an embedding **visualization
 pipeline** inherited from `imbed`: `Project`/`Projects`, `ComponentRegistry`,
 the mall pattern, a simple DAG, and the `segment → embed → planarize → cluster`
@@ -170,8 +173,9 @@ ingestion.
 
 ## 8. Refactor roadmap (suggested phases)
 
-**Status:** phases 1–7 are implemented (ef#3 · #5 · #7 · #9 · #11 · #14 · #16,
-plus the zero-install default embedder ef#13). Phase 8 remains.
+**Status:** all 8 phases are implemented (ef#3 · #5 · #7 · #9 · #11 · #14 · #16
+· #18, plus the zero-install default embedder ef#13). **The refactor is
+complete** — `ef` *is* the search / RAG / corpus-indexing facade described above.
 
 1. **`Embedder` protocol + composition wrappers + 2 adapters** (OpenAI,
    sentence-transformers). `as_embedder(x)` normalizer (str/callable/url).
@@ -196,7 +200,11 @@ plus the zero-install default embedder ef#13). Phase 8 remains.
    `evaluate_rag` + deterministic lexical metrics, `read_beir`/`write_beir`,
    `as_ragas_dataset` bridge); `ef/reranking.py` (`Reranker` protocol, `rerank`,
    `with_reranker` decorator, lazy `cross_encoder_reranker`).
-8. **Demote viz to "explore"** — keep planarize/cluster/label as L5.
+8. **Demote viz to "explore"** — keep planarize/cluster/label as L5. *Done:*
+   `ef/explore.py` — `project` (PCA→UMAP, cosine, seeded), `cluster` (numpy
+   k-means / HDBSCAN), `label_clusters` (`imbed`'s `ClusterLabeler`); numpy-only
+   import, heavy deps lazy. The viz-era prototype (`Project`/`Projects`/
+   `ComponentRegistry`/`mall`/`dag.py`/`plugins/`) was deleted.
 
 ## 9. Conventions
 

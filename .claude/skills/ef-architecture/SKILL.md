@@ -25,10 +25,11 @@ Light case in one line (a list of strings → search); heavy case (huge corpora,
 many segmentations/embedders, varied sources/targets) with the *same* facade.
 Uses `vd` for vector storage. `ef` is **not RAG** — no answer synthesis.
 
-**Current `ef` is a prototype of an embedding *visualization* pipeline**
-(`segment → embed → planarize → cluster`). The refactor makes search/RAG/
-corpus-indexing primary and demotes visualization to one secondary use case
-("explore the corpus", layer L5). `ef` is free to change — no users.
+`ef` *started* as a prototype of an embedding *visualization* pipeline
+(`segment → embed → planarize → cluster`). The 8-phase refactor (ef#3–#18) made
+search/RAG/corpus-indexing the primary surface and demoted visualization to a
+secondary "explore the corpus" layer (L5, `ef/explore.py`). **The refactor is
+complete.** `ef` is free to change — no users.
 
 ## The five-layer spine
 
@@ -95,7 +96,7 @@ is a `MutableMapping`.
 
 ## Refactor order
 
-Phases 1–7 are **done**; 8 remains.
+All 8 phases are **done** — the refactor is complete.
 
 1. ✅ `Embedder` protocol + wrappers + 2 adapters (OpenAI, sentence-transformers).
 2. ✅ `Segmenter` facade on `imbed.components.segmentation`; canonical `Segment`.
@@ -109,7 +110,11 @@ Phases 1–7 are **done**; 8 remains.
    + evaluation hookpoints — `ef/evaluation.py` (`evaluate_retrieval` BEIR-shaped
    / NDCG@10, `evaluate_rag` Ragas-shaped, `read_beir`/`write_beir`,
    `as_ragas_dataset`) and `ef/reranking.py` (`rerank` / `with_reranker`).
-8. Demote viz to L5 "explore".
+8. ✅ Demote viz to L5 "explore" — `ef/explore.py`: `project` (PCA → UMAP,
+   cosine, seeded), `cluster` (numpy k-means / HDBSCAN), `label_clusters`
+   (`imbed`'s `ClusterLabeler`). numpy-only import; UMAP/HDBSCAN/`imbed` lazy
+   extras. The viz-era prototype (`Project`/`ComponentRegistry`/`mall`/DAG/
+   `plugins/`) was deleted.
 
 When in doubt, re-read `ef_design_notes.md` — it has the verbatim contracts and
 code skeletons.
