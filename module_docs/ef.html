@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.3 documentation</title>
+  <title>ef &mdash; ef 0.1.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=360bc84d"></script>
+      <script src="../_static/documentation_options.js?v=fd825880"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -54,10 +54,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.BaseEmbedder.embed_batch"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder.embed_batch()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.BaseSegmenter"><code class="docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BaseSegmenter.batch"><code class="docutils literal notranslate"><span class="pre">BaseSegmenter.batch()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.poll"><code class="docutils literal notranslate"><span class="pre">BatchHandle.poll</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.result"><code class="docutils literal notranslate"><span class="pre">BatchHandle.result</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.BatchHandle.cancel"><code class="docutils literal notranslate"><span class="pre">BatchHandle.cancel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.BatchedSegmenter"><code class="docutils literal notranslate"><span class="pre">BatchedSegmenter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.BatchedSegmenter.batch"><code class="docutils literal notranslate"><span class="pre">BatchedSegmenter.batch()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a><ul>
@@ -81,6 +89,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.FunctionSegmenter"><code class="docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.NormalizingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder.honored_input_types</span></code></a></li>
@@ -109,6 +118,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#ef.Projects.create_project"><code class="docutils literal notranslate"><span class="pre">Projects.create_project()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.RecursiveCharacterSegmenter"><code class="docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.max_attempts"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_attempts</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.base_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.base_delay</span></code></a></li>
@@ -125,13 +135,29 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.SegmentKey"><code class="docutils literal notranslate"><span class="pre">SegmentKey</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.SegmentRecord"><code class="docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SegmentRecord.to_segment"><code class="docutils literal notranslate"><span class="pre">SegmentRecord.to_segment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.approx_token_count"><code class="docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.as_segment"><code class="docutils literal notranslate"><span class="pre">as_segment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.imbed_segmenter"><code class="docutils literal notranslate"><span class="pre">imbed_segmenter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.line_segmenter"><code class="docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.materialise"><code class="docutils literal notranslate"><span class="pre">materialise()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.openai_embedder"><code class="docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.segment_id"><code class="docutils literal notranslate"><span class="pre">segment_id()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.segment_record"><code class="docutils literal notranslate"><span class="pre">segment_record()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.with_overlap"><code class="docutils literal notranslate"><span class="pre">with_overlap()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ef/base.html">ef.base</a></li>
@@ -143,6 +169,9 @@
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/segments.html">ef.segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/storage.html">ef.storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/tests.html">ef.tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/tests/test_basic.html">ef.tests.test_basic</a></li>
@@ -195,6 +224,20 @@ only numpy):</p>
 <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder" title="ef.embedder_wrappers.MultiEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a>,
 <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a>.</p></li>
 </ul>
+<p>The <strong>segmenter facade</strong> is the other always-importable core surface (it needs
+no numpy at all):</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> — the canonical segment data model (the
+<code class="docutils literal notranslate"><span class="pre">TypedDict</span></code> interchange type; <a class="reference internal" href="ef/segments.html#ef.segments.SegmentRecord" title="ef.segments.SegmentRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a> is its
+dataclass convenience surface).</p></li>
+<li><p><a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> — the structural protocol for a
+<code class="docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">Mapping</span> <span class="pre">-&gt;</span> <span class="pre">Iterable[Segment]</span></code> callable.</p></li>
+<li><p><a class="reference internal" href="ef/segmenters.html#ef.segmenters.RecursiveCharacterSegmenter" title="ef.segmenters.RecursiveCharacterSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a> — the default splitter;
+<a class="reference internal" href="ef/segmenters.html#ef.segmenters.line_segmenter" title="ef.segmenters.line_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a> a builtin line splitter.</p></li>
+<li><p><a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a> — the dependency-injection seam.</p></li>
+<li><p>Composition helpers: <a class="reference internal" href="ef/segmenters.html#ef.segmenters.with_overlap" title="ef.segmenters.with_overlap"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_overlap()</span></code></a>,
+<a class="reference internal" href="ef/segmenters.html#ef.segmenters.hierarchical" title="ef.segmenters.hierarchical"><code class="xref py py-func docutils literal notranslate"><span class="pre">hierarchical()</span></code></a>, <a class="reference internal" href="ef/segmenters.html#ef.segmenters.materialise" title="ef.segmenters.materialise"><code class="xref py py-func docutils literal notranslate"><span class="pre">materialise()</span></code></a>.</p></li>
+</ul>
 <p>Example — wrap a plain function and embed two strings:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
@@ -226,6 +269,22 @@ override it only for a genuinely async provider Batch API;</p></li>
 <dt class="sig sig-object py" id="ef.BaseEmbedder.embed_batch">
 <span class="sig-name descname"><span class="pre">embed_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'query'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'document'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clustering'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><span class="pre">BatchHandle</span></a></span></span><a class="reference internal" href="../_modules/ef/embedders.html#BaseEmbedder.embed_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BaseEmbedder.embed_batch" title="Link to this definition"></a></dt>
 <dd><p>Default: embed synchronously and return a finished handle.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.BaseSegmenter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">BaseSegmenter</span></span><a class="reference internal" href="../_modules/ef/segmenters.html#BaseSegmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BaseSegmenter" title="Link to this definition"></a></dt>
+<dd><p>Implementation base for segmenters (optional — <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> is structural).</p>
+<p>A subclass implements <code class="docutils literal notranslate"><span class="pre">__call__</span></code>; in return it gets a default
+<a class="reference internal" href="#ef.BaseSegmenter.batch" title="ef.BaseSegmenter.batch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">batch()</span></code></a> (one-document-at-a-time — override it for a genuinely batched
+backend) and a readable <code class="docutils literal notranslate"><span class="pre">repr</span></code>. Subclassing is purely a convenience;
+satisfying <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> structurally is what matters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.BaseSegmenter.batch">
+<span class="sig-name descname"><span class="pre">batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#BaseSegmenter.batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BaseSegmenter.batch" title="Link to this definition"></a></dt>
+<dd><p>Default: segment each document independently.</p>
 </dd></dl>
 
 </dd></dl>
@@ -268,6 +327,23 @@ returns a genuinely pending one. Either way the caller sees one shape.</p>
 <dd class="field-odd"><p>Callable[[], None]</p>
 </dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.BatchedSegmenter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">BatchedSegmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/segmenters.html#BatchedSegmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BatchedSegmenter" title="Link to this definition"></a></dt>
+<dd><p>Optional trait: a segmenter that can process many documents at once.</p>
+<p>Plain <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> handles one document per call. A segmenter that can
+amortize per-call cost across documents (a shared model load, a vectorized
+pass) also offers <code class="docutils literal notranslate"><span class="pre">batch</span></code>. <a class="reference internal" href="#ef.BaseSegmenter" title="ef.BaseSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a> supplies a correct — if
+un-optimized — default, so every <a class="reference internal" href="#ef.BaseSegmenter" title="ef.BaseSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a> subclass is already
+a <a class="reference internal" href="#ef.BatchedSegmenter" title="ef.BatchedSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchedSegmenter</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.BatchedSegmenter.batch">
+<span class="sig-name descname"><span class="pre">batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#BatchedSegmenter.batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.BatchedSegmenter.batch" title="Link to this definition"></a></dt>
+<dd><p>Segment each document in <code class="docutils literal notranslate"><span class="pre">docs</span></code>, yielding one segment-stream each.</p>
 </dd></dl>
 
 </dd></dl>
@@ -450,6 +526,43 @@ signature.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;ones@4&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(3, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.FunctionSegmenter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">FunctionSegmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func:</span> <span class="pre">~typing.Callable[[...],</span> <span class="pre">~typing.Any],</span> <span class="pre">*,</span> <span class="pre">pass_doc:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">count_tokens:</span> <span class="pre">~typing.Callable[[str],</span> <span class="pre">int]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">approx_token_count&gt;,</span> <span class="pre">tokenizer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'char-approx'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/segmenters.html#FunctionSegmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.FunctionSegmenter" title="Link to this definition"></a></dt>
+<dd><p>Promote a bare <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">-&gt;</span> <span class="pre">pieces</span></code> callable to a full <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a>.</p>
+<p>The bridge for segmenter <em>functions</em> that carry no segment schema — most
+importantly <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s registered segmenters, which map text to an iterable
+of plain strings. Each piece the callable yields is normalized:</p>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">str</span></code> piece becomes a <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>; its character
+offsets are recovered by locating it in the source text, and a token
+count plus <code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> metadata are attached;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> / <a class="reference internal" href="ef/segments.html#ef.segments.SegmentRecord" title="ef.segments.SegmentRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a> piece is coerced with
+<a class="reference internal" href="ef/segments.html#ef.segments.as_segment" title="ef.segments.as_segment"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segment()</span></code></a>, gaining only an <code class="docutils literal notranslate"><span class="pre">index</span></code> / <code class="docutils literal notranslate"><span class="pre">parent_id</span></code>
+where it lacks them.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The callable to wrap. By default it receives the document’s
+<em>text</em>; with <code class="docutils literal notranslate"><span class="pre">pass_doc=True</span></code> it receives the whole document.</p></li>
+<li><p><strong>pass_doc</strong> – Pass the raw document instead of its text.</p></li>
+<li><p><strong>count_tokens</strong> – Token counter for <code class="docutils literal notranslate"><span class="pre">str</span></code> pieces (<code class="docutils literal notranslate"><span class="pre">None</span></code> disables the
+<code class="docutils literal notranslate"><span class="pre">tokens</span></code> / <code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> annotation).</p></li>
+<li><p><strong>tokenizer</strong> – Name recorded as the <code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> metadata key.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">FunctionSegmenter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">(</span><span class="s1">&#39;a,b,c&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fs</span><span class="p">(</span><span class="s1">&#39;a,b,c&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">])</span>
+<span class="go">(2, 3, 1)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -801,6 +914,41 @@ If None, returns all components</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="ef.RecursiveCharacterSegmenter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RecursiveCharacterSegmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*,</span> <span class="pre">chunk_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">512,</span> <span class="pre">chunk_overlap:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">64,</span> <span class="pre">separators:</span> <span class="pre">~typing.Sequence[str]</span> <span class="pre">=</span> <span class="pre">('\n\n',</span> <span class="pre">'\n',</span> <span class="pre">'.</span> <span class="pre">',</span> <span class="pre">',</span> <span class="pre">',</span> <span class="pre">'</span> <span class="pre">',</span> <span class="pre">''),</span> <span class="pre">count_tokens:</span> <span class="pre">~typing.Callable[[str],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">approx_token_count&gt;,</span> <span class="pre">tokenizer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'char-approx'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/segmenters.html#RecursiveCharacterSegmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RecursiveCharacterSegmenter" title="Link to this definition"></a></dt>
+<dd><p>The default segmenter — recursive character splitting.</p>
+<p>Splits a document on a descending ladder of separators (paragraph → line →
+sentence → clause → word → character), merging the resulting pieces into
+chunks of about <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> tokens with <code class="docutils literal notranslate"><span class="pre">chunk_overlap</span></code> tokens shared
+between neighbours. This “good enough” default is, on realistic corpora,
+within a point or two of far more elaborate methods — upgrade only if you
+can measure the win.</p>
+<p>Sizes are measured with <code class="docutils literal notranslate"><span class="pre">count_tokens</span></code>. The default counter is the
+dependency-free <a class="reference internal" href="#ef.approx_token_count" title="ef.approx_token_count"><code class="xref py py-func docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a>; inject a real tokenizer (and its
+<code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> name) when an exact count matters. Every emitted segment
+records the tokenizer in its metadata and carries exact <code class="docutils literal notranslate"><span class="pre">start</span></code> / <code class="docutils literal notranslate"><span class="pre">end</span></code>
+character offsets into the source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunk_size</strong> – Target chunk size, in <code class="docutils literal notranslate"><span class="pre">count_tokens</span></code> units.</p></li>
+<li><p><strong>chunk_overlap</strong> – Tokens of overlap between consecutive chunks (must be
+smaller than <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code>).</p></li>
+<li><p><strong>separators</strong> – The separator ladder, coarsest first; the last should be
+<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> so an unsplittable run is still broken between characters.</p></li>
+<li><p><strong>count_tokens</strong> – Maps a string to a token count.</p></li>
+<li><p><strong>tokenizer</strong> – Name recorded as the <code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> metadata key.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">RecursiveCharacterSegmenter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">seg</span><span class="p">(</span><span class="s1">&#39;one two three four&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;one two three&#39;, &#39;three four&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="ef.RetryPolicy">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RetryPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">max_attempts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">base_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">max_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">jitter:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.3,</span> <span class="pre">retry_on:</span> <span class="pre">~typing.Callable[[BaseException],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_default_is_retryable&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#RetryPolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RetryPolicy" title="Link to this definition"></a></dt>
 <dd><p>Exponential-backoff retry policy for <a class="reference internal" href="#ef.RetryingEmbedder" title="ef.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>.</p>
@@ -904,16 +1052,90 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p>
 
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py class">
 <dt class="sig sig-object py" id="ef.Segment">
-<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Segment</span></span><a class="headerlink" href="#ef.Segment" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Segment</span></span><a class="reference internal" href="../_modules/ef/segments.html#Segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Segment" title="Link to this definition"></a></dt>
+<dd><p>A piece of text carved from a source document — the interchange type.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">TypedDict</span></code>: a <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> <em>is</em> a plain <code class="docutils literal notranslate"><span class="pre">dict</span></code>, which keeps it
+cheap to create and stream. <code class="docutils literal notranslate"><span class="pre">total=False</span></code> because most keys are optional;
+by convention <code class="docutils literal notranslate"><span class="pre">text</span></code> is always present and <code class="docutils literal notranslate"><span class="pre">id</span></code> is always set (derived
+from <code class="docutils literal notranslate"><span class="pre">text</span></code> if not supplied).</p>
+<dl>
+<dt>Keys:</dt><dd><p>text: The segment’s text. <strong>Required.</strong>
+id: Stable identifier — content-derived by default (<a class="reference internal" href="#ef.segment_id" title="ef.segment_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">segment_id()</span></code></a>).
+parent_id: Id of the source document or parent segment this came from.
+start: Character offset of the segment’s start in the source text.
+end: Character offset of the segment’s end (exclusive) in the source.
+index: Ordinal position of the segment in its segmenter’s output.
+tokens: Token count of <code class="docutils literal notranslate"><span class="pre">text</span></code> (meaningful only with <code class="docutils literal notranslate"><span class="pre">metadata</span></code> key</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">tokenizer</span></code> recording which tokenizer counted it).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>metadata: Free-form mapping; framework-specific keys live here. See</dt><dd><p><code class="xref py py-data docutils literal notranslate"><span class="pre">PROMOTED_METADATA_KEYS</span></code> for the conventional keys.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ef.SegmentKey">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SegmentKey</span></span><a class="headerlink" href="#ef.SegmentKey" title="Link to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.SegmentRecord">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SegmentRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Any]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/segments.html#SegmentRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SegmentRecord" title="Link to this definition"></a></dt>
+<dd><p>Frozen-dataclass view over a <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> — the convenience surface.</p>
+<p>Use this when attribute access and immutability read better than dict
+access; use the <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> <code class="docutils literal notranslate"><span class="pre">TypedDict</span></code> directly on the hot path.
+The two convert losslessly via <a class="reference internal" href="#ef.SegmentRecord.to_segment" title="ef.SegmentRecord.to_segment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_segment()</span></code></a> and <a class="reference internal" href="#ef.segment_record" title="ef.segment_record"><code class="xref py py-func docutils literal notranslate"><span class="pre">segment_record()</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> is derived from <code class="docutils literal notranslate"><span class="pre">text</span></code> (and <code class="docutils literal notranslate"><span class="pre">metadata</span></code>) if left empty.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">SegmentRecord</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">to_segment</span><span class="p">()[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.SegmentRecord.to_segment">
+<span class="sig-name descname"><span class="pre">to_segment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a></span></span><a class="reference internal" href="../_modules/ef/segments.html#SegmentRecord.to_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SegmentRecord.to_segment" title="Link to this definition"></a></dt>
+<dd><p>Return an equivalent <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> <code class="docutils literal notranslate"><span class="pre">dict</span></code> (dropping empty keys).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.Segmenter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">Segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/segmenters.html#Segmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.Segmenter" title="Link to this definition"></a></dt>
+<dd><p>Structural type for a segmenter: <code class="docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">Mapping</span> <span class="pre">-&gt;</span> <span class="pre">Iterable[Segment]</span></code>.</p>
+<p>A segmenter is <em>just a callable</em>. It accepts a document — a bare <code class="docutils literal notranslate"><span class="pre">str</span></code> or
+a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> with a <code class="docutils literal notranslate"><span class="pre">text</span></code> key (and optionally an <code class="docutils literal notranslate"><span class="pre">id</span></code>, which becomes
+the emitted segments’ <code class="docutils literal notranslate"><span class="pre">parent_id</span></code>) — and yields <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>
+pieces. It returns an <strong>iterable</strong>, not a list: streaming is the default so
+the heavy case scales.</p>
+<p>Because the protocol’s only member is <code class="docutils literal notranslate"><span class="pre">__call__</span></code>, <em>every</em> callable
+satisfies <code class="docutils literal notranslate"><span class="pre">isinstance(x,</span> <span class="pre">Segmenter)</span></code>. Treat it as documentation of intent,
+not a discriminating check — <a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a> is
+the seam that turns an arbitrary callable into a <em>well-behaved</em> segmenter.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.approx_token_count">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">approx_token_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#approx_token_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.approx_token_count" title="Link to this definition"></a></dt>
+<dd><p>Rough token count — the common <code class="docutils literal notranslate"><span class="pre">~4</span> <span class="pre">characters</span> <span class="pre">per</span> <span class="pre">token</span></code> heuristic.</p>
+<p>A dependency-free default so <code class="docutils literal notranslate"><span class="pre">ef</span></code> can talk in “tokens” without pulling in
+<code class="docutils literal notranslate"><span class="pre">tiktoken</span></code> or a model tokenizer. Inject a real counter (and its name) into
+a segmenter when an exact count matters.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">approx_token_count</span><span class="p">(</span><span class="s1">&#39;a&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">approx_token_count</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -941,6 +1163,67 @@ argument. Accepts, in order:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">as_embedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;zero@2&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
 <span class="go">&#39;FunctionEmbedder&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.as_segment">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">as_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">defaults</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a></span></span><a class="reference internal" href="../_modules/ef/segments.html#as_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.as_segment" title="Link to this definition"></a></dt>
+<dd><p>Coerce <code class="docutils literal notranslate"><span class="pre">x</span></code> into a <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> — accepts a <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> or record.</p>
+<p>This is the segment-side normalizer that lets a <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> accept
+loosely-typed output (a bare string, a partial <code class="docutils literal notranslate"><span class="pre">dict</span></code>) and still emit a
+well-formed <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>. <code class="docutils literal notranslate"><span class="pre">**defaults</span></code> supplies <em>fallback</em> values:
+a default fills a field only when <code class="docutils literal notranslate"><span class="pre">x</span></code> does not already carry it.</p>
+<p>Accepts:</p>
+<ol class="arabic simple">
+<li><p>a <a class="reference internal" href="#ef.SegmentRecord" title="ef.SegmentRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a> — converted via <a class="reference internal" href="#ef.SegmentRecord.to_segment" title="ef.SegmentRecord.to_segment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SegmentRecord.to_segment()</span></code></a>;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">str</span></code> — becomes the <code class="docutils literal notranslate"><span class="pre">text</span></code> of a fresh segment;</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> with a <code class="docutils literal notranslate"><span class="pre">text</span></code> key — its keys are carried through.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">id</span></code> is always present on the result (derived if absent).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – if <code class="docutils literal notranslate"><span class="pre">x</span></code> is none of the accepted forms.</p></li>
+<li><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> without a <code class="docutils literal notranslate"><span class="pre">text</span></code> key.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">as_segment</span><span class="p">(</span><span class="s1">&#39;plain text&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">as_segment</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;kept&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="mi">9</span><span class="p">)[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>  <span class="c1"># x wins</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.as_segmenter">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">as_segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></span><a class="reference internal" href="../_modules/ef/segmenter_adapters.html#as_segmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.as_segmenter" title="Link to this definition"></a></dt>
+<dd><p>Normalize <code class="docutils literal notranslate"><span class="pre">x</span></code> into a <a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> — the DI seam.</p>
+<p>The single place every <code class="docutils literal notranslate"><span class="pre">ef</span></code> entry point coerces a user-supplied segmenter
+argument. Accepts, in order:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;recursive&quot;</span></code> — a
+<a class="reference internal" href="ef/segmenters.html#ef.segmenters.RecursiveCharacterSegmenter" title="ef.segmenters.RecursiveCharacterSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a> (the default);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lines&quot;</span></code> — <a class="reference internal" href="ef/segmenters.html#ef.segmenters.line_segmenter" title="ef.segmenters.line_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a>;</p></li>
+<li><p>any other string — looked up in <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s registry via
+<a class="reference internal" href="#ef.imbed_segmenter" title="ef.imbed_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">imbed_segmenter()</span></code></a>;</p></li>
+<li><p>a ready-made segmenter (a <a class="reference internal" href="ef/segmenters.html#ef.segmenters.BaseSegmenter" title="ef.segmenters.BaseSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a> or a
+callable marked by <code class="docutils literal notranslate"><span class="pre">ef</span></code>) — returned unchanged;</p></li>
+<li><p>a bare callable — wrapped in <a class="reference internal" href="ef/segmenters.html#ef.segmenters.FunctionSegmenter" title="ef.segmenters.FunctionSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a>.</p></li>
+</ol>
+<p>Extra <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> are forwarded to the chosen factory (ignored when <code class="docutils literal notranslate"><span class="pre">x</span></code>
+is already a segmenter).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – if <code class="docutils literal notranslate"><span class="pre">x</span></code> is none of the above.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">as_segmenter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">seg</span><span class="o">.</span><span class="n">chunk_overlap</span><span class="p">)</span>
+<span class="go">(256, 32)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1001,6 +1284,21 @@ order of <code class="docutils literal notranslate"><span class="pre">texts</spa
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.hierarchical">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">hierarchical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmenters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#hierarchical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.hierarchical" title="Link to this definition"></a></dt>
+<dd><p>Compose segmenters into levels — each segments the previous level’s output.</p>
+<p>Level 0 applies <code class="docutils literal notranslate"><span class="pre">segmenters[0]</span></code> to the document. Level <em>k</em> applies
+<code class="docutils literal notranslate"><span class="pre">segmenters[k]</span></code> to every level-<em>(k-1)</em> segment’s text, setting each
+child’s <code class="docutils literal notranslate"><span class="pre">parent_id</span></code> to that segment’s <code class="docutils literal notranslate"><span class="pre">id</span></code> and shifting its offsets to
+stay absolute. The result is a flat stream of every segment of every level
+(level 0 first), with the tree expressed purely through <code class="docutils literal notranslate"><span class="pre">parent_id</span></code>
+pointers.</p>
+<p>Each entry of <code class="docutils literal notranslate"><span class="pre">segmenters</span></code> is passed through
+<a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a>, so strings (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;recursive&quot;</span></code>)
+and bare callables are accepted alongside ready-made segmenters.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.http_embedder">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">http_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">url:</span> <span class="pre">str,</span> <span class="pre">*,</span> <span class="pre">model_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dim:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">normalized:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">64,</span> <span class="pre">headers:</span> <span class="pre">dict[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">timeout:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">payload_builder:</span> <span class="pre">~typing.Callable[[~typing.Sequence[str]],</span> <span class="pre">bytes]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_tei_payload&gt;,</span> <span class="pre">response_parser:</span> <span class="pre">~typing.Callable[[~typing.Any],</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_tei_parse&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#http_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.http_embedder" title="Link to this definition"></a></dt>
 <dd><p>Build an <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> over a remote HTTP service.</p>
@@ -1023,6 +1321,84 @@ service, override <code class="docutils literal notranslate"><span class="pre">p
 </dd>
 </dl>
 <p>Uses only the stdlib — no extra dependency.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.imbed_segmenter">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">imbed_segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></span><a class="reference internal" href="../_modules/ef/segmenter_adapters.html#imbed_segmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.imbed_segmenter" title="Link to this definition"></a></dt>
+<dd><p>Build a <a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a> from <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s segmenter registry.</p>
+<p><code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s registered segmenters are bare <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">-&gt;</span> <span class="pre">Iterable[str]</span></code>
+callables; this wraps the named one in a <a class="reference internal" href="ef/segmenters.html#ef.segmenters.FunctionSegmenter" title="ef.segmenters.FunctionSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a>
+so it emits well-formed <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> pieces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – A key in <code class="docutils literal notranslate"><span class="pre">imbed.components.segmentation.segmenters</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>
+resolves to <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s configured default segmenter).</p></li>
+<li><p><strong>**kwargs</strong> – Forwarded to <a class="reference internal" href="ef/segmenters.html#ef.segmenters.FunctionSegmenter" title="ef.segmenters.FunctionSegmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ImportError</strong> – if <code class="docutils literal notranslate"><span class="pre">imbed</span></code> is not installed.</p></li>
+<li><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not a registered segmenter.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Requires the <code class="docutils literal notranslate"><span class="pre">imbed</span></code> package (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'ef[imbed]'</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.line_segmenter">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">line_segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#line_segmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.line_segmenter" title="Link to this definition"></a></dt>
+<dd><p>Segment a document into its non-empty lines.</p>
+<p>Each line is stripped of surrounding whitespace; blank lines are dropped.
+Character offsets point at the <em>stripped</em> content within the source.</p>
+<p>A plain function — and therefore already a <a class="reference internal" href="#ef.Segmenter" title="ef.Segmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segmenter</span></code></a>. It carries
+the marker <a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a> uses to recognize a
+ready-made segmenter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">line_segmenter</span><span class="p">(</span><span class="s1">&#39;  hello  </span><span class="se">\n\n</span><span class="s1">world</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;hello&#39;, &#39;world&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.make_segment">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">make_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a></span></span><a class="reference internal" href="../_modules/ef/segments.html#make_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.make_segment" title="Link to this definition"></a></dt>
+<dd><p>Build a <a class="reference internal" href="#ef.Segment" title="ef.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>, deriving a content-based <code class="docutils literal notranslate"><span class="pre">id</span></code> if none given.</p>
+<p>Optional fields are omitted from the result when <code class="docutils literal notranslate"><span class="pre">None</span></code> — a segment
+<code class="docutils literal notranslate"><span class="pre">dict</span></code> carries only the keys it actually has.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">make_segment</span><span class="p">(</span><span class="s1">&#39;chunk one&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+<span class="go">[&#39;end&#39;, &#39;id&#39;, &#39;index&#39;, &#39;start&#39;, &#39;text&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;chunk one&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.materialise">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">materialise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#materialise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.materialise" title="Link to this definition"></a></dt>
+<dd><p>Force a streaming segmenter (or segment stream) to a concrete list.</p>
+<p>Streaming is the default, but the light case often wants everything in
+hand. <a class="reference internal" href="#ef.materialise" title="ef.materialise"><code class="xref py py-func docutils literal notranslate"><span class="pre">materialise()</span></code></a> is polymorphic:</p>
+<ul class="simple">
+<li><p>given a <strong>segmenter</strong> (a callable), it returns a new segmenter whose
+output is a <code class="docutils literal notranslate"><span class="pre">list</span></code> rather than a lazy iterator;</p></li>
+<li><p>given an <strong>iterable of segments</strong>, it returns a <code class="docutils literal notranslate"><span class="pre">list</span></code> of them.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eager</span> <span class="o">=</span> <span class="n">materialise</span><span class="p">(</span><span class="n">line_segmenter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">eager</span><span class="p">(</span><span class="s1">&#39;a</span><span class="se">\n</span><span class="s1">b&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">out</span><span class="p">]</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">materialise</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">}])</span>
+<span class="go">[{&#39;text&#39;: &#39;x&#39;}]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1064,6 +1440,40 @@ embedder’s identity — set it once here, not per call.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.segment_id">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">segment_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ef/segments.html#segment_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.segment_id" title="Link to this definition"></a></dt>
+<dd><p>Content-derived id for a segment — <code class="docutils literal notranslate"><span class="pre">sha256</span></code> of its normalized content.</p>
+<p>The id is <code class="docutils literal notranslate"><span class="pre">sha256(normalize(text)</span> <span class="pre">+</span> <span class="pre">canonical_json(metadata))</span></code>. Because it
+depends only on content, re-segmenting an unchanged document produces
+identical ids — which is what makes ingestion idempotent (a re-run is a
+no-op, not a duplicate). Pass <code class="docutils literal notranslate"><span class="pre">metadata</span></code> only when two segments could
+share identical <code class="docutils literal notranslate"><span class="pre">text</span></code> yet must stay distinct (e.g. same boilerplate from
+different sources).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;world&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">})</span> <span class="o">==</span> <span class="n">segment_id</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">})</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.segment_record">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">segment_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segments.html#ef.segments.SegmentRecord" title="ef.segments.SegmentRecord"><span class="pre">SegmentRecord</span></a></span></span><a class="reference internal" href="../_modules/ef/segments.html#segment_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.segment_record" title="Link to this definition"></a></dt>
+<dd><p>Coerce <code class="docutils literal notranslate"><span class="pre">x</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code> / <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> / <a class="reference internal" href="#ef.SegmentRecord" title="ef.SegmentRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a>) into a record.</p>
+<p>The dataclass counterpart of <a class="reference internal" href="#ef.as_segment" title="ef.as_segment"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segment()</span></code></a> — the convenience-surface
+constructor.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment_record</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segment_record</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;tokens&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">tokens</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.sentence_transformers_embedder">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">sentence_transformers_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all-MiniLM-L6-v2'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">st_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#sentence_transformers_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.sentence_transformers_embedder" title="Link to this definition"></a></dt>
 <dd><p>Build a local sentence-transformers <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
@@ -1085,6 +1495,26 @@ for air-gapped use. Loading still records <code class="docutils literal notransl
 </dd>
 </dl>
 <p>Requires <code class="docutils literal notranslate"><span class="pre">sentence-transformers</span></code> (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'ef[sentence-transformers]'</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.with_overlap">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">with_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">segmenter:</span> <span class="pre">~ef.segmenters.Segmenter,</span> <span class="pre">n_chars:</span> <span class="pre">int,</span> <span class="pre">/,</span> <span class="pre">*,</span> <span class="pre">count_tokens:</span> <span class="pre">~typing.Callable[[str],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">approx_token_count&gt;,</span> <span class="pre">tokenizer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'char-approx'</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/segmenters.html#ef.segmenters.Segmenter" title="ef.segmenters.Segmenter"><span class="pre">Segmenter</span></a></span></span><a class="reference internal" href="../_modules/ef/segmenters.html#with_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.with_overlap" title="Link to this definition"></a></dt>
+<dd><p>Wrap <code class="docutils literal notranslate"><span class="pre">segmenter</span></code> so consecutive segments overlap by <code class="docutils literal notranslate"><span class="pre">n_chars</span></code> characters.</p>
+<p>Each segment is extended <em>forward</em> by up to <code class="docutils literal notranslate"><span class="pre">n_chars</span></code> characters (clamped
+to the source length), so segment <em>K</em> shares its tail with segment <em>K+1</em>’s
+head. A segment whose text changes has its <code class="docutils literal notranslate"><span class="pre">id</span></code> re-derived and its
+<code class="docutils literal notranslate"><span class="pre">tokens</span></code> recounted; segments lacking <code class="docutils literal notranslate"><span class="pre">start</span></code> / <code class="docutils literal notranslate"><span class="pre">end</span></code> offsets pass
+through untouched.</p>
+<p>Overlap is expressed in <em>characters</em> here (this is a generic post-hoc
+helper) — for token-measured overlap use a segmenter’s own <code class="docutils literal notranslate"><span class="pre">chunk_overlap</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="n">RecursiveCharacterSegmenter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">base</span><span class="p">(</span><span class="s1">&#39;one two three four&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;one two three&#39;, &#39;four&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">with_overlap</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="mi">100</span><span class="p">)(</span><span class="s1">&#39;one two three four&#39;</span><span class="p">)]</span>
+<span class="go">[&#39;one two three four&#39;, &#39;four&#39;]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

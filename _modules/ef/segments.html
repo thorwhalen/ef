@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.segments &mdash; ef 0.1.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.segments</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.segments</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The canonical ``Segment`` data model — ``ef``&#39;s interchange type for L2.</span>
+
+<span class="sd">A *segment* is a piece of text carved out of a source document by a</span>
+<span class="sd">:class:`~ef.segmenters.Segmenter`. This module defines the one shape every</span>
+<span class="sd">segmenter, adapter and store in ``ef`` agrees on, so segments round-trip</span>
+<span class="sd">losslessly across the whole pipeline.</span>
+
+<span class="sd">Two surfaces over the same data:</span>
+
+<span class="sd">- :class:`Segment` — a ``TypedDict``: the lightweight, streaming-friendly</span>
+<span class="sd">  *interchange* type. A segment is just a ``dict``; the type is passive and</span>
+<span class="sd">  every helper here is a free function over it.</span>
+<span class="sd">- :class:`SegmentRecord` — a frozen dataclass: the *convenience* surface for</span>
+<span class="sd">  code that prefers attribute access and immutability.</span>
+
+<span class="sd">Only ``text`` is genuinely required; ``id`` is required by convention and is</span>
+<span class="sd">**content-derived** by default (:func:`segment_id`) so that re-segmenting the</span>
+<span class="sd">same document yields the same ids — the basis of idempotent ingestion.</span>
+
+<span class="sd">The two field names that are *promoted to top level* (rather than buried in</span>
+<span class="sd">``metadata``) are ``parent_id`` and ``index`` — hierarchy is expressed by a</span>
+<span class="sd">flat list with ``parent_id`` pointers, never a nested structure.</span>
+
+<span class="sd">Example — build a segment, derive its id, view it as a record:</span>
+
+<span class="sd">&gt;&gt;&gt; seg = make_segment(&#39;Hello world.&#39;, index=0, tokens=3)</span>
+<span class="sd">&gt;&gt;&gt; seg[&#39;text&#39;]</span>
+<span class="sd">&#39;Hello world.&#39;</span>
+<span class="sd">&gt;&gt;&gt; seg[&#39;id&#39;] == segment_id(&#39;Hello world.&#39;)</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; rec = segment_record(seg)</span>
+<span class="sd">&gt;&gt;&gt; rec.text, rec.index</span>
+<span class="sd">(&#39;Hello world.&#39;, 0)</span>
+<span class="sd">&gt;&gt;&gt; rec.to_segment() == seg</span>
+<span class="sd">True</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">unicodedata</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">TypedDict</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SegmentRecord&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segment_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_segment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;as_segment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segment_record&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PROMOTED_METADATA_KEYS&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">#: Metadata keys that, by convention, every ``ef`` adapter must round-trip</span>
+<span class="c1">#: faithfully. They live inside ``Segment[&quot;metadata&quot;]`` (they are *not* promoted</span>
+<span class="c1">#: to top-level fields) but carry meaning the pipeline relies on. Recording</span>
+<span class="c1">#: ``tokenizer`` in particular is mandatory — omitting it is the single most</span>
+<span class="c1">#: common silent bug in chunking pipelines (a segment&#39;s ``tokens`` count is</span>
+<span class="c1">#: meaningless without knowing which tokenizer produced it).</span>
+<span class="n">PROMOTED_METADATA_KEYS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tokenizer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;token_count&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;embedding_model&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;page&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;license&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ingestion_run_id&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The interchange type</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="Segment">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.Segment">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Segment</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A piece of text carved from a source document — the interchange type.</span>
+
+<span class="sd">    A ``TypedDict``: a :class:`Segment` *is* a plain ``dict``, which keeps it</span>
+<span class="sd">    cheap to create and stream. ``total=False`` because most keys are optional;</span>
+<span class="sd">    by convention ``text`` is always present and ``id`` is always set (derived</span>
+<span class="sd">    from ``text`` if not supplied).</span>
+
+<span class="sd">    Keys:</span>
+<span class="sd">        text: The segment&#39;s text. **Required.**</span>
+<span class="sd">        id: Stable identifier — content-derived by default (:func:`segment_id`).</span>
+<span class="sd">        parent_id: Id of the source document or parent segment this came from.</span>
+<span class="sd">        start: Character offset of the segment&#39;s start in the source text.</span>
+<span class="sd">        end: Character offset of the segment&#39;s end (exclusive) in the source.</span>
+<span class="sd">        index: Ordinal position of the segment in its segmenter&#39;s output.</span>
+<span class="sd">        tokens: Token count of ``text`` (meaningful only with ``metadata`` key</span>
+<span class="sd">            ``tokenizer`` recording which tokenizer counted it).</span>
+<span class="sd">        metadata: Free-form mapping; framework-specific keys live here. See</span>
+<span class="sd">            :data:`PROMOTED_METADATA_KEYS` for the conventional keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">parent_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">tokens</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Content-derived identity</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize ``text`` for hashing: NFC, no BOM, ``\\n`` line endings.</span>
+
+<span class="sd">    Normalizing *before* hashing means cosmetically-different encodings of the</span>
+<span class="sd">    same content (NFD vs NFC, a stray BOM, CRLF vs LF) hash identically — so</span>
+<span class="sd">    re-ingesting the same document does not spuriously change segment ids.</span>
+<span class="sd">    Only the *hash input* is normalized; the stored ``text`` is left verbatim.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFC&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;﻿&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># strip BOM</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_canonical_json</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deterministic JSON: sorted keys, compact, ``str``-coerced fallbacks.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+        <span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="segment_id">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.segment_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">segment_id</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Content-derived id for a segment — ``sha256`` of its normalized content.</span>
+
+<span class="sd">    The id is ``sha256(normalize(text) + canonical_json(metadata))``. Because it</span>
+<span class="sd">    depends only on content, re-segmenting an unchanged document produces</span>
+<span class="sd">    identical ids — which is what makes ingestion idempotent (a re-run is a</span>
+<span class="sd">    no-op, not a duplicate). Pass ``metadata`` only when two segments could</span>
+<span class="sd">    share identical ``text`` yet must stay distinct (e.g. same boilerplate from</span>
+<span class="sd">    different sources).</span>
+
+<span class="sd">    &gt;&gt;&gt; segment_id(&#39;hello&#39;) == segment_id(&#39;hello&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; segment_id(&#39;hello&#39;) == segment_id(&#39;world&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; segment_id(&#39;x&#39;, {&#39;source&#39;: &#39;a&#39;}) == segment_id(&#39;x&#39;, {&#39;source&#39;: &#39;b&#39;})</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">_normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">_canonical_json</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}))</span>
+    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The convenience surface</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="SegmentRecord">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.SegmentRecord">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SegmentRecord</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frozen-dataclass view over a :class:`Segment` — the convenience surface.</span>
+
+<span class="sd">    Use this when attribute access and immutability read better than dict</span>
+<span class="sd">    access; use the :class:`Segment` ``TypedDict`` directly on the hot path.</span>
+<span class="sd">    The two convert losslessly via :meth:`to_segment` and :func:`segment_record`.</span>
+
+<span class="sd">    ``id`` is derived from ``text`` (and ``metadata``) if left empty.</span>
+
+<span class="sd">    &gt;&gt;&gt; rec = SegmentRecord(&#39;hello&#39;, index=2)</span>
+<span class="sd">    &gt;&gt;&gt; rec.id == segment_id(&#39;hello&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; rec.to_segment()[&#39;index&#39;]</span>
+<span class="sd">    2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">parent_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">segment_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SegmentRecord.to_segment">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.SegmentRecord.to_segment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Segment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an equivalent :class:`Segment` ``dict`` (dropping empty keys).&quot;&quot;&quot;</span>
+        <span class="n">seg</span><span class="p">:</span> <span class="n">Segment</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;parent_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">seg</span></div>
+</div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Constructors / coercion</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="make_segment">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.make_segment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_segment</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parent_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Segment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`Segment`, deriving a content-based ``id`` if none given.</span>
+
+<span class="sd">    Optional fields are omitted from the result when ``None`` — a segment</span>
+<span class="sd">    ``dict`` carries only the keys it actually has.</span>
+
+<span class="sd">    &gt;&gt;&gt; seg = make_segment(&#39;chunk one&#39;, index=0, start=0, end=9)</span>
+<span class="sd">    &gt;&gt;&gt; sorted(seg)</span>
+<span class="sd">    [&#39;end&#39;, &#39;id&#39;, &#39;index&#39;, &#39;start&#39;, &#39;text&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; seg[&#39;id&#39;] == segment_id(&#39;chunk one&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seg</span><span class="p">:</span> <span class="n">Segment</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+    <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span> <span class="ow">or</span> <span class="n">segment_id</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parent_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;parent_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent_id</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
+    <span class="k">if</span> <span class="n">tokens</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span>
+    <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seg</span></div>
+
+
+
+<div class="viewcode-block" id="as_segment">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.as_segment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_segment</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Segment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``x`` into a :class:`Segment` — accepts a ``str``, ``Mapping`` or record.</span>
+
+<span class="sd">    This is the segment-side normalizer that lets a :class:`Segmenter` accept</span>
+<span class="sd">    loosely-typed output (a bare string, a partial ``dict``) and still emit a</span>
+<span class="sd">    well-formed :class:`Segment`. ``**defaults`` supplies *fallback* values:</span>
+<span class="sd">    a default fills a field only when ``x`` does not already carry it.</span>
+
+<span class="sd">    Accepts:</span>
+
+<span class="sd">    1. a :class:`SegmentRecord` — converted via :meth:`SegmentRecord.to_segment`;</span>
+<span class="sd">    2. a ``str`` — becomes the ``text`` of a fresh segment;</span>
+<span class="sd">    3. a ``Mapping`` with a ``text`` key — its keys are carried through.</span>
+
+<span class="sd">    The ``id`` is always present on the result (derived if absent).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: if ``x`` is none of the accepted forms.</span>
+<span class="sd">        ValueError: if ``x`` is a ``Mapping`` without a ``text`` key.</span>
+
+<span class="sd">    &gt;&gt;&gt; as_segment(&#39;plain text&#39;, index=3)[&#39;index&#39;]</span>
+<span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; as_segment({&#39;text&#39;: &#39;kept&#39;, &#39;index&#39;: 0}, index=9)[&#39;index&#39;]  # x wins</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">SegmentRecord</span><span class="p">):</span>
+        <span class="n">seg</span><span class="p">:</span> <span class="n">Segment</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to_segment</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">seg</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;text&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a segment mapping must have a &#39;text&#39; key&quot;</span><span class="p">)</span>
+        <span class="n">seg</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot interpret </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> as a Segment. Pass a str, a &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;mapping with a &#39;text&#39; key, or a SegmentRecord.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># type: ignore[call-overload]</span>
+            <span class="n">seg</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># type: ignore[literal-required]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">):</span>
+        <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">segment_id</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">seg</span></div>
+
+
+
+<div class="viewcode-block" id="segment_record">
+<a class="viewcode-back" href="../../module_docs/ef/segments.html#ef.segment_record">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">segment_record</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SegmentRecord</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``x`` (``str`` / ``Mapping`` / :class:`SegmentRecord`) into a record.</span>
+
+<span class="sd">    The dataclass counterpart of :func:`as_segment` — the convenience-surface</span>
+<span class="sd">    constructor.</span>
+
+<span class="sd">    &gt;&gt;&gt; segment_record(&#39;hello&#39;).text</span>
+<span class="sd">    &#39;hello&#39;</span>
+<span class="sd">    &gt;&gt;&gt; segment_record({&#39;text&#39;: &#39;hi&#39;, &#39;tokens&#39;: 1}).tokens</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">SegmentRecord</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="n">seg</span> <span class="o">=</span> <span class="n">as_segment</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SegmentRecord</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">parent_id</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parent_id&quot;</span><span class="p">),</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">),</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">),</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">),</span>
+        <span class="n">tokens</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tokens&quot;</span><span class="p">),</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{},</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -12,6 +12,9 @@
    module_docs/ef/plugins/imbed_plugin
    module_docs/ef/plugins/simple_plugin
    module_docs/ef/projects
+   module_docs/ef/segmenter_adapters
+   module_docs/ef/segmenters
+   module_docs/ef/segments
    module_docs/ef/storage
    module_docs/ef/tests
    module_docs/ef/tests/test_basic

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.3 documentation</title>
+  <title>Index &mdash; ef 0.1.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=360bc84d"></script>
+      <script src="_static/documentation_options.js?v=fd825880"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -56,6 +56,9 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/storage.html">ef.storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/tests.html">ef.tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
@@ -106,6 +109,8 @@
  | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -117,12 +122,32 @@
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.add_source">(ef.projects.Project method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.approx_token_count">approx_token_count() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.approx_token_count">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef/segmenters.html#ef.segmenters.APPROX_TOKENIZER">APPROX_TOKENIZER (in module ef.segmenters)</a>
+</li>
       <li><a href="module_docs/ef.html#ef.as_embedder">as_embedder() (in module ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.as_embedder">(in module ef.embedder_adapters)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.as_segment">as_segment() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.as_segment">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.as_segmenter">as_segmenter() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter">(in module ef.segmenter_adapters)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/dag.html#ef.dag.assemble_pipeline_dag">assemble_pipeline_dag() (in module ef.dag)</a>
@@ -145,8 +170,30 @@
         <li><a href="module_docs/ef/embedders.html#ef.embedders.BaseEmbedder">(class in ef.embedders)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef.html#ef.BaseSegmenter">BaseSegmenter (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BaseSegmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.BaseSegmenter.batch">batch() (ef.BaseSegmenter method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef.html#ef.BatchedSegmenter.batch">(ef.BatchedSegmenter method)</a>
+</li>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BaseSegmenter.batch">(ef.segmenters.BaseSegmenter method)</a>
+</li>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BatchedSegmenter.batch">(ef.segmenters.BatchedSegmenter method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.BatchedSegmenter">BatchedSegmenter (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BatchedSegmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.BatchHandle">BatchHandle (class in ef)</a>
 
       <ul>
@@ -227,6 +274,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/dag.html#ef.dag.DAG">DAG (class in ef.dag)</a>
 </li>
+      <li><a href="module_docs/ef/segmenters.html#ef.segmenters.DEFAULT_SEPARATORS">DEFAULT_SEPARATORS (in module ef.segmenters)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.Embedder.dim">dim (ef.Embedder attribute)</a>
@@ -304,13 +353,34 @@
         <li><a href="module_docs/ef/plugins/simple_plugin.html#module-ef.plugins.simple_plugin">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.projects
 
       <ul>
         <li><a href="module_docs/ef/projects.html#module-ef.projects">module</a>
+</li>
+      </ul></li>
+      <li>
+    ef.segmenter_adapters
+
+      <ul>
+        <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    ef.segmenters
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#module-ef.segmenters">module</a>
+</li>
+      </ul></li>
+      <li>
+    ef.segments
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#module-ef.segments">module</a>
 </li>
       </ul></li>
       <li>
@@ -371,12 +441,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/dag.html#ef.dag.FuncNode">FuncNode (class in ef.dag)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.FunctionEmbedder">FunctionEmbedder (class in ef)</a>
 
       <ul>
         <li><a href="module_docs/ef/embedders.html#ef.embedders.FunctionEmbedder">(class in ef.embedders)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.FunctionSegmenter">FunctionSegmenter (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.FunctionSegmenter">(class in ef.segmenters)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -397,6 +473,12 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.hierarchical">hierarchical() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.hierarchical">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.CachedEmbedder.honored_input_types">honored_input_types (ef.CachedEmbedder property)</a>
 
       <ul>
@@ -429,6 +511,14 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.imbed_segmenter">imbed_segmenter() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.imbed_segmenter">(in module ef.segmenter_adapters)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/embedders.html#ef.embedders.InputType">InputType (in module ef.embedders)</a>
 </li>
   </ul></td>
@@ -449,6 +539,12 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.line_segmenter">line_segmenter() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.line_segmenter">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.Project.list_components">list_components() (ef.Project method)</a>
 
       <ul>
@@ -469,6 +565,18 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.make_segment">make_segment() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.make_segment">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.materialise">materialise() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.materialise">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.max_attempts">max_attempts (ef.embedder_wrappers.RetryPolicy attribute)</a>
 
       <ul>
@@ -514,6 +622,12 @@
         <li><a href="module_docs/ef/plugins/simple_plugin.html#module-ef.plugins.simple_plugin">ef.plugins.simple_plugin</a>
 </li>
         <li><a href="module_docs/ef/projects.html#module-ef.projects">ef.projects</a>
+</li>
+        <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">ef.segmenter_adapters</a>
+</li>
+        <li><a href="module_docs/ef/segmenters.html#module-ef.segmenters">ef.segmenters</a>
+</li>
+        <li><a href="module_docs/ef/segments.html#module-ef.segments">ef.segments</a>
 </li>
         <li><a href="module_docs/ef/storage.html#module-ef.storage">ef.storage</a>
 </li>
@@ -606,6 +720,8 @@
         <li><a href="module_docs/ef/projects.html#ef.projects.Projects">(class in ef.projects)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef/segments.html#ef.segments.PROMOTED_METADATA_KEYS">PROMOTED_METADATA_KEYS (in module ef.segments)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -630,6 +746,12 @@
         <li><a href="module_docs/ef/embedders.html#ef.embedders.ready_handle">(in module ef.embedders)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ef.html#ef.RecursiveCharacterSegmenter">RecursiveCharacterSegmenter (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.RecursiveCharacterSegmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef/base.html#ef.base.ComponentRegistry.register">register() (ef.base.ComponentRegistry method)</a>
 
       <ul>
@@ -646,14 +768,14 @@
 </li>
       <li><a href="module_docs/ef/plugins/simple_plugin.html#ef.plugins.simple_plugin.register_simple_components">register_simple_components() (in module ef.plugins.simple_plugin)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.BatchHandle.result">result (ef.BatchHandle attribute)</a>
 
       <ul>
         <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.result">(ef.embedders.BatchHandle attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.retry_on">retry_on (ef.embedder_wrappers.RetryPolicy attribute)</a>
 
       <ul>
@@ -690,24 +812,52 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.Segment">Segment (in module ef)</a>
+      <li><a href="module_docs/ef.html#ef.Segment">Segment (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.Segment">(class in ef.segments)</a>
 </li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.segment_id">segment_id() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.segment_id">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.segment_record">segment_record() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.segment_record">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.Segmenter">Segmenter (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.Segmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.Project.segmenters">segmenters (ef.Project property)</a>
 
       <ul>
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.segmenters">(ef.projects.Project property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.SegmentKey">SegmentKey (in module ef)</a>
 </li>
+      <li><a href="module_docs/ef.html#ef.SegmentRecord">SegmentRecord (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord">(class in ef.segments)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ef.html#ef.Project.segments">segments (ef.Project property)</a>
 
       <ul>
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.segments">(ef.projects.Project property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ef.html#ef.sentence_transformers_embedder">sentence_transformers_embedder() (in module ef)</a>
 
       <ul>
@@ -720,6 +870,30 @@
 
       <ul>
         <li><a href="module_docs/ef/projects.html#ef.projects.Project.summary">(ef.projects.Project method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.SegmentRecord.to_segment">to_segment() (ef.SegmentRecord method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord.to_segment">(ef.segments.SegmentRecord method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ef.html#ef.with_overlap">with_overlap() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.with_overlap">(in module ef.segmenters)</a>
 </li>
       </ul></li>
   </ul></td>

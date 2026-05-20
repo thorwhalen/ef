@@ -1,0 +1,4 @@
+ef.segments
+===========
+.. automodule:: ef.segments
+   :members:
