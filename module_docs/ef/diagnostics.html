@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.diagnostics &mdash; ef 0.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ef.embedder_adapters" href="embedder_adapters.html" />
+    <link rel="prev" title="ef.dag" href="dag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">ef.dag</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ef.diagnostics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnostics.IndexedSource"><code class="docutils literal notranslate"><span class="pre">IndexedSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.diagnostics.IndexedSource.source_id"><code class="docutils literal notranslate"><span class="pre">IndexedSource.source_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.diagnostics.IndexedSource.doc_ids"><code class="docutils literal notranslate"><span class="pre">IndexedSource.doc_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.diagnostics.IndexedSource.source_hashes"><code class="docutils literal notranslate"><span class="pre">IndexedSource.source_hashes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.diagnostics.IndexedSource.config_hashes"><code class="docutils literal notranslate"><span class="pre">IndexedSource.config_hashes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnostics.StalenessReport"><code class="docutils literal notranslate"><span class="pre">StalenessReport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.diagnostics.StalenessReport.needs_reindexing"><code class="docutils literal notranslate"><span class="pre">StalenessReport.needs_reindexing</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnostics.corpus_state"><code class="docutils literal notranslate"><span class="pre">corpus_state()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnostics.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnostics.indexed_state"><code class="docutils literal notranslate"><span class="pre">indexed_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ef.diagnostics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ef/diagnostics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ef.diagnostics">
+<span id="ef-diagnostics"></span><h1>ef.diagnostics<a class="headerlink" href="#module-ef.diagnostics" title="Link to this heading"></a></h1>
+<p>Staleness diagnostics — has an indexed corpus drifted from its source?</p>
+<p>Phase 5 wired <code class="docutils literal notranslate"><span class="pre">corpus</span> <span class="pre">→</span> <span class="pre">segment</span> <span class="pre">→</span> <span class="pre">embed</span> <span class="pre">→</span> <span class="pre">vd</span></code> and recorded provenance on
+every <code class="docutils literal notranslate"><span class="pre">vd</span></code> document: <code class="docutils literal notranslate"><span class="pre">source_id</span></code>, <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> and <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> ride
+in the document metadata (see <code class="xref py py-data docutils literal notranslate"><span class="pre">ef.source_manager._RESERVED_METADATA_KEYS</span></code>).
+This module reads that provenance back and answers a single question — <em>is the
+index still a faithful picture of the corpus?</em> — by computing the <strong>four
+staleness conditions</strong> (<code class="docutils literal notranslate"><span class="pre">ef_use_cases.md</span></code> §C):</p>
+<p>The detection is a set comparison, exactly as the design intends — the
+<code class="docutils literal notranslate"><span class="pre">vd</span></code> collection is the single source of truth for <em>what is indexed</em>, the
+corpus for <em>what should be indexed</em>, and the current
+<a class="reference internal" href="config.html#ef.config.ConfigId" title="ef.config.ConfigId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigId</span></code></a> for <em>how</em>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">orphan</span></code> / <code class="docutils literal notranslate"><span class="pre">missing</span></code> partition the symmetric difference of the two id
+sets;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stale</span></code> compares each indexed source’s recorded <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> against a
+freshly recomputed <a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">content_hash()</span></code></a>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">misconfigured</span></code> compares each document’s recorded <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> against
+the config being diagnosed.</p></li>
+</ul>
+<p>This module is <strong>read-only</strong> — it never mutates the corpus, the collection or
+the graph. Acting on a <a class="reference internal" href="#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StalenessReport</span></code></a> is <a class="reference internal" href="refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.refresh</span></code></a>’s job.</p>
+<p>Example — diagnose a config whose corpus has since drifted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceManager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;beta&#39;</span><span class="p">},</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;hashing&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;beta changed&#39;</span>          <span class="c1"># an edit, behind the index&#39;s back</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gamma&#39;</span>                 <span class="c1"># a brand-new source</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>                       <span class="c1"># and a deletion</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">diagnose</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span><span class="o">.</span><span class="n">orphan</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">missing</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">stale</span>
+<span class="go">((&#39;a&#39;,), (&#39;c&#39;,), (&#39;b&#39;,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>                             <span class="c1"># True — the index has drifted</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.diagnostics.IndexedSource">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.diagnostics.</span></span><span class="sig-name descname"><span class="pre">IndexedSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/diagnostics.html#IndexedSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnostics.IndexedSource" title="Link to this definition"></a></dt>
+<dd><p>The provenance a <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection records for one source document.</p>
+<p>A source is segmented into several documents; they all carry the same
+<code class="docutils literal notranslate"><span class="pre">source_id</span></code> and <em>should</em> carry one <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> / <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> each.
+<a class="reference internal" href="#ef.diagnostics.indexed_state" title="ef.diagnostics.indexed_state"><code class="xref py py-func docutils literal notranslate"><span class="pre">indexed_state()</span></code></a> groups a collection’s documents into one of these per
+source — collecting the hashes as <strong>sets</strong> so a partially re-indexed source
+(documents disagreeing on a hash) is detectable rather than papered over.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.diagnostics.IndexedSource.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><a class="headerlink" href="#ef.diagnostics.IndexedSource.source_id" title="Link to this definition"></a></dt>
+<dd><p>the corpus key of the source these documents were cut from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.diagnostics.IndexedSource.doc_ids">
+<span class="sig-name descname"><span class="pre">doc_ids</span></span><a class="headerlink" href="#ef.diagnostics.IndexedSource.doc_ids" title="Link to this definition"></a></dt>
+<dd><p>the ids of every <code class="docutils literal notranslate"><span class="pre">vd</span></code> document belonging to the source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.diagnostics.IndexedSource.source_hashes">
+<span class="sig-name descname"><span class="pre">source_hashes</span></span><a class="headerlink" href="#ef.diagnostics.IndexedSource.source_hashes" title="Link to this definition"></a></dt>
+<dd><p>the distinct <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> values its documents record
+— a single-element set for a cleanly indexed source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.diagnostics.IndexedSource.config_hashes">
+<span class="sig-name descname"><span class="pre">config_hashes</span></span><a class="headerlink" href="#ef.diagnostics.IndexedSource.config_hashes" title="Link to this definition"></a></dt>
+<dd><p>likewise the distinct <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.diagnostics.StalenessReport">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.diagnostics.</span></span><span class="sig-name descname"><span class="pre">StalenessReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orphan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">misconfigured</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/diagnostics.html#StalenessReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnostics.StalenessReport" title="Link to this definition"></a></dt>
+<dd><p>The four staleness conditions of one config — what <a class="reference internal" href="#ef.diagnostics.diagnose" title="ef.diagnostics.diagnose"><code class="xref py py-func docutils literal notranslate"><span class="pre">diagnose()</span></code></a> returns.</p>
+<p>Each field is a sorted tuple of <code class="docutils literal notranslate"><span class="pre">source_id</span></code>s, so a report is
+deterministic and JSON-friendly. <code class="docutils literal notranslate"><span class="pre">orphan</span></code> and <code class="docutils literal notranslate"><span class="pre">missing</span></code> are disjoint
+from the rest (a source absent from one side cannot also be compared); a
+source can be <strong>both</strong> <code class="docutils literal notranslate"><span class="pre">stale</span></code> and <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code> (its content changed
+<em>and</em> the config did) — the conditions are reported independently.
+<code class="docutils literal notranslate"><span class="pre">fresh</span></code> is the complement: indexed, current and built by this config.</p>
+<p>Truthiness reports whether <em>anything is wrong</em> — <code class="docutils literal notranslate"><span class="pre">bool(report)</span></code> is
+<code class="docutils literal notranslate"><span class="pre">False</span></code> only for a perfectly in-sync index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">StalenessReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">stale</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,),</span> <span class="n">fresh</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">needs_reindexing</span>
+<span class="go">(True, (&#39;a&#39;,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">StalenessReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">fresh</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.diagnostics.StalenessReport.needs_reindexing">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">needs_reindexing</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.diagnostics.StalenessReport.needs_reindexing" title="Link to this definition"></a></dt>
+<dd><p>Sources whose vectors must be recomputed — <code class="docutils literal notranslate"><span class="pre">stale</span></code> ∪ <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.diagnostics.corpus_state">
+<span class="sig-prename descclassname"><span class="pre">ef.diagnostics.</span></span><span class="sig-name descname"><span class="pre">corpus_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/diagnostics.html#corpus_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnostics.corpus_state" title="Link to this definition"></a></dt>
+<dd><p>The current content hash of every source in <code class="docutils literal notranslate"><span class="pre">corpus</span></code>.</p>
+<p>The <em>what should be indexed</em> half of <a class="reference internal" href="#ef.diagnostics.diagnose" title="ef.diagnostics.diagnose"><code class="xref py py-func docutils literal notranslate"><span class="pre">diagnose()</span></code></a>: a fresh
+<a class="reference internal" href="corpus.html#ef.corpus.content_hash" title="ef.corpus.content_hash"><code class="xref py py-func docutils literal notranslate"><span class="pre">content_hash()</span></code></a> per source — recomputed, not read from any
+registry, so it reflects out-of-band edits to the backing store. It matches
+the <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> <a class="reference internal" href="source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> writes into
+<code class="docutils literal notranslate"><span class="pre">vd</span></code> (both are <code class="docutils literal notranslate"><span class="pre">content_hash</span></code> of the source with no <code class="docutils literal notranslate"><span class="pre">content_keys</span></code>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">corpus_state</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;two&#39;</span><span class="p">}))</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus_state</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">})[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">corpus_state</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">})[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.diagnostics.diagnose">
+<span class="sig-prename descclassname"><span class="pre">ef.diagnostics.</span></span><span class="sig-name descname"><span class="pre">diagnose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><span class="pre">StalenessReport</span></a></span></span><a class="reference internal" href="../../_modules/ef/diagnostics.html#diagnose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnostics.diagnose" title="Link to this definition"></a></dt>
+<dd><p>Compute the four staleness conditions of <code class="docutils literal notranslate"><span class="pre">collection</span></code> against <code class="docutils literal notranslate"><span class="pre">corpus</span></code>.</p>
+<p>The pure core of <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s diagnostics — no side effects. It reads what the
+<code class="docutils literal notranslate"><span class="pre">vd</span></code> <code class="docutils literal notranslate"><span class="pre">collection</span></code> records (<a class="reference internal" href="#ef.diagnostics.indexed_state" title="ef.diagnostics.indexed_state"><code class="xref py py-func docutils literal notranslate"><span class="pre">indexed_state()</span></code></a>), what the <code class="docutils literal notranslate"><span class="pre">corpus</span></code>
+currently holds (<a class="reference internal" href="#ef.diagnostics.corpus_state" title="ef.diagnostics.corpus_state"><code class="xref py py-func docutils literal notranslate"><span class="pre">corpus_state()</span></code></a>), and partitions every source id into
+exactly the buckets it belongs in:</p>
+<ul class="simple">
+<li><p><strong>orphan</strong> — in the collection, not in the corpus;</p></li>
+<li><p><strong>missing</strong> — in the corpus, not in the collection;</p></li>
+<li><p><strong>stale</strong> — in both, but the recorded <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> ≠ the current one;</p></li>
+<li><p><strong>misconfigured</strong> — in both, but a recorded <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> ≠ <code class="docutils literal notranslate"><span class="pre">config</span></code>;</p></li>
+<li><p><strong>fresh</strong> — in both, content current and config matching.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> – the source corpus.</p></li>
+<li><p><strong>collection</strong> – the <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection backing the config being diagnosed.</p></li>
+<li><p><strong>config</strong> – the <a class="reference internal" href="config.html#ef.config.ConfigId" title="ef.config.ConfigId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigId</span></code></a> the collection <em>should</em> hold
+— documents recording any other <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> are misconfigured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <a class="reference internal" href="#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StalenessReport</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.diagnostics.indexed_state">
+<span class="sig-prename descclassname"><span class="pre">ef.diagnostics.</span></span><span class="sig-name descname"><span class="pre">indexed_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#ef.diagnostics.IndexedSource" title="ef.diagnostics.IndexedSource"><span class="pre">IndexedSource</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ef/diagnostics.html#indexed_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnostics.indexed_state" title="Link to this definition"></a></dt>
+<dd><p>Group a <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection’s documents by source — its recorded state.</p>
+<p>Iterates the collection (a <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> of <code class="docutils literal notranslate"><span class="pre">vd</span></code> documents) and
+folds every document <code class="docutils literal notranslate"><span class="pre">ef</span></code> wrote into an <a class="reference internal" href="#ef.diagnostics.IndexedSource" title="ef.diagnostics.IndexedSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexedSource</span></code></a> keyed by
+its <code class="docutils literal notranslate"><span class="pre">source_id</span></code>. Documents with no <code class="docutils literal notranslate"><span class="pre">source_id</span></code> metadata (not written by
+<code class="docutils literal notranslate"><span class="pre">ef</span></code>) are skipped. This is the <em>what is indexed</em> half of <a class="reference internal" href="#ef.diagnostics.diagnose" title="ef.diagnostics.diagnose"><code class="xref py py-func docutils literal notranslate"><span class="pre">diagnose()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collection</strong> – the <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection backing one config.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">{source_id:</span> <span class="pre">IndexedSource}</span></code> mapping.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dag.html" class="btn btn-neutral float-left" title="ef.dag" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="embedder_adapters.html" class="btn btn-neutral float-right" title="ef.embedder_adapters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

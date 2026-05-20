@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.diagnostics &mdash; ef 0.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.diagnostics</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.diagnostics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Staleness diagnostics — has an indexed corpus drifted from its source?</span>
+
+<span class="sd">Phase 5 wired ``corpus → segment → embed → vd`` and recorded provenance on</span>
+<span class="sd">every ``vd`` document: ``source_id``, ``source_hash`` and ``config_hash`` ride</span>
+<span class="sd">in the document metadata (see :data:`ef.source_manager._RESERVED_METADATA_KEYS`).</span>
+<span class="sd">This module reads that provenance back and answers a single question — *is the</span>
+<span class="sd">index still a faithful picture of the corpus?* — by computing the **four</span>
+<span class="sd">staleness conditions** (``ef_use_cases.md`` §C):</span>
+
+<span class="sd">================ =============================================================</span>
+<span class="sd">Condition        Definition</span>
+<span class="sd">================ =============================================================</span>
+<span class="sd">**orphan**       vectors exist, but the source is gone from the corpus</span>
+<span class="sd">**missing**      the source exists, but nothing is indexed for it</span>
+<span class="sd">**stale**        the source changed since its vectors were computed</span>
+<span class="sd">**misconfigured** the vectors were built by a *different* pipeline (config)</span>
+<span class="sd">================ =============================================================</span>
+
+<span class="sd">The detection is a set comparison, exactly as the design intends — the</span>
+<span class="sd">``vd`` collection is the single source of truth for *what is indexed*, the</span>
+<span class="sd">corpus for *what should be indexed*, and the current</span>
+<span class="sd">:class:`~ef.config.ConfigId` for *how*:</span>
+
+<span class="sd">- ``orphan`` / ``missing`` partition the symmetric difference of the two id</span>
+<span class="sd">  sets;</span>
+<span class="sd">- ``stale`` compares each indexed source&#39;s recorded ``source_hash`` against a</span>
+<span class="sd">  freshly recomputed :func:`~ef.corpus.content_hash`;</span>
+<span class="sd">- ``misconfigured`` compares each document&#39;s recorded ``config_hash`` against</span>
+<span class="sd">  the config being diagnosed.</span>
+
+<span class="sd">This module is **read-only** — it never mutates the corpus, the collection or</span>
+<span class="sd">the graph. Acting on a :class:`StalenessReport` is :mod:`ef.refresh`&#39;s job.</span>
+
+<span class="sd">Example — diagnose a config whose corpus has since drifted:</span>
+
+<span class="sd">&gt;&gt;&gt; from ef import SourceManager</span>
+<span class="sd">&gt;&gt;&gt; sm = SourceManager({&#39;a&#39;: &#39;alpha&#39;, &#39;b&#39;: &#39;beta&#39;}, embedder=&#39;hashing&#39;)</span>
+<span class="sd">&gt;&gt;&gt; _ = sm.materialize()</span>
+<span class="sd">&gt;&gt;&gt; sm.corpus[&#39;b&#39;] = &#39;beta changed&#39;          # an edit, behind the index&#39;s back</span>
+<span class="sd">&gt;&gt;&gt; sm.corpus[&#39;c&#39;] = &#39;gamma&#39;                 # a brand-new source</span>
+<span class="sd">&gt;&gt;&gt; del sm.corpus[&#39;a&#39;]                       # and a deletion</span>
+<span class="sd">&gt;&gt;&gt; report = sm.diagnose()</span>
+<span class="sd">&gt;&gt;&gt; report.orphan, report.missing, report.stale</span>
+<span class="sd">((&#39;a&#39;,), (&#39;c&#39;,), (&#39;b&#39;,))</span>
+<span class="sd">&gt;&gt;&gt; bool(report)                             # True — the index has drifted</span>
+<span class="sd">True</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span><span class="p">,</span> <span class="n">content_hash</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;IndexedSource&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StalenessReport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;indexed_state&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;corpus_state&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;diagnose&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Reading the index&#39;s recorded state</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="IndexedSource">
+<a class="viewcode-back" href="../../module_docs/ef/diagnostics.html#ef.IndexedSource">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IndexedSource</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The provenance a ``vd`` collection records for one source document.</span>
+
+<span class="sd">    A source is segmented into several documents; they all carry the same</span>
+<span class="sd">    ``source_id`` and *should* carry one ``source_hash`` / ``config_hash`` each.</span>
+<span class="sd">    :func:`indexed_state` groups a collection&#39;s documents into one of these per</span>
+<span class="sd">    source — collecting the hashes as **sets** so a partially re-indexed source</span>
+<span class="sd">    (documents disagreeing on a hash) is detectable rather than papered over.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        source_id: the corpus key of the source these documents were cut from.</span>
+<span class="sd">        doc_ids: the ids of every ``vd`` document belonging to the source.</span>
+<span class="sd">        source_hashes: the distinct ``source_hash`` values its documents record</span>
+<span class="sd">            — a single-element set for a cleanly indexed source.</span>
+<span class="sd">        config_hashes: likewise the distinct ``config_hash`` values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">doc_ids</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">source_hashes</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">config_hashes</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="indexed_state">
+<a class="viewcode-back" href="../../module_docs/ef/diagnostics.html#ef.indexed_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">indexed_state</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IndexedSource</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group a ``vd`` collection&#39;s documents by source — its recorded state.</span>
+
+<span class="sd">    Iterates the collection (a ``MutableMapping`` of ``vd`` documents) and</span>
+<span class="sd">    folds every document ``ef`` wrote into an :class:`IndexedSource` keyed by</span>
+<span class="sd">    its ``source_id``. Documents with no ``source_id`` metadata (not written by</span>
+<span class="sd">    ``ef``) are skipped. This is the *what is indexed* half of :func:`diagnose`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        collection: the ``vd`` collection backing one config.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a ``{source_id: IndexedSource}`` mapping.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">grouped</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
+        <span class="n">document</span> <span class="o">=</span> <span class="n">collection</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">source_id</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source_id&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># not an ef-written document — nothing to diagnose</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
+            <span class="n">source_id</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;doc_ids&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;source_hashes&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(),</span> <span class="s2">&quot;config_hashes&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()}</span>
+        <span class="p">)</span>
+        <span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;doc_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+        <span class="n">source_hash</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source_hash&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;source_hashes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source_hash</span><span class="p">)</span>
+        <span class="n">config_hash</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;config_hash&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;config_hashes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">config_hash</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">source_id</span><span class="p">:</span> <span class="n">IndexedSource</span><span class="p">(</span>
+            <span class="n">source_id</span><span class="o">=</span><span class="n">source_id</span><span class="p">,</span>
+            <span class="n">doc_ids</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;doc_ids&quot;</span><span class="p">]),</span>
+            <span class="n">source_hashes</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(</span><span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;source_hashes&quot;</span><span class="p">]),</span>
+            <span class="n">config_hashes</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(</span><span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;config_hashes&quot;</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">source_id</span><span class="p">,</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">grouped</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="corpus_state">
+<a class="viewcode-back" href="../../module_docs/ef/diagnostics.html#ef.corpus_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">corpus_state</span><span class="p">(</span><span class="n">corpus</span><span class="p">:</span> <span class="n">Corpus</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The current content hash of every source in ``corpus``.</span>
+
+<span class="sd">    The *what should be indexed* half of :func:`diagnose`: a fresh</span>
+<span class="sd">    :func:`~ef.corpus.content_hash` per source — recomputed, not read from any</span>
+<span class="sd">    registry, so it reflects out-of-band edits to the backing store. It matches</span>
+<span class="sd">    the ``source_hash`` :class:`~ef.source_manager.SourceManager` writes into</span>
+<span class="sd">    ``vd`` (both are ``content_hash`` of the source with no ``content_keys``).</span>
+
+<span class="sd">    &gt;&gt;&gt; sorted(corpus_state({&#39;a&#39;: &#39;one&#39;, &#39;b&#39;: &#39;two&#39;}))</span>
+<span class="sd">    [&#39;a&#39;, &#39;b&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; corpus_state({&#39;a&#39;: &#39;x&#39;})[&#39;a&#39;] == corpus_state({&#39;a&#39;: &#39;x&#39;})[&#39;a&#39;]</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">source_id</span><span class="p">:</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">])</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">}</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The report</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="StalenessReport">
+<a class="viewcode-back" href="../../module_docs/ef/diagnostics.html#ef.StalenessReport">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StalenessReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The four staleness conditions of one config — what :func:`diagnose` returns.</span>
+
+<span class="sd">    Each field is a sorted tuple of ``source_id``\\ s, so a report is</span>
+<span class="sd">    deterministic and JSON-friendly. ``orphan`` and ``missing`` are disjoint</span>
+<span class="sd">    from the rest (a source absent from one side cannot also be compared); a</span>
+<span class="sd">    source can be **both** ``stale`` and ``misconfigured`` (its content changed</span>
+<span class="sd">    *and* the config did) — the conditions are reported independently.</span>
+<span class="sd">    ``fresh`` is the complement: indexed, current and built by this config.</span>
+
+<span class="sd">    Truthiness reports whether *anything is wrong* — ``bool(report)`` is</span>
+<span class="sd">    ``False`` only for a perfectly in-sync index.</span>
+
+<span class="sd">    &gt;&gt;&gt; r = StalenessReport(config=&#39;c0&#39;, stale=(&#39;a&#39;,), fresh=(&#39;b&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; bool(r), r.needs_reindexing</span>
+<span class="sd">    (True, (&#39;a&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; bool(StalenessReport(config=&#39;c0&#39;, fresh=(&#39;a&#39;, &#39;b&#39;)))</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">config</span><span class="p">:</span> <span class="n">ConfigId</span>
+    <span class="n">orphan</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">missing</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">stale</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">misconfigured</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">fresh</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">needs_reindexing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sources whose vectors must be recomputed — ``stale`` ∪ ``misconfigured``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stale</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">misconfigured</span><span class="p">)))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff anything is orphaned, missing, stale or misconfigured.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orphan</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">stale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">misconfigured</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="diagnose">
+<a class="viewcode-back" href="../../module_docs/ef/diagnostics.html#ef.diagnose">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diagnose</span><span class="p">(</span>
+    <span class="n">corpus</span><span class="p">:</span> <span class="n">Corpus</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StalenessReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the four staleness conditions of ``collection`` against ``corpus``.</span>
+
+<span class="sd">    The pure core of ``ef``&#39;s diagnostics — no side effects. It reads what the</span>
+<span class="sd">    ``vd`` ``collection`` records (:func:`indexed_state`), what the ``corpus``</span>
+<span class="sd">    currently holds (:func:`corpus_state`), and partitions every source id into</span>
+<span class="sd">    exactly the buckets it belongs in:</span>
+
+<span class="sd">    - **orphan** — in the collection, not in the corpus;</span>
+<span class="sd">    - **missing** — in the corpus, not in the collection;</span>
+<span class="sd">    - **stale** — in both, but the recorded ``source_hash`` ≠ the current one;</span>
+<span class="sd">    - **misconfigured** — in both, but a recorded ``config_hash`` ≠ ``config``;</span>
+<span class="sd">    - **fresh** — in both, content current and config matching.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        corpus: the source corpus.</span>
+<span class="sd">        collection: the ``vd`` collection backing the config being diagnosed.</span>
+<span class="sd">        config: the :class:`~ef.config.ConfigId` the collection *should* hold</span>
+<span class="sd">            — documents recording any other ``config_hash`` are misconfigured.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a :class:`StalenessReport`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indexed</span> <span class="o">=</span> <span class="n">indexed_state</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">corpus_state</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+    <span class="n">corpus_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+    <span class="n">indexed_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">indexed</span><span class="p">)</span>
+
+    <span class="n">orphan</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">indexed_ids</span> <span class="o">-</span> <span class="n">corpus_ids</span><span class="p">)</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">corpus_ids</span> <span class="o">-</span> <span class="n">indexed_ids</span><span class="p">)</span>
+    <span class="n">stale</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">misconfigured</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">fresh</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">corpus_ids</span> <span class="o">&amp;</span> <span class="n">indexed_ids</span><span class="p">):</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">indexed</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
+        <span class="n">is_stale</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">source_hashes</span> <span class="o">!=</span> <span class="p">{</span><span class="n">current</span><span class="p">[</span><span class="n">source_id</span><span class="p">]}</span>
+        <span class="n">is_misconfigured</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">config_hashes</span> <span class="o">!=</span> <span class="p">{</span><span class="n">config</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">is_stale</span><span class="p">:</span>
+            <span class="n">stale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_misconfigured</span><span class="p">:</span>
+            <span class="n">misconfigured</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_stale</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_misconfigured</span><span class="p">:</span>
+            <span class="n">fresh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">StalenessReport</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+        <span class="n">orphan</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">orphan</span><span class="p">),</span>
+        <span class="n">missing</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">missing</span><span class="p">),</span>
+        <span class="n">stale</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">stale</span><span class="p">),</span>
+        <span class="n">misconfigured</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">misconfigured</span><span class="p">),</span>
+        <span class="n">fresh</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">fresh</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

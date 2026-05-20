@@ -1,0 +1,4 @@
+ef.diagnostics
+==============
+.. automodule:: ef.diagnostics
+   :members:

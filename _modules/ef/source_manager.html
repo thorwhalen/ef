@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.source_manager &mdash; ef 0.1.7 documentation</title>
+  <title>ef.source_manager &mdash; ef 0.1.8 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../../_static/documentation_options.js?v=22607128"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -52,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
@@ -61,6 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
@@ -111,6 +113,11 @@
 <span class="sd">  segmenter+embedder pipeline). Two configs that share a step share that step&#39;s</span>
 <span class="sd">  artifacts in the :class:`~ef.artifact_graph.ArtifactGraph` for free — config</span>
 <span class="sd">  branching costs only the divergent cone.</span>
+<span class="sd">- **Keeping it fresh** — :meth:`SourceManager.diagnose` reports how far the</span>
+<span class="sd">  index has drifted from the corpus (the four staleness conditions);</span>
+<span class="sd">  :meth:`SourceManager.refresh` re-syncs it. Pass ``auto_refresh=True`` to keep</span>
+<span class="sd">  the index live as the corpus is edited. See :mod:`ef.diagnostics` and</span>
+<span class="sd">  :mod:`ef.refresh`.</span>
 
 <span class="sd">How the wiring works (one source, one config):</span>
 
@@ -163,10 +170,25 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.artifact_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArtifactGraph</span><span class="p">,</span> <span class="n">ArtifactId</span><span class="p">,</span> <span class="n">producer_spec</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigId</span><span class="p">,</span> <span class="n">PipelineSpec</span><span class="p">,</span> <span class="n">config_id</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ef.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_corpus</span><span class="p">,</span> <span class="n">content_hash</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ChangeDetectingCorpus</span><span class="p">,</span>
+    <span class="n">ChangeEvent</span><span class="p">,</span>
+    <span class="n">CorpusDiff</span><span class="p">,</span>
+    <span class="n">as_corpus</span><span class="p">,</span>
+    <span class="n">content_hash</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.diagnostics</span><span class="w"> </span><span class="kn">import</span> <span class="n">StalenessReport</span><span class="p">,</span> <span class="n">diagnose</span><span class="p">,</span> <span class="n">indexed_state</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedder_adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedders</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embedder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">embed_step</span><span class="p">,</span> <span class="n">segment_step</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.refresh</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RefreshMode</span><span class="p">,</span>
+    <span class="n">RefreshReport</span><span class="p">,</span>
+    <span class="n">delete_source_documents</span><span class="p">,</span>
+    <span class="n">plan_refresh</span><span class="p">,</span>
+    <span class="n">prune_dead_leaves</span><span class="p">,</span>
+    <span class="n">refresh_on_change</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.segmenter_adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_segmenter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">make_segment</span>
 
@@ -417,6 +439,11 @@
 <span class="sd">            string → ``vd.connect`` of that backend.</span>
 <span class="sd">        cache: the :class:`~ef.artifact_graph.ArtifactGraph`&#39;s value cache — any</span>
 <span class="sd">            ``MutableMapping``; ``None`` → an in-RAM ``dict``.</span>
+<span class="sd">        auto_refresh: when ``True``, the corpus is wrapped in a</span>
+<span class="sd">            :class:`~ef.corpus.ChangeDetectingCorpus` and every edit made</span>
+<span class="sd">            *through* it is incrementally re-indexed into each materialized</span>
+<span class="sd">            config — the index stays live without an explicit</span>
+<span class="sd">            :meth:`refresh`. :meth:`scan` then also picks up out-of-band edits.</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from ef import as_embedder</span>
@@ -437,6 +464,7 @@
         <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">store</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">cache</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">as_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">cache</span><span class="p">)</span>
@@ -444,8 +472,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConfigId</span><span class="p">,</span> <span class="n">_Config</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ConfigId</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_config</span><span class="p">:</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#: Configs that have been materialized at least once — auto-refresh</span>
+        <span class="c1">#: only touches these (a never-indexed config is filled by materialize).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_materialized</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">ConfigId</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_refresh</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">register_config</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">auto_refresh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_enable_auto_refresh</span><span class="p">()</span>
 
     <span class="c1"># -- config registration ------------------------------------------------</span>
 
@@ -499,7 +533,12 @@
 
 <div class="viewcode-block" id="SourceManager.materialize">
 <a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.materialize">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">materialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">materialize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Index the corpus through one config (or all) — corpus → segment → embed → ``vd``.</span>
 
 <span class="sd">        For each source and each selected config: the source is added to the</span>
@@ -513,6 +552,10 @@
 <span class="sd">        Args:</span>
 <span class="sd">            config: the config to index — a name, a :class:`~ef.config.ConfigId`,</span>
 <span class="sd">                or ``None`` for *every* registered config.</span>
+<span class="sd">            sources: an optional subset of source ids to index — ``None`` (the</span>
+<span class="sd">                default) indexes the whole corpus. :meth:`refresh` uses this to</span>
+<span class="sd">                re-index only the sources that changed; ids not in the corpus</span>
+<span class="sd">                are skipped.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            a report ``dict`` with ``configs`` / ``sources`` / ``segments`` counts.</span>
@@ -520,22 +563,32 @@
         <span class="n">configs</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">)</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)]</span>
         <span class="p">)</span>
+        <span class="n">source_ids</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">sources</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
         <span class="n">total_segments</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
-            <span class="n">total_segments</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+            <span class="n">total_segments</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="n">source_ids</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;configs&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">configs</span><span class="p">),</span>
-            <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">),</span>
+            <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)</span> <span class="k">if</span> <span class="n">source_ids</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_ids</span><span class="p">),</span>
             <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="n">total_segments</span><span class="p">,</span>
         <span class="p">}</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_materialize_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cid</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Index every source through config ``cid``; return the segment count written.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_materialize_config</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">cid</span><span class="p">:</span> <span class="n">ConfigId</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Index the corpus (or a ``sources`` subset) through config ``cid``.</span>
+
+<span class="sd">        Returns the segment count written. Records ``cid`` as materialized so</span>
+<span class="sd">        auto-refresh knows to keep it live.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
         <span class="n">pipeline</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span>
         <span class="n">written</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+        <span class="n">source_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="k">if</span> <span class="n">sources</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sources</span>
+        <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># a `sources` entry no longer in the corpus — skip</span>
             <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">]</span>
             <span class="n">leaf</span> <span class="o">=</span> <span class="n">content_hash</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
@@ -562,6 +615,7 @@
                     <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_id</span><span class="p">),</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">cid</span>
                 <span class="p">)</span>
                 <span class="n">written</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_materialized</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">written</span>
 
     <span class="nd">@staticmethod</span>
@@ -588,6 +642,207 @@
             <span class="n">vector</span><span class="o">=</span><span class="n">_as_floats</span><span class="p">(</span><span class="n">vector</span><span class="p">),</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
         <span class="p">)</span>
+
+    <span class="c1"># -- refresh &amp; diagnostics ----------------------------------------------</span>
+
+<div class="viewcode-block" id="SourceManager.diagnose">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.diagnose">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diagnose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StalenessReport</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Report how far one config&#39;s index has drifted from the corpus.</span>
+
+<span class="sd">        Computes the four staleness conditions — ``orphan`` / ``missing`` /</span>
+<span class="sd">        ``stale`` / ``misconfigured`` — by comparing the config&#39;s ``vd``</span>
+<span class="sd">        collection against the current corpus (see :mod:`ef.diagnostics`).</span>
+<span class="sd">        Read-only: it changes nothing. :meth:`refresh` acts on the result.</span>
+
+<span class="sd">        &gt;&gt;&gt; sm = SourceManager({&#39;a&#39;: &#39;alpha&#39;, &#39;b&#39;: &#39;beta&#39;}, embedder=&#39;hashing&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; _ = sm.materialize()</span>
+<span class="sd">        &gt;&gt;&gt; bool(sm.diagnose())                  # freshly indexed — in sync</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; sm.corpus[&#39;a&#39;] = &#39;alpha rewritten&#39;</span>
+<span class="sd">        &gt;&gt;&gt; sm.diagnose().stale</span>
+<span class="sd">        (&#39;a&#39;,)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="c1"># `diagnose` here is the module-level function from ef.diagnostics.</span>
+        <span class="k">return</span> <span class="n">diagnose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">cid</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.refresh">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.refresh">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="n">RefreshMode</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RefreshReport</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Re-sync one config&#39;s ``vd`` index with the current corpus.</span>
+
+<span class="sd">        The explicit-refresh entry point. It :meth:`diagnose`\\ s the config,</span>
+<span class="sd">        turns the staleness report into a :class:`~ef.refresh.RefreshPlan` for</span>
+<span class="sd">        the chosen ``mode`` (:func:`~ef.refresh.plan_refresh`), deletes the</span>
+<span class="sd">        stale/orphan documents, re-:meth:`materialize`\\ s what changed, and</span>
+<span class="sd">        prunes the dead leaves out of the :class:`~ef.artifact_graph.ArtifactGraph`.</span>
+<span class="sd">        Because it re-reads and re-hashes the corpus, it catches out-of-band</span>
+<span class="sd">        edits without any change-detection wrapper.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config: the config to refresh (name / id / ``None`` for the default</span>
+<span class="sd">                or sole config).</span>
+<span class="sd">            sources: an optional subset of source ids to refresh — sources</span>
+<span class="sd">                outside it are left untouched. Pair it with ``mode=&#39;scoped_full&#39;``</span>
+<span class="sd">                (or ``&#39;incremental&#39;``); ``&#39;full&#39;`` rejects it.</span>
+<span class="sd">            mode: one of :data:`~ef.refresh.REFRESH_MODES` — ``&#39;none&#39;`` (index</span>
+<span class="sd">                new/changed content, delete nothing), ``&#39;incremental&#39;`` (also</span>
+<span class="sd">                replace changed sources), ``&#39;full&#39;`` (also delete orphans — the</span>
+<span class="sd">                corpus is authoritative), ``&#39;scoped_full&#39;`` (``full`` over the</span>
+<span class="sd">                ``sources`` subset). Default ``&#39;full&#39;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a :class:`~ef.refresh.RefreshReport`.</span>
+
+<span class="sd">        &gt;&gt;&gt; sm = SourceManager({&#39;a&#39;: &#39;alpha text&#39;, &#39;b&#39;: &#39;beta text&#39;}, embedder=&#39;hashing&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; _ = sm.materialize()</span>
+<span class="sd">        &gt;&gt;&gt; sm.corpus[&#39;b&#39;] = &#39;beta rewritten&#39;        # edit</span>
+<span class="sd">        &gt;&gt;&gt; sm.corpus[&#39;c&#39;] = &#39;gamma text&#39;            # add</span>
+<span class="sd">        &gt;&gt;&gt; del sm.corpus[&#39;a&#39;]                       # delete</span>
+<span class="sd">        &gt;&gt;&gt; report = sm.refresh()</span>
+<span class="sd">        &gt;&gt;&gt; report.added, report.modified, report.deleted</span>
+<span class="sd">        ((&#39;c&#39;,), (&#39;b&#39;,), (&#39;a&#39;,))</span>
+<span class="sd">        &gt;&gt;&gt; bool(sm.diagnose())                      # in sync again</span>
+<span class="sd">        False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;full&quot;</span> <span class="ow">and</span> <span class="n">sources</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;full mode refreshes the whole corpus; pass mode=&#39;scoped_full&#39; &quot;</span>
+                <span class="s2">&quot;to refresh a subset of sources.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">cid</span><span class="p">)</span>
+        <span class="n">indexed</span> <span class="o">=</span> <span class="n">indexed_state</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span>
+        <span class="n">plan</span> <span class="o">=</span> <span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">sources</span><span class="p">)</span>
+
+        <span class="n">documents_removed</span> <span class="o">=</span> <span class="n">delete_source_documents</span><span class="p">(</span>
+            <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">indexed</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">to_delete</span>
+        <span class="p">)</span>
+        <span class="n">documents_written</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">to_materialize</span><span class="p">:</span>
+            <span class="n">documents_written</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span>
+                <span class="n">cid</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="n">plan</span><span class="o">.</span><span class="n">to_materialize</span>
+            <span class="p">)</span>
+        <span class="n">artifacts_removed</span> <span class="o">=</span> <span class="n">prune_dead_leaves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live_leaves</span><span class="p">())</span>
+
+        <span class="n">materialized</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">to_materialize</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RefreshReport</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">cid</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+            <span class="n">added</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">missing</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">materialized</span><span class="p">)),</span>
+            <span class="n">modified</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">needs_reindexing</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">materialized</span><span class="p">)),</span>
+            <span class="n">deleted</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">orphan</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">to_delete</span><span class="p">))),</span>
+            <span class="n">unchanged</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">fresh</span><span class="p">,</span>
+            <span class="n">documents_written</span><span class="o">=</span><span class="n">documents_written</span><span class="p">,</span>
+            <span class="n">documents_removed</span><span class="o">=</span><span class="n">documents_removed</span><span class="p">,</span>
+            <span class="n">artifacts_removed</span><span class="o">=</span><span class="n">artifacts_removed</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.rebuild">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.rebuild">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RefreshReport</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop one config&#39;s index entirely and re-index the whole corpus.</span>
+
+<span class="sd">        The heavy hammer: every document in the config&#39;s ``vd`` collection is</span>
+<span class="sd">        deleted, then the whole corpus is re-:meth:`materialize`\\ d from</span>
+<span class="sd">        scratch. Use it to recover from a config whose ``vd`` documents were</span>
+<span class="sd">        produced by an earlier pipeline (every source ``misconfigured``), or</span>
+<span class="sd">        whenever a guaranteed-clean index is wanted over the surgical</span>
+<span class="sd">        :meth:`refresh`. Every source is reported as ``added`` — the collection</span>
+<span class="sd">        was emptied and rebuilt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a :class:`~ef.refresh.RefreshReport`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="n">documents_removed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span>
+            <span class="n">documents_removed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">documents_written</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+        <span class="n">artifacts_removed</span> <span class="o">=</span> <span class="n">prune_dead_leaves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live_leaves</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">RefreshReport</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">cid</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">,</span>
+            <span class="n">added</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">)),</span>
+            <span class="n">documents_written</span><span class="o">=</span><span class="n">documents_written</span><span class="p">,</span>
+            <span class="n">documents_removed</span><span class="o">=</span><span class="n">documents_removed</span><span class="p">,</span>
+            <span class="n">artifacts_removed</span><span class="o">=</span><span class="n">artifacts_removed</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.gc_orphans">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.gc_orphans">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gc_orphans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete the documents of sources that left the corpus — return the count.</span>
+
+<span class="sd">        The garbage-collection slice of :meth:`refresh`: it removes only</span>
+<span class="sd">        **orphan** documents (a source gone from the corpus) and prunes the</span>
+<span class="sd">        dead leaves out of the :class:`~ef.artifact_graph.ArtifactGraph`,</span>
+<span class="sd">        touching nothing else. ``gc_orphans()`` is the orphan-deletion half of</span>
+<span class="sd">        ``refresh(mode=&#39;full&#39;)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">cid</span><span class="p">)</span>
+        <span class="n">indexed</span> <span class="o">=</span> <span class="n">indexed_state</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="n">delete_source_documents</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">indexed</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">orphan</span><span class="p">)</span>
+        <span class="n">prune_dead_leaves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live_leaves</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">removed</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.lineage">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.lineage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ArtifactId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The artifacts ``key`` was produced from — its provenance.</span>
+
+<span class="sd">        A thin pass-through to :meth:`ArtifactGraph.ancestors</span>
+<span class="sd">        &lt;ef.artifact_graph.ArtifactGraph.ancestors&gt;`: &quot;what produced this</span>
+<span class="sd">        vector / segment?&quot;. The leaves of the returned set are the source</span>
+<span class="sd">        content hashes the artifact ultimately derives from.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">ancestors</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourceManager.scan">
+<a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.scan">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusDiff</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Re-scan the corpus for out-of-band edits — needs ``auto_refresh=True``.</span>
+
+<span class="sd">        Picks up changes made to the backing store *directly* (a file edited on</span>
+<span class="sd">        disk, an S3 object replaced) rather than through the corpus wrapper.</span>
+<span class="sd">        When the manager was built with ``auto_refresh=True`` the corpus is a</span>
+<span class="sd">        :class:`~ef.corpus.ChangeDetectingCorpus`; this calls its</span>
+<span class="sd">        :meth:`~ef.corpus.ChangeDetectingCorpus.scan`, which fires a</span>
+<span class="sd">        :class:`~ef.corpus.ChangeEvent` per drift — each one auto-applied to</span>
+<span class="sd">        every materialized config. Returns the :class:`~ef.corpus.CorpusDiff`.</span>
+
+<span class="sd">        For a large bulk of out-of-band edits, prefer :meth:`refresh` (one</span>
+<span class="sd">        corpus pass) over ``scan`` (one collection pass per changed source).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: if the corpus is not change-detecting (the manager was</span>
+<span class="sd">                not built with ``auto_refresh=True``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">ChangeDetectingCorpus</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;scan() needs a change-detecting corpus — construct the &quot;</span>
+                <span class="s2">&quot;SourceManager with auto_refresh=True.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span></div>
+
 
     <span class="c1"># -- querying -----------------------------------------------------------</span>
 
@@ -658,6 +913,63 @@
         <span class="p">)</span>
 
     <span class="c1"># -- internals ----------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_live_leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The content hashes of every current corpus source — the live graph leaves.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">content_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="n">source_id</span><span class="p">])</span> <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_enable_auto_refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrap the corpus for change detection and wire incremental auto-refresh.</span>
+
+<span class="sd">        Called from ``__init__`` when ``auto_refresh=True``. If the corpus is</span>
+<span class="sd">        already a :class:`~ef.corpus.ChangeDetectingCorpus`, its ``on_change``</span>
+<span class="sd">        is *chained* (the existing callback still fires); otherwise the corpus</span>
+<span class="sd">        is wrapped in a fresh one. The handler is :func:`~ef.refresh.refresh_on_change`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">refresh_on_change</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">ChangeDetectingCorpus</span><span class="p">):</span>
+            <span class="n">previous</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">on_change</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">chained</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">ChangeEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">previous</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">on_change</span> <span class="o">=</span> <span class="n">chained</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">ChangeDetectingCorpus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">,</span> <span class="n">on_change</span><span class="o">=</span><span class="n">handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_refresh</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">ChangeEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Incrementally re-index one corpus change across every materialized config.</span>
+
+<span class="sd">        The per-event worker behind :func:`~ef.refresh.refresh_on_change` (the</span>
+<span class="sd">        ``auto_refresh=True`` seam). An ``added`` source is indexed, a</span>
+<span class="sd">        ``modified`` one is replaced (delete-then-index), a ``deleted`` one is</span>
+<span class="sd">        removed; a now-dead leaf is then cascaded out of the graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_materialized</span><span class="p">):</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cfg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># the config was dropped since it was materialized</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_delete_source_from_collection</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">collection</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">source_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">source_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_materialize_config</span><span class="p">(</span><span class="n">cid</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">source_id</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">old_hash</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">old_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live_leaves</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_cascade</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">old_hash</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delete_source_from_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete every document in ``collection`` whose ``source_id`` matches.&quot;&quot;&quot;</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="n">collection</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source_id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">source_id</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">collection</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span>
+                <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">removed</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ConfigId</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigId</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a config name / id / ``None`` to a registered :class:`~ef.config.ConfigId`.&quot;&quot;&quot;</span>

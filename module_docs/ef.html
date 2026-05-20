@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.7 documentation</title>
+  <title>ef &mdash; ef 0.1.8 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+      <script src="../_static/documentation_options.js?v=22607128"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -121,6 +121,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.FunctionSegmenter"><code class="docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.IndexedSource"><code class="docutils literal notranslate"><span class="pre">IndexedSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.IndexedSource.source_id"><code class="docutils literal notranslate"><span class="pre">IndexedSource.source_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.IndexedSource.doc_ids"><code class="docutils literal notranslate"><span class="pre">IndexedSource.doc_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.IndexedSource.source_hashes"><code class="docutils literal notranslate"><span class="pre">IndexedSource.source_hashes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.IndexedSource.config_hashes"><code class="docutils literal notranslate"><span class="pre">IndexedSource.config_hashes</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.NormalizingEmbedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder.honored_input_types</span></code></a></li>
@@ -165,6 +172,15 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.RecursiveCharacterSegmenter"><code class="docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.RefreshPlan"><code class="docutils literal notranslate"><span class="pre">RefreshPlan</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RefreshPlan.to_materialize"><code class="docutils literal notranslate"><span class="pre">RefreshPlan.to_materialize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RefreshPlan.to_delete"><code class="docutils literal notranslate"><span class="pre">RefreshPlan.to_delete</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.RefreshReport"><code class="docutils literal notranslate"><span class="pre">RefreshReport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.RefreshReport.changed"><code class="docutils literal notranslate"><span class="pre">RefreshReport.changed</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.max_attempts"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.max_attempts</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.RetryPolicy.base_delay"><code class="docutils literal notranslate"><span class="pre">RetryPolicy.base_delay</span></code></a></li>
@@ -199,12 +215,22 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.SourceManager"><code class="docutils literal notranslate"><span class="pre">SourceManager</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.configs"><code class="docutils literal notranslate"><span class="pre">SourceManager.configs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.diagnose"><code class="docutils literal notranslate"><span class="pre">SourceManager.diagnose()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.gc_orphans"><code class="docutils literal notranslate"><span class="pre">SourceManager.gc_orphans()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.lineage"><code class="docutils literal notranslate"><span class="pre">SourceManager.lineage()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.materialize"><code class="docutils literal notranslate"><span class="pre">SourceManager.materialize()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.pipeline"><code class="docutils literal notranslate"><span class="pre">SourceManager.pipeline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.rebuild"><code class="docutils literal notranslate"><span class="pre">SourceManager.rebuild()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.refresh"><code class="docutils literal notranslate"><span class="pre">SourceManager.refresh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.register_config"><code class="docutils literal notranslate"><span class="pre">SourceManager.register_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.retrieve"><code class="docutils literal notranslate"><span class="pre">SourceManager.retrieve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.scan"><code class="docutils literal notranslate"><span class="pre">SourceManager.scan()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.search"><code class="docutils literal notranslate"><span class="pre">SourceManager.search()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ef.SourceManager.searchable"><code class="docutils literal notranslate"><span class="pre">SourceManager.searchable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.StalenessReport"><code class="docutils literal notranslate"><span class="pre">StalenessReport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.StalenessReport.needs_reindexing"><code class="docutils literal notranslate"><span class="pre">StalenessReport.needs_reindexing</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.TransformSpec"><code class="docutils literal notranslate"><span class="pre">TransformSpec</span></code></a><ul>
@@ -221,6 +247,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
@@ -231,8 +258,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.materialise"><code class="docutils literal notranslate"><span class="pre">materialise()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.openai_embedder"><code class="docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.plan_refresh"><code class="docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.producer_spec"><code class="docutils literal notranslate"><span class="pre">producer_spec()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.refresh_on_change"><code class="docutils literal notranslate"><span class="pre">refresh_on_change()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.segment_id"><code class="docutils literal notranslate"><span class="pre">segment_id()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.segment_record"><code class="docutils literal notranslate"><span class="pre">segment_record()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
@@ -245,6 +274,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ef/config.html">ef.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/corpus.html">ef.corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/diagnostics.html">ef.diagnostics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_adapters.html">ef.embedder_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/embedders.html">ef.embedders</a></li>
@@ -254,6 +284,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/refresh.html">ef.refresh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segments.html">ef.segments</a></li>
@@ -360,6 +391,15 @@ embed → <code class="docutils literal notranslate"><span class="pre">vd</span>
 corpus indexing, where configs sharing a step share its artifacts for free.</p></li>
 <li><p><a class="reference internal" href="ef/config.html#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> / <a class="reference internal" href="ef/config.html#ef.config.TransformSpec" title="ef.config.TransformSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformSpec</span></code></a> /
 <a class="reference internal" href="ef/config.html#ef.config.config_id" title="ef.config.config_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">config_id()</span></code></a> — a pipeline as serializable, content-hashed data.</p></li>
+</ul>
+<p>The <strong>refresh layer</strong> keeps an indexed corpus in sync as its sources change:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager.diagnose" title="ef.source_manager.SourceManager.diagnose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SourceManager.diagnose</span></code></a> —
+the four staleness conditions, as a <a class="reference internal" href="ef/diagnostics.html#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StalenessReport</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager.refresh" title="ef.source_manager.SourceManager.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SourceManager.refresh</span></code></a> —
+re-sync the index, returning a <a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshReport" title="ef.refresh.RefreshReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefreshReport</span></code></a>; one of four
+<a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshMode" title="ef.refresh.RefreshMode"><code class="xref py py-data docutils literal notranslate"><span class="pre">RefreshMode</span></code></a>s. <code class="docutils literal notranslate"><span class="pre">SourceManager(auto_refresh=True)</span></code> keeps
+the index live as the corpus is edited.</p></li>
 </ul>
 <p>Example — wrap a plain function and embed two strings:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -1166,6 +1206,62 @@ sensitivity at no real cost.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="ef.IndexedSource">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">IndexedSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/diagnostics.html#IndexedSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.IndexedSource" title="Link to this definition"></a></dt>
+<dd><p>The provenance a <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection records for one source document.</p>
+<p>A source is segmented into several documents; they all carry the same
+<code class="docutils literal notranslate"><span class="pre">source_id</span></code> and <em>should</em> carry one <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> / <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> each.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">indexed_state()</span></code> groups a collection’s documents into one of these per
+source — collecting the hashes as <strong>sets</strong> so a partially re-indexed source
+(documents disagreeing on a hash) is detectable rather than papered over.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.IndexedSource.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><a class="headerlink" href="#ef.IndexedSource.source_id" title="Link to this definition"></a></dt>
+<dd><p>the corpus key of the source these documents were cut from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.IndexedSource.doc_ids">
+<span class="sig-name descname"><span class="pre">doc_ids</span></span><a class="headerlink" href="#ef.IndexedSource.doc_ids" title="Link to this definition"></a></dt>
+<dd><p>the ids of every <code class="docutils literal notranslate"><span class="pre">vd</span></code> document belonging to the source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.IndexedSource.source_hashes">
+<span class="sig-name descname"><span class="pre">source_hashes</span></span><a class="headerlink" href="#ef.IndexedSource.source_hashes" title="Link to this definition"></a></dt>
+<dd><p>the distinct <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> values its documents record
+— a single-element set for a cleanly indexed source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.IndexedSource.config_hashes">
+<span class="sig-name descname"><span class="pre">config_hashes</span></span><a class="headerlink" href="#ef.IndexedSource.config_hashes" title="Link to this definition"></a></dt>
+<dd><p>likewise the distinct <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="ef.MultiEmbedder">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">MultiEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">routes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#MultiEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.MultiEmbedder" title="Link to this definition"></a></dt>
 <dd><p>Route each text to one of several embedders by a predicate.</p>
@@ -1692,6 +1788,63 @@ smaller than <code class="docutils literal notranslate"><span class="pre">chunk_
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="ef.RefreshPlan">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RefreshPlan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_materialize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_delete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/refresh.html#RefreshPlan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RefreshPlan" title="Link to this definition"></a></dt>
+<dd><p>What a refresh will do — <a class="reference internal" href="#ef.plan_refresh" title="ef.plan_refresh"><code class="xref py py-func docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a>’s output.</p>
+<p>The two fields are disjoint in <em>intent</em> but may overlap in membership: a
+stale source is in <strong>both</strong> — its old documents are deleted <em>and</em> it is
+re-materialized. An orphan is only in <code class="docutils literal notranslate"><span class="pre">to_delete</span></code>; a brand-new source only
+in <code class="docutils literal notranslate"><span class="pre">to_materialize</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RefreshPlan.to_materialize">
+<span class="sig-name descname"><span class="pre">to_materialize</span></span><a class="headerlink" href="#ef.RefreshPlan.to_materialize" title="Link to this definition"></a></dt>
+<dd><p>source ids to (re-)run through the pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.RefreshPlan.to_delete">
+<span class="sig-name descname"><span class="pre">to_delete</span></span><a class="headerlink" href="#ef.RefreshPlan.to_delete" title="Link to this definition"></a></dt>
+<dd><p>source ids whose currently-indexed documents are removed
+(before re-materializing, for the ones that also reappear above).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.RefreshReport">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RefreshReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incremental'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'full'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'scoped_full'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">added</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deleted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unchanged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">documents_written</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">documents_removed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artifacts_removed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/refresh.html#RefreshReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RefreshReport" title="Link to this definition"></a></dt>
+<dd><p>The outcome of a refresh — what <a class="reference internal" href="#ef.SourceManager.refresh" title="ef.SourceManager.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SourceManager.refresh()</span></code></a> returns.</p>
+<p><code class="docutils literal notranslate"><span class="pre">added</span></code> / <code class="docutils literal notranslate"><span class="pre">modified</span></code> / <code class="docutils literal notranslate"><span class="pre">deleted</span></code> / <code class="docutils literal notranslate"><span class="pre">unchanged</span></code> partition the
+source ids the refresh considered (mirroring <a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a>
+field names): newly indexed, re-indexed (was stale/misconfigured), removed
+(orphan), and already-fresh-left-alone. The three counts report the work
+done. Truthiness reports whether anything changed.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">RefreshReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">added</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,),</span> <span class="n">modified</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">changed</span>
+<span class="go">(True, (&#39;a&#39;, &#39;b&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">RefreshReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">unchanged</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,)))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.RefreshReport.changed">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">changed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.RefreshReport.changed" title="Link to this definition"></a></dt>
+<dd><p>The source ids that were added, modified or deleted.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="ef.RetryPolicy">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">RetryPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">max_attempts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">base_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">max_delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">30.0,</span> <span class="pre">jitter:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.3,</span> <span class="pre">retry_on:</span> <span class="pre">~typing.Callable[[BaseException],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">_default_is_retryable&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedder_wrappers.html#RetryPolicy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.RetryPolicy" title="Link to this definition"></a></dt>
 <dd><p>Exponential-backoff retry policy for <a class="reference internal" href="#ef.RetryingEmbedder" title="ef.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>.</p>
@@ -1958,7 +2111,7 @@ the seam that turns an arbitrary callable into a <em>well-behaved</em> segmenter
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ef.SourceManager">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SourceManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">SourceManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager" title="Link to this definition"></a></dt>
 <dd><p>The heavy search facade — multi-config corpus indexing over one corpus.</p>
 <p>A <a class="reference internal" href="#ef.SourceManager" title="ef.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> holds a corpus, an <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>
 and one or more <strong>configs</strong>. A config is a named segmenter+embedder pipeline
@@ -1987,6 +2140,11 @@ used directly (then only one config is supported); a backend-name
 string → <code class="docutils literal notranslate"><span class="pre">vd.connect</span></code> of that backend.</p></li>
 <li><p><strong>cache</strong> – the <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>’s value cache — any
 <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code>; <code class="docutils literal notranslate"><span class="pre">None</span></code> → an in-RAM <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+<li><p><strong>auto_refresh</strong> – when <code class="docutils literal notranslate"><span class="pre">True</span></code>, the corpus is wrapped in a
+<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeDetectingCorpus" title="ef.corpus.ChangeDetectingCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a> and every edit made
+<em>through</em> it is incrementally re-indexed into each materialized
+config — the index stays live without an explicit
+<a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a>. <a class="reference internal" href="#ef.SourceManager.scan" title="ef.SourceManager.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a> then also picks up out-of-band edits.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2008,8 +2166,47 @@ string → <code class="docutils literal notranslate"><span class="pre">vd.conne
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.diagnose">
+<span class="sig-name descname"><span class="pre">diagnose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/diagnostics.html#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><span class="pre">StalenessReport</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.diagnose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.diagnose" title="Link to this definition"></a></dt>
+<dd><p>Report how far one config’s index has drifted from the corpus.</p>
+<p>Computes the four staleness conditions — <code class="docutils literal notranslate"><span class="pre">orphan</span></code> / <code class="docutils literal notranslate"><span class="pre">missing</span></code> /
+<code class="docutils literal notranslate"><span class="pre">stale</span></code> / <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code> — by comparing the config’s <code class="docutils literal notranslate"><span class="pre">vd</span></code>
+collection against the current corpus (see <a class="reference internal" href="ef/diagnostics.html#module-ef.diagnostics" title="ef.diagnostics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.diagnostics</span></code></a>).
+Read-only: it changes nothing. <a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a> acts on the result.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;beta&#39;</span><span class="p">},</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;hashing&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">diagnose</span><span class="p">())</span>                  <span class="c1"># freshly indexed — in sync</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;alpha rewritten&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">diagnose</span><span class="p">()</span><span class="o">.</span><span class="n">stale</span>
+<span class="go">(&#39;a&#39;,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.gc_orphans">
+<span class="sig-name descname"><span class="pre">gc_orphans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.gc_orphans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.gc_orphans" title="Link to this definition"></a></dt>
+<dd><p>Delete the documents of sources that left the corpus — return the count.</p>
+<p>The garbage-collection slice of <a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a>: it removes only
+<strong>orphan</strong> documents (a source gone from the corpus) and prunes the
+dead leaves out of the <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>,
+touching nothing else. <code class="docutils literal notranslate"><span class="pre">gc_orphans()</span></code> is the orphan-deletion half of
+<code class="docutils literal notranslate"><span class="pre">refresh(mode='full')</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.lineage">
+<span class="sig-name descname"><span class="pre">lineage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.lineage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.lineage" title="Link to this definition"></a></dt>
+<dd><p>The artifacts <code class="docutils literal notranslate"><span class="pre">key</span></code> was produced from — its provenance.</p>
+<p>A thin pass-through to <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.ancestors" title="ef.artifact_graph.ArtifactGraph.ancestors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ArtifactGraph.ancestors</span></code></a>: “what produced this
+vector / segment?”. The leaves of the returned set are the source
+content hashes the artifact ultimately derives from.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ef.SourceManager.materialize">
-<span class="sig-name descname"><span class="pre">materialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.materialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.materialize" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">materialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.materialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.materialize" title="Link to this definition"></a></dt>
 <dd><p>Index the corpus through one config (or all) — corpus → segment → embed → <code class="docutils literal notranslate"><span class="pre">vd</span></code>.</p>
 <p>For each source and each selected config: the source is added to the
 <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a> as a content-addressed leaf,
@@ -2020,8 +2217,14 @@ the config’s <code class="docutils literal notranslate"><span class="pre">vd</
 identical documents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config</strong> – the config to index — a name, a <a class="reference internal" href="ef/config.html#ef.config.ConfigId" title="ef.config.ConfigId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigId</span></code></a>,
-or <code class="docutils literal notranslate"><span class="pre">None</span></code> for <em>every</em> registered config.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – the config to index — a name, a <a class="reference internal" href="ef/config.html#ef.config.ConfigId" title="ef.config.ConfigId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigId</span></code></a>,
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> for <em>every</em> registered config.</p></li>
+<li><p><strong>sources</strong> – an optional subset of source ids to index — <code class="docutils literal notranslate"><span class="pre">None</span></code> (the
+default) indexes the whole corpus. <a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a> uses this to
+re-index only the sources that changed; ids not in the corpus
+are skipped.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a report <code class="docutils literal notranslate"><span class="pre">dict</span></code> with <code class="docutils literal notranslate"><span class="pre">configs</span></code> / <code class="docutils literal notranslate"><span class="pre">sources</span></code> / <code class="docutils literal notranslate"><span class="pre">segments</span></code> counts.</p>
@@ -2033,6 +2236,68 @@ or <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <dt class="sig sig-object py" id="ef.SourceManager.pipeline">
 <span class="sig-name descname"><span class="pre">pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/config.html#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><span class="pre">PipelineSpec</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.pipeline" title="Link to this definition"></a></dt>
 <dd><p>The <a class="reference internal" href="ef/config.html#ef.config.PipelineSpec" title="ef.config.PipelineSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a> of a registered config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.rebuild">
+<span class="sig-name descname"><span class="pre">rebuild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshReport" title="ef.refresh.RefreshReport"><span class="pre">RefreshReport</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.rebuild"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.rebuild" title="Link to this definition"></a></dt>
+<dd><p>Drop one config’s index entirely and re-index the whole corpus.</p>
+<p>The heavy hammer: every document in the config’s <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection is
+deleted, then the whole corpus is re-<a class="reference internal" href="#ef.SourceManager.materialize" title="ef.SourceManager.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a>d from
+scratch. Use it to recover from a config whose <code class="docutils literal notranslate"><span class="pre">vd</span></code> documents were
+produced by an earlier pipeline (every source <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code>), or
+whenever a guaranteed-clean index is wanted over the surgical
+<a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a>. Every source is reported as <code class="docutils literal notranslate"><span class="pre">added</span></code> — the collection
+was emptied and rebuilt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a <a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshReport" title="ef.refresh.RefreshReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefreshReport</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incremental'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'full'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'scoped_full'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'full'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshReport" title="ef.refresh.RefreshReport"><span class="pre">RefreshReport</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.refresh" title="Link to this definition"></a></dt>
+<dd><p>Re-sync one config’s <code class="docutils literal notranslate"><span class="pre">vd</span></code> index with the current corpus.</p>
+<p>The explicit-refresh entry point. It <a class="reference internal" href="#ef.diagnose" title="ef.diagnose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diagnose()</span></code></a>s the config,
+turns the staleness report into a <a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshPlan" title="ef.refresh.RefreshPlan"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefreshPlan</span></code></a> for
+the chosen <code class="docutils literal notranslate"><span class="pre">mode</span></code> (<a class="reference internal" href="ef/refresh.html#ef.refresh.plan_refresh" title="ef.refresh.plan_refresh"><code class="xref py py-func docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a>), deletes the
+stale/orphan documents, re-<a class="reference internal" href="#ef.SourceManager.materialize" title="ef.SourceManager.materialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">materialize()</span></code></a>s what changed, and
+prunes the dead leaves out of the <a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>.
+Because it re-reads and re-hashes the corpus, it catches out-of-band
+edits without any change-detection wrapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – the config to refresh (name / id / <code class="docutils literal notranslate"><span class="pre">None</span></code> for the default
+or sole config).</p></li>
+<li><p><strong>sources</strong> – an optional subset of source ids to refresh — sources
+outside it are left untouched. Pair it with <code class="docutils literal notranslate"><span class="pre">mode='scoped_full'</span></code>
+(or <code class="docutils literal notranslate"><span class="pre">'incremental'</span></code>); <code class="docutils literal notranslate"><span class="pre">'full'</span></code> rejects it.</p></li>
+<li><p><strong>mode</strong> – one of <a class="reference internal" href="ef/refresh.html#ef.refresh.REFRESH_MODES" title="ef.refresh.REFRESH_MODES"><code class="xref py py-data docutils literal notranslate"><span class="pre">REFRESH_MODES</span></code></a> — <code class="docutils literal notranslate"><span class="pre">'none'</span></code> (index
+new/changed content, delete nothing), <code class="docutils literal notranslate"><span class="pre">'incremental'</span></code> (also
+replace changed sources), <code class="docutils literal notranslate"><span class="pre">'full'</span></code> (also delete orphans — the
+corpus is authoritative), <code class="docutils literal notranslate"><span class="pre">'scoped_full'</span></code> (<code class="docutils literal notranslate"><span class="pre">full</span></code> over the
+<code class="docutils literal notranslate"><span class="pre">sources</span></code> subset). Default <code class="docutils literal notranslate"><span class="pre">'full'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshReport" title="ef.refresh.RefreshReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefreshReport</span></code></a>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;alpha text&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;beta text&#39;</span><span class="p">},</span> <span class="n">embedder</span><span class="o">=</span><span class="s1">&#39;hashing&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;beta rewritten&#39;</span>        <span class="c1"># edit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gamma text&#39;</span>            <span class="c1"># add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">sm</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>                       <span class="c1"># delete</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span><span class="o">.</span><span class="n">added</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">modified</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">deleted</span>
+<span class="go">((&#39;c&#39;,), (&#39;b&#39;,), (&#39;a&#39;,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">diagnose</span><span class="p">())</span>                      <span class="c1"># in sync again</span>
+<span class="go">False</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -2068,6 +2333,27 @@ to the same <a class="reference internal" href="ef/config.html#ef.config.Pipelin
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ef.SourceManager.scan">
+<span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><span class="pre">CorpusDiff</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.scan" title="Link to this definition"></a></dt>
+<dd><p>Re-scan the corpus for out-of-band edits — needs <code class="docutils literal notranslate"><span class="pre">auto_refresh=True</span></code>.</p>
+<p>Picks up changes made to the backing store <em>directly</em> (a file edited on
+disk, an S3 object replaced) rather than through the corpus wrapper.
+When the manager was built with <code class="docutils literal notranslate"><span class="pre">auto_refresh=True</span></code> the corpus is a
+<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeDetectingCorpus" title="ef.corpus.ChangeDetectingCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a>; this calls its
+<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeDetectingCorpus.scan" title="ef.corpus.ChangeDetectingCorpus.scan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan()</span></code></a>, which fires a
+<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeEvent" title="ef.corpus.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a> per drift — each one auto-applied to
+every materialized config. Returns the <a class="reference internal" href="ef/corpus.html#ef.corpus.CorpusDiff" title="ef.corpus.CorpusDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a>.</p>
+<p>For a large bulk of out-of-band edits, prefer <a class="reference internal" href="ef/refresh.html#module-ef.refresh" title="ef.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a> (one
+corpus pass) over <code class="docutils literal notranslate"><span class="pre">scan</span></code> (one collection pass per changed source).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – if the corpus is not change-detecting (the manager was
+    not built with <code class="docutils literal notranslate"><span class="pre">auto_refresh=True</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ef.SourceManager.search">
 <span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SearchHit" title="ef.source_manager.SearchHit"><span class="pre">SearchHit</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.search" title="Link to this definition"></a></dt>
 <dd><p>Search one config’s index — return up to <code class="docutils literal notranslate"><span class="pre">limit</span></code> ranked <a class="reference internal" href="#ef.SearchHit" title="ef.SearchHit"><code class="xref py py-class docutils literal notranslate"><span class="pre">SearchHit</span></code></a>s.</p>
@@ -2080,6 +2366,33 @@ pre-computed query vector; <code class="docutils literal notranslate"><span clas
 <dt class="sig sig-object py" id="ef.SourceManager.searchable">
 <span class="sig-name descname"><span class="pre">searchable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SearchableCorpus" title="ef.source_manager.SearchableCorpus"><span class="pre">SearchableCorpus</span></a></span></span><a class="reference internal" href="../_modules/ef/source_manager.html#SourceManager.searchable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.SourceManager.searchable" title="Link to this definition"></a></dt>
 <dd><p>Return a thin <a class="reference internal" href="#ef.SearchableCorpus" title="ef.SearchableCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SearchableCorpus</span></code></a> bound to one config’s index.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.StalenessReport">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">StalenessReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orphan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">misconfigured</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/diagnostics.html#StalenessReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.StalenessReport" title="Link to this definition"></a></dt>
+<dd><p>The four staleness conditions of one config — what <a class="reference internal" href="#ef.diagnose" title="ef.diagnose"><code class="xref py py-func docutils literal notranslate"><span class="pre">diagnose()</span></code></a> returns.</p>
+<p>Each field is a sorted tuple of <code class="docutils literal notranslate"><span class="pre">source_id</span></code>s, so a report is
+deterministic and JSON-friendly. <code class="docutils literal notranslate"><span class="pre">orphan</span></code> and <code class="docutils literal notranslate"><span class="pre">missing</span></code> are disjoint
+from the rest (a source absent from one side cannot also be compared); a
+source can be <strong>both</strong> <code class="docutils literal notranslate"><span class="pre">stale</span></code> and <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code> (its content changed
+<em>and</em> the config did) — the conditions are reported independently.
+<code class="docutils literal notranslate"><span class="pre">fresh</span></code> is the complement: indexed, current and built by this config.</p>
+<p>Truthiness reports whether <em>anything is wrong</em> — <code class="docutils literal notranslate"><span class="pre">bool(report)</span></code> is
+<code class="docutils literal notranslate"><span class="pre">False</span></code> only for a perfectly in-sync index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">StalenessReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">stale</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,),</span> <span class="n">fresh</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">needs_reindexing</span>
+<span class="go">(True, (&#39;a&#39;,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">StalenessReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">fresh</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)))</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="ef.StalenessReport.needs_reindexing">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">needs_reindexing</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.StalenessReport.needs_reindexing" title="Link to this definition"></a></dt>
+<dd><p>Sources whose vectors must be recomputed — <code class="docutils literal notranslate"><span class="pre">stale</span></code> ∪ <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2395,6 +2708,36 @@ to the text before embedding); key order does not matter.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.diagnose">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">diagnose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/diagnostics.html#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><span class="pre">StalenessReport</span></a></span></span><a class="reference internal" href="../_modules/ef/diagnostics.html#diagnose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.diagnose" title="Link to this definition"></a></dt>
+<dd><p>Compute the four staleness conditions of <code class="docutils literal notranslate"><span class="pre">collection</span></code> against <code class="docutils literal notranslate"><span class="pre">corpus</span></code>.</p>
+<p>The pure core of <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s diagnostics — no side effects. It reads what the
+<code class="docutils literal notranslate"><span class="pre">vd</span></code> <code class="docutils literal notranslate"><span class="pre">collection</span></code> records (<code class="xref py py-func docutils literal notranslate"><span class="pre">indexed_state()</span></code>), what the <code class="docutils literal notranslate"><span class="pre">corpus</span></code>
+currently holds (<code class="xref py py-func docutils literal notranslate"><span class="pre">corpus_state()</span></code>), and partitions every source id into
+exactly the buckets it belongs in:</p>
+<ul class="simple">
+<li><p><strong>orphan</strong> — in the collection, not in the corpus;</p></li>
+<li><p><strong>missing</strong> — in the corpus, not in the collection;</p></li>
+<li><p><strong>stale</strong> — in both, but the recorded <code class="docutils literal notranslate"><span class="pre">source_hash</span></code> ≠ the current one;</p></li>
+<li><p><strong>misconfigured</strong> — in both, but a recorded <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> ≠ <code class="docutils literal notranslate"><span class="pre">config</span></code>;</p></li>
+<li><p><strong>fresh</strong> — in both, content current and config matching.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> – the source corpus.</p></li>
+<li><p><strong>collection</strong> – the <code class="docutils literal notranslate"><span class="pre">vd</span></code> collection backing the config being diagnosed.</p></li>
+<li><p><strong>config</strong> – the <a class="reference internal" href="ef/config.html#ef.config.ConfigId" title="ef.config.ConfigId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigId</span></code></a> the collection <em>should</em> hold
+— documents recording any other <code class="docutils literal notranslate"><span class="pre">config_hash</span></code> are misconfigured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <a class="reference internal" href="#ef.StalenessReport" title="ef.StalenessReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StalenessReport</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.embed_length_sorted">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">embed_length_sorted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/ef/embedders.html#embed_length_sorted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.embed_length_sorted" title="Link to this definition"></a></dt>
 <dd><p>Encode <code class="docutils literal notranslate"><span class="pre">texts</span></code> in length-sorted batches; return vectors in caller order.</p>
@@ -2629,6 +2972,49 @@ embedder’s identity — set it once here, not per call.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ef.plan_refresh">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">plan_refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ef/diagnostics.html#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><span class="pre">StalenessReport</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incremental'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'full'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'scoped_full'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/refresh.html#ef.refresh.RefreshPlan" title="ef.refresh.RefreshPlan"><span class="pre">RefreshPlan</span></a></span></span><a class="reference internal" href="../_modules/ef/refresh.html#plan_refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.plan_refresh" title="Link to this definition"></a></dt>
+<dd><p>Turn a <a class="reference internal" href="ef/diagnostics.html#ef.diagnostics.StalenessReport" title="ef.diagnostics.StalenessReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StalenessReport</span></code></a> into a <a class="reference internal" href="#ef.RefreshPlan" title="ef.RefreshPlan"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefreshPlan</span></code></a>.</p>
+<p>The pure, side-effect-free core of the refresh policy. Every source that is
+<code class="docutils literal notranslate"><span class="pre">missing</span></code>, <code class="docutils literal notranslate"><span class="pre">stale</span></code> or <code class="docutils literal notranslate"><span class="pre">misconfigured</span></code> is (re-)materialized; what gets
+<em>deleted</em> is what the <code class="docutils literal notranslate"><span class="pre">mode</span></code> dictates:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code> — delete nothing (stale content is added alongside the old);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">incremental</span></code> — delete the stale/misconfigured sources’ old documents;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full</span></code> / <code class="docutils literal notranslate"><span class="pre">scoped_full</span></code> — also delete orphans.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>report</strong> – the staleness report to act on.</p></li>
+<li><p><strong>mode</strong> – one of <code class="xref py py-data docutils literal notranslate"><span class="pre">REFRESH_MODES</span></code>.</p></li>
+<li><p><strong>scope</strong> – an optional subset of source ids the plan is restricted to —
+sources outside it are left entirely alone. <code class="docutils literal notranslate"><span class="pre">None</span></code> means the whole
+report. (With <code class="docutils literal notranslate"><span class="pre">scope=None</span></code>, <code class="docutils literal notranslate"><span class="pre">full</span></code> and <code class="docutils literal notranslate"><span class="pre">scoped_full</span></code> coincide.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">mode</span></code> is not a recognized <code class="xref py py-data docutils literal notranslate"><span class="pre">RefreshMode</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ef.diagnostics</span><span class="w"> </span><span class="kn">import</span> <span class="n">StalenessReport</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">StalenessReport</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="n">orphan</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,),</span> <span class="n">missing</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,),</span>
+<span class="gp">... </span>                         <span class="n">stale</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,),</span> <span class="n">misconfigured</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,),</span> <span class="n">fresh</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_materialize</span>
+<span class="go">(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_delete</span>
+<span class="go">(&#39;b&#39;, &#39;c&#39;, &#39;x&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;incremental&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_delete</span>
+<span class="go">(&#39;b&#39;, &#39;c&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_delete</span>
+<span class="go">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plan_refresh</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;scoped_full&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_delete</span>
+<span class="go">(&#39;b&#39;,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ef.producer_spec">
 <span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">producer_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/artifact_graph.html#ef.artifact_graph.ProducerSpec" title="ef.artifact_graph.ProducerSpec"><span class="pre">ProducerSpec</span></a></span></span><a class="reference internal" href="../_modules/ef/artifact_graph.html#producer_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.producer_spec" title="Link to this definition"></a></dt>
 <dd><p>Build a <a class="reference internal" href="#ef.ProducerSpec" title="ef.ProducerSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a> ergonomically — inputs positional, params keyword.</p>
@@ -2658,6 +3044,30 @@ safely.</p>
 <span class="go">(2, 3)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.refresh_on_change">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">refresh_on_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ChangeEvent'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/refresh.html#refresh_on_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.refresh_on_change" title="Link to this definition"></a></dt>
+<dd><p>Build a <a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeEvent" title="ef.corpus.ChangeEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a> handler that auto-refreshes <code class="docutils literal notranslate"><span class="pre">manager</span></code>.</p>
+<p>The <em>auto</em> refresh seam. The returned callable is meant to be a
+<a class="reference internal" href="ef/corpus.html#ef.corpus.ChangeDetectingCorpus" title="ef.corpus.ChangeDetectingCorpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a>’s <code class="docutils literal notranslate"><span class="pre">on_change</span></code> — each detected
+edit (through the wrapper, or surfaced out-of-band by <code class="docutils literal notranslate"><span class="pre">scan()</span></code>) is
+incrementally applied to every materialized config of <code class="docutils literal notranslate"><span class="pre">manager</span></code>:
+an <code class="docutils literal notranslate"><span class="pre">added</span></code> source is indexed, a <code class="docutils literal notranslate"><span class="pre">modified</span></code> one is re-indexed
+(delete-then-add), a <code class="docutils literal notranslate"><span class="pre">deleted</span></code> one is removed.</p>
+<p><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> wires this automatically when
+constructed with <code class="docutils literal notranslate"><span class="pre">auto_refresh=True</span></code>; call this directly only to attach a
+manager to a corpus you build yourself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>manager</strong> – a <a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> (duck-typed — any
+object with an <code class="docutils literal notranslate"><span class="pre">_apply_change(event)</span></code> method).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">Callable[[ChangeEvent],</span> <span class="pre">None]</span></code> for <code class="docutils literal notranslate"><span class="pre">on_change</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

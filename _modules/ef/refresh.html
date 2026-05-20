@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.refresh &mdash; ef 0.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=22607128"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/base.html">ef.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/dag.html">ef.dag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins.html">ef.plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/imbed_plugin.html">ef.plugins.imbed_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/plugins/simple_plugin.html">ef.plugins.simple_plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/projects.html">ef.projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/storage.html">ef.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests.html">ef.tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/tests/test_basic.html">ef.tests.test_basic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.refresh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.refresh</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Refresh — keeping an indexed corpus in sync as its sources change.</span>
+
+<span class="sd">Phase 5 indexes a corpus *once*. This module makes the index **maintainable**:</span>
+<span class="sd">when sources are added, edited or deleted, refresh brings the ``vd`` index back</span>
+<span class="sd">into agreement with the corpus. It is the acting counterpart of the read-only</span>
+<span class="sd">:mod:`ef.diagnostics` — diagnostics says *what drifted*, refresh *fixes it*.</span>
+
+<span class="sd">The one idea, restated from :mod:`ef.artifact_graph`:</span>
+
+<span class="sd">    Refresh = diff source hashes → delete the stale/orphan documents →</span>
+<span class="sd">    re-``materialize`` what changed.</span>
+
+<span class="sd">The ``vd`` collection is the single source of truth for *what is indexed*; the</span>
+<span class="sd">:class:`~ef.artifact_graph.ArtifactGraph` is only a *cache*. So refresh has two</span>
+<span class="sd">kinds of effect, and they are not equally critical:</span>
+
+<span class="sd">- **Collection edits are correctness.** Stale and orphaned documents must be</span>
+<span class="sd">  removed precisely (by ``source_id``), or a search returns wrong hits.</span>
+<span class="sd">- **Graph pruning is housekeeping.** A content-addressed artifact keyed by a</span>
+<span class="sd">  now-dead content hash is never *served* again (its source&#39;s content — hence</span>
+<span class="sd">  its leaf id — has moved on); it is merely wasted cache. So :func:`prune_dead_leaves`</span>
+<span class="sd">  is best-effort and only ever cascades leaves verified dead — no surviving</span>
+<span class="sd">  source still hashes to them.</span>
+
+<span class="sd">The four refresh modes (``ef_design_notes.md`` §8.5, mirroring LangChain&#39;s</span>
+<span class="sd">indexing API) differ only in **how much they delete**:</span>
+
+<span class="sd">============= =================================================================</span>
+<span class="sd">Mode          Behavior</span>
+<span class="sd">============= =================================================================</span>
+<span class="sd">``none``      pure dedup — index new/changed content, delete nothing</span>
+<span class="sd">``incremental`` replace changed sources (delete-then-re-index); keep the rest</span>
+<span class="sd">``full``      the corpus is authoritative — also delete orphans (absent sources)</span>
+<span class="sd">``scoped_full`` like ``full``, restricted to a ``sources=`` subset</span>
+<span class="sd">============= =================================================================</span>
+
+<span class="sd">:func:`plan_refresh` turns a :class:`~ef.diagnostics.StalenessReport` + a mode</span>
+<span class="sd">into a :class:`RefreshPlan` (which sources to (re-)materialize, which documents</span>
+<span class="sd">to delete) — a pure function, the testable heart of the policy. The orchestration</span>
+<span class="sd">that applies a plan lives on :class:`~ef.source_manager.SourceManager`</span>
+<span class="sd">(:meth:`~ef.source_manager.SourceManager.refresh`).</span>
+
+<span class="sd">**Explicit vs. auto.** :meth:`SourceManager.refresh</span>
+<span class="sd">&lt;ef.source_manager.SourceManager.refresh&gt;` is the *explicit* path — it re-reads</span>
+<span class="sd">and re-hashes the corpus, so it catches out-of-band edits on its own.</span>
+<span class="sd">:func:`refresh_on_change` is the *auto* path: a handler you hand to a</span>
+<span class="sd">:class:`~ef.corpus.ChangeDetectingCorpus`&#39;s ``on_change`` so each edit is</span>
+<span class="sd">incrementally re-indexed as it happens (``SourceManager(auto_refresh=True)``</span>
+<span class="sd">wires this for you).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigId</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.diagnostics</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndexedSource</span><span class="p">,</span> <span class="n">StalenessReport</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover - import only for type checkers</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ef.artifact_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArtifactGraph</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ef.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChangeEvent</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;RefreshMode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;REFRESH_MODES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RefreshPlan&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RefreshReport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;plan_refresh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;delete_source_documents&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prune_dead_leaves&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;refresh_on_change&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1">#: The four refresh modes — see the module docstring and ``ef_design_notes.md``</span>
+<span class="c1">#: §8.5. They differ only in how much they delete.</span>
+<span class="n">RefreshMode</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;incremental&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="s2">&quot;scoped_full&quot;</span><span class="p">]</span>
+
+<span class="c1">#: The accepted :data:`RefreshMode` values, for validation.</span>
+<span class="n">REFRESH_MODES</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RefreshMode</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;incremental&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="s2">&quot;scoped_full&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The plan and the report</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="RefreshPlan">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.RefreshPlan">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RefreshPlan</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a refresh will do — :func:`plan_refresh`&#39;s output.</span>
+
+<span class="sd">    The two fields are disjoint in *intent* but may overlap in membership: a</span>
+<span class="sd">    stale source is in **both** — its old documents are deleted *and* it is</span>
+<span class="sd">    re-materialized. An orphan is only in ``to_delete``; a brand-new source only</span>
+<span class="sd">    in ``to_materialize``.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        to_materialize: source ids to (re-)run through the pipeline.</span>
+<span class="sd">        to_delete: source ids whose currently-indexed documents are removed</span>
+<span class="sd">            (before re-materializing, for the ones that also reappear above).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">to_materialize</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">to_delete</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff the plan does anything at all.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_materialize</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_delete</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="RefreshReport">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.RefreshReport">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RefreshReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The outcome of a refresh — what :meth:`SourceManager.refresh` returns.</span>
+
+<span class="sd">    ``added`` / ``modified`` / ``deleted`` / ``unchanged`` partition the</span>
+<span class="sd">    source ids the refresh considered (mirroring :class:`~ef.corpus.CorpusDiff`</span>
+<span class="sd">    field names): newly indexed, re-indexed (was stale/misconfigured), removed</span>
+<span class="sd">    (orphan), and already-fresh-left-alone. The three counts report the work</span>
+<span class="sd">    done. Truthiness reports whether anything changed.</span>
+
+<span class="sd">    &gt;&gt;&gt; r = RefreshReport(config=&#39;c0&#39;, mode=&#39;full&#39;, added=(&#39;a&#39;,), modified=(&#39;b&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; bool(r), r.changed</span>
+<span class="sd">    (True, (&#39;a&#39;, &#39;b&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; bool(RefreshReport(config=&#39;c0&#39;, mode=&#39;full&#39;, unchanged=(&#39;a&#39;,)))</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">config</span><span class="p">:</span> <span class="n">ConfigId</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">RefreshMode</span>
+    <span class="n">added</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">modified</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">deleted</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">unchanged</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">documents_written</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">documents_removed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">artifacts_removed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The source ids that were added, modified or deleted.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">added</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True iff anything was added, modified or deleted.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">added</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The policy — a pure function from (report, mode) to a plan</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="plan_refresh">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.plan_refresh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plan_refresh</span><span class="p">(</span>
+    <span class="n">report</span><span class="p">:</span> <span class="n">StalenessReport</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">RefreshMode</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
+    <span class="n">scope</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RefreshPlan</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a :class:`~ef.diagnostics.StalenessReport` into a :class:`RefreshPlan`.</span>
+
+<span class="sd">    The pure, side-effect-free core of the refresh policy. Every source that is</span>
+<span class="sd">    ``missing``, ``stale`` or ``misconfigured`` is (re-)materialized; what gets</span>
+<span class="sd">    *deleted* is what the ``mode`` dictates:</span>
+
+<span class="sd">    - ``none`` — delete nothing (stale content is added alongside the old);</span>
+<span class="sd">    - ``incremental`` — delete the stale/misconfigured sources&#39; old documents;</span>
+<span class="sd">    - ``full`` / ``scoped_full`` — also delete orphans.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        report: the staleness report to act on.</span>
+<span class="sd">        mode: one of :data:`REFRESH_MODES`.</span>
+<span class="sd">        scope: an optional subset of source ids the plan is restricted to —</span>
+<span class="sd">            sources outside it are left entirely alone. ``None`` means the whole</span>
+<span class="sd">            report. (With ``scope=None``, ``full`` and ``scoped_full`` coincide.)</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if ``mode`` is not a recognized :data:`RefreshMode`.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef.diagnostics import StalenessReport</span>
+<span class="sd">    &gt;&gt;&gt; report = StalenessReport(config=&#39;c0&#39;, orphan=(&#39;x&#39;,), missing=(&#39;a&#39;,),</span>
+<span class="sd">    ...                          stale=(&#39;b&#39;,), misconfigured=(&#39;c&#39;,), fresh=(&#39;d&#39;,))</span>
+<span class="sd">    &gt;&gt;&gt; plan_refresh(report, mode=&#39;full&#39;).to_materialize</span>
+<span class="sd">    (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plan_refresh(report, mode=&#39;full&#39;).to_delete</span>
+<span class="sd">    (&#39;b&#39;, &#39;c&#39;, &#39;x&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plan_refresh(report, mode=&#39;incremental&#39;).to_delete</span>
+<span class="sd">    (&#39;b&#39;, &#39;c&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plan_refresh(report, mode=&#39;none&#39;).to_delete</span>
+<span class="sd">    ()</span>
+<span class="sd">    &gt;&gt;&gt; plan_refresh(report, mode=&#39;scoped_full&#39;, scope=[&#39;a&#39;, &#39;b&#39;]).to_delete</span>
+<span class="sd">    (&#39;b&#39;,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">REFRESH_MODES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown refresh mode </span><span class="si">{</span><span class="n">mode</span><span class="si">!r}</span><span class="s2">. Use one of </span><span class="si">{</span><span class="n">REFRESH_MODES</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">missing</span><span class="p">)</span>
+    <span class="n">reindex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">stale</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">misconfigured</span><span class="p">)</span>
+    <span class="n">orphan</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">orphan</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scope</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">in_scope</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="n">missing</span> <span class="o">&amp;=</span> <span class="n">in_scope</span>
+        <span class="n">reindex</span> <span class="o">&amp;=</span> <span class="n">in_scope</span>
+        <span class="n">orphan</span> <span class="o">&amp;=</span> <span class="n">in_scope</span>
+
+    <span class="n">to_materialize</span> <span class="o">=</span> <span class="n">missing</span> <span class="o">|</span> <span class="n">reindex</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+        <span class="n">to_delete</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;incremental&quot;</span><span class="p">:</span>
+        <span class="n">to_delete</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">reindex</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># &quot;full&quot; / &quot;scoped_full&quot;</span>
+        <span class="n">to_delete</span> <span class="o">=</span> <span class="n">reindex</span> <span class="o">|</span> <span class="n">orphan</span>
+
+    <span class="k">return</span> <span class="n">RefreshPlan</span><span class="p">(</span>
+        <span class="n">to_materialize</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">to_materialize</span><span class="p">)),</span>
+        <span class="n">to_delete</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">to_delete</span><span class="p">)),</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The effects — applied against an explicitly passed collection / graph</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="delete_source_documents">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.delete_source_documents">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_source_documents</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">indexed</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IndexedSource</span><span class="p">],</span>
+    <span class="n">source_ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete every ``vd`` document belonging to the given ``source_ids``.</span>
+
+<span class="sd">    The correctness half of a refresh: a stale or orphaned source&#39;s documents</span>
+<span class="sd">    must leave the collection. ``indexed`` — an :func:`~ef.diagnostics.indexed_state`</span>
+<span class="sd">    grouping — supplies each source&#39;s document ids, so no per-source scan is</span>
+<span class="sd">    needed. A document already gone is silently tolerated (idempotent).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        collection: the ``vd`` collection (a ``MutableMapping``) to delete from.</span>
+<span class="sd">        indexed: the ``{source_id: IndexedSource}`` map of what is indexed.</span>
+<span class="sd">        source_ids: the sources whose documents to remove.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the number of documents actually deleted.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef.diagnostics import IndexedSource</span>
+<span class="sd">    &gt;&gt;&gt; collection = {&#39;s1#0&#39;: ..., &#39;s1#1&#39;: ..., &#39;s2#0&#39;: ...}</span>
+<span class="sd">    &gt;&gt;&gt; indexed = {</span>
+<span class="sd">    ...     &#39;s1&#39;: IndexedSource(&#39;s1&#39;, (&#39;s1#0&#39;, &#39;s1#1&#39;), frozenset(), frozenset()),</span>
+<span class="sd">    ...     &#39;s2&#39;: IndexedSource(&#39;s2&#39;, (&#39;s2#0&#39;,), frozenset(), frozenset()),</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; delete_source_documents(collection, indexed, [&#39;s1&#39;])</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; sorted(collection)</span>
+<span class="sd">    [&#39;s2#0&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">source_id</span> <span class="ow">in</span> <span class="n">source_ids</span><span class="p">:</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">indexed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">doc_ids</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">collection</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">removed</span></div>
+
+
+
+<div class="viewcode-block" id="prune_dead_leaves">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.prune_dead_leaves">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prune_dead_leaves</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="s2">&quot;ArtifactGraph&quot;</span><span class="p">,</span> <span class="n">live_leaves</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cascade out of ``graph`` every leaf no live source still hashes to.</span>
+
+<span class="sd">    The housekeeping half of a refresh. A graph *leaf* (a node with a cached</span>
+<span class="sd">    value but no producer recipe) is an L0 source keyed by its content hash.</span>
+<span class="sd">    After a refresh, the set of leaves the graph *should* hold is exactly the</span>
+<span class="sd">    content hashes of the current corpus; any other leaf is dead — the source</span>
+<span class="sd">    that produced it was edited (new content → new leaf) or deleted. Each dead</span>
+<span class="sd">    leaf and its whole downstream cone (its segment + embed artifacts) is</span>
+<span class="sd">    :meth:`~ef.artifact_graph.ArtifactGraph.delete_cascade`\\ d.</span>
+
+<span class="sd">    This is purely a cache reclaim: a dead leaf is never *served* (nothing</span>
+<span class="sd">    addresses it any more), so pruning it can never change a result — only free</span>
+<span class="sd">    memory. Dead leaves&#39; cones are disjoint (each produced artifact traces to</span>
+<span class="sd">    exactly one leaf), so the removed-count is exact.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        graph: the :class:`~ef.artifact_graph.ArtifactGraph` to prune.</span>
+<span class="sd">        live_leaves: the content hashes that are still live (the current</span>
+<span class="sd">            corpus&#39;s source hashes).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the number of artifacts (leaves + produced) removed.</span>
+
+<span class="sd">    &gt;&gt;&gt; from ef import ArtifactGraph, producer_spec</span>
+<span class="sd">    &gt;&gt;&gt; graph = ArtifactGraph()</span>
+<span class="sd">    &gt;&gt;&gt; _ = graph.register_op(&#39;id&#39;, lambda x: x)</span>
+<span class="sd">    &gt;&gt;&gt; _ = graph.put(&#39;live&#39;, &#39;L&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; _ = graph.put(&#39;dead&#39;, &#39;D&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; artifact = graph.add(producer_spec(&#39;id&#39;, &#39;dead&#39;, op_version=&#39;1&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; _ = graph.materialize(artifact)</span>
+<span class="sd">    &gt;&gt;&gt; prune_dead_leaves(graph, [&#39;live&#39;])      # the &#39;dead&#39; leaf + its artifact</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; &#39;dead&#39; in graph, &#39;live&#39; in graph</span>
+<span class="sd">    (False, True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">live</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">live_leaves</span><span class="p">)</span>
+    <span class="n">dead</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">key</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">store</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">producers</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">live</span>
+    <span class="p">]</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">dead</span><span class="p">:</span>
+        <span class="n">removed</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_cascade</span><span class="p">(</span><span class="n">leaf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">removed</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The auto-refresh seam</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="refresh_on_change">
+<a class="viewcode-back" href="../../module_docs/ef/refresh.html#ef.refresh_on_change">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">refresh_on_change</span><span class="p">(</span><span class="n">manager</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ChangeEvent&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`~ef.corpus.ChangeEvent` handler that auto-refreshes ``manager``.</span>
+
+<span class="sd">    The *auto* refresh seam. The returned callable is meant to be a</span>
+<span class="sd">    :class:`~ef.corpus.ChangeDetectingCorpus`&#39;s ``on_change`` — each detected</span>
+<span class="sd">    edit (through the wrapper, or surfaced out-of-band by ``scan()``) is</span>
+<span class="sd">    incrementally applied to every materialized config of ``manager``:</span>
+<span class="sd">    an ``added`` source is indexed, a ``modified`` one is re-indexed</span>
+<span class="sd">    (delete-then-add), a ``deleted`` one is removed.</span>
+
+<span class="sd">    :class:`~ef.source_manager.SourceManager` wires this automatically when</span>
+<span class="sd">    constructed with ``auto_refresh=True``; call this directly only to attach a</span>
+<span class="sd">    manager to a corpus you build yourself.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        manager: a :class:`~ef.source_manager.SourceManager` (duck-typed — any</span>
+<span class="sd">            object with an ``_apply_change(event)`` method).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a ``Callable[[ChangeEvent], None]`` for ``on_change``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handler</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="s2">&quot;ChangeEvent&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">manager</span><span class="o">.</span><span class="n">_apply_change</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">handler</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
