@@ -37,11 +37,10 @@ True
 
 from __future__ import annotations
 
-import hashlib
-import json
-import unicodedata
 from dataclasses import dataclass, field
 from typing import Any, Mapping, TypedDict
+
+from ef.hashing import canonical_json, normalize_text, sha256_hex
 
 __all__ = [
     "Segment",
@@ -113,36 +112,17 @@ class Segment(TypedDict, total=False):
 # ---------------------------------------------------------------------------
 
 
-def _normalize_text(text: str) -> str:
-    """Normalize ``text`` for hashing: NFC, no BOM, ``\\n`` line endings.
-
-    Normalizing *before* hashing means cosmetically-different encodings of the
-    same content (NFD vs NFC, a stray BOM, CRLF vs LF) hash identically — so
-    re-ingesting the same document does not spuriously change segment ids.
-    Only the *hash input* is normalized; the stored ``text`` is left verbatim.
-    """
-    text = unicodedata.normalize("NFC", text)
-    text = text.replace("﻿", "")  # strip BOM
-    text = text.replace("\r\n", "\n").replace("\r", "\n")
-    return text
-
-
-def _canonical_json(obj: Any) -> str:
-    """Deterministic JSON: sorted keys, compact, ``str``-coerced fallbacks."""
-    return json.dumps(
-        obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
-    )
-
-
 def segment_id(text: str, metadata: Mapping[str, Any] | None = None) -> str:
     """Content-derived id for a segment — ``sha256`` of its normalized content.
 
-    The id is ``sha256(normalize(text) + canonical_json(metadata))``. Because it
-    depends only on content, re-segmenting an unchanged document produces
-    identical ids — which is what makes ingestion idempotent (a re-run is a
-    no-op, not a duplicate). Pass ``metadata`` only when two segments could
-    share identical ``text`` yet must stay distinct (e.g. same boilerplate from
-    different sources).
+    The id is ``sha256(normalize(text) + canonical_json(metadata))`` — the
+    normalization and hashing primitives live in :mod:`ef.hashing`, the single
+    source of truth ``ef`` content-addresses through. Because the id depends
+    only on content, re-segmenting an unchanged document produces identical ids
+    — which is what makes ingestion idempotent (a re-run is a no-op, not a
+    duplicate). Pass ``metadata`` only when two segments could share identical
+    ``text`` yet must stay distinct (e.g. same boilerplate from different
+    sources).
 
     >>> segment_id('hello') == segment_id('hello')
     True
@@ -151,8 +131,8 @@ def segment_id(text: str, metadata: Mapping[str, Any] | None = None) -> str:
     >>> segment_id('x', {'source': 'a'}) == segment_id('x', {'source': 'b'})
     False
     """
-    payload = _normalize_text(text) + _canonical_json(dict(metadata or {}))
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    payload = normalize_text(text) + canonical_json(dict(metadata or {}))
+    return sha256_hex(payload)
 
 
 # ---------------------------------------------------------------------------
