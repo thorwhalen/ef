@@ -98,6 +98,14 @@ synthesize answers:
 - :func:`~ef.reranking.with_reranker` — a two-stage reranking decorator over any
   retriever; :func:`~ef.reranking.cross_encoder_reranker` is a ready reranker.
 
+The **explore layer** (L5) is ``ef``'s visualization heritage, kept as a
+*secondary* "see the shape of the corpus" surface — search/RAG/indexing is the
+primary one. It imports numpy-only; UMAP, HDBSCAN and ``imbed`` are lazy extras:
+
+- :func:`~ef.explore.project` — reduce embeddings to 2-D/3-D coordinates
+  (PCA → UMAP); :func:`~ef.explore.cluster` — group them (k-means / HDBSCAN);
+  :func:`~ef.explore.label_clusters` — name clusters with an LLM via ``imbed``.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -107,12 +115,6 @@ Example — wrap a plain function and embed two strings:
 ... )
 >>> embedder(['hello', 'hi']).ravel().tolist()
 [5.0, 2.0]
-
-The legacy embedding-*visualization* pipeline (``Project`` / ``Projects`` —
-``segment → embed → planarize → cluster``) is being demoted to one secondary
-use case of the refactored ``ef``. It needs the ``full`` / ``imbed`` extras and
-is imported best-effort: if those dependencies are absent, the embedder facade
-above still works.
 """
 
 from ef.embedders import (
@@ -238,6 +240,11 @@ from ef.reranking import (
     rerank,
     with_reranker,
 )
+from ef.explore import (
+    cluster,
+    label_clusters,
+    project,
+)
 
 # ============================================================================
 # Public API — the embedder, segmenter & corpus facades (always available)
@@ -361,34 +368,8 @@ __all__ = [
     "rerank",
     "with_reranker",
     "cross_encoder_reranker",
+    # --- explore (layer L5 — project / cluster / label a corpus) ---
+    "project",
+    "cluster",
+    "label_clusters",
 ]
-
-# ============================================================================
-# Legacy visualization pipeline — optional (needs `ef[full]` / `ef[imbed]`)
-# ============================================================================
-
-# Note: the viz-era ``ef.base`` defines a ``Segment = str`` alias; it is
-# deliberately *not* re-exported here — ``ef.Segment`` is the canonical segment
-# data model (the ``TypedDict`` from :mod:`ef.segments`). The legacy alias is
-# removed entirely when the visualization code is demoted to layer L5.
-try:
-    from ef.projects import Project, Projects
-    from ef.base import (
-        ClusterIndex,
-        ComponentRegistry,
-        PlanarVector,
-        SegmentKey,
-        Vector,
-    )
-
-    __all__ += [
-        "Project",
-        "Projects",
-        "ComponentRegistry",
-        "SegmentKey",
-        "Vector",
-        "PlanarVector",
-        "ClusterIndex",
-    ]
-except ImportError:  # pragma: no cover - depends on optional extras
-    pass

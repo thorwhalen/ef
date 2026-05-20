@@ -28,16 +28,12 @@ text = "MIT"
 Homepage = "https://github.com/thorwhalen/ef"
 
 [project.optional-dependencies]
-full = [
-    "dol>=0.3.31",
-    "meshed>=0.1.165",
-    "larder>=0.0.3",
-]
 imbed = [
     "imbed>=0.0.23",
-    "dol>=0.3.31",
-    "meshed>=0.1.165",
-    "larder>=0.0.3",
+]
+explore = [
+    "umap-learn>=0.5",
+    "hdbscan>=0.8.33",
 ]
 openai = [
     "openai>=1.0",
