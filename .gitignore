@@ -119,3 +119,6 @@ venv.bak/
 
 # PyCharm
 .idea
+
+# Session handoff notes (local only)
+.claude/handoffs/
