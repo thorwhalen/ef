@@ -55,6 +55,20 @@ branching are the same operation:
 - :class:`~ef.artifact_graph.ArtifactGraph` — the graph: ``materialize`` (lazy
   backward), ``mark_stale`` / ``delete_cascade`` (forward) and ``freshness``.
 
+The **search facade** is where the layers come together — corpus → segment →
+embed → ``vd`` → ranked search, with progressive disclosure:
+
+- :func:`~ef.source_manager.ingest` — the one-shot light path: a corpus in, a
+  :class:`~ef.source_manager.SearchableCorpus` out, ``search(query)`` ready.
+- :class:`~ef.source_manager.SearchableCorpus` — the thin ready-search object;
+  :meth:`~ef.source_manager.SearchableCorpus.search` /
+  :meth:`~ef.source_manager.SearchableCorpus.retrieve` return ranked
+  :class:`~ef.source_manager.SearchHit`\\ s.
+- :class:`~ef.source_manager.SourceManager` — the heavy facade: multi-config
+  corpus indexing, where configs sharing a step share its artifacts for free.
+- :class:`~ef.config.PipelineSpec` / :class:`~ef.config.TransformSpec` /
+  :func:`~ef.config.config_id` — a pipeline as serializable, content-hashed data.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -139,6 +153,21 @@ from ef.artifact_graph import (
     artifact_id,
     producer_spec,
 )
+from ef.config import (
+    ConfigId,
+    PipelineSpec,
+    TransformSpec,
+    config_id,
+    full_kwargs,
+    step_params,
+)
+from ef.source_manager import (
+    DEFAULT_EMBEDDER,
+    SearchHit,
+    SearchableCorpus,
+    SourceManager,
+    ingest,
+)
 
 # ============================================================================
 # Public API — the embedder, segmenter & corpus facades (always available)
@@ -213,6 +242,19 @@ __all__ = [
     "ProducerSpec",
     "artifact_id",
     "producer_spec",
+    # --- config layer (declarative pipeline specs) ---
+    "TransformSpec",
+    "PipelineSpec",
+    "ConfigId",
+    "config_id",
+    "full_kwargs",
+    "step_params",
+    # --- search facade (ready search + one-shot ingest) ---
+    "ingest",
+    "SearchableCorpus",
+    "SourceManager",
+    "SearchHit",
+    "DEFAULT_EMBEDDER",
 ]
 
 # ============================================================================
