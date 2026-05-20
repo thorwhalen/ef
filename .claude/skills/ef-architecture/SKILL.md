@@ -95,12 +95,16 @@ is a `MutableMapping`.
 
 ## Refactor order
 
-1. `Embedder` protocol + wrappers + 2 adapters (OpenAI, sentence-transformers).
-2. `Segmenter` facade on `imbed.components.segmentation`; canonical `Segment`.
-3. `Corpus` + `ChangeDetecting` wrapper.
-4. `ArtifactGraph` core (SQLite dependency graph).
-5. "Ready search" + one-shot `ingest` wiring corpus→segment→embed→`vd`.
-6. Refresh (explicit + auto; four staleness conditions; refresh modes).
+Phases 1–6 are **done**; 7–8 remain.
+
+1. ✅ `Embedder` protocol + wrappers + 2 adapters (OpenAI, sentence-transformers).
+2. ✅ `Segmenter` facade on `imbed.components.segmentation`; canonical `Segment`.
+3. ✅ `Corpus` + `ChangeDetecting` wrapper.
+4. ✅ `ArtifactGraph` core (content-addressed producer graph).
+5. ✅ "Ready search" + one-shot `ingest` wiring corpus→segment→embed→`vd`.
+6. ✅ Refresh — `ef/diagnostics.py` (the four staleness conditions) +
+   `ef/refresh.py` (four refresh modes, `plan_refresh`, auto-refresh); the
+   `SourceManager` surface `diagnose`/`refresh`/`rebuild`/`gc_orphans`/`lineage`.
 7. RAG-plug-in `retrieve()` + evaluation hookpoints.
 8. Demote viz to L5 "explore".
 

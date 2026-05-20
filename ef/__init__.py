@@ -72,6 +72,15 @@ embed → ``vd`` → ranked search, with progressive disclosure:
 - :class:`~ef.config.PipelineSpec` / :class:`~ef.config.TransformSpec` /
   :func:`~ef.config.config_id` — a pipeline as serializable, content-hashed data.
 
+The **refresh layer** keeps an indexed corpus in sync as its sources change:
+
+- :meth:`SourceManager.diagnose <ef.source_manager.SourceManager.diagnose>` —
+  the four staleness conditions, as a :class:`~ef.diagnostics.StalenessReport`.
+- :meth:`SourceManager.refresh <ef.source_manager.SourceManager.refresh>` —
+  re-sync the index, returning a :class:`~ef.refresh.RefreshReport`; one of four
+  :data:`~ef.refresh.RefreshMode`\\ s. ``SourceManager(auto_refresh=True)`` keeps
+  the index live as the corpus is edited.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -164,6 +173,18 @@ from ef.config import (
     config_id,
     full_kwargs,
     step_params,
+)
+from ef.diagnostics import (
+    IndexedSource,
+    StalenessReport,
+    diagnose,
+)
+from ef.refresh import (
+    RefreshMode,
+    RefreshPlan,
+    RefreshReport,
+    plan_refresh,
+    refresh_on_change,
 )
 from ef.source_manager import (
     DEFAULT_EMBEDDER,
@@ -260,6 +281,15 @@ __all__ = [
     "SourceManager",
     "SearchHit",
     "DEFAULT_EMBEDDER",
+    # --- diagnostics & refresh (keeping an index in sync) ---
+    "StalenessReport",
+    "IndexedSource",
+    "diagnose",
+    "RefreshReport",
+    "RefreshPlan",
+    "RefreshMode",
+    "plan_refresh",
+    "refresh_on_change",
 ]
 
 # ============================================================================
