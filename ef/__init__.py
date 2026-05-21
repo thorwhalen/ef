@@ -18,7 +18,10 @@ only numpy):
   (string / callable / URL / existing embedder → ``Embedder``).
 - Adapters: :func:`~ef.embedder_adapters.openai_embedder`,
   :func:`~ef.embedder_adapters.sentence_transformers_embedder`,
-  :func:`~ef.embedder_adapters.http_embedder`.
+  :func:`~ef.embedder_adapters.http_embedder`,
+  :func:`~ef.embedder_adapters.cohere_embedder`,
+  :func:`~ef.embedder_adapters.voyage_embedder`,
+  :func:`~ef.embedder_adapters.gemini_embedder`.
 - Composition wrappers: :class:`~ef.embedder_wrappers.CachedEmbedder`,
   :class:`~ef.embedder_wrappers.RetryingEmbedder`,
   :class:`~ef.embedder_wrappers.MultiEmbedder`,
@@ -139,9 +142,12 @@ from ef.embedder_wrappers import (
 )
 from ef.embedder_adapters import (
     as_embedder,
+    cohere_embedder,
+    gemini_embedder,
     http_embedder,
     openai_embedder,
     sentence_transformers_embedder,
+    voyage_embedder,
 )
 from ef.segments import (
     Segment,
@@ -274,6 +280,9 @@ __all__ = [
     "openai_embedder",
     "sentence_transformers_embedder",
     "http_embedder",
+    "cohere_embedder",
+    "voyage_embedder",
+    "gemini_embedder",
     # --- segmenter facade ---
     # data model
     "Segment",
