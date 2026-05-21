@@ -109,6 +109,14 @@ primary one. It imports numpy-only; UMAP, HDBSCAN and ``imbed`` are lazy extras:
   (PCA → UMAP); :func:`~ef.explore.cluster` — group them (k-means / HDBSCAN);
   :func:`~ef.explore.label_clusters` — name clusters with an LLM via ``imbed``.
 
+The **service layer** bridges ``ef``'s stateful objects to a stateless
+transport — hand its methods to ``qh.mk_app()`` to serve ``ef`` over HTTP:
+
+- :class:`~ef.service.EfService` — a facade holding a ``{corpus_id: SourceManager}``
+  handle registry: :meth:`~ef.service.EfService.create_corpus` indexes a corpus,
+  :meth:`~ef.service.EfService.search` / :meth:`~ef.service.EfService.retrieve`
+  query it by id. :class:`~ef.service.CorpusInfo` is its JSON-friendly summary.
+
 Example — wrap a plain function and embed two strings:
 
 >>> import numpy as np
@@ -251,6 +259,10 @@ from ef.explore import (
     label_clusters,
     project,
 )
+from ef.service import (
+    CorpusInfo,
+    EfService,
+)
 
 # ============================================================================
 # Public API — the embedder, segmenter & corpus facades (always available)
@@ -381,4 +393,7 @@ __all__ = [
     "project",
     "cluster",
     "label_clusters",
+    # --- service (the HTTP-bridge facade) ---
+    "EfService",
+    "CorpusInfo",
 ]
