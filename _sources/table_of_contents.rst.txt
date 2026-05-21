@@ -11,7 +11,7 @@
    module_docs/ef/embedder_wrappers
    module_docs/ef/embedders
    module_docs/ef/evaluation
-   module_docs/ef/explore
+   module_docs/ef/exploration
    module_docs/ef/hashing
    module_docs/ef/ops
    module_docs/ef/refresh

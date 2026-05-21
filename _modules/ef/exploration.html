@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.explore &mdash; ef 0.1.12 documentation</title>
+  <title>ef.exploration &mdash; ef 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=297ad043"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -55,7 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/explore.html">ef.explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/exploration.html">ef.exploration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
@@ -82,7 +82,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">ef.explore</li>
+      <li class="breadcrumb-item active">ef.exploration</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -91,7 +91,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for ef.explore</h1><div class="highlight"><pre>
+  <h1>Source code for ef.exploration</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Layer L5 — *explore* a corpus: project to 2-D/3-D, cluster, label clusters.</span>
 
 <span class="sd">This is ``ef``&#39;s visualization heritage, inherited from ``imbed`` and</span>
@@ -100,12 +100,17 @@
 <span class="sd">:class:`~ef.source_manager.SourceManager`); ``explore`` is the &quot;see the shape of</span>
 <span class="sd">the corpus&quot; tool — the backend an ``app_ef`` corpus map consumes.</span>
 
-<span class="sd">Three free functions, each accepting a corpus *or* an already-computed vector</span>
+<span class="sd">Four free functions, each accepting a corpus *or* an already-computed vector</span>
 <span class="sd">matrix (whatever :func:`_resolve_vectors` understands):</span>
 
 <span class="sd">- :func:`project` — reduce embeddings to 2-D/3-D coordinates (PCA → UMAP).</span>
 <span class="sd">- :func:`cluster` — group embeddings into clusters (k-means / HDBSCAN).</span>
 <span class="sd">- :func:`label_clusters` — name clusters with an LLM (via ``imbed``).</span>
+<span class="sd">- :func:`explore` — the orchestrator: project + cluster (+ optionally label) in</span>
+<span class="sd">  one call, returning a structured, JSON-friendly :class:`ExploreResult`</span>
+<span class="sd">  (``ids`` / ``coords`` / ``labels`` / ``cluster_titles``) — the surface an</span>
+<span class="sd">  ``app_ef`` corpus map (or :meth:`ef.service.EfService.explore_corpus`)</span>
+<span class="sd">  consumes directly.</span>
 
 <span class="sd">The module imports with **numpy only**. UMAP, HDBSCAN and ``imbed`` are</span>
 <span class="sd">optional: each is imported lazily, inside the function that needs it, and only</span>
@@ -126,21 +131,23 @@
 
 <span class="sd">Each returned array&#39;s rows are in the iteration order of the input — for a</span>
 <span class="sd">:class:`~ef.source_manager.SearchableCorpus` that is ``list(searchable.collection)``,</span>
-<span class="sd">which the caller zips back against to recover ``{id: coords}``.</span>
+<span class="sd">which the caller zips back against to recover ``{id: coords}``. :func:`explore`</span>
+<span class="sd">does that zip-back for you — its :class:`ExploreResult` keeps ``ids`` aligned</span>
+<span class="sd">with ``coords`` and ``labels``.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypedDict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.embedder_adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.source_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_EMBEDDER</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;label_clusters&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;label_clusters&quot;</span><span class="p">,</span> <span class="s2">&quot;explore&quot;</span><span class="p">,</span> <span class="s2">&quot;ExploreResult&quot;</span><span class="p">]</span>
 
 <span class="c1"># --- knobs (no magic numbers buried in the functions) ----------------------</span>
 
@@ -161,13 +168,42 @@
 <span class="n">_MIN_SAMPLES_FOR_UMAP</span> <span class="o">=</span> <span class="mi">5</span>
 
 
+<span class="c1"># --- the structured result -------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ExploreResult">
+<a class="viewcode-back" href="../../module_docs/ef/exploration.html#ef.ExploreResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExploreResult</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A structured, JSON-friendly corpus-exploration result.</span>
+
+<span class="sd">    What :func:`explore` returns and :meth:`ef.service.EfService.explore_corpus`</span>
+<span class="sd">    serves. Every list is **row-aligned**: ``ids[i]``, ``coords[i]`` and</span>
+<span class="sd">    ``labels[i]`` all describe the same item.</span>
+
+<span class="sd">    Keys:</span>
+<span class="sd">        ids: the per-item identifiers — a corpus&#39;s keys, or positional ``&quot;0&quot;``,</span>
+<span class="sd">            ``&quot;1&quot;``, … for an id-less vector matrix.</span>
+<span class="sd">        coords: the projected coordinates — one ``[x, y]`` (or ``[x, y, z]``)</span>
+<span class="sd">            row per item.</span>
+<span class="sd">        labels: the cluster id of each item (HDBSCAN marks noise ``-1``).</span>
+<span class="sd">        cluster_titles: ``{cluster_id: title}`` — empty unless :func:`explore`</span>
+<span class="sd">            was called with ``label=True``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">coords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">cluster_titles</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></div>
+
+
+
 <span class="c1"># ===========================================================================</span>
 <span class="c1"># Public surface</span>
 <span class="c1"># ===========================================================================</span>
 
 
 <div class="viewcode-block" id="project">
-<a class="viewcode-back" href="../../module_docs/ef/explore.html#ef.project">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/ef/exploration.html#ef.project">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">project</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -247,7 +283,7 @@
 
 
 <div class="viewcode-block" id="cluster">
-<a class="viewcode-back" href="../../module_docs/ef/explore.html#ef.cluster">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/ef/exploration.html#ef.cluster">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cluster</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -302,7 +338,7 @@
 
 
 <div class="viewcode-block" id="label_clusters">
-<a class="viewcode-back" href="../../module_docs/ef/explore.html#ef.label_clusters">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/ef/exploration.html#ef.label_clusters">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">label_clusters</span><span class="p">(</span>
     <span class="n">segments</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="n">labels</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
@@ -359,71 +395,216 @@
 
 
 
+<div class="viewcode-block" id="explore">
+<a class="viewcode-back" href="../../module_docs/ef/exploration.html#ef.explore">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">explore</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dims</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_DIMS</span><span class="p">,</span>
+    <span class="n">projection_method</span><span class="p">:</span> <span class="n">ProjectionMethod</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">cluster_method</span><span class="p">:</span> <span class="n">ClusterMethod</span> <span class="o">=</span> <span class="s2">&quot;kmeans&quot;</span><span class="p">,</span>
+    <span class="n">n_clusters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_N_CLUSTERS</span><span class="p">,</span>
+    <span class="n">min_cluster_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_MIN_CLUSTER_SIZE</span><span class="p">,</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
+    <span class="n">n_words</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RANDOM_STATE</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExploreResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Project, cluster and (optionally) label a corpus in one call.</span>
+
+<span class="sd">    The layer-L5 orchestrator — :func:`project` + :func:`cluster` (+ optionally</span>
+<span class="sd">    :func:`label_clusters`) wired into one structured result. Where</span>
+<span class="sd">    :func:`project` / :func:`cluster` return *bare arrays in input order*,</span>
+<span class="sd">    ``explore`` keeps every row tied to its id: it returns an</span>
+<span class="sd">    :class:`ExploreResult` with ``ids`` / ``coords`` / ``labels`` row-aligned</span>
+<span class="sd">    (plus ``cluster_titles``) — the JSON-friendly shape an ``app_ef`` corpus map</span>
+<span class="sd">    (or :meth:`ef.service.EfService.explore_corpus`) consumes directly.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: the corpus to explore — anything :func:`_resolve_explorable`</span>
+<span class="sd">            understands (a :class:`~ef.source_manager.SourceManager` /</span>
+<span class="sd">            :class:`~ef.source_manager.SearchableCorpus`, a</span>
+<span class="sd">            :class:`~ef.corpus.Corpus` mapping, an iterable of texts or</span>
+<span class="sd">            :class:`~ef.segments.Segment`\\ s, or a vector matrix).</span>
+<span class="sd">        dims: projection target dimensionality — ``2`` or ``3``.</span>
+<span class="sd">        projection_method: forwarded to :func:`project` — ``&#39;auto&#39;`` /</span>
+<span class="sd">            ``&#39;umap&#39;`` / ``&#39;pca&#39;``.</span>
+<span class="sd">        cluster_method: forwarded to :func:`cluster` — ``&#39;kmeans&#39;`` /</span>
+<span class="sd">            ``&#39;hdbscan&#39;``.</span>
+<span class="sd">        n_clusters: number of k-means clusters.</span>
+<span class="sd">        min_cluster_size: smallest cluster HDBSCAN will form.</span>
+<span class="sd">        label: when ``True``, name each cluster with :func:`label_clusters`</span>
+<span class="sd">            (needs the ``ef[imbed]`` extra, an LLM key, and text-bearing</span>
+<span class="sd">            ``data``); when ``False`` (the default) ``cluster_titles`` is empty.</span>
+<span class="sd">        context: the corpus topic passed to :func:`label_clusters`.</span>
+<span class="sd">        n_words: maximum cluster-title length, in words.</span>
+<span class="sd">        embedder: embedder used when ``data`` is raw text.</span>
+<span class="sd">        random_state: seed — projection and clustering are reproducible.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        an :class:`ExploreResult` — ``ids``, ``coords`` and ``labels``</span>
+<span class="sd">        row-aligned, and ``cluster_titles`` (empty unless ``label=True``).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: if the corpus is empty, has fewer than 2 samples, or</span>
+<span class="sd">            ``label=True`` is asked of a text-less vector matrix.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; vectors = np.random.RandomState(0).rand(12, 16)</span>
+<span class="sd">    &gt;&gt;&gt; result = explore(vectors, projection_method=&#39;pca&#39;, n_clusters=3, random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; len(result[&#39;ids&#39;]), len(result[&#39;coords&#39;]), len(result[&#39;labels&#39;])</span>
+<span class="sd">    (12, 12, 12)</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;ids&#39;][:3]</span>
+<span class="sd">    [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; len(result[&#39;coords&#39;][0])                 # each row has `dims` coordinates</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; set(result[&#39;labels&#39;]) &lt;= {0, 1, 2}</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;cluster_titles&#39;]                 # empty unless label=True</span>
+<span class="sd">    {}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ids</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">_resolve_explorable</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
+    <span class="c1"># Fail fast: labelling needs the per-row texts — check before any costly</span>
+    <span class="c1"># projection so a bad request does not pay for a UMAP layout it discards.</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">and</span> <span class="n">texts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;explore(label=True) needs text — pass a corpus, searchable or &quot;</span>
+            <span class="s2">&quot;iterable of texts/segments, not a bare vector matrix.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">project</span><span class="p">(</span>
+        <span class="n">vectors</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">projection_method</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+    <span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">(</span>
+        <span class="n">vectors</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">cluster_method</span><span class="p">,</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+        <span class="n">min_cluster_size</span><span class="o">=</span><span class="n">min_cluster_size</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cluster_titles</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">and</span> <span class="n">texts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cluster_titles</span> <span class="o">=</span> <span class="n">label_clusters</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">n_words</span><span class="o">=</span><span class="n">n_words</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ExploreResult</span><span class="p">(</span>
+        <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">],</span>
+        <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span>
+        <span class="n">cluster_titles</span><span class="o">=</span><span class="n">cluster_titles</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
 <span class="c1"># ===========================================================================</span>
 <span class="c1"># Input resolution — corpus | vectors -&gt; ndarray(n, dim)</span>
 <span class="c1"># ===========================================================================</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_vectors</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``data`` to a float ``ndarray`` of shape ``(n_samples, dim)``.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_explorable</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``data`` to ``(ids, texts, vectors)`` — the input :func:`explore` needs.</span>
 
-<span class="sd">    Understands: a :class:`~ef.source_manager.SearchableCorpus` or</span>
-<span class="sd">    :class:`~ef.source_manager.SourceManager` (vectors pulled from the index),</span>
-<span class="sd">    an ``ndarray`` / nested sequence of numbers (used as-is), an iterable of</span>
-<span class="sd">    texts or :class:`~ef.segments.Segment`\\ s (embedded), and a</span>
-<span class="sd">    :class:`~ef.corpus.Corpus` mapping (its values are embedded).</span>
+<span class="sd">    The dispatch seam for layer L5. ``vectors`` is an ``(n_samples, dim)`` float</span>
+<span class="sd">    array; ``ids`` are the per-row identifiers (a corpus&#39;s keys, or positional</span>
+<span class="sd">    ``&quot;0&quot;``, ``&quot;1&quot;``, … for an id-less matrix); ``texts`` are the per-row texts</span>
+<span class="sd">    when ``data`` carries them (a corpus / searchable / iterable of texts or</span>
+<span class="sd">    segments) and ``None`` when it does not (a bare vector matrix —</span>
+<span class="sd">    :func:`label_clusters` is then unavailable).</span>
 
-<span class="sd">    &gt;&gt;&gt; v = _resolve_vectors([&#39;hello world&#39;, &#39;goodbye world&#39;, &#39;a b c&#39;])</span>
-<span class="sd">    &gt;&gt;&gt; v.shape[0]</span>
-<span class="sd">    3</span>
+<span class="sd">    Understands the same inputs as :func:`_resolve_vectors`: a</span>
+<span class="sd">    :class:`~ef.source_manager.SearchableCorpus` / :class:`~ef.source_manager.SourceManager`,</span>
+<span class="sd">    an ``ndarray`` / nested sequence of numbers, an iterable of texts or</span>
+<span class="sd">    :class:`~ef.segments.Segment`\\ s, and a :class:`~ef.corpus.Corpus` mapping.</span>
+
+<span class="sd">    &gt;&gt;&gt; ids, texts, vectors = _resolve_explorable([&#39;hello world&#39;, &#39;a b c&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; ids, vectors.shape[0]</span>
+<span class="sd">    ([&#39;0&#39;, &#39;1&#39;], 2)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># A SearchableCorpus — has an indexed `vd` collection + a query embedder.</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;collection&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;embedder&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_vectors_from_searchable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_explorable_from_searchable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="c1"># A SourceManager — get its default searchable view, then pull vectors.</span>
     <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;searchable&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
-        <span class="k">return</span> <span class="n">_vectors_from_searchable</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">searchable</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">_explorable_from_searchable</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">searchable</span><span class="p">())</span>
+    <span class="c1"># A bare vector matrix — positional ids, no text.</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;expected a 2-D array of vectors, got shape </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">array</span>
-    <span class="c1"># A Corpus mapping — explore its source values (raw, unsegmented).</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="n">_as_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_positional_ids</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span>
+    <span class="c1"># A Corpus mapping — its keys are the ids, its values the source texts.</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_segment_text</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">_embed_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">))</span>
 
     <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot explore an empty corpus&quot;</span><span class="p">)</span>
     <span class="n">first</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_embed_texts</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>  <span class="c1"># an iterable of Segments</span>
-        <span class="k">return</span> <span class="n">_embed_texts</span><span class="p">([</span><span class="n">_segment_text</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">items</span><span class="p">],</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
-    <span class="c1"># Otherwise: a sequence of numeric vectors.</span>
-    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;could not read </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">first</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> items as vectors or text&quot;</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">_positional_ids</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)),</span>
+            <span class="n">texts</span><span class="p">,</span>
+            <span class="n">_embed_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">),</span>
         <span class="p">)</span>
-    <span class="k">return</span> <span class="n">array</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>  <span class="c1"># an iterable of Segments</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">seg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">)]</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_segment_text</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">_embed_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">))</span>
+    <span class="c1"># Otherwise: a sequence of numeric vectors — positional ids, no text.</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">_as_2d</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">_positional_ids</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_vectors_from_searchable</span><span class="p">(</span><span class="n">searchable</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pull every indexed vector out of a ``SearchableCorpus``&#39;s collection.&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_vectors</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``data`` to a float ``ndarray`` of shape ``(n_samples, dim)``.</span>
+
+<span class="sd">    The vector-only view of :func:`_resolve_explorable` — what :func:`project`</span>
+<span class="sd">    and :func:`cluster` need (they ignore the ids and texts).</span>
+
+<span class="sd">    &gt;&gt;&gt; _resolve_vectors([&#39;hello world&#39;, &#39;goodbye world&#39;, &#39;a b c&#39;]).shape[0]</span>
+<span class="sd">    3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_resolve_explorable</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_explorable_from_searchable</span><span class="p">(</span>
+    <span class="n">searchable</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pull ``(ids, texts, vectors)`` out of a ``SearchableCorpus``&#39;s collection.&quot;&quot;&quot;</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">searchable</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot explore an empty SearchableCorpus&quot;</span><span class="p">)</span>
+    <span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
         <span class="n">document</span> <span class="o">=</span> <span class="n">searchable</span><span class="o">.</span><span class="n">collection</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># not stored — re-embed the text</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="n">searchable</span><span class="o">.</span><span class="n">embedder</span><span class="p">([</span><span class="n">document</span><span class="o">.</span><span class="n">text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ids</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_vectors_from_searchable</span><span class="p">(</span><span class="n">searchable</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pull every indexed vector out of a ``SearchableCorpus``&#39;s collection.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_explorable_from_searchable</span><span class="p">(</span><span class="n">searchable</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positional_ids</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Positional string ids ``[&quot;0&quot;, &quot;1&quot;, …, str(n - 1)]`` for an id-less input.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_2d</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``data`` to a 2-D float ``ndarray``, raising on any other shape.&quot;&quot;&quot;</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;expected a 2-D array of vectors, got shape </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">array</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_embed_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>

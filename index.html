@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ef’s documentation! &mdash; ef 0.1.12 documentation</title>
+  <title>Welcome to ef’s documentation! &mdash; ef 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=297ad043"></script>
+      <script src="_static/documentation_options.js?v=8d02545a"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -57,7 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/explore.html">ef.explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
@@ -114,6 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.EfService"><code class="docutils literal notranslate"><span class="pre">EfService</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ExploreResult"><code class="docutils literal notranslate"><span class="pre">ExploreResult</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.FunctionSegmenter"><code class="docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
@@ -162,6 +163,7 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.evaluate_rag"><code class="docutils literal notranslate"><span class="pre">evaluate_rag()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.evaluate_retrieval"><code class="docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.exact_match"><code class="docutils literal notranslate"><span class="pre">exact_match()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.explore"><code class="docutils literal notranslate"><span class="pre">explore()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.gemini_embedder"><code class="docutils literal notranslate"><span class="pre">gemini_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
@@ -288,10 +290,12 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.write_beir"><code class="docutils literal notranslate"><span class="pre">write_beir()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/explore.html">ef.explore</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/explore.html#ef.explore.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/explore.html#ef.explore.label_clusters"><code class="docutils literal notranslate"><span class="pre">label_clusters()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/explore.html#ef.explore.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.ExploreResult"><code class="docutils literal notranslate"><span class="pre">ExploreResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.explore"><code class="docutils literal notranslate"><span class="pre">explore()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.label_clusters"><code class="docutils literal notranslate"><span class="pre">label_clusters()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a><ul>
@@ -383,7 +387,7 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-<p>Release: 0.1.12</p>
+<p>Release: 0.1.13</p>
 <p>Last change: May 21, 2026</p>
 </section>
 

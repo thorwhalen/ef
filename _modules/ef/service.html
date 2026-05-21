@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.service &mdash; ef 0.1.12 documentation</title>
+  <title>ef.service &mdash; ef 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=297ad043"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -55,7 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/explore.html">ef.explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/exploration.html">ef.exploration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
@@ -104,11 +104,12 @@
 
 <span class="sd">:class:`EfService` is that bridge: a facade holding a **handle registry**</span>
 <span class="sd">``{corpus_id: SourceManager}`` **on the instance**. A single ``EfService()`` is</span>
-<span class="sd">constructed once at server start-up, and its six bound methods —</span>
+<span class="sd">constructed once at server start-up, and its seven bound methods —</span>
 <span class="sd">:meth:`~EfService.create_corpus`, :meth:`~EfService.search`,</span>
-<span class="sd">:meth:`~EfService.retrieve`, :meth:`~EfService.corpus_info`,</span>
-<span class="sd">:meth:`~EfService.list_corpora`, :meth:`~EfService.delete_corpus` — are handed</span>
-<span class="sd">to ``qh.mk_app()`` as the HTTP surface. The registry lives on the instance,</span>
+<span class="sd">:meth:`~EfService.retrieve`, :meth:`~EfService.explore_corpus`,</span>
+<span class="sd">:meth:`~EfService.corpus_info`, :meth:`~EfService.list_corpora`,</span>
+<span class="sd">:meth:`~EfService.delete_corpus` — are handed to ``qh.mk_app()`` as the HTTP</span>
+<span class="sd">surface. The registry lives on the instance,</span>
 <span class="sd">never as a module global: a process-wide mutable registry would be the</span>
 <span class="sd">``ServiceContext`` singleton anti-pattern ``ef`` rejects (``.claude/CLAUDE.md``</span>
 <span class="sd">§6) — inject an :class:`EfService` explicitly instead.</span>
@@ -156,6 +157,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.exploration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExploreResult</span><span class="p">,</span> <span class="n">explore</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ef.source_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_EMBEDDER</span><span class="p">,</span> <span class="n">SearchHit</span><span class="p">,</span> <span class="n">SourceManager</span>
 
@@ -343,6 +345,49 @@
 <span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EfService.explore_corpus">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.explore_corpus">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">explore_corpus</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">dims</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">projection_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">cluster_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;kmeans&quot;</span><span class="p">,</span>
+        <span class="n">n_clusters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExploreResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project &amp; cluster a registered corpus — the corpus-map surface.</span>
+
+<span class="sd">        Runs :func:`ef.exploration.explore` over the corpus: every indexed</span>
+<span class="sd">        segment is projected to ``dims`` coordinates and assigned a cluster,</span>
+<span class="sd">        returned as a row-aligned :class:`~ef.exploration.ExploreResult` (``ids`` /</span>
+<span class="sd">        ``coords`` / ``labels`` / ``cluster_titles``) — the JSON-friendly shape</span>
+<span class="sd">        an ``app_ef`` corpus map consumes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            corpus_id: the corpus to explore.</span>
+<span class="sd">            dims: projection target dimensionality — ``2`` or ``3``.</span>
+<span class="sd">            projection_method: ``&quot;auto&quot;`` / ``&quot;umap&quot;`` / ``&quot;pca&quot;``.</span>
+<span class="sd">            cluster_method: ``&quot;kmeans&quot;`` / ``&quot;hdbscan&quot;``.</span>
+<span class="sd">            n_clusters: number of k-means clusters.</span>
+<span class="sd">            label: when ``True``, also name each cluster with an LLM (needs the</span>
+<span class="sd">                ``ef[imbed]`` extra and a key); default ``False``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
+<span class="sd">            ValueError: if the corpus has fewer than 2 indexed segments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">explore</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">),</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span>
+            <span class="n">projection_method</span><span class="o">=</span><span class="n">projection_method</span><span class="p">,</span>
+            <span class="n">cluster_method</span><span class="o">=</span><span class="n">cluster_method</span><span class="p">,</span>
+            <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
     <span class="c1"># -- dunders ------------------------------------------------------------</span>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.12 documentation</title>
+  <title>Index &mdash; ef 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=297ad043"></script>
+      <script src="_static/documentation_options.js?v=8d02545a"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -55,7 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/explore.html">ef.explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
@@ -314,7 +314,7 @@
       <li><a href="module_docs/ef.html#ef.cluster">cluster() (in module ef)</a>
 
       <ul>
-        <li><a href="module_docs/ef/explore.html#ef.explore.cluster">(in module ef.explore)</a>
+        <li><a href="module_docs/ef/exploration.html#ef.exploration.cluster">(in module ef.exploration)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.cohere_embedder">cohere_embedder() (in module ef)</a>
@@ -537,10 +537,10 @@
 </li>
       </ul></li>
       <li>
-    ef.explore
+    ef.exploration
 
       <ul>
-        <li><a href="module_docs/ef/explore.html#module-ef.explore">module</a>
+        <li><a href="module_docs/ef/exploration.html#module-ef.exploration">module</a>
 </li>
       </ul></li>
       <li>
@@ -578,8 +578,6 @@
         <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segmenters
 
@@ -587,6 +585,8 @@
         <li><a href="module_docs/ef/segmenters.html#module-ef.segmenters">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segments
 
@@ -660,6 +660,24 @@
 
       <ul>
         <li><a href="module_docs/ef/evaluation.html#ef.evaluation.exact_match">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.explore">explore() (in module ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/exploration.html#ef.exploration.explore">(in module ef.exploration)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.EfService.explore_corpus">explore_corpus() (ef.EfService method)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/service.html#ef.service.EfService.explore_corpus">(ef.service.EfService method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ef.html#ef.ExploreResult">ExploreResult (class in ef)</a>
+
+      <ul>
+        <li><a href="module_docs/ef/exploration.html#ef.exploration.ExploreResult">(class in ef.exploration)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -849,7 +867,7 @@
       <li><a href="module_docs/ef.html#ef.label_clusters">label_clusters() (in module ef)</a>
 
       <ul>
-        <li><a href="module_docs/ef/explore.html#ef.explore.label_clusters">(in module ef.explore)</a>
+        <li><a href="module_docs/ef/exploration.html#ef.exploration.label_clusters">(in module ef.exploration)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef.html#ef.line_segmenter">line_segmenter() (in module ef)</a>
@@ -950,7 +968,7 @@
 </li>
         <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">ef.evaluation</a>
 </li>
-        <li><a href="module_docs/ef/explore.html#module-ef.explore">ef.explore</a>
+        <li><a href="module_docs/ef/exploration.html#module-ef.exploration">ef.exploration</a>
 </li>
         <li><a href="module_docs/ef/hashing.html#module-ef.hashing">ef.hashing</a>
 </li>
@@ -1136,7 +1154,7 @@
       <li><a href="module_docs/ef.html#ef.project">project() (in module ef)</a>
 
       <ul>
-        <li><a href="module_docs/ef/explore.html#ef.explore.project">(in module ef.explore)</a>
+        <li><a href="module_docs/ef/exploration.html#ef.exploration.project">(in module ef.exploration)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ef/segments.html#ef.segments.PROMOTED_METADATA_KEYS">PROMOTED_METADATA_KEYS (in module ef.segments)</a>
