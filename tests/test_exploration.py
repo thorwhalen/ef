@@ -1,4 +1,4 @@
-"""Tests for ``ef.explore`` — the layer-L5 project / cluster / label surface.
+"""Tests for ``ef.exploration`` — the layer-L5 project / cluster / label surface.
 
 The numpy-only paths (PCA projection, k-means clustering) are tested directly.
 UMAP, HDBSCAN and ``imbed`` are optional: those paths are ``importorskip``-
@@ -9,11 +9,12 @@ import numpy as np
 import pytest
 
 import ef
-from ef.explore import (
+from ef.exploration import (
     _choose_projection,
     _kmeans,
     _l2_normalize,
     _pca,
+    _resolve_explorable,
     _resolve_vectors,
     _segment_text,
 )
@@ -162,7 +163,7 @@ def test_label_clusters_wires_imbed(monkeypatch):
             return {cid: f"cluster-{cid}" for cid in frame["cluster_idx"].unique()}
 
     monkeypatch.setattr(
-        ef.explore, "_import_cluster_labeler", lambda: (pd, StubLabeler)
+        ef.exploration, "_import_cluster_labeler", lambda: (pd, StubLabeler)
     )
     titles = ef.label_clusters(
         ["neural nets", "kittens", "gradient descent", "puppies"],
@@ -189,7 +190,7 @@ def test_label_clusters_accepts_segment_mappings(monkeypatch):
             return dict.fromkeys(frame["cluster_idx"].unique(), "x")
 
     monkeypatch.setattr(
-        ef.explore, "_import_cluster_labeler", lambda: (pd, StubLabeler)
+        ef.exploration, "_import_cluster_labeler", lambda: (pd, StubLabeler)
     )
     segments = [{"text": "hi", "id": "1"}, {"text": "yo", "id": "2"}]
     titles = ef.label_clusters(segments, [0, 0])
@@ -270,3 +271,108 @@ def test_choose_projection_rejects_unknown():
 def test_segment_text_handles_str_and_mapping():
     assert _segment_text("plain") == "plain"
     assert _segment_text({"text": "wrapped", "id": "1"}) == "wrapped"
+
+
+# ---------------------------------------------------------------------------
+# explore() — the orchestrator
+# ---------------------------------------------------------------------------
+
+
+def test_explore_returns_row_aligned_result(blobs):
+    result = ef.explore(blobs, projection_method="pca", n_clusters=3, random_state=0)
+    assert set(result) == {"ids", "coords", "labels", "cluster_titles"}
+    assert len(result["ids"]) == 45
+    assert len(result["coords"]) == 45
+    assert len(result["labels"]) == 45
+    # an id-less vector matrix gets positional ids
+    assert result["ids"] == [str(i) for i in range(45)]
+    assert all(len(row) == 2 for row in result["coords"])
+    assert set(result["labels"]) == {0, 1, 2}
+    assert result["cluster_titles"] == {}  # empty unless label=True
+
+
+def test_explore_is_json_serializable(blobs):
+    import json
+
+    result = ef.explore(blobs, projection_method="pca", random_state=0)
+    json.dumps(result)  # plain list/int/float/str throughout — must not raise
+    assert all(isinstance(x, float) for x in result["coords"][0])
+    assert all(isinstance(x, int) for x in result["labels"])
+
+
+def test_explore_dims_3(blobs):
+    result = ef.explore(blobs, dims=3, projection_method="pca", random_state=0)
+    assert all(len(row) == 3 for row in result["coords"])
+
+
+def test_explore_from_searchable_uses_corpus_ids():
+    idx = ef.ingest(["cats and dogs", "machine learning", "neural nets", "kittens"])
+    result = ef.explore(idx, projection_method="pca", n_clusters=2, random_state=0)
+    assert len(result["ids"]) == 4
+    # ids are the segment ids from the index, not positional
+    assert set(result["ids"]) == set(idx.collection)
+
+
+def test_explore_label_true_needs_text(blobs):
+    with pytest.raises(ValueError, match="needs text"):
+        ef.explore(blobs, label=True)
+
+
+def test_explore_label_true_wires_label_clusters(monkeypatch):
+    """explore(label=True) feeds the per-row texts into label_clusters."""
+    pd = pytest.importorskip("pandas")
+
+    class StubLabeler:
+        def __init__(self, **kwargs):
+            pass
+
+        def label_clusters(self, frame):
+            return dict.fromkeys(frame["cluster_idx"].unique(), "a topic")
+
+    monkeypatch.setattr(
+        ef.exploration, "_import_cluster_labeler", lambda: (pd, StubLabeler)
+    )
+    texts = [
+        "neural nets",
+        "kittens",
+        "gradient descent",
+        "puppies",
+        "deep learning",
+        "cute cats",
+    ]
+    result = ef.explore(
+        texts, projection_method="pca", n_clusters=2, random_state=0, label=True
+    )
+    assert result["cluster_titles"]  # non-empty
+    assert all(isinstance(v, str) for v in result["cluster_titles"].values())
+
+
+# ---------------------------------------------------------------------------
+# _resolve_explorable() — the (ids, texts, vectors) dispatch seam
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_explorable_texts_get_positional_ids():
+    ids, texts, vectors = _resolve_explorable(["hello world", "goodbye world"])
+    assert ids == ["0", "1"]
+    assert texts == ["hello world", "goodbye world"]
+    assert vectors.shape[0] == 2
+
+
+def test_resolve_explorable_ndarray_has_no_text():
+    ids, texts, vectors = _resolve_explorable(np.zeros((3, 4)))
+    assert ids == ["0", "1", "2"]
+    assert texts is None
+    assert vectors.shape == (3, 4)
+
+
+def test_resolve_explorable_corpus_mapping_keys_are_ids():
+    ids, texts, vectors = _resolve_explorable({"a": "first", "b": "second"})
+    assert ids == ["a", "b"]
+    assert texts == ["first", "second"]
+    assert vectors.shape[0] == 2
+
+
+def test_resolve_explorable_empty():
+    with pytest.raises(ValueError, match="empty corpus"):
+        _resolve_explorable([])

@@ -112,7 +112,7 @@ changed, leave absent alone) · `full` (batch == whole corpus) · `scoped_full`.
 
 > This is `ef`'s visualization heritage from `imbed`. Keep it as a *secondary*
 > "explore the corpus" capability — `app_ef` consumes it — not as "the pipeline".
-> *Implemented* (Phase 8, ef#18) in `ef/explore.py`: `project` (G1, PCA → UMAP),
+> *Implemented* (Phase 8, ef#18) in `ef/exploration.py`: `project` (G1, PCA → UMAP),
 > `cluster` (G2, k-means / HDBSCAN), `label_clusters` (G3, `imbed`'s
 > `ClusterLabeler`).
 

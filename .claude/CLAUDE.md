@@ -201,7 +201,7 @@ complete** — `ef` *is* the search / RAG / corpus-indexing facade described abo
    `as_ragas_dataset` bridge); `ef/reranking.py` (`Reranker` protocol, `rerank`,
    `with_reranker` decorator, lazy `cross_encoder_reranker`).
 8. **Demote viz to "explore"** — keep planarize/cluster/label as L5. *Done:*
-   `ef/explore.py` — `project` (PCA→UMAP, cosine, seeded), `cluster` (numpy
+   `ef/exploration.py` — `project` (PCA→UMAP, cosine, seeded), `cluster` (numpy
    k-means / HDBSCAN), `label_clusters` (`imbed`'s `ClusterLabeler`); numpy-only
    import, heavy deps lazy. The viz-era prototype (`Project`/`Projects`/
    `ComponentRegistry`/`mall`/`dag.py`/`plugins/`) was deleted.
