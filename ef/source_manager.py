@@ -913,30 +913,21 @@ class SourceManager:
             return self._client.create_collection(collection_name)
 
 
-def _unused_embedding_model(text: str) -> list[float]:
-    """A ``vd`` ``embedding_model`` that must never be called.
-
-    ``ef`` always supplies vectors to ``vd`` (documents on write, the query
-    vector on search), so ``vd``'s own ``embedding_model`` is dead code in
-    ``ef``'s flow. If it *is* reached, that is a bug — fail loudly rather than
-    embed silently with the wrong model.
-    """
-    raise RuntimeError(
-        "vd's embedding_model was called, but ef supplies all vectors itself. "
-        "This indicates a document or query reached vd without a vector."
-    )
-
-
 def _open_store(store: Any) -> tuple[Any, Any]:
     """Resolve a ``store`` argument into a ``(vd_client, explicit_collection)`` pair.
 
     Exactly one of the two is non-``None``: a client (collections are created on
     demand, one per config) or a single pre-made collection.
+
+    ``ef`` always supplies vectors to ``vd`` itself (documents carry a vector on
+    write; searches pass a pre-computed query vector), so ``vd`` is connected
+    *without* an embedder. In that vector-only mode ``vd`` fails loud if text
+    ever reaches it without a vector — exactly the safety ``ef`` wants.
     """
     if store is None or isinstance(store, str):
         import vd
 
-        client = vd.connect(store or "memory", embedding_model=_unused_embedding_model)
+        client = vd.connect(store or "memory")
         return client, None
     if hasattr(store, "create_collection"):  # a vd client
         return store, None

@@ -18,7 +18,7 @@ dependencies = [
     "numpy",
     "dol>=0.3.31",
     "i2>=0.1.63",
-    "vd>=0.1.6",
+    "vd>=0.2.0",
 ]
 
 [project.license]
