@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.embedder_adapters &mdash; ef 0.1.10 documentation</title>
+  <title>ef.embedder_adapters &mdash; ef 0.1.11 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -104,9 +104,15 @@
 <span class="sd">  ``ef[sentence-transformers]``.</span>
 <span class="sd">- :func:`http_embedder` — any remote HTTP embedding service (TEI, infinity,</span>
 <span class="sd">  …). Stdlib-only.</span>
+<span class="sd">- :func:`cohere_embedder`, :func:`voyage_embedder`, :func:`gemini_embedder` —</span>
+<span class="sd">  the Cohere / Voyage / Gemini hosted embedding APIs, spoken over their REST</span>
+<span class="sd">  endpoints directly. Stdlib-only (no SDK dependency); each needs only an API</span>
+<span class="sd">  key. The whole point of these adapters is translating the canonical</span>
+<span class="sd">  :data:`~ef.embedders.InputType` vocabulary to the vendor&#39;s own task name.</span>
 <span class="sd">- :func:`as_embedder` — the single dependency-injection seam: turns a string</span>
-<span class="sd">  (model name / ``openai:`` prefix / URL), a bare callable, or an existing</span>
-<span class="sd">  embedder into an :class:`~ef.embedders.Embedder`.</span>
+<span class="sd">  (model name / ``openai:`` / ``cohere:`` / ``voyage:`` / ``gemini:`` prefix /</span>
+<span class="sd">  URL), a bare callable, or an existing embedder into an</span>
+<span class="sd">  :class:`~ef.embedders.Embedder`.</span>
 
 <span class="sd">The **canonical task vocabulary** (:data:`~ef.embedders.InputType`) is</span>
 <span class="sd">translated to each vendor&#39;s own name *at the adapter boundary* — that</span>
@@ -128,7 +134,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.error</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
 
@@ -149,6 +157,9 @@
     <span class="s2">&quot;openai_embedder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sentence_transformers_embedder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;http_embedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cohere_embedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;voyage_embedder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gemini_embedder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;as_embedder&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -568,6 +579,537 @@
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Hosted REST embedding APIs — Cohere, Voyage, Gemini</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1">#</span>
+<span class="c1"># Unlike the OpenAI adapter (which keeps its SDK for the genuinely-async Batch</span>
+<span class="c1"># API), these three speak their providers&#39; REST endpoints directly over</span>
+<span class="c1"># ``urllib`` — no SDK, no extra dependency. The provider JSON contracts are</span>
+<span class="c1"># public and versioned. What each adapter really earns its keep doing is</span>
+<span class="c1"># translating ``ef``&#39;s canonical InputType vocabulary to the vendor&#39;s own task</span>
+<span class="c1"># name (Cohere ``input_type``, Voyage ``input_type``, Gemini ``taskType``).</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_post_json</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;POST ``payload`` as JSON to ``url``; return the decoded JSON response.</span>
+
+<span class="sd">    The single HTTP seam shared by the REST provider adapters</span>
+<span class="sd">    (:func:`cohere_embedder`, :func:`voyage_embedder`, :func:`gemini_embedder`).</span>
+<span class="sd">    Isolating it here keeps the adapters offline-testable — a test monkeypatches</span>
+<span class="sd">    this one function instead of the network.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">headers</span><span class="p">},</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - network error path</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="s2">&quot;replace&quot;</span><span class="p">)[:</span><span class="mi">500</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTTP </span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_api_key</span><span class="p">(</span><span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">env_vars</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">factory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ``api_key`` if truthy, else the first set environment variable.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EmbedderError: if no key is given and none of ``env_vars`` is set —</span>
+<span class="sd">            immediate, actionable feedback instead of an opaque HTTP 401 later.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">api_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">api_key</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">env_vars</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">factory</span><span class="si">}</span><span class="s2"> needs an API key — pass `api_key=` or set &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; or &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">env_vars</span><span class="p">)</span><span class="si">}</span><span class="s2"> in the environment.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_dim</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">native_dims</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">mrl_models</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve an embedder&#39;s output width and whether to ask for MRL truncation.</span>
+
+<span class="sd">    Returns ``(dim, truncated)``. ``dim`` is the explicit value if given, else</span>
+<span class="sd">    the model&#39;s known native width, else ``None`` (an unknown model with no</span>
+<span class="sd">    ``dim`` — the width is then inferred from the first response). ``truncated``</span>
+<span class="sd">    is ``True`` only when a non-native width is requested from a model that</span>
+<span class="sd">    supports Matryoshka (MRL) truncation.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EmbedderError: if a non-native ``dim`` is asked of a model that cannot</span>
+<span class="sd">            truncate.</span>
+
+<span class="sd">    &gt;&gt;&gt; _resolve_dim(&#39;m&#39;, 256, {&#39;m&#39;: 1024}, frozenset({&#39;m&#39;}), &#39;X&#39;)</span>
+<span class="sd">    (256, True)</span>
+<span class="sd">    &gt;&gt;&gt; _resolve_dim(&#39;m&#39;, None, {&#39;m&#39;: 1024}, frozenset(), &#39;X&#39;)</span>
+<span class="sd">    (1024, False)</span>
+<span class="sd">    &gt;&gt;&gt; _resolve_dim(&#39;unknown&#39;, 700, {}, frozenset(), &#39;X&#39;)</span>
+<span class="sd">    (700, False)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">native</span> <span class="o">=</span> <span class="n">native_dims</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">native</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">native</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dim</span> <span class="o">==</span> <span class="n">native</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dim</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">mrl_models</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dim</span><span class="p">,</span> <span class="kc">True</span>
+    <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2"> model </span><span class="si">{</span><span class="n">model</span><span class="si">!r}</span><span class="s2"> does not support a custom dimension &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> != native </span><span class="si">{</span><span class="n">native</span><span class="si">}</span><span class="s2">); omit `dim` or choose an MRL-capable model.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Cohere ---------------------------------------------------------------------</span>
+
+<span class="c1">#: Cohere&#39;s text-embeddings endpoint (API v2).</span>
+<span class="n">_COHERE_EMBED_URL</span> <span class="o">=</span> <span class="s2">&quot;https://api.cohere.com/v2/embed&quot;</span>
+<span class="c1">#: Native output widths of the Cohere embedding models.</span>
+<span class="n">_COHERE_NATIVE_DIMS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;embed-v4.0&quot;</span><span class="p">:</span> <span class="mi">1536</span><span class="p">,</span>
+    <span class="s2">&quot;embed-english-v3.0&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;embed-multilingual-v3.0&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;embed-english-light-v3.0&quot;</span><span class="p">:</span> <span class="mi">384</span><span class="p">,</span>
+    <span class="s2">&quot;embed-multilingual-light-v3.0&quot;</span><span class="p">:</span> <span class="mi">384</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1">#: Cohere models that support Matryoshka (``output_dimension``) truncation.</span>
+<span class="n">_COHERE_MRL_MODELS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;embed-v4.0&quot;</span><span class="p">})</span>
+<span class="c1">#: Cohere&#39;s per-request texts cap.</span>
+<span class="n">_COHERE_MAX_BATCH</span> <span class="o">=</span> <span class="mi">96</span>
+<span class="c1">#: Canonical :data:`~ef.embedders.InputType` → Cohere&#39;s ``input_type`` name.</span>
+<span class="n">_COHERE_INPUT_TYPE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;search_query&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;document&quot;</span><span class="p">:</span> <span class="s2">&quot;search_document&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;clustering&quot;</span><span class="p">:</span> <span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cohere_floats</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pull the float vectors out of a Cohere ``/v2/embed`` JSON response.&quot;&quot;&quot;</span>
+    <span class="n">embeddings</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embeddings&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">floats</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;float_&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">floats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">floats</span>
+    <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span>
+        <span class="s2">&quot;Cohere: no float embeddings in the response — expected &quot;</span>
+        <span class="s2">&quot;{&#39;embeddings&#39;: {&#39;float&#39;: [...]}}&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_CohereEmbedder</span><span class="p">(</span><span class="n">BaseEmbedder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cohere embeddings adapter — see :func:`cohere_embedder`.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: Cohere honors the task hint for every canonical InputType.</span>
+    <span class="n">honored_input_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;document&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Cohere does not guarantee unit-norm float vectors</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span> <span class="o">=</span> <span class="n">truncated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cohere:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dim</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;cohere:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">_COHERE_MAX_BATCH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="c1"># Cohere v3+ *requires* input_type; default to the document/index role.</span>
+        <span class="n">vendor_type</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_COHERE_INPUT_TYPE</span><span class="p">[</span><span class="n">input_type</span><span class="p">]</span> <span class="k">if</span> <span class="n">input_type</span> <span class="k">else</span> <span class="s2">&quot;search_document&quot;</span>
+        <span class="p">)</span>
+        <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">&quot;texts&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">batch</span><span class="p">),</span>
+            <span class="s2">&quot;input_type&quot;</span><span class="p">:</span> <span class="n">vendor_type</span><span class="p">,</span>
+            <span class="s2">&quot;embedding_types&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;float&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span><span class="p">:</span>
+            <span class="n">body</span><span class="p">[</span><span class="s2">&quot;output_dimension&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">_post_json</span><span class="p">(</span>
+            <span class="n">_COHERE_EMBED_URL</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span>
+        <span class="p">)</span>
+        <span class="n">floats</span> <span class="o">=</span> <span class="n">_cohere_floats</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">floats</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">floats</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">floats</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">embed_length_sorted</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">encode</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="cohere_embedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedder_adapters.html#ef.cohere_embedder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cohere_embedder</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;embed-v4.0&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_COHERE_MAX_BATCH</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Cohere-embeddings :class:`~ef.embedders.Embedder`.</span>
+
+<span class="sd">    Talks to Cohere&#39;s ``/v2/embed`` REST endpoint directly — no ``cohere`` SDK,</span>
+<span class="sd">    no extra dependency. Cohere&#39;s v3+ models *require* a task hint; this adapter</span>
+<span class="sd">    supplies one for every canonical :data:`~ef.embedders.InputType` and</span>
+<span class="sd">    defaults to the document role when none is given.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: A Cohere embedding model name.</span>
+<span class="sd">        dim: Matryoshka-truncated width (``embed-v4.0`` only). Omit for the</span>
+<span class="sd">            model&#39;s native width. The dim is part of the embedder&#39;s identity —</span>
+<span class="sd">            set it once here, not per call.</span>
+<span class="sd">        api_key: Cohere API key. Falls back to ``CO_API_KEY`` / ``COHERE_API_KEY``.</span>
+<span class="sd">        batch_size: Texts per request (capped at Cohere&#39;s 96 limit).</span>
+<span class="sd">        timeout: Per-request timeout in seconds.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An :class:`~ef.embedders.Embedder` over the Cohere API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_resolve_api_key</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;CO_API_KEY&quot;</span><span class="p">,</span> <span class="s2">&quot;COHERE_API_KEY&quot;</span><span class="p">),</span> <span class="s2">&quot;cohere_embedder&quot;</span><span class="p">)</span>
+    <span class="n">resolved_dim</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="n">_resolve_dim</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">_COHERE_NATIVE_DIMS</span><span class="p">,</span> <span class="n">_COHERE_MRL_MODELS</span><span class="p">,</span> <span class="s2">&quot;Cohere&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_CohereEmbedder</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">resolved_dim</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="o">=</span><span class="n">truncated</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># Voyage ---------------------------------------------------------------------</span>
+
+<span class="c1">#: Voyage AI&#39;s text-embeddings endpoint.</span>
+<span class="n">_VOYAGE_EMBED_URL</span> <span class="o">=</span> <span class="s2">&quot;https://api.voyageai.com/v1/embeddings&quot;</span>
+<span class="c1">#: Native output widths of the Voyage embedding models.</span>
+<span class="n">_VOYAGE_NATIVE_DIMS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;voyage-3.5&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-3.5-lite&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-3-large&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-3&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-3-lite&quot;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-code-3&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-finance-2&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-law-2&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-large-2&quot;</span><span class="p">:</span> <span class="mi">1536</span><span class="p">,</span>
+    <span class="s2">&quot;voyage-2&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1">#: Voyage models that support ``output_dimension`` (MRL) truncation.</span>
+<span class="n">_VOYAGE_MRL_MODELS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;voyage-3.5&quot;</span><span class="p">,</span> <span class="s2">&quot;voyage-3.5-lite&quot;</span><span class="p">,</span> <span class="s2">&quot;voyage-3-large&quot;</span><span class="p">,</span> <span class="s2">&quot;voyage-code-3&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="c1">#: Voyage&#39;s per-request texts cap.</span>
+<span class="n">_VOYAGE_MAX_BATCH</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="c1">#: Canonical InputType → Voyage&#39;s ``input_type`` name. Voyage only distinguishes</span>
+<span class="c1">#: query from document; classification / clustering map to no hint at all (the</span>
+<span class="c1">#: request then omits ``input_type``).</span>
+<span class="n">_VOYAGE_INPUT_TYPE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;document&quot;</span><span class="p">:</span> <span class="s2">&quot;document&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_VoyageEmbedder</span><span class="p">(</span><span class="n">BaseEmbedder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Voyage AI embeddings adapter — see :func:`voyage_embedder`.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: Voyage honors a query/document hint; it has no classification/clustering role.</span>
+    <span class="n">honored_input_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;document&quot;</span><span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Voyage embeddings are L2-normalized</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span> <span class="o">=</span> <span class="n">truncated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;voyage:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dim</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;voyage:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">_VOYAGE_MAX_BATCH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">batch</span><span class="p">)}</span>
+        <span class="n">vendor_type</span> <span class="o">=</span> <span class="n">_VOYAGE_INPUT_TYPE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_type</span><span class="p">)</span> <span class="k">if</span> <span class="n">input_type</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">vendor_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">body</span><span class="p">[</span><span class="s2">&quot;input_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vendor_type</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span><span class="p">:</span>
+            <span class="n">body</span><span class="p">[</span><span class="s2">&quot;output_dimension&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">_post_json</span><span class="p">(</span>
+            <span class="n">_VOYAGE_EMBED_URL</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span><span class="s2">&quot;Voyage: no &#39;data&#39; array in the response&quot;</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">])]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">rows</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">embed_length_sorted</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">encode</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="voyage_embedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedder_adapters.html#ef.voyage_embedder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">voyage_embedder</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;voyage-3.5&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_VOYAGE_MAX_BATCH</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Voyage AI :class:`~ef.embedders.Embedder`.</span>
+
+<span class="sd">    Talks to Voyage&#39;s ``/v1/embeddings`` REST endpoint directly — no</span>
+<span class="sd">    ``voyageai`` SDK, no extra dependency. Voyage embeddings are L2-normalized.</span>
+<span class="sd">    Voyage distinguishes only ``query`` from ``document``; a ``classification``</span>
+<span class="sd">    or ``clustering`` hint is simply not sent.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: A Voyage embedding model name.</span>
+<span class="sd">        dim: Matryoshka-truncated width (the ``voyage-3.5`` family and</span>
+<span class="sd">            ``voyage-code-3`` only). Omit for the model&#39;s native width.</span>
+<span class="sd">        api_key: Voyage API key. Falls back to ``VOYAGE_API_KEY``.</span>
+<span class="sd">        batch_size: Texts per request (capped at Voyage&#39;s 1000 limit).</span>
+<span class="sd">        timeout: Per-request timeout in seconds.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An :class:`~ef.embedders.Embedder` over the Voyage API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_resolve_api_key</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;VOYAGE_API_KEY&quot;</span><span class="p">,),</span> <span class="s2">&quot;voyage_embedder&quot;</span><span class="p">)</span>
+    <span class="n">resolved_dim</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="n">_resolve_dim</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">_VOYAGE_NATIVE_DIMS</span><span class="p">,</span> <span class="n">_VOYAGE_MRL_MODELS</span><span class="p">,</span> <span class="s2">&quot;Voyage&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_VoyageEmbedder</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">resolved_dim</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="o">=</span><span class="n">truncated</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># Gemini ---------------------------------------------------------------------</span>
+
+<span class="c1">#: Base URL of the Gemini (Generative Language) embedding models.</span>
+<span class="n">_GEMINI_BASE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://generativelanguage.googleapis.com/v1beta/models&quot;</span>
+<span class="c1">#: Native output widths of the Gemini embedding models.</span>
+<span class="n">_GEMINI_NATIVE_DIMS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gemini-embedding-001&quot;</span><span class="p">:</span> <span class="mi">3072</span><span class="p">,</span>
+    <span class="s2">&quot;text-embedding-004&quot;</span><span class="p">:</span> <span class="mi">768</span><span class="p">,</span>
+    <span class="s2">&quot;embedding-001&quot;</span><span class="p">:</span> <span class="mi">768</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1">#: Gemini models that support ``outputDimensionality`` (MRL) truncation.</span>
+<span class="n">_GEMINI_MRL_MODELS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;gemini-embedding-001&quot;</span><span class="p">})</span>
+<span class="c1">#: Gemini&#39;s per-request batch cap for ``batchEmbedContents``.</span>
+<span class="n">_GEMINI_MAX_BATCH</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1">#: Canonical InputType → Gemini&#39;s ``taskType`` name.</span>
+<span class="n">_GEMINI_TASK_TYPE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;RETRIEVAL_QUERY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;document&quot;</span><span class="p">:</span> <span class="s2">&quot;RETRIEVAL_DOCUMENT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;CLASSIFICATION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;clustering&quot;</span><span class="p">:</span> <span class="s2">&quot;CLUSTERING&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_GeminiEmbedder</span><span class="p">(</span><span class="n">BaseEmbedder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Google Gemini embeddings adapter — see :func:`gemini_embedder`.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: Gemini honors the task hint for every canonical InputType.</span>
+    <span class="n">honored_input_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">InputType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;document&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;classification&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;clustering&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span> <span class="o">=</span> <span class="n">truncated</span>
+        <span class="c1"># Gemini&#39;s full-width output is unit-norm; MRL-truncated output is not.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">truncated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;gemini:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dim</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;gemini:</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_GEMINI_BASE_URL</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">:batchEmbedContents&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;models/</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x-goog-api-key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">_GEMINI_MAX_BATCH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">task_type</span> <span class="o">=</span> <span class="n">_GEMINI_TASK_TYPE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_type</span><span class="p">)</span> <span class="k">if</span> <span class="n">input_type</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
+            <span class="n">request</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_path</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;parts&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">}]},</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">task_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">request</span><span class="p">[</span><span class="s2">&quot;taskType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_type</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_truncated</span><span class="p">:</span>
+                <span class="n">request</span><span class="p">[</span><span class="s2">&quot;outputDimensionality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+            <span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">_post_json</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;requests&quot;</span><span class="p">:</span> <span class="n">requests</span><span class="p">},</span>
+            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embeddings&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">EmbedderError</span><span class="p">(</span><span class="s2">&quot;Gemini: no &#39;embeddings&#39; array in the response&quot;</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">rows</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">input_type</span><span class="p">:</span> <span class="n">InputType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">backend</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">embed_length_sorted</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">encode</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="gemini_embedder">
+<a class="viewcode-back" href="../../module_docs/ef/embedder_adapters.html#ef.gemini_embedder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gemini_embedder</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gemini-embedding-001&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_GEMINI_MAX_BATCH</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Google Gemini :class:`~ef.embedders.Embedder`.</span>
+
+<span class="sd">    Talks to the Generative Language ``batchEmbedContents`` REST endpoint</span>
+<span class="sd">    directly — no ``google-genai`` SDK, no extra dependency.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: A Gemini embedding model name (a leading ``models/`` is</span>
+<span class="sd">            tolerated and stripped).</span>
+<span class="sd">        dim: Matryoshka-truncated width (``gemini-embedding-001`` only). Omit</span>
+<span class="sd">            for the model&#39;s native width. Note that Gemini, unlike OpenAI, does</span>
+<span class="sd">            *not* re-normalize MRL-truncated output — a truncated embedder</span>
+<span class="sd">            therefore reports ``normalized=False``.</span>
+<span class="sd">        api_key: Gemini API key. Falls back to ``GEMINI_API_KEY`` /</span>
+<span class="sd">            ``GOOGLE_API_KEY``.</span>
+<span class="sd">        batch_size: Texts per request (capped at Gemini&#39;s 100 limit).</span>
+<span class="sd">        timeout: Per-request timeout in seconds.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An :class:`~ef.embedders.Embedder` over the Gemini API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">&quot;models/&quot;</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_resolve_api_key</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;GEMINI_API_KEY&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOGLE_API_KEY&quot;</span><span class="p">),</span> <span class="s2">&quot;gemini_embedder&quot;</span>
+    <span class="p">)</span>
+    <span class="n">resolved_dim</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="n">_resolve_dim</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">_GEMINI_NATIVE_DIMS</span><span class="p">,</span> <span class="n">_GEMINI_MRL_MODELS</span><span class="p">,</span> <span class="s2">&quot;Gemini&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_GeminiEmbedder</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">resolved_dim</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="o">=</span><span class="n">truncated</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
 <span class="c1"># as_embedder — the dependency-injection seam</span>
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
@@ -582,7 +1124,9 @@
 
 <span class="sd">    1. an existing :class:`~ef.embedders.Embedder` — returned unchanged;</span>
 <span class="sd">    2. a URL string (``http://`` / ``https://``) — :func:`http_embedder`;</span>
-<span class="sd">    3. an ``&quot;openai:&lt;model&gt;&quot;`` string — :func:`openai_embedder`;</span>
+<span class="sd">    3. a provider-prefixed string — ``&quot;openai:&lt;model&gt;&quot;``, ``&quot;cohere:&lt;model&gt;&quot;``,</span>
+<span class="sd">       ``&quot;voyage:&lt;model&gt;&quot;`` or ``&quot;gemini:&lt;model&gt;&quot;`` — the matching hosted-API</span>
+<span class="sd">       adapter;</span>
 <span class="sd">    4. the bare string ``&quot;hashing&quot;`` — the dependency-free</span>
 <span class="sd">       :class:`~ef.embedders.HashingEmbedder` (``ef``&#39;s zero-install default);</span>
 <span class="sd">    5. an ``&quot;st:&lt;model&gt;&quot;`` string, or any other bare model name —</span>
@@ -607,6 +1151,12 @@
             <span class="k">return</span> <span class="n">http_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;openai:&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">openai_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;openai:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cohere:&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cohere_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;cohere:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;voyage:&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">voyage_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;voyage:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;gemini:&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">gemini_embedder</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;gemini:&quot;</span><span class="p">)</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;hashing&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">HashingEmbedder</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;st:&quot;</span><span class="p">):</span>

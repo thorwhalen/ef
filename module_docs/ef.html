@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.10 documentation</title>
+  <title>ef &mdash; ef 0.1.11 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../_static/documentation_options.js?v=1e825a29"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -226,6 +226,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.average_precision"><code class="docutils literal notranslate"><span class="pre">average_precision()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.cohere_embedder"><code class="docutils literal notranslate"><span class="pre">cohere_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.context_precision"><code class="docutils literal notranslate"><span class="pre">context_precision()</span></code></a></li>
@@ -238,6 +239,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.evaluate_retrieval"><code class="docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.exact_match"><code class="docutils literal notranslate"><span class="pre">exact_match()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.gemini_embedder"><code class="docutils literal notranslate"><span class="pre">gemini_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.hits_to_segments"><code class="docutils literal notranslate"><span class="pre">hits_to_segments()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
@@ -264,6 +266,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.step_params"><code class="docutils literal notranslate"><span class="pre">step_params()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.token_f1"><code class="docutils literal notranslate"><span class="pre">token_f1()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.voyage_embedder"><code class="docutils literal notranslate"><span class="pre">voyage_embedder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.with_overlap"><code class="docutils literal notranslate"><span class="pre">with_overlap()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.with_reranker"><code class="docutils literal notranslate"><span class="pre">with_reranker()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.write_beir"><code class="docutils literal notranslate"><span class="pre">write_beir()</span></code></a></li>
@@ -332,7 +335,10 @@ resolves to when given no embedder, so the light path needs nothing to install.<
 (string / callable / URL / existing embedder → <code class="docutils literal notranslate"><span class="pre">Embedder</span></code>).</p></li>
 <li><p>Adapters: <a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.openai_embedder" title="ef.embedder_adapters.openai_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a>,
 <a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder" title="ef.embedder_adapters.sentence_transformers_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a>,
-<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.http_embedder" title="ef.embedder_adapters.http_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">http_embedder()</span></code></a>.</p></li>
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.http_embedder" title="ef.embedder_adapters.http_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">http_embedder()</span></code></a>,
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.cohere_embedder" title="ef.embedder_adapters.cohere_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">cohere_embedder()</span></code></a>,
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.voyage_embedder" title="ef.embedder_adapters.voyage_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">voyage_embedder()</span></code></a>,
+<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.gemini_embedder" title="ef.embedder_adapters.gemini_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">gemini_embedder()</span></code></a>.</p></li>
 <li><p>Composition wrappers: <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a>,
 <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder" title="ef.embedder_wrappers.RetryingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a>,
 <a class="reference internal" href="ef/embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder" title="ef.embedder_wrappers.MultiEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a>,
@@ -2292,7 +2298,9 @@ argument. Accepts, in order:</p>
 <ol class="arabic simple">
 <li><p>an existing <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — returned unchanged;</p></li>
 <li><p>a URL string (<code class="docutils literal notranslate"><span class="pre">http://</span></code> / <code class="docutils literal notranslate"><span class="pre">https://</span></code>) — <a class="reference internal" href="#ef.http_embedder" title="ef.http_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">http_embedder()</span></code></a>;</p></li>
-<li><p>an <code class="docutils literal notranslate"><span class="pre">&quot;openai:&lt;model&gt;&quot;</span></code> string — <a class="reference internal" href="#ef.openai_embedder" title="ef.openai_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a>;</p></li>
+<li><p>a provider-prefixed string — <code class="docutils literal notranslate"><span class="pre">&quot;openai:&lt;model&gt;&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cohere:&lt;model&gt;&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;voyage:&lt;model&gt;&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;gemini:&lt;model&gt;&quot;</span></code> — the matching hosted-API
+adapter;</p></li>
 <li><p>the bare string <code class="docutils literal notranslate"><span class="pre">&quot;hashing&quot;</span></code> — the dependency-free
 <a class="reference internal" href="ef/embedders.html#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a> (<code class="docutils literal notranslate"><span class="pre">ef</span></code>’s zero-install default);</p></li>
 <li><p>an <code class="docutils literal notranslate"><span class="pre">&quot;st:&lt;model&gt;&quot;</span></code> string, or any other bare model name —
@@ -2475,6 +2483,32 @@ input order. HDBSCAN labels unclustered points <code class="docutils literal not
 <span class="go">True</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.cohere_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">cohere_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'embed-v4.0'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">96</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#cohere_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.cohere_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build a Cohere-embeddings <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>Talks to Cohere’s <code class="docutils literal notranslate"><span class="pre">/v2/embed</span></code> REST endpoint directly — no <code class="docutils literal notranslate"><span class="pre">cohere</span></code> SDK,
+no extra dependency. Cohere’s v3+ models <em>require</em> a task hint; this adapter
+supplies one for every canonical <a class="reference internal" href="ef/embedders.html#ef.embedders.InputType" title="ef.embedders.InputType"><code class="xref py py-data docutils literal notranslate"><span class="pre">InputType</span></code></a> and
+defaults to the document role when none is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A Cohere embedding model name.</p></li>
+<li><p><strong>dim</strong> – Matryoshka-truncated width (<code class="docutils literal notranslate"><span class="pre">embed-v4.0</span></code> only). Omit for the
+model’s native width. The dim is part of the embedder’s identity —
+set it once here, not per call.</p></li>
+<li><p><strong>api_key</strong> – Cohere API key. Falls back to <code class="docutils literal notranslate"><span class="pre">CO_API_KEY</span></code> / <code class="docutils literal notranslate"><span class="pre">COHERE_API_KEY</span></code>.</p></li>
+<li><p><strong>batch_size</strong> – Texts per request (capped at Cohere’s 96 limit).</p></li>
+<li><p><strong>timeout</strong> – Per-request timeout in seconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> over the Cohere API.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -2829,6 +2863,33 @@ are the upstream artifact ids; <a class="reference internal" href="#ef.step_para
 <span class="go">{&#39;segments&#39;: &#39;seg-1&#39;, &#39;input_type&#39;: &#39;document&#39;, &#39;dim&#39;: None}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.gemini_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">gemini_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gemini-embedding-001'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#gemini_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.gemini_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build a Google Gemini <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>Talks to the Generative Language <code class="docutils literal notranslate"><span class="pre">batchEmbedContents</span></code> REST endpoint
+directly — no <code class="docutils literal notranslate"><span class="pre">google-genai</span></code> SDK, no extra dependency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A Gemini embedding model name (a leading <code class="docutils literal notranslate"><span class="pre">models/</span></code> is
+tolerated and stripped).</p></li>
+<li><p><strong>dim</strong> – Matryoshka-truncated width (<code class="docutils literal notranslate"><span class="pre">gemini-embedding-001</span></code> only). Omit
+for the model’s native width. Note that Gemini, unlike OpenAI, does
+<em>not</em> re-normalize MRL-truncated output — a truncated embedder
+therefore reports <code class="docutils literal notranslate"><span class="pre">normalized=False</span></code>.</p></li>
+<li><p><strong>api_key</strong> – Gemini API key. Falls back to <code class="docutils literal notranslate"><span class="pre">GEMINI_API_KEY</span></code> /
+<code class="docutils literal notranslate"><span class="pre">GOOGLE_API_KEY</span></code>.</p></li>
+<li><p><strong>batch_size</strong> – Texts per request (capped at Gemini’s 100 limit).</p></li>
+<li><p><strong>timeout</strong> – Per-request timeout in seconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> over the Gemini API.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -3444,6 +3505,31 @@ bags — a graded credit where <a class="reference internal" href="#ef.exact_mat
 <span class="go">0.6667</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.voyage_embedder">
+<span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">voyage_embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'voyage-3.5'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><span class="pre">Embedder</span></a></span></span><a class="reference internal" href="../_modules/ef/embedder_adapters.html#voyage_embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.voyage_embedder" title="Link to this definition"></a></dt>
+<dd><p>Build a Voyage AI <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>Talks to Voyage’s <code class="docutils literal notranslate"><span class="pre">/v1/embeddings</span></code> REST endpoint directly — no
+<code class="docutils literal notranslate"><span class="pre">voyageai</span></code> SDK, no extra dependency. Voyage embeddings are L2-normalized.
+Voyage distinguishes only <code class="docutils literal notranslate"><span class="pre">query</span></code> from <code class="docutils literal notranslate"><span class="pre">document</span></code>; a <code class="docutils literal notranslate"><span class="pre">classification</span></code>
+or <code class="docutils literal notranslate"><span class="pre">clustering</span></code> hint is simply not sent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A Voyage embedding model name.</p></li>
+<li><p><strong>dim</strong> – Matryoshka-truncated width (the <code class="docutils literal notranslate"><span class="pre">voyage-3.5</span></code> family and
+<code class="docutils literal notranslate"><span class="pre">voyage-code-3</span></code> only). Omit for the model’s native width.</p></li>
+<li><p><strong>api_key</strong> – Voyage API key. Falls back to <code class="docutils literal notranslate"><span class="pre">VOYAGE_API_KEY</span></code>.</p></li>
+<li><p><strong>batch_size</strong> – Texts per request (capped at Voyage’s 1000 limit).</p></li>
+<li><p><strong>timeout</strong> – Per-request timeout in seconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference internal" href="ef/embedders.html#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> over the Voyage API.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
