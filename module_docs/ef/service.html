@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.service &mdash; ef 0.1.14 documentation</title>
+  <title>ef.service &mdash; ef 0.1.15 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/documentation_options.js?v=e2f3408e"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -182,16 +182,22 @@ config_id: the content hash of the segmenter+embedder pipeline.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ef.service.EfService">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.service.</span></span><span class="sig-name descname"><span class="pre">EfService</span></span><a class="reference internal" href="../../_modules/ef/service.html#EfService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.service.EfService" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.service.</span></span><span class="sig-name descname"><span class="pre">EfService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ef/service.html#EfService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.service.EfService" title="Link to this definition"></a></dt>
 <dd><p>A registry-backed facade bridging stateful <code class="docutils literal notranslate"><span class="pre">ef</span></code> to a stateless transport.</p>
 <p>Construct one <code class="docutils literal notranslate"><span class="pre">EfService</span></code> per process, register corpora with
-<a class="reference internal" href="#ef.service.EfService.create_corpus" title="ef.service.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a>, then query them by <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code>. Hand the six bound
-methods to <code class="docutils literal notranslate"><span class="pre">qh.mk_app()</span></code> to expose them over HTTP — see the module
+<a class="reference internal" href="#ef.service.EfService.create_corpus" title="ef.service.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a>, then query them by <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code>. Hand the seven
+bound methods to <code class="docutils literal notranslate"><span class="pre">qh.mk_app()</span></code> to expose them over HTTP — see the module
 docstring.</p>
 <p>The handle registry is private instance state — never a module global.
 Corpora are isolated: each <a class="reference internal" href="#ef.service.EfService.create_corpus" title="ef.service.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a> builds its own
 <a class="reference internal" href="source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> over its own in-memory <code class="docutils literal notranslate"><span class="pre">vd</span></code>
 backend, so one corpus’s vectors never leak into another’s search.</p>
+<p><code class="docutils literal notranslate"><span class="pre">default_embedder</span></code> sets the embedder <a class="reference internal" href="#ef.service.EfService.create_corpus" title="ef.service.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a> resolves when
+its own <code class="docutils literal notranslate"><span class="pre">embedder</span></code> argument is <code class="docutils literal notranslate"><span class="pre">None</span></code> — the per-instance hook a host
+(e.g. <code class="docutils literal notranslate"><span class="pre">app_ef</span></code>) uses to pick a policy default without passing
+<code class="docutils literal notranslate"><span class="pre">embedder=</span></code> on every call. It defaults to
+<a class="reference internal" href="source_manager.html#ef.source_manager.DEFAULT_EMBEDDER" title="ef.source_manager.DEFAULT_EMBEDDER"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_EMBEDDER</span></code></a> (<code class="docutils literal notranslate"><span class="pre">&quot;hashing&quot;</span></code>), so a bare
+<code class="docutils literal notranslate"><span class="pre">EfService()</span></code> stays dependency-free and offline.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">EfService</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">service</span><span class="p">)</span>
 <span class="go">0</span>
@@ -200,6 +206,13 @@ backend, so one corpus’s vectors never leak into another’s search.</p>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">service</span><span class="p">)</span>
 <span class="go">1</span>
+</pre></div>
+</div>
+<p>A host can swap the default embedder at construction (the string is resolved
+lazily, per corpus, by the DI seam — constructing the service touches no
+network):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EfService</span><span class="p">(</span><span class="n">default_embedder</span><span class="o">=</span><span class="s1">&#39;openai:text-embedding-3-small&#39;</span><span class="p">)</span>
+<span class="go">&lt;EfService: 0 corpus(es) registered&gt;</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -224,9 +237,10 @@ backend, so one corpus’s vectors never leak into another’s search.</p>
 <li><p><strong>embedder</strong> – the embedder, as a string the DI seam resolves
 (<a class="reference internal" href="embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_embedder()</span></code></a>) — <code class="docutils literal notranslate"><span class="pre">&quot;hashing&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;openai:text-embedding-3-small&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cohere:...&quot;</span></code>, an
-<code class="docutils literal notranslate"><span class="pre">http(s)://</span></code> URL, …. <code class="docutils literal notranslate"><span class="pre">None</span></code> →
+<code class="docutils literal notranslate"><span class="pre">http(s)://</span></code> URL, …. <code class="docutils literal notranslate"><span class="pre">None</span></code> → the service’s
+<code class="docutils literal notranslate"><span class="pre">default_embedder</span></code> (chosen at construction; itself
 <a class="reference internal" href="source_manager.html#ef.source_manager.DEFAULT_EMBEDDER" title="ef.source_manager.DEFAULT_EMBEDDER"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_EMBEDDER</span></code></a>, the dependency-free
-<a class="reference internal" href="embedders.html#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>.</p></li>
+<a class="reference internal" href="embedders.html#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>, unless a host overrode it).</p></li>
 <li><p><strong>segmenter</strong> – the segmenter, as a string
 (<a class="reference internal" href="segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a>) — <code class="docutils literal notranslate"><span class="pre">None</span></code> → the
 recursive-character default.</p></li>

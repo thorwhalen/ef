@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.service &mdash; ef 0.1.14 documentation</title>
+  <title>ef.service &mdash; ef 0.1.15 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/documentation_options.js?v=e2f3408e"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -212,14 +212,21 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A registry-backed facade bridging stateful ``ef`` to a stateless transport.</span>
 
 <span class="sd">    Construct one ``EfService`` per process, register corpora with</span>
-<span class="sd">    :meth:`create_corpus`, then query them by ``corpus_id``. Hand the six bound</span>
-<span class="sd">    methods to ``qh.mk_app()`` to expose them over HTTP — see the module</span>
+<span class="sd">    :meth:`create_corpus`, then query them by ``corpus_id``. Hand the seven</span>
+<span class="sd">    bound methods to ``qh.mk_app()`` to expose them over HTTP — see the module</span>
 <span class="sd">    docstring.</span>
 
 <span class="sd">    The handle registry is private instance state — never a module global.</span>
 <span class="sd">    Corpora are isolated: each :meth:`create_corpus` builds its own</span>
 <span class="sd">    :class:`~ef.source_manager.SourceManager` over its own in-memory ``vd``</span>
 <span class="sd">    backend, so one corpus&#39;s vectors never leak into another&#39;s search.</span>
+
+<span class="sd">    ``default_embedder`` sets the embedder :meth:`create_corpus` resolves when</span>
+<span class="sd">    its own ``embedder`` argument is ``None`` — the per-instance hook a host</span>
+<span class="sd">    (e.g. ``app_ef``) uses to pick a policy default without passing</span>
+<span class="sd">    ``embedder=`` on every call. It defaults to</span>
+<span class="sd">    :data:`~ef.source_manager.DEFAULT_EMBEDDER` (``&quot;hashing&quot;``), so a bare</span>
+<span class="sd">    ``EfService()`` stays dependency-free and offline.</span>
 
 <span class="sd">    &gt;&gt;&gt; service = EfService()</span>
 <span class="sd">    &gt;&gt;&gt; len(service)</span>
@@ -229,10 +236,20 @@
 <span class="sd">    True</span>
 <span class="sd">    &gt;&gt;&gt; len(service)</span>
 <span class="sd">    1</span>
+
+<span class="sd">    A host can swap the default embedder at construction (the string is resolved</span>
+<span class="sd">    lazily, per corpus, by the DI seam — constructing the service touches no</span>
+<span class="sd">    network):</span>
+
+<span class="sd">    &gt;&gt;&gt; EfService(default_embedder=&#39;openai:text-embedding-3-small&#39;)</span>
+<span class="sd">    &lt;EfService: 0 corpus(es) registered&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SourceManager</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">default_embedder</span> <span class="k">if</span> <span class="n">default_embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">DEFAULT_EMBEDDER</span>
+        <span class="p">)</span>
 
     <span class="c1"># -- corpus lifecycle ---------------------------------------------------</span>
 
@@ -253,9 +270,10 @@
 <span class="sd">            embedder: the embedder, as a string the DI seam resolves</span>
 <span class="sd">                (:func:`~ef.embedder_adapters.as_embedder`) — ``&quot;hashing&quot;``,</span>
 <span class="sd">                ``&quot;openai:text-embedding-3-small&quot;``, ``&quot;cohere:...&quot;``, an</span>
-<span class="sd">                ``http(s)://`` URL, …. ``None`` →</span>
+<span class="sd">                ``http(s)://`` URL, …. ``None`` → the service&#39;s</span>
+<span class="sd">                ``default_embedder`` (chosen at construction; itself</span>
 <span class="sd">                :data:`~ef.source_manager.DEFAULT_EMBEDDER`, the dependency-free</span>
-<span class="sd">                :class:`~ef.embedders.HashingEmbedder`.</span>
+<span class="sd">                :class:`~ef.embedders.HashingEmbedder`, unless a host overrode it).</span>
 <span class="sd">            segmenter: the segmenter, as a string</span>
 <span class="sd">                (:func:`~ef.segmenter_adapters.as_segmenter`) — ``None`` → the</span>
 <span class="sd">                recursive-character default.</span>
@@ -277,7 +295,7 @@
         <span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span>
             <span class="n">sources</span><span class="p">,</span>
             <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
-            <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span> <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">DEFAULT_EMBEDDER</span><span class="p">,</span>
+            <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span> <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_embedder</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">manager</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">manager</span>
