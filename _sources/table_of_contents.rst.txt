@@ -19,4 +19,5 @@
    module_docs/ef/segmenter_adapters
    module_docs/ef/segmenters
    module_docs/ef/segments
+   module_docs/ef/service
    module_docs/ef/source_manager

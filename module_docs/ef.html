@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef &mdash; ef 0.1.11 documentation</title>
+  <title>ef &mdash; ef 0.1.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../_static/documentation_options.js?v=297ad043"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -101,6 +101,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#ef.ConfigId"><code class="docutils literal notranslate"><span class="pre">ConfigId</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ef.CorpusDiff.changed"><code class="docutils literal notranslate"><span class="pre">CorpusDiff.changed</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.CorpusInfo"><code class="docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.EfService"><code class="docutils literal notranslate"><span class="pre">EfService</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.corpus_info"><code class="docutils literal notranslate"><span class="pre">EfService.corpus_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.create_corpus"><code class="docutils literal notranslate"><span class="pre">EfService.create_corpus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.delete_corpus"><code class="docutils literal notranslate"><span class="pre">EfService.delete_corpus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.list_corpora"><code class="docutils literal notranslate"><span class="pre">EfService.list_corpora()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.retrieve"><code class="docutils literal notranslate"><span class="pre">EfService.retrieve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ef.EfService.search"><code class="docutils literal notranslate"><span class="pre">EfService.search()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a><ul>
@@ -288,6 +298,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segmenters.html">ef.segmenters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef/service.html">ef.service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ef/source_manager.html">ef.source_manager</a></li>
 </ul>
 
@@ -425,6 +436,14 @@ primary one. It imports numpy-only; UMAP, HDBSCAN and <code class="docutils lite
 <li><p><a class="reference internal" href="ef/explore.html#ef.explore.project" title="ef.explore.project"><code class="xref py py-func docutils literal notranslate"><span class="pre">project()</span></code></a> — reduce embeddings to 2-D/3-D coordinates
 (PCA → UMAP); <a class="reference internal" href="ef/explore.html#ef.explore.cluster" title="ef.explore.cluster"><code class="xref py py-func docutils literal notranslate"><span class="pre">cluster()</span></code></a> — group them (k-means / HDBSCAN);
 <a class="reference internal" href="ef/explore.html#ef.explore.label_clusters" title="ef.explore.label_clusters"><code class="xref py py-func docutils literal notranslate"><span class="pre">label_clusters()</span></code></a> — name clusters with an LLM via <code class="docutils literal notranslate"><span class="pre">imbed</span></code>.</p></li>
+</ul>
+<p>The <strong>service layer</strong> bridges <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s stateful objects to a stateless
+transport — hand its methods to <code class="docutils literal notranslate"><span class="pre">qh.mk_app()</span></code> to serve <code class="docutils literal notranslate"><span class="pre">ef</span></code> over HTTP:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ef/service.html#ef.service.EfService" title="ef.service.EfService"><code class="xref py py-class docutils literal notranslate"><span class="pre">EfService</span></code></a> — a facade holding a <code class="docutils literal notranslate"><span class="pre">{corpus_id:</span> <span class="pre">SourceManager}</span></code>
+handle registry: <a class="reference internal" href="ef/service.html#ef.service.EfService.create_corpus" title="ef.service.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a> indexes a corpus,
+<a class="reference internal" href="ef/service.html#ef.service.EfService.search" title="ef.service.EfService.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a> / <a class="reference internal" href="ef/service.html#ef.service.EfService.retrieve" title="ef.service.EfService.retrieve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">retrieve()</span></code></a>
+query it by id. <a class="reference internal" href="ef/service.html#ef.service.CorpusInfo" title="ef.service.CorpusInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a> is its JSON-friendly summary.</p></li>
 </ul>
 <p>Example — wrap a plain function and embed two strings:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -993,6 +1012,135 @@ reports whether <em>anything</em> changed.</p>
 <dt class="sig sig-object py" id="ef.CorpusDiff.changed">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">changed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ef.CorpusDiff.changed" title="Link to this definition"></a></dt>
 <dd><p>The source ids that are new or modified — the set to (re-)materialize.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.CorpusInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">CorpusInfo</span></span><a class="reference internal" href="../_modules/ef/service.html#CorpusInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.CorpusInfo" title="Link to this definition"></a></dt>
+<dd><p>A JSON-friendly summary of one registered corpus.</p>
+<p>The return shape shared by <a class="reference internal" href="#ef.EfService.create_corpus" title="ef.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">EfService.create_corpus()</span></code></a>,
+<a class="reference internal" href="#ef.EfService.corpus_info" title="ef.EfService.corpus_info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">EfService.corpus_info()</span></code></a> and (as a list) <a class="reference internal" href="#ef.EfService.list_corpora" title="ef.EfService.list_corpora"><code class="xref py py-meth docutils literal notranslate"><span class="pre">EfService.list_corpora()</span></code></a>
+— a plain <code class="docutils literal notranslate"><span class="pre">dict</span></code> an HTTP client and <code class="docutils literal notranslate"><span class="pre">qh</span></code>’s schema both understand.</p>
+<dl class="simple">
+<dt>Keys:</dt><dd><p>corpus_id: the registry handle — how every other method addresses it.
+n_sources: the number of source documents in the corpus.
+n_segments: the number of indexed segments (sources cut by the segmenter).
+embedder: the embedder’s <code class="docutils literal notranslate"><span class="pre">model_id</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;hashing:v1&#64;512&quot;</span></code>).
+dim: the embedding dimensionality.
+config_id: the content hash of the segmenter+embedder pipeline.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.EfService">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.</span></span><span class="sig-name descname"><span class="pre">EfService</span></span><a class="reference internal" href="../_modules/ef/service.html#EfService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService" title="Link to this definition"></a></dt>
+<dd><p>A registry-backed facade bridging stateful <code class="docutils literal notranslate"><span class="pre">ef</span></code> to a stateless transport.</p>
+<p>Construct one <code class="docutils literal notranslate"><span class="pre">EfService</span></code> per process, register corpora with
+<a class="reference internal" href="#ef.EfService.create_corpus" title="ef.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a>, then query them by <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code>. Hand the six bound
+methods to <code class="docutils literal notranslate"><span class="pre">qh.mk_app()</span></code> to expose them over HTTP — see the module
+docstring.</p>
+<p>The handle registry is private instance state — never a module global.
+Corpora are isolated: each <a class="reference internal" href="#ef.EfService.create_corpus" title="ef.EfService.create_corpus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_corpus()</span></code></a> builds its own
+<a class="reference internal" href="ef/source_manager.html#ef.source_manager.SourceManager" title="ef.source_manager.SourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceManager</span></code></a> over its own in-memory <code class="docutils literal notranslate"><span class="pre">vd</span></code>
+backend, so one corpus’s vectors never leak into another’s search.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">EfService</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">service</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">create_corpus</span><span class="p">([</span><span class="s1">&#39;hello world&#39;</span><span class="p">],</span> <span class="n">corpus_id</span><span class="o">=</span><span class="s1">&#39;greetings&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;greetings&#39;</span> <span class="ow">in</span> <span class="n">service</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">service</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.corpus_info">
+<span class="sig-name descname"><span class="pre">corpus_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/service.html#ef.service.CorpusInfo" title="ef.service.CorpusInfo"><span class="pre">CorpusInfo</span></a></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.corpus_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.corpus_info" title="Link to this definition"></a></dt>
+<dd><p>Return the <a class="reference internal" href="#ef.CorpusInfo" title="ef.CorpusInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a> of a registered corpus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – if <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code> is not registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.create_corpus">
+<span class="sig-name descname"><span class="pre">create_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ef/service.html#ef.service.CorpusInfo" title="ef.service.CorpusInfo"><span class="pre">CorpusInfo</span></a></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.create_corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.create_corpus" title="Link to this definition"></a></dt>
+<dd><p>Index <code class="docutils literal notranslate"><span class="pre">sources</span></code> into a new corpus, register it, return its <a class="reference internal" href="#ef.CorpusInfo" title="ef.CorpusInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sources</strong> – the corpus — a list of text documents.</p></li>
+<li><p><strong>embedder</strong> – the embedder, as a string the DI seam resolves
+(<a class="reference internal" href="ef/embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_embedder()</span></code></a>) — <code class="docutils literal notranslate"><span class="pre">&quot;hashing&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;openai:text-embedding-3-small&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cohere:...&quot;</span></code>, an
+<code class="docutils literal notranslate"><span class="pre">http(s)://</span></code> URL, …. <code class="docutils literal notranslate"><span class="pre">None</span></code> →
+<a class="reference internal" href="ef/source_manager.html#ef.source_manager.DEFAULT_EMBEDDER" title="ef.source_manager.DEFAULT_EMBEDDER"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_EMBEDDER</span></code></a>, the dependency-free
+<a class="reference internal" href="ef/embedders.html#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>.</p></li>
+<li><p><strong>segmenter</strong> – the segmenter, as a string
+(<a class="reference internal" href="ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter" title="ef.segmenter_adapters.as_segmenter"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a>) — <code class="docutils literal notranslate"><span class="pre">None</span></code> → the
+recursive-character default.</p></li>
+<li><p><strong>corpus_id</strong> – the handle to register the corpus under; <code class="docutils literal notranslate"><span class="pre">None</span></code> → a
+fresh random id. Reusing a live id is an error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the <a class="reference internal" href="#ef.CorpusInfo" title="ef.CorpusInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a> of the freshly indexed corpus.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code> is already registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.delete_corpus">
+<span class="sig-name descname"><span class="pre">delete_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.delete_corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.delete_corpus" title="Link to this definition"></a></dt>
+<dd><p>Drop a corpus from the registry, releasing its index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – if <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code> is not registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.list_corpora">
+<span class="sig-name descname"><span class="pre">list_corpora</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/service.html#ef.service.CorpusInfo" title="ef.service.CorpusInfo"><span class="pre">CorpusInfo</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.list_corpora"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.list_corpora" title="Link to this definition"></a></dt>
+<dd><p>Return the <a class="reference internal" href="#ef.CorpusInfo" title="ef.CorpusInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a> of every registered corpus.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.retrieve">
+<span class="sig-name descname"><span class="pre">retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><span class="pre">Segment</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.retrieve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.retrieve" title="Link to this definition"></a></dt>
+<dd><p>Retrieve ranked <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>s — the RAG-plug-in shape.</p>
+<p>Like <a class="reference internal" href="#ef.EfService.search" title="ef.EfService.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a>, but returns plain segments in rank order (the
+<code class="docutils literal notranslate"><span class="pre">score</span></code> dropped, the <code class="docutils literal notranslate"><span class="pre">source_id</span></code> folded into <code class="docutils literal notranslate"><span class="pre">metadata[&quot;source&quot;]</span></code>)
+— clean context to hand to an external RAG/agent framework. <code class="docutils literal notranslate"><span class="pre">ef</span></code>
+returns context; it does not synthesize answers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – if <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code> is not registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.EfService.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ef/source_manager.html#ef.source_manager.SearchHit" title="ef.source_manager.SearchHit"><span class="pre">SearchHit</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ef/service.html#EfService.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ef.EfService.search" title="Link to this definition"></a></dt>
+<dd><p>Search a registered corpus — up to <code class="docutils literal notranslate"><span class="pre">limit</span></code> ranked <a class="reference internal" href="ef/source_manager.html#ef.source_manager.SearchHit" title="ef.source_manager.SearchHit"><code class="xref py py-class docutils literal notranslate"><span class="pre">SearchHit</span></code></a>s.</p>
+<p>Each hit carries the matched <a class="reference internal" href="ef/segments.html#ef.segments.Segment" title="ef.segments.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>, its
+similarity <code class="docutils literal notranslate"><span class="pre">score</span></code> (higher = closer) and the <code class="docutils literal notranslate"><span class="pre">source_id</span></code> it was cut
+from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – if <code class="docutils literal notranslate"><span class="pre">corpus_id</span></code> is not registered.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

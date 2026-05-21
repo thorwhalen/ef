@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ef.service &mdash; ef 0.1.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=297ad043"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ef
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef.html">ef</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/config.html">ef.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/corpus.html">ef.corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/embedders.html">ef.embedders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/explore.html">ef.explore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/hashing.html">ef.hashing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/ops.html">ef.ops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/refresh.html">ef.refresh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/reranking.html">ef.reranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/segments.html">ef.segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/service.html">ef.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ef/source_manager.html">ef.source_manager</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ef</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ef.service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ef.service</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The HTTP-service bridge — :class:`EfService`, a stateless-friendly facade.</span>
+
+<span class="sd">``ef``&#39;s query surface is **stateful**: :func:`~ef.source_manager.ingest`</span>
+<span class="sd">returns a live :class:`~ef.source_manager.SearchableCorpus`, and a</span>
+<span class="sd">:class:`~ef.source_manager.SourceManager` holds a live corpus, an</span>
+<span class="sd">:class:`~ef.artifact_graph.ArtifactGraph` and ``vd`` collections. HTTP is</span>
+<span class="sd">**stateless**. To serve ``ef`` over HTTP — so a frontend (``app_ef``) can reach</span>
+<span class="sd">it through ``qh.mk_app()`` — something must map a JSON-friendly ``corpus_id``</span>
+<span class="sd">back to the live indexed object across requests.</span>
+
+<span class="sd">:class:`EfService` is that bridge: a facade holding a **handle registry**</span>
+<span class="sd">``{corpus_id: SourceManager}`` **on the instance**. A single ``EfService()`` is</span>
+<span class="sd">constructed once at server start-up, and its six bound methods —</span>
+<span class="sd">:meth:`~EfService.create_corpus`, :meth:`~EfService.search`,</span>
+<span class="sd">:meth:`~EfService.retrieve`, :meth:`~EfService.corpus_info`,</span>
+<span class="sd">:meth:`~EfService.list_corpora`, :meth:`~EfService.delete_corpus` — are handed</span>
+<span class="sd">to ``qh.mk_app()`` as the HTTP surface. The registry lives on the instance,</span>
+<span class="sd">never as a module global: a process-wide mutable registry would be the</span>
+<span class="sd">``ServiceContext`` singleton anti-pattern ``ef`` rejects (``.claude/CLAUDE.md``</span>
+<span class="sd">§6) — inject an :class:`EfService` explicitly instead.</span>
+
+<span class="sd">Every method is JSON-friendly and fully type-annotated, because ``qh`` derives</span>
+<span class="sd">the HTTP schema from the type hints. ``ef``&#39;s stateful objects never cross the</span>
+<span class="sd">boundary: a corpus is addressed by its string ``corpus_id``, an embedder /</span>
+<span class="sd">segmenter by a string the DI seam resolves (``&quot;hashing&quot;``, ``&quot;openai:...&quot;``,</span>
+<span class="sd">``&quot;cohere:...&quot;``, …), and results are plain :class:`~ef.source_manager.SearchHit`</span>
+<span class="sd">/ :class:`~ef.segments.Segment` data.</span>
+
+<span class="sd">This is *only* a transport bridge — it adds no orchestration. ``ef`` stays a</span>
+<span class="sd">facade (``.claude/CLAUDE.md`` §6); answer synthesis, agents and UI live outside.</span>
+
+<span class="sd">Example — create a corpus, search it, then drop it, all offline:</span>
+
+<span class="sd">&gt;&gt;&gt; from ef.service import EfService</span>
+<span class="sd">&gt;&gt;&gt; service = EfService()</span>
+<span class="sd">&gt;&gt;&gt; info = service.create_corpus(</span>
+<span class="sd">...     [&#39;the cat sat on the mat&#39;, &#39;dogs are loyal&#39;, &#39;felines and canines&#39;],</span>
+<span class="sd">...     corpus_id=&#39;animals&#39;,</span>
+<span class="sd">... )</span>
+<span class="sd">&gt;&gt;&gt; info[&#39;corpus_id&#39;], info[&#39;n_sources&#39;], info[&#39;n_segments&#39;]</span>
+<span class="sd">(&#39;animals&#39;, 3, 3)</span>
+<span class="sd">&gt;&gt;&gt; info[&#39;embedder&#39;], info[&#39;dim&#39;]</span>
+<span class="sd">(&#39;hashing:v1@512&#39;, 512)</span>
+<span class="sd">&gt;&gt;&gt; hits = service.search(&#39;animals&#39;, &#39;cat&#39;, limit=2)</span>
+<span class="sd">&gt;&gt;&gt; len(hits)</span>
+<span class="sd">2</span>
+<span class="sd">&gt;&gt;&gt; isinstance(hits[0].score, float)</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; segments = service.retrieve(&#39;animals&#39;, &#39;cat&#39;, limit=1)</span>
+<span class="sd">&gt;&gt;&gt; isinstance(segments[0][&#39;text&#39;], str)</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; [c[&#39;corpus_id&#39;] for c in service.list_corpora()]</span>
+<span class="sd">[&#39;animals&#39;]</span>
+<span class="sd">&gt;&gt;&gt; service.delete_corpus(&#39;animals&#39;)</span>
+<span class="sd">&gt;&gt;&gt; service.list_corpora()</span>
+<span class="sd">[]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.segments</span><span class="w"> </span><span class="kn">import</span> <span class="n">Segment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ef.source_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_EMBEDDER</span><span class="p">,</span> <span class="n">SearchHit</span><span class="p">,</span> <span class="n">SourceManager</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CorpusInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;EfService&quot;</span><span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The JSON-friendly corpus summary</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="CorpusInfo">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.CorpusInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CorpusInfo</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A JSON-friendly summary of one registered corpus.</span>
+
+<span class="sd">    The return shape shared by :meth:`EfService.create_corpus`,</span>
+<span class="sd">    :meth:`EfService.corpus_info` and (as a list) :meth:`EfService.list_corpora`</span>
+<span class="sd">    — a plain ``dict`` an HTTP client and ``qh``&#39;s schema both understand.</span>
+
+<span class="sd">    Keys:</span>
+<span class="sd">        corpus_id: the registry handle — how every other method addresses it.</span>
+<span class="sd">        n_sources: the number of source documents in the corpus.</span>
+<span class="sd">        n_segments: the number of indexed segments (sources cut by the segmenter).</span>
+<span class="sd">        embedder: the embedder&#39;s ``model_id`` (e.g. ``&quot;hashing:v1@512&quot;``).</span>
+<span class="sd">        dim: the embedding dimensionality.</span>
+<span class="sd">        config_id: the content hash of the segmenter+embedder pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">n_sources</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">n_segments</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">config_id</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_new_corpus_id</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A fresh, URL-safe corpus id — a short random hex token.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The service facade</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="EfService">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EfService</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A registry-backed facade bridging stateful ``ef`` to a stateless transport.</span>
+
+<span class="sd">    Construct one ``EfService`` per process, register corpora with</span>
+<span class="sd">    :meth:`create_corpus`, then query them by ``corpus_id``. Hand the six bound</span>
+<span class="sd">    methods to ``qh.mk_app()`` to expose them over HTTP — see the module</span>
+<span class="sd">    docstring.</span>
+
+<span class="sd">    The handle registry is private instance state — never a module global.</span>
+<span class="sd">    Corpora are isolated: each :meth:`create_corpus` builds its own</span>
+<span class="sd">    :class:`~ef.source_manager.SourceManager` over its own in-memory ``vd``</span>
+<span class="sd">    backend, so one corpus&#39;s vectors never leak into another&#39;s search.</span>
+
+<span class="sd">    &gt;&gt;&gt; service = EfService()</span>
+<span class="sd">    &gt;&gt;&gt; len(service)</span>
+<span class="sd">    0</span>
+<span class="sd">    &gt;&gt;&gt; _ = service.create_corpus([&#39;hello world&#39;], corpus_id=&#39;greetings&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;greetings&#39; in service</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; len(service)</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SourceManager</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># -- corpus lifecycle ---------------------------------------------------</span>
+
+<div class="viewcode-block" id="EfService.create_corpus">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.create_corpus">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_corpus</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">segmenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Index ``sources`` into a new corpus, register it, return its :class:`CorpusInfo`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sources: the corpus — a list of text documents.</span>
+<span class="sd">            embedder: the embedder, as a string the DI seam resolves</span>
+<span class="sd">                (:func:`~ef.embedder_adapters.as_embedder`) — ``&quot;hashing&quot;``,</span>
+<span class="sd">                ``&quot;openai:text-embedding-3-small&quot;``, ``&quot;cohere:...&quot;``, an</span>
+<span class="sd">                ``http(s)://`` URL, …. ``None`` →</span>
+<span class="sd">                :data:`~ef.source_manager.DEFAULT_EMBEDDER`, the dependency-free</span>
+<span class="sd">                :class:`~ef.embedders.HashingEmbedder`.</span>
+<span class="sd">            segmenter: the segmenter, as a string</span>
+<span class="sd">                (:func:`~ef.segmenter_adapters.as_segmenter`) — ``None`` → the</span>
+<span class="sd">                recursive-character default.</span>
+<span class="sd">            corpus_id: the handle to register the corpus under; ``None`` → a</span>
+<span class="sd">                fresh random id. Reusing a live id is an error.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            the :class:`CorpusInfo` of the freshly indexed corpus.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if ``corpus_id`` is already registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="n">corpus_id</span> <span class="k">if</span> <span class="n">corpus_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_new_corpus_id</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;corpus_id </span><span class="si">{</span><span class="n">cid</span><span class="si">!r}</span><span class="s2"> is already registered; delete it first &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;or choose another id.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span>
+            <span class="n">sources</span><span class="p">,</span>
+            <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
+            <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span> <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">DEFAULT_EMBEDDER</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">manager</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">manager</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EfService.corpus_info">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.corpus_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">corpus_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the :class:`CorpusInfo` of a registered corpus.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EfService.list_corpora">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.list_corpora">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_corpora</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CorpusInfo</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the :class:`CorpusInfo` of every registered corpus.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="EfService.delete_corpus">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.delete_corpus">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_corpus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop a corpus from the registry, releasing its index.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span>  <span class="c1"># validate first, with a clear error</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">[</span><span class="n">corpus_id</span><span class="p">]</span></div>
+
+
+    <span class="c1"># -- querying -----------------------------------------------------------</span>
+
+<div class="viewcode-block" id="EfService.search">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SearchHit</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search a registered corpus — up to ``limit`` ranked :class:`~ef.source_manager.SearchHit`\\ s.</span>
+
+<span class="sd">        Each hit carries the matched :class:`~ef.segments.Segment`, its</span>
+<span class="sd">        similarity ``score`` (higher = closer) and the ``source_id`` it was cut</span>
+<span class="sd">        from.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EfService.retrieve">
+<a class="viewcode-back" href="../../module_docs/ef/service.html#ef.EfService.retrieve">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve ranked :class:`~ef.segments.Segment`\\ s — the RAG-plug-in shape.</span>
+
+<span class="sd">        Like :meth:`search`, but returns plain segments in rank order (the</span>
+<span class="sd">        ``score`` dropped, the ``source_id`` folded into ``metadata[&quot;source&quot;]``)</span>
+<span class="sd">        — clean context to hand to an external RAG/agent framework. ``ef``</span>
+<span class="sd">        returns context; it does not synthesize answers.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if ``corpus_id`` is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -- dunders ------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">corpus_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate the registered ``corpus_id``\\ s.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">)</span><span class="si">}</span><span class="s2"> corpus(es) registered&gt;&quot;</span>
+
+    <span class="c1"># -- internals ----------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SourceManager</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve ``corpus_id`` to its :class:`~ef.source_manager.SourceManager`.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">[</span><span class="n">corpus_id</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown corpus_id </span><span class="si">{</span><span class="n">corpus_id</span><span class="si">!r}</span><span class="s2">. Registered: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the :class:`CorpusInfo` for a registered corpus.&quot;&quot;&quot;</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="p">(</span><span class="n">corpus_id</span><span class="p">)</span>
+        <span class="n">searchable</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">searchable</span><span class="p">()</span>
+        <span class="n">embedder</span> <span class="o">=</span> <span class="n">searchable</span><span class="o">.</span><span class="n">embedder</span>
+        <span class="k">return</span> <span class="n">CorpusInfo</span><span class="p">(</span>
+            <span class="n">corpus_id</span><span class="o">=</span><span class="n">corpus_id</span><span class="p">,</span>
+            <span class="n">n_sources</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">corpus</span><span class="p">),</span>
+            <span class="n">n_segments</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">searchable</span><span class="o">.</span><span class="n">collection</span><span class="p">),</span>
+            <span class="n">embedder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="s2">&quot;model_id&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)),</span>
+            <span class="n">dim</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="n">config_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">searchable</span><span class="o">.</span><span class="n">config</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
