@@ -6,12 +6,17 @@ search / RAG / corpus-indexing (see :func:`ef.ingest` and
 :class:`~ef.source_manager.SourceManager`); ``explore`` is the "see the shape of
 the corpus" tool — the backend an ``app_ef`` corpus map consumes.
 
-Three free functions, each accepting a corpus *or* an already-computed vector
+Four free functions, each accepting a corpus *or* an already-computed vector
 matrix (whatever :func:`_resolve_vectors` understands):
 
 - :func:`project` — reduce embeddings to 2-D/3-D coordinates (PCA → UMAP).
 - :func:`cluster` — group embeddings into clusters (k-means / HDBSCAN).
 - :func:`label_clusters` — name clusters with an LLM (via ``imbed``).
+- :func:`explore` — the orchestrator: project + cluster (+ optionally label) in
+  one call, returning a structured, JSON-friendly :class:`ExploreResult`
+  (``ids`` / ``coords`` / ``labels`` / ``cluster_titles``) — the surface an
+  ``app_ef`` corpus map (or :meth:`ef.service.EfService.explore_corpus`)
+  consumes directly.
 
 The module imports with **numpy only**. UMAP, HDBSCAN and ``imbed`` are
 optional: each is imported lazily, inside the function that needs it, and only
@@ -32,21 +37,23 @@ Example — project a small set of vectors to the plane (numpy only):
 
 Each returned array's rows are in the iteration order of the input — for a
 :class:`~ef.source_manager.SearchableCorpus` that is ``list(searchable.collection)``,
-which the caller zips back against to recover ``{id: coords}``.
+which the caller zips back against to recover ``{id: coords}``. :func:`explore`
+does that zip-back for you — its :class:`ExploreResult` keeps ``ids`` aligned
+with ``coords`` and ``labels``.
 """
 
 from __future__ import annotations
 
 import warnings
 from collections.abc import Iterable, Mapping
-from typing import Any, Literal
+from typing import Any, Literal, TypedDict
 
 import numpy as np
 
 from ef.embedder_adapters import as_embedder
 from ef.source_manager import DEFAULT_EMBEDDER
 
-__all__ = ["project", "cluster", "label_clusters"]
+__all__ = ["project", "cluster", "label_clusters", "explore", "ExploreResult"]
 
 # --- knobs (no magic numbers buried in the functions) ----------------------
 
@@ -65,6 +72,32 @@ UMAP_METRIC = "cosine"
 #: ``method='auto'`` uses PCA (not UMAP) below this many samples — UMAP is
 #: degenerate on a handful of points, and seeds the doctest/light path.
 _MIN_SAMPLES_FOR_UMAP = 5
+
+
+# --- the structured result -------------------------------------------------
+
+
+class ExploreResult(TypedDict):
+    """A structured, JSON-friendly corpus-exploration result.
+
+    What :func:`explore` returns and :meth:`ef.service.EfService.explore_corpus`
+    serves. Every list is **row-aligned**: ``ids[i]``, ``coords[i]`` and
+    ``labels[i]`` all describe the same item.
+
+    Keys:
+        ids: the per-item identifiers — a corpus's keys, or positional ``"0"``,
+            ``"1"``, … for an id-less vector matrix.
+        coords: the projected coordinates — one ``[x, y]`` (or ``[x, y, z]``)
+            row per item.
+        labels: the cluster id of each item (HDBSCAN marks noise ``-1``).
+        cluster_titles: ``{cluster_id: title}`` — empty unless :func:`explore`
+            was called with ``label=True``.
+    """
+
+    ids: list[str]
+    coords: list[list[float]]
+    labels: list[int]
+    cluster_titles: dict[int, str]
 
 
 # ===========================================================================
@@ -256,71 +289,213 @@ def label_clusters(
     return {_as_int(cluster_id): title for cluster_id, title in titles.items()}
 
 
+def explore(
+    data: Any,
+    *,
+    dims: int = DEFAULT_DIMS,
+    projection_method: ProjectionMethod = "auto",
+    cluster_method: ClusterMethod = "kmeans",
+    n_clusters: int = DEFAULT_N_CLUSTERS,
+    min_cluster_size: int = DEFAULT_MIN_CLUSTER_SIZE,
+    label: bool = False,
+    context: str = " ",
+    n_words: int = 4,
+    embedder: Any = None,
+    random_state: int = DEFAULT_RANDOM_STATE,
+) -> ExploreResult:
+    """Project, cluster and (optionally) label a corpus in one call.
+
+    The layer-L5 orchestrator — :func:`project` + :func:`cluster` (+ optionally
+    :func:`label_clusters`) wired into one structured result. Where
+    :func:`project` / :func:`cluster` return *bare arrays in input order*,
+    ``explore`` keeps every row tied to its id: it returns an
+    :class:`ExploreResult` with ``ids`` / ``coords`` / ``labels`` row-aligned
+    (plus ``cluster_titles``) — the JSON-friendly shape an ``app_ef`` corpus map
+    (or :meth:`ef.service.EfService.explore_corpus`) consumes directly.
+
+    Args:
+        data: the corpus to explore — anything :func:`_resolve_explorable`
+            understands (a :class:`~ef.source_manager.SourceManager` /
+            :class:`~ef.source_manager.SearchableCorpus`, a
+            :class:`~ef.corpus.Corpus` mapping, an iterable of texts or
+            :class:`~ef.segments.Segment`\\ s, or a vector matrix).
+        dims: projection target dimensionality — ``2`` or ``3``.
+        projection_method: forwarded to :func:`project` — ``'auto'`` /
+            ``'umap'`` / ``'pca'``.
+        cluster_method: forwarded to :func:`cluster` — ``'kmeans'`` /
+            ``'hdbscan'``.
+        n_clusters: number of k-means clusters.
+        min_cluster_size: smallest cluster HDBSCAN will form.
+        label: when ``True``, name each cluster with :func:`label_clusters`
+            (needs the ``ef[imbed]`` extra, an LLM key, and text-bearing
+            ``data``); when ``False`` (the default) ``cluster_titles`` is empty.
+        context: the corpus topic passed to :func:`label_clusters`.
+        n_words: maximum cluster-title length, in words.
+        embedder: embedder used when ``data`` is raw text.
+        random_state: seed — projection and clustering are reproducible.
+
+    Returns:
+        an :class:`ExploreResult` — ``ids``, ``coords`` and ``labels``
+        row-aligned, and ``cluster_titles`` (empty unless ``label=True``).
+
+    Raises:
+        ValueError: if the corpus is empty, has fewer than 2 samples, or
+            ``label=True`` is asked of a text-less vector matrix.
+
+    >>> import numpy as np
+    >>> vectors = np.random.RandomState(0).rand(12, 16)
+    >>> result = explore(vectors, projection_method='pca', n_clusters=3, random_state=0)
+    >>> len(result['ids']), len(result['coords']), len(result['labels'])
+    (12, 12, 12)
+    >>> result['ids'][:3]
+    ['0', '1', '2']
+    >>> len(result['coords'][0])                 # each row has `dims` coordinates
+    2
+    >>> set(result['labels']) <= {0, 1, 2}
+    True
+    >>> result['cluster_titles']                 # empty unless label=True
+    {}
+    """
+    ids, texts, vectors = _resolve_explorable(data, embedder=embedder)
+    # Fail fast: labelling needs the per-row texts — check before any costly
+    # projection so a bad request does not pay for a UMAP layout it discards.
+    if label and texts is None:
+        raise ValueError(
+            "explore(label=True) needs text — pass a corpus, searchable or "
+            "iterable of texts/segments, not a bare vector matrix."
+        )
+    coords = project(
+        vectors, dims=dims, method=projection_method, random_state=random_state
+    )
+    labels = cluster(
+        vectors,
+        method=cluster_method,
+        n_clusters=n_clusters,
+        min_cluster_size=min_cluster_size,
+        random_state=random_state,
+    )
+    cluster_titles: dict[int, str] = {}
+    if label and texts is not None:
+        cluster_titles = label_clusters(texts, labels, context=context, n_words=n_words)
+    return ExploreResult(
+        ids=ids,
+        coords=[[float(x) for x in row] for row in coords],
+        labels=[int(x) for x in labels],
+        cluster_titles=cluster_titles,
+    )
+
+
 # ===========================================================================
 # Input resolution — corpus | vectors -> ndarray(n, dim)
 # ===========================================================================
 
 
-def _resolve_vectors(data: Any, *, embedder: Any = None) -> np.ndarray:
-    """Coerce ``data`` to a float ``ndarray`` of shape ``(n_samples, dim)``.
+def _resolve_explorable(
+    data: Any, *, embedder: Any = None
+) -> tuple[list[str], list[str] | None, np.ndarray]:
+    """Coerce ``data`` to ``(ids, texts, vectors)`` — the input :func:`explore` needs.
 
-    Understands: a :class:`~ef.source_manager.SearchableCorpus` or
-    :class:`~ef.source_manager.SourceManager` (vectors pulled from the index),
-    an ``ndarray`` / nested sequence of numbers (used as-is), an iterable of
-    texts or :class:`~ef.segments.Segment`\\ s (embedded), and a
-    :class:`~ef.corpus.Corpus` mapping (its values are embedded).
+    The dispatch seam for layer L5. ``vectors`` is an ``(n_samples, dim)`` float
+    array; ``ids`` are the per-row identifiers (a corpus's keys, or positional
+    ``"0"``, ``"1"``, … for an id-less matrix); ``texts`` are the per-row texts
+    when ``data`` carries them (a corpus / searchable / iterable of texts or
+    segments) and ``None`` when it does not (a bare vector matrix —
+    :func:`label_clusters` is then unavailable).
 
-    >>> v = _resolve_vectors(['hello world', 'goodbye world', 'a b c'])
-    >>> v.shape[0]
-    3
+    Understands the same inputs as :func:`_resolve_vectors`: a
+    :class:`~ef.source_manager.SearchableCorpus` / :class:`~ef.source_manager.SourceManager`,
+    an ``ndarray`` / nested sequence of numbers, an iterable of texts or
+    :class:`~ef.segments.Segment`\\ s, and a :class:`~ef.corpus.Corpus` mapping.
+
+    >>> ids, texts, vectors = _resolve_explorable(['hello world', 'a b c'])
+    >>> ids, vectors.shape[0]
+    (['0', '1'], 2)
     """
     # A SearchableCorpus — has an indexed `vd` collection + a query embedder.
     if hasattr(data, "collection") and hasattr(data, "embedder"):
-        return _vectors_from_searchable(data)
+        return _explorable_from_searchable(data)
     # A SourceManager — get its default searchable view, then pull vectors.
     if callable(getattr(data, "searchable", None)):
-        return _vectors_from_searchable(data.searchable())
+        return _explorable_from_searchable(data.searchable())
+    # A bare vector matrix — positional ids, no text.
     if isinstance(data, np.ndarray):
-        array = np.asarray(data, dtype=float)
-        if array.ndim != 2:
-            raise ValueError(
-                f"expected a 2-D array of vectors, got shape {array.shape}"
-            )
-        return array
-    # A Corpus mapping — explore its source values (raw, unsegmented).
+        vectors = _as_2d(data)
+        return (_positional_ids(len(vectors)), None, vectors)
+    # A Corpus mapping — its keys are the ids, its values the source texts.
     if isinstance(data, Mapping):
-        data = list(data.values())
+        ids = [str(key) for key in data]
+        texts = [_segment_text(value) for value in data.values()]
+        return (ids, texts, _embed_texts(texts, embedder=embedder))
 
     items = list(data)
     if not items:
         raise ValueError("cannot explore an empty corpus")
     first = items[0]
     if isinstance(first, str):
-        return _embed_texts(items, embedder=embedder)
-    if isinstance(first, Mapping):  # an iterable of Segments
-        return _embed_texts([_segment_text(s) for s in items], embedder=embedder)
-    # Otherwise: a sequence of numeric vectors.
-    array = np.asarray(items, dtype=float)
-    if array.ndim != 2:
-        raise ValueError(
-            f"could not read {type(first).__name__} items as vectors or text"
+        texts = [str(item) for item in items]
+        return (
+            _positional_ids(len(texts)),
+            texts,
+            _embed_texts(texts, embedder=embedder),
         )
-    return array
+    if isinstance(first, Mapping):  # an iterable of Segments
+        ids = [str(seg.get("id", index)) for index, seg in enumerate(items)]
+        texts = [_segment_text(seg) for seg in items]
+        return (ids, texts, _embed_texts(texts, embedder=embedder))
+    # Otherwise: a sequence of numeric vectors — positional ids, no text.
+    vectors = _as_2d(items)
+    return (_positional_ids(len(vectors)), None, vectors)
 
 
-def _vectors_from_searchable(searchable: Any) -> np.ndarray:
-    """Pull every indexed vector out of a ``SearchableCorpus``'s collection."""
+def _resolve_vectors(data: Any, *, embedder: Any = None) -> np.ndarray:
+    """Coerce ``data`` to a float ``ndarray`` of shape ``(n_samples, dim)``.
+
+    The vector-only view of :func:`_resolve_explorable` — what :func:`project`
+    and :func:`cluster` need (they ignore the ids and texts).
+
+    >>> _resolve_vectors(['hello world', 'goodbye world', 'a b c']).shape[0]
+    3
+    """
+    return _resolve_explorable(data, embedder=embedder)[2]
+
+
+def _explorable_from_searchable(
+    searchable: Any,
+) -> tuple[list[str], list[str], np.ndarray]:
+    """Pull ``(ids, texts, vectors)`` out of a ``SearchableCorpus``'s collection."""
     keys = list(searchable.collection)
     if not keys:
         raise ValueError("cannot explore an empty SearchableCorpus")
+    ids: list[str] = []
+    texts: list[str] = []
     rows: list[np.ndarray] = []
     for key in keys:
         document = searchable.collection[key]
+        ids.append(str(key))
+        texts.append(str(getattr(document, "text", "")))
         vector = getattr(document, "vector", None)
         if vector is None:  # not stored — re-embed the text
             vector = searchable.embedder([document.text])[0]
         rows.append(np.asarray(vector, dtype=float).ravel())
-    return np.vstack(rows)
+    return ids, texts, np.vstack(rows)
+
+
+def _vectors_from_searchable(searchable: Any) -> np.ndarray:
+    """Pull every indexed vector out of a ``SearchableCorpus``'s collection."""
+    return _explorable_from_searchable(searchable)[2]
+
+
+def _positional_ids(n: int) -> list[str]:
+    """Positional string ids ``["0", "1", …, str(n - 1)]`` for an id-less input."""
+    return [str(index) for index in range(n)]
+
+
+def _as_2d(data: Any) -> np.ndarray:
+    """Coerce ``data`` to a 2-D float ``ndarray``, raising on any other shape."""
+    array = np.asarray(data, dtype=float)
+    if array.ndim != 2:
+        raise ValueError(f"expected a 2-D array of vectors, got shape {array.shape}")
+    return array
 
 
 def _embed_texts(texts: Iterable[str], *, embedder: Any = None) -> np.ndarray:

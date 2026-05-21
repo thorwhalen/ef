@@ -107,6 +107,42 @@ def test_corpora_are_isolated():
 
 
 # ---------------------------------------------------------------------------
+# explore_corpus
+# ---------------------------------------------------------------------------
+
+
+def test_explore_corpus_returns_structured_result():
+    service = EfService()
+    service.create_corpus(
+        [
+            "cats and dogs",
+            "machine learning",
+            "neural networks",
+            "kittens playing",
+            "deep learning models",
+        ],
+        corpus_id="mixed",
+    )
+    result = service.explore_corpus("mixed", projection_method="pca", n_clusters=2)
+    assert set(result) == {"ids", "coords", "labels", "cluster_titles"}
+    assert len(result["ids"]) == 5
+    assert len(result["coords"]) == 5
+    assert len(result["labels"]) == 5
+    # the result's ids are the corpus's own segment ids
+    indexed_ids = {
+        h.segment["id"] for h in service.search("mixed", "learning", limit=99)
+    }
+    assert set(result["ids"]) == indexed_ids
+
+
+def test_explore_corpus_dims_3():
+    service = EfService()
+    service.create_corpus(["a b c", "d e f", "g h i", "j k l"], corpus_id="c")
+    result = service.explore_corpus("c", dims=3, projection_method="pca")
+    assert all(len(row) == 3 for row in result["coords"])
+
+
+# ---------------------------------------------------------------------------
 # list_corpora / delete_corpus
 # ---------------------------------------------------------------------------
 
@@ -137,6 +173,7 @@ def test_delete_corpus_removes_the_handle():
     [
         lambda s: s.search("nope", "q"),
         lambda s: s.retrieve("nope", "q"),
+        lambda s: s.explore_corpus("nope"),
         lambda s: s.corpus_info("nope"),
         lambda s: s.delete_corpus("nope"),
     ],

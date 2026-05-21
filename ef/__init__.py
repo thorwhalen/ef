@@ -105,9 +105,12 @@ The **explore layer** (L5) is ``ef``'s visualization heritage, kept as a
 *secondary* "see the shape of the corpus" surface — search/RAG/indexing is the
 primary one. It imports numpy-only; UMAP, HDBSCAN and ``imbed`` are lazy extras:
 
-- :func:`~ef.explore.project` — reduce embeddings to 2-D/3-D coordinates
-  (PCA → UMAP); :func:`~ef.explore.cluster` — group them (k-means / HDBSCAN);
-  :func:`~ef.explore.label_clusters` — name clusters with an LLM via ``imbed``.
+- :func:`~ef.exploration.project` — reduce embeddings to 2-D/3-D coordinates
+  (PCA → UMAP); :func:`~ef.exploration.cluster` — group them (k-means / HDBSCAN);
+  :func:`~ef.exploration.label_clusters` — name clusters with an LLM via ``imbed``.
+- :func:`~ef.exploration.explore` — the orchestrator: project + cluster (+ label)
+  in one call, returning a structured, JSON-friendly
+  :class:`~ef.exploration.ExploreResult` (``ids`` / ``coords`` / ``labels``).
 
 The **service layer** bridges ``ef``'s stateful objects to a stateless
 transport — hand its methods to ``qh.mk_app()`` to serve ``ef`` over HTTP:
@@ -254,8 +257,10 @@ from ef.reranking import (
     rerank,
     with_reranker,
 )
-from ef.explore import (
+from ef.exploration import (
+    ExploreResult,
     cluster,
+    explore,
     label_clusters,
     project,
 )
@@ -393,6 +398,8 @@ __all__ = [
     "project",
     "cluster",
     "label_clusters",
+    "explore",
+    "ExploreResult",
     # --- service (the HTTP-bridge facade) ---
     "EfService",
     "CorpusInfo",

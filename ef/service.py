@@ -10,11 +10,12 @@ back to the live indexed object across requests.
 
 :class:`EfService` is that bridge: a facade holding a **handle registry**
 ``{corpus_id: SourceManager}`` **on the instance**. A single ``EfService()`` is
-constructed once at server start-up, and its six bound methods —
+constructed once at server start-up, and its seven bound methods —
 :meth:`~EfService.create_corpus`, :meth:`~EfService.search`,
-:meth:`~EfService.retrieve`, :meth:`~EfService.corpus_info`,
-:meth:`~EfService.list_corpora`, :meth:`~EfService.delete_corpus` — are handed
-to ``qh.mk_app()`` as the HTTP surface. The registry lives on the instance,
+:meth:`~EfService.retrieve`, :meth:`~EfService.explore_corpus`,
+:meth:`~EfService.corpus_info`, :meth:`~EfService.list_corpora`,
+:meth:`~EfService.delete_corpus` — are handed to ``qh.mk_app()`` as the HTTP
+surface. The registry lives on the instance,
 never as a module global: a process-wide mutable registry would be the
 ``ServiceContext`` singleton anti-pattern ``ef`` rejects (``.claude/CLAUDE.md``
 §6) — inject an :class:`EfService` explicitly instead.
@@ -62,6 +63,7 @@ import uuid
 from collections.abc import Iterator
 from typing import TypedDict
 
+from ef.exploration import ExploreResult, explore
 from ef.segments import Segment
 from ef.source_manager import DEFAULT_EMBEDDER, SearchHit, SourceManager
 
@@ -227,6 +229,46 @@ class EfService:
             KeyError: if ``corpus_id`` is not registered.
         """
         return self._manager(corpus_id).retrieve(query, limit=limit)
+
+    def explore_corpus(
+        self,
+        corpus_id: str,
+        *,
+        dims: int = 2,
+        projection_method: str = "auto",
+        cluster_method: str = "kmeans",
+        n_clusters: int = 8,
+        label: bool = False,
+    ) -> ExploreResult:
+        """Project & cluster a registered corpus — the corpus-map surface.
+
+        Runs :func:`ef.exploration.explore` over the corpus: every indexed
+        segment is projected to ``dims`` coordinates and assigned a cluster,
+        returned as a row-aligned :class:`~ef.exploration.ExploreResult` (``ids`` /
+        ``coords`` / ``labels`` / ``cluster_titles``) — the JSON-friendly shape
+        an ``app_ef`` corpus map consumes.
+
+        Args:
+            corpus_id: the corpus to explore.
+            dims: projection target dimensionality — ``2`` or ``3``.
+            projection_method: ``"auto"`` / ``"umap"`` / ``"pca"``.
+            cluster_method: ``"kmeans"`` / ``"hdbscan"``.
+            n_clusters: number of k-means clusters.
+            label: when ``True``, also name each cluster with an LLM (needs the
+                ``ef[imbed]`` extra and a key); default ``False``.
+
+        Raises:
+            KeyError: if ``corpus_id`` is not registered.
+            ValueError: if the corpus has fewer than 2 indexed segments.
+        """
+        return explore(
+            self._manager(corpus_id),
+            dims=dims,
+            projection_method=projection_method,
+            cluster_method=cluster_method,
+            n_clusters=n_clusters,
+            label=label,
+        )
 
     # -- dunders ------------------------------------------------------------
 

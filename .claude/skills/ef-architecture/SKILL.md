@@ -28,8 +28,8 @@ Uses `vd` for vector storage. `ef` is **not RAG** — no answer synthesis.
 `ef` *started* as a prototype of an embedding *visualization* pipeline
 (`segment → embed → planarize → cluster`). The 8-phase refactor (ef#3–#18) made
 search/RAG/corpus-indexing the primary surface and demoted visualization to a
-secondary "explore the corpus" layer (L5, `ef/explore.py`). **The refactor is
-complete.** `ef` is free to change — no users.
+secondary "explore the corpus" layer (L5, `ef/exploration.py`). **The refactor
+is complete.** `ef` is free to change — no users.
 
 ## The five-layer spine
 
@@ -110,7 +110,7 @@ All 8 phases are **done** — the refactor is complete.
    + evaluation hookpoints — `ef/evaluation.py` (`evaluate_retrieval` BEIR-shaped
    / NDCG@10, `evaluate_rag` Ragas-shaped, `read_beir`/`write_beir`,
    `as_ragas_dataset`) and `ef/reranking.py` (`rerank` / `with_reranker`).
-8. ✅ Demote viz to L5 "explore" — `ef/explore.py`: `project` (PCA → UMAP,
+8. ✅ Demote viz to L5 "explore" — `ef/exploration.py`: `project` (PCA → UMAP,
    cosine, seeded), `cluster` (numpy k-means / HDBSCAN), `label_clusters`
    (`imbed`'s `ClusterLabeler`). numpy-only import; UMAP/HDBSCAN/`imbed` lazy
    extras. The viz-era prototype (`Project`/`ComponentRegistry`/`mall`/DAG/
