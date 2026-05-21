@@ -48,6 +48,57 @@ def test_explicit_embedder_string_is_resolved():
     assert info["embedder"] == "hashing:v1@512"
 
 
+# ---------------------------------------------------------------------------
+# default_embedder — the per-instance create_corpus default
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def captured_embedder(monkeypatch):
+    """Spy on the embedder ``create_corpus`` hands to ``SourceManager``.
+
+    Substitutes ``SourceManager`` with a wrapper that records the resolved
+    ``embedder`` argument, then builds a real, offline hashing-backed manager —
+    so these tests prove the embedder *wiring* without touching any network
+    embedding backend (and stay within the module's offline-only promise).
+    """
+    import ef.service as service_module
+
+    seen: dict[str, object] = {}
+    real_source_manager = service_module.SourceManager
+
+    def spy(sources, *, segmenter=None, embedder=None):
+        seen["embedder"] = embedder
+        return real_source_manager(sources, segmenter=segmenter, embedder="hashing")
+
+    monkeypatch.setattr(service_module, "SourceManager", spy)
+    return seen
+
+
+def test_default_embedder_defaults_to_the_module_default(captured_embedder):
+    """A bare EfService() resolves create_corpus(embedder=None) to DEFAULT_EMBEDDER."""
+    from ef.source_manager import DEFAULT_EMBEDDER
+
+    EfService().create_corpus(["hello world"])
+    assert captured_embedder["embedder"] == DEFAULT_EMBEDDER
+
+
+def test_default_embedder_is_used_when_create_corpus_embedder_is_none(captured_embedder):
+    """EfService(default_embedder=...) is what create_corpus(embedder=None) resolves."""
+    EfService(default_embedder="openai:text-embedding-3-small").create_corpus(
+        ["hello world"]
+    )
+    assert captured_embedder["embedder"] == "openai:text-embedding-3-small"
+
+
+def test_explicit_embedder_overrides_the_service_default(captured_embedder):
+    """A per-call create_corpus(embedder=...) wins over the service-level default."""
+    EfService(default_embedder="openai:text-embedding-3-small").create_corpus(
+        ["hello world"], embedder="hashing"
+    )
+    assert captured_embedder["embedder"] == "hashing"
+
+
 def test_auto_generated_corpus_id_is_unique():
     service = EfService()
     first = service.create_corpus(["alpha"])["corpus_id"]
