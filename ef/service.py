@@ -113,14 +113,21 @@ class EfService:
     """A registry-backed facade bridging stateful ``ef`` to a stateless transport.
 
     Construct one ``EfService`` per process, register corpora with
-    :meth:`create_corpus`, then query them by ``corpus_id``. Hand the six bound
-    methods to ``qh.mk_app()`` to expose them over HTTP — see the module
+    :meth:`create_corpus`, then query them by ``corpus_id``. Hand the seven
+    bound methods to ``qh.mk_app()`` to expose them over HTTP — see the module
     docstring.
 
     The handle registry is private instance state — never a module global.
     Corpora are isolated: each :meth:`create_corpus` builds its own
     :class:`~ef.source_manager.SourceManager` over its own in-memory ``vd``
     backend, so one corpus's vectors never leak into another's search.
+
+    ``default_embedder`` sets the embedder :meth:`create_corpus` resolves when
+    its own ``embedder`` argument is ``None`` — the per-instance hook a host
+    (e.g. ``app_ef``) uses to pick a policy default without passing
+    ``embedder=`` on every call. It defaults to
+    :data:`~ef.source_manager.DEFAULT_EMBEDDER` (``"hashing"``), so a bare
+    ``EfService()`` stays dependency-free and offline.
 
     >>> service = EfService()
     >>> len(service)
@@ -130,10 +137,20 @@ class EfService:
     True
     >>> len(service)
     1
+
+    A host can swap the default embedder at construction (the string is resolved
+    lazily, per corpus, by the DI seam — constructing the service touches no
+    network):
+
+    >>> EfService(default_embedder='openai:text-embedding-3-small')
+    <EfService: 0 corpus(es) registered>
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, default_embedder: str | None = None) -> None:
         self._corpora: dict[str, SourceManager] = {}
+        self._default_embedder: str = (
+            default_embedder if default_embedder is not None else DEFAULT_EMBEDDER
+        )
 
     # -- corpus lifecycle ---------------------------------------------------
 
@@ -152,9 +169,10 @@ class EfService:
             embedder: the embedder, as a string the DI seam resolves
                 (:func:`~ef.embedder_adapters.as_embedder`) — ``"hashing"``,
                 ``"openai:text-embedding-3-small"``, ``"cohere:..."``, an
-                ``http(s)://`` URL, …. ``None`` →
+                ``http(s)://`` URL, …. ``None`` → the service's
+                ``default_embedder`` (chosen at construction; itself
                 :data:`~ef.source_manager.DEFAULT_EMBEDDER`, the dependency-free
-                :class:`~ef.embedders.HashingEmbedder`.
+                :class:`~ef.embedders.HashingEmbedder`, unless a host overrode it).
             segmenter: the segmenter, as a string
                 (:func:`~ef.segmenter_adapters.as_segmenter`) — ``None`` → the
                 recursive-character default.
@@ -176,7 +194,7 @@ class EfService:
         manager = SourceManager(
             sources,
             segmenter=segmenter,
-            embedder=embedder if embedder is not None else DEFAULT_EMBEDDER,
+            embedder=embedder if embedder is not None else self._default_embedder,
         )
         manager.materialize()
         self._corpora[cid] = manager
