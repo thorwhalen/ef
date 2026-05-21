@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.source_manager &mdash; ef 0.1.13 documentation</title>
+  <title>ef.source_manager &mdash; ef 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -1061,30 +1061,21 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_unused_embedding_model</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``vd`` ``embedding_model`` that must never be called.</span>
-
-<span class="sd">    ``ef`` always supplies vectors to ``vd`` (documents on write, the query</span>
-<span class="sd">    vector on search), so ``vd``&#39;s own ``embedding_model`` is dead code in</span>
-<span class="sd">    ``ef``&#39;s flow. If it *is* reached, that is a bug — fail loudly rather than</span>
-<span class="sd">    embed silently with the wrong model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-        <span class="s2">&quot;vd&#39;s embedding_model was called, but ef supplies all vectors itself. &quot;</span>
-        <span class="s2">&quot;This indicates a document or query reached vd without a vector.&quot;</span>
-    <span class="p">)</span>
-
-
 <span class="k">def</span><span class="w"> </span><span class="nf">_open_store</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve a ``store`` argument into a ``(vd_client, explicit_collection)`` pair.</span>
 
 <span class="sd">    Exactly one of the two is non-``None``: a client (collections are created on</span>
 <span class="sd">    demand, one per config) or a single pre-made collection.</span>
+
+<span class="sd">    ``ef`` always supplies vectors to ``vd`` itself (documents carry a vector on</span>
+<span class="sd">    write; searches pass a pre-computed query vector), so ``vd`` is connected</span>
+<span class="sd">    *without* an embedder. In that vector-only mode ``vd`` fails loud if text</span>
+<span class="sd">    ever reaches it without a vector — exactly the safety ``ef`` wants.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">vd</span>
 
-        <span class="n">client</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">store</span> <span class="ow">or</span> <span class="s2">&quot;memory&quot;</span><span class="p">,</span> <span class="n">embedding_model</span><span class="o">=</span><span class="n">_unused_embedding_model</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">store</span> <span class="ow">or</span> <span class="s2">&quot;memory&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">client</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;create_collection&quot;</span><span class="p">):</span>  <span class="c1"># a vd client</span>
         <span class="k">return</span> <span class="n">store</span><span class="p">,</span> <span class="kc">None</span>
