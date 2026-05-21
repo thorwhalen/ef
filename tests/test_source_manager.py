@@ -326,7 +326,7 @@ def test_pipeline_exposes_the_spec():
 def test_explicit_collection_rejects_a_second_config():
     import vd
 
-    client = vd.connect("memory", embedding_model=lambda text: [0.0])
+    client = vd.connect("memory")
     collection = client.create_collection("manual")
     sm = SourceManager(["alpha"], embedder=_toy("a@16"), store=collection)
     with pytest.raises(ValueError):
@@ -336,7 +336,7 @@ def test_explicit_collection_rejects_a_second_config():
 def test_explicit_collection_is_used():
     import vd
 
-    client = vd.connect("memory", embedding_model=lambda text: [0.0])
+    client = vd.connect("memory")
     collection = client.create_collection("manual")
     sm = SourceManager(["alpha bean"], embedder=_toy(), store=collection)
     sm.materialize()
