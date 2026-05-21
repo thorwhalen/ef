@@ -71,8 +71,17 @@ from ef import as_embedder, openai_embedder, sentence_transformers_embedder
 
 index = ef.ingest(corpus, embedder=sentence_transformers_embedder("all-MiniLM-L6-v2"))
 index = ef.ingest(corpus, embedder=openai_embedder("text-embedding-3-small"))
+index = ef.ingest(corpus, embedder=as_embedder("cohere:embed-v4.0"))   # also voyage:/gemini:
 index = ef.ingest(corpus, embedder=as_embedder(my_callable, model_id="custom@768"))
 ```
+
+Hosted-API adapters: `openai_embedder` (needs `ef[openai]`) plus
+`cohere_embedder`, `voyage_embedder` and `gemini_embedder` — the latter three
+speak their providers' REST endpoints directly, so they need only an API key,
+no SDK. Each translates `ef`'s canonical `input_type` (`query` / `document` /
+`classification` / `clustering`) to the vendor's own task name. Local options:
+`sentence_transformers_embedder`, `http_embedder` (any TEI-style service), and
+the dependency-free `HashingEmbedder` default.
 
 An `Embedder` is just a batch callable `Iterable[str] -> ndarray(n, dim)` with a
 little metadata. Composition wrappers — `CachedEmbedder`, `RetryingEmbedder`,

@@ -20,10 +20,13 @@ from ef import (
     RetryingEmbedder,
     as_embedder,
     cache_key,
+    cohere_embedder,
     embed_length_sorted,
+    gemini_embedder,
     http_embedder,
     openai_embedder,
     ready_handle,
+    voyage_embedder,
 )
 
 
@@ -213,7 +216,9 @@ def test_retrying_embedder_retries_then_succeeds():
 
     inner = FunctionEmbedder(flaky, model_id="flaky@2")
     retrying = RetryingEmbedder(
-        inner, RetryPolicy(max_attempts=5, base_delay=0.0, jitter=0.0), sleep=lambda d: None
+        inner,
+        RetryPolicy(max_attempts=5, base_delay=0.0, jitter=0.0),
+        sleep=lambda d: None,
     )
     out = retrying(["a"])
     assert out.shape == (1, 2)
@@ -243,7 +248,9 @@ def test_retrying_embedder_gives_up_after_max_attempts():
 
     inner = FunctionEmbedder(always_503, model_id="down@2")
     retrying = RetryingEmbedder(
-        inner, RetryPolicy(max_attempts=3, base_delay=0.0, jitter=0.0), sleep=lambda d: None
+        inner,
+        RetryPolicy(max_attempts=3, base_delay=0.0, jitter=0.0),
+        sleep=lambda d: None,
     )
     with pytest.raises(_Boom):
         retrying(["a"])
@@ -463,3 +470,169 @@ def test_openai_embedder_batch_api():
 def test_openai_embedder_rejects_dim_on_non_mrl_model():
     with pytest.raises(EmbedderError):
         openai_embedder("text-embedding-ada-002", dim=512, client=_FakeOpenAIClient())
+
+
+# --------------------------------------------------------------------------
+# Cohere / Voyage / Gemini REST adapters — exercised against a fake transport
+# --------------------------------------------------------------------------
+
+
+class _FakeRest:
+    """Stand-in for ``_post_json`` — embeds each text as ``[len(t)] * dim``.
+
+    Branches on the URL to return each provider's own response shape, and
+    records every ``(url, payload, headers)`` so a test can assert that the
+    canonical ``InputType`` was translated into the request.
+    """
+
+    def __init__(self, dim=8):
+        self.dim = dim
+        self.calls = []  # list of (url, payload, headers)
+
+    def __call__(self, url, payload, *, headers, timeout):
+        self.calls.append((url, payload, dict(headers)))
+        if "cohere" in url:
+            dim = payload.get("output_dimension", self.dim)
+            return {
+                "embeddings": {
+                    "float": [[float(len(t))] * dim for t in payload["texts"]]
+                }
+            }
+        if "voyageai" in url:
+            dim = payload.get("output_dimension", self.dim)
+            return {
+                "data": [
+                    {"index": i, "embedding": [float(len(t))] * dim}
+                    for i, t in enumerate(payload["input"])
+                ]
+            }
+        if "generativelanguage" in url:  # Gemini
+            return {
+                "embeddings": [
+                    {
+                        "values": [float(len(req["content"]["parts"][0]["text"]))]
+                        * req.get("outputDimensionality", self.dim)
+                    }
+                    for req in payload["requests"]
+                ]
+            }
+        raise AssertionError(f"unexpected url {url!r}")
+
+
+def _patch_rest(monkeypatch, dim=8):
+    fake = _FakeRest(dim=dim)
+    monkeypatch.setattr("ef.embedder_adapters._post_json", fake)
+    return fake
+
+
+def test_cohere_embedder_sync_call(monkeypatch):
+    _patch_rest(monkeypatch)
+    e = cohere_embedder("embed-v4.0", dim=8, api_key="k")
+    assert isinstance(e, Embedder)
+    assert e.model_id == "cohere:embed-v4.0@8"
+    out = e(["aa", "bbbb"])
+    assert out.shape == (2, 8)
+    assert out[0].tolist() == [2.0] * 8  # order preserved despite length-sort
+    assert out[1].tolist() == [4.0] * 8
+
+
+def test_cohere_translates_input_type(monkeypatch):
+    fake = _patch_rest(monkeypatch)
+    e = cohere_embedder("embed-english-v3.0", api_key="k")
+    e(["q"], input_type="query")
+    assert fake.calls[-1][1]["input_type"] == "search_query"
+    e(["d"], input_type="document")
+    assert fake.calls[-1][1]["input_type"] == "search_document"
+    e(["x"])  # no hint -> Cohere v3+ requires one, default to the document role
+    assert fake.calls[-1][1]["input_type"] == "search_document"
+
+
+def test_cohere_rejects_dim_on_non_mrl_model():
+    with pytest.raises(EmbedderError):
+        cohere_embedder("embed-english-v3.0", dim=512, api_key="k")
+
+
+def test_voyage_embedder_sync_call(monkeypatch):
+    _patch_rest(monkeypatch)
+    e = voyage_embedder("voyage-3.5", dim=8, api_key="k")
+    assert isinstance(e, Embedder)
+    assert e.model_id == "voyage:voyage-3.5@8"
+    assert e.normalized is True  # Voyage embeddings are L2-normalized
+    out = e(["aa", "bbbb"])
+    assert out.shape == (2, 8)
+    assert out[0].tolist() == [2.0] * 8
+
+
+def test_voyage_translates_and_omits_input_type(monkeypatch):
+    fake = _patch_rest(monkeypatch)
+    e = voyage_embedder("voyage-3.5", api_key="k")
+    assert e.honored_input_types == ("query", "document")
+    e(["q"], input_type="query")
+    assert fake.calls[-1][1]["input_type"] == "query"
+    e(["c"], input_type="clustering")  # Voyage has no clustering role
+    assert "input_type" not in fake.calls[-1][1]
+
+
+def test_gemini_embedder_sync_call(monkeypatch):
+    _patch_rest(monkeypatch)
+    e = gemini_embedder("gemini-embedding-001", dim=8, api_key="k")
+    assert isinstance(e, Embedder)
+    assert e.model_id == "gemini:gemini-embedding-001@8"
+    out = e(["aa", "bbbb"])
+    assert out.shape == (2, 8)
+    assert out[0].tolist() == [2.0] * 8
+
+
+def test_gemini_translates_task_type(monkeypatch):
+    fake = _patch_rest(monkeypatch)
+    e = gemini_embedder("gemini-embedding-001", api_key="k")
+    e(["q"], input_type="query")
+    assert fake.calls[-1][1]["requests"][0]["taskType"] == "RETRIEVAL_QUERY"
+    e(["c"], input_type="clustering")
+    assert fake.calls[-1][1]["requests"][0]["taskType"] == "CLUSTERING"
+
+
+def test_gemini_models_prefix_is_stripped(monkeypatch):
+    _patch_rest(monkeypatch)
+    e = gemini_embedder("models/gemini-embedding-001", api_key="k")
+    assert e.model_id == "gemini:gemini-embedding-001@3072"
+
+
+def test_gemini_truncated_dim_is_not_normalized():
+    truncated = gemini_embedder("gemini-embedding-001", dim=768, api_key="k")
+    assert truncated.normalized is False  # Gemini does not re-normalize MRL output
+    full = gemini_embedder("gemini-embedding-001", api_key="k")
+    assert full.normalized is True
+
+
+def test_rest_embedders_require_an_api_key(monkeypatch):
+    for var in (
+        "CO_API_KEY",
+        "COHERE_API_KEY",
+        "VOYAGE_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY",
+    ):
+        monkeypatch.delenv(var, raising=False)
+    with pytest.raises(EmbedderError):
+        cohere_embedder("embed-v4.0")
+    with pytest.raises(EmbedderError):
+        voyage_embedder("voyage-3.5")
+    with pytest.raises(EmbedderError):
+        gemini_embedder("gemini-embedding-001")
+
+
+def test_rest_embedders_read_the_api_key_from_env(monkeypatch):
+    monkeypatch.setenv("CO_API_KEY", "env-key")
+    e = cohere_embedder("embed-v4.0")
+    assert e.model_id == "cohere:embed-v4.0@1536"
+
+
+def test_as_embedder_provider_prefixes(monkeypatch):
+    _patch_rest(monkeypatch)
+    cohere = as_embedder("cohere:embed-v4.0", api_key="k")
+    assert cohere.model_id == "cohere:embed-v4.0@1536"
+    voyage = as_embedder("voyage:voyage-3.5", api_key="k")
+    assert voyage.model_id == "voyage:voyage-3.5@1024"
+    gemini = as_embedder("gemini:gemini-embedding-001", api_key="k")
+    assert gemini.model_id == "gemini:gemini-embedding-001@3072"
