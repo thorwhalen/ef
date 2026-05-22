@@ -202,10 +202,30 @@ def _as_floats(vector: Any) -> list[float]:
     return [float(x) for x in seq]
 
 
-def _coerce_embedder(embedder: Any) -> Embedder:
-    """Coerce an embedder argument, defaulting ``None`` to :data:`DEFAULT_EMBEDDER`."""
+#: Embedder spec prefixes whose adapters accept an ``api_key`` — the hosted
+#: embedding APIs. A per-call key is forwarded only for these (see
+#: :func:`_coerce_embedder`); the hashing / sentence-transformers / HTTP /
+#: callable factories take no ``api_key`` and would reject the kwarg.
+_API_KEY_PROVIDERS = ("openai:", "cohere:", "voyage:", "gemini:")
+
+
+def _coerce_embedder(embedder: Any, *, api_key: str | None = None) -> Embedder:
+    """Coerce an embedder argument, defaulting ``None`` to :data:`DEFAULT_EMBEDDER`.
+
+    When ``api_key`` is given *and* ``embedder`` is a hosted-API provider spec
+    (``"openai:…"``, ``"cohere:…"``, ``"voyage:…"``, ``"gemini:…"``), the key is
+    forwarded to that adapter — the per-call bring-your-own-key seam. It is
+    *not* forwarded to any other embedder kind (hashing / sentence-transformers
+    / HTTP / callable), whose factories take no ``api_key``.
+    """
     if embedder is None:
-        return as_embedder(DEFAULT_EMBEDDER)
+        embedder = DEFAULT_EMBEDDER
+    if (
+        api_key
+        and isinstance(embedder, str)
+        and embedder.startswith(_API_KEY_PROVIDERS)
+    ):
+        return as_embedder(embedder, api_key=api_key)
     return as_embedder(embedder)
 
 
@@ -364,6 +384,10 @@ class SourceManager:
         embedder: the default config's embedder — coerced by
             :func:`~ef.embedder_adapters.as_embedder`. If given, a ``"default"``
             config is registered; if ``None``, no default config is registered.
+        embedder_api_key: an optional API key for the default config's embedder
+            — forwarded to a hosted-API adapter (``"openai:…"`` etc.) when the
+            ``embedder`` is such a spec. The bring-your-own-key seam; ignored
+            for key-less embedders. See :meth:`register_config`.
         store: where the vectors go. ``None`` → an in-memory ``vd`` backend; a
             ``vd`` client → collections are created on it; a ``vd`` collection →
             used directly (then only one config is supported); a backend-name
@@ -396,6 +420,7 @@ class SourceManager:
         store: Any = None,
         cache: MutableMapping[ArtifactId, Any] | None = None,
         auto_refresh: bool = False,
+        embedder_api_key: str | None = None,
     ) -> None:
         self.corpus = as_corpus(corpus)
         self.graph = ArtifactGraph(store=cache)
@@ -408,14 +433,24 @@ class SourceManager:
         self._materialized: set[ConfigId] = set()
         self._auto_refresh = False
         if embedder is not None:
-            self.register_config("default", segmenter=segmenter, embedder=embedder)
+            self.register_config(
+                "default",
+                segmenter=segmenter,
+                embedder=embedder,
+                embedder_api_key=embedder_api_key,
+            )
         if auto_refresh:
             self._enable_auto_refresh()
 
     # -- config registration ------------------------------------------------
 
     def register_config(
-        self, name: str = "default", *, segmenter: Any = None, embedder: Any = None
+        self,
+        name: str = "default",
+        *,
+        segmenter: Any = None,
+        embedder: Any = None,
+        embedder_api_key: str | None = None,
     ) -> ConfigId:
         """Register a named segmenter+embedder pipeline; return its :class:`~ef.config.ConfigId`.
 
@@ -426,6 +461,11 @@ class SourceManager:
         shared :class:`~ef.artifact_graph.ArtifactGraph` and a ``vd`` collection
         is created for the config. Registering a config does *not* index it —
         call :meth:`materialize`.
+
+        ``embedder_api_key`` is the per-call bring-your-own-key seam: when given
+        and ``embedder`` is a hosted-API provider spec (``"openai:…"`` etc.),
+        the key is forwarded to that adapter instead of relying on a server
+        environment variable. Ignored for key-less embedders.
 
         Re-registering the same ``name`` replaces it. Two configs that resolve
         to the same :class:`~ef.config.PipelineSpec` share one
@@ -441,7 +481,7 @@ class SourceManager:
         64
         """
         segmenter_obj = as_segmenter(segmenter)
-        embedder_obj = _coerce_embedder(embedder)
+        embedder_obj = _coerce_embedder(embedder, api_key=embedder_api_key)
         seg_spec, seg_fn = segment_step(segmenter_obj)
         emb_spec, emb_fn = embed_step(embedder_obj)
         pipeline = PipelineSpec(segment=seg_spec, embed=emb_spec)

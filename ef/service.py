@@ -161,6 +161,7 @@ class EfService:
         embedder: str | None = None,
         segmenter: str | None = None,
         corpus_id: str | None = None,
+        embedder_api_key: str | None = None,
     ) -> CorpusInfo:
         """Index ``sources`` into a new corpus, register it, return its :class:`CorpusInfo`.
 
@@ -178,6 +179,15 @@ class EfService:
                 recursive-character default.
             corpus_id: the handle to register the corpus under; ``None`` → a
                 fresh random id. Reusing a live id is an error.
+            embedder_api_key: an optional API key for the embedder — the
+                bring-your-own-key seam. When given and ``embedder`` is a
+                hosted-API spec (``"openai:…"``, ``"cohere:…"``, …), the key is
+                forwarded to that adapter, so the service itself never needs to
+                hold one. ``None`` → the adapter's usual environment-variable
+                resolution. Ignored for key-less embedders (e.g. ``"hashing"``).
+                The corpus's embedder keeps the key for the life of the corpus,
+                so :meth:`search` / :meth:`retrieve` / :meth:`explore_corpus`
+                need no key of their own.
 
         Returns:
             the :class:`CorpusInfo` of the freshly indexed corpus.
@@ -195,6 +205,7 @@ class EfService:
             sources,
             segmenter=segmenter,
             embedder=embedder if embedder is not None else self._default_embedder,
+            embedder_api_key=embedder_api_key,
         )
         manager.materialize()
         self._corpora[cid] = manager
