@@ -67,8 +67,9 @@ def captured_embedder(monkeypatch):
     seen: dict[str, object] = {}
     real_source_manager = service_module.SourceManager
 
-    def spy(sources, *, segmenter=None, embedder=None):
+    def spy(sources, *, segmenter=None, embedder=None, embedder_api_key=None):
         seen["embedder"] = embedder
+        seen["embedder_api_key"] = embedder_api_key
         return real_source_manager(sources, segmenter=segmenter, embedder="hashing")
 
     monkeypatch.setattr(service_module, "SourceManager", spy)
@@ -97,6 +98,27 @@ def test_explicit_embedder_overrides_the_service_default(captured_embedder):
         ["hello world"], embedder="hashing"
     )
     assert captured_embedder["embedder"] == "hashing"
+
+
+# ---------------------------------------------------------------------------
+# embedder_api_key — the bring-your-own-key seam
+# ---------------------------------------------------------------------------
+
+
+def test_create_corpus_threads_embedder_api_key(captured_embedder):
+    """create_corpus(embedder_api_key=...) reaches SourceManager — the BYOK seam."""
+    EfService().create_corpus(
+        ["hello world"],
+        embedder="openai:text-embedding-3-small",
+        embedder_api_key="sk-byok",
+    )
+    assert captured_embedder["embedder_api_key"] == "sk-byok"
+
+
+def test_create_corpus_without_api_key_stays_offline():
+    """Omitting embedder_api_key leaves the hashing default fully offline."""
+    info = EfService().create_corpus(["hello world"], embedder_api_key=None)
+    assert info["embedder"] == "hashing:v1@512"
 
 
 def test_auto_generated_corpus_id_is_unique():

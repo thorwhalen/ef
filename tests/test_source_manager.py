@@ -365,3 +365,64 @@ def test_searchable_corpus_standalone():
     view = SearchableCorpus(sm.searchable().collection, _toy())
     assert view.search("alpha bean")[0].segment["text"] == "alpha bean"
     assert "indexed" in repr(view)
+
+
+# ---------------------------------------------------------------------------
+# embedder_api_key — the bring-your-own-key seam
+# ---------------------------------------------------------------------------
+
+
+def test_coerce_embedder_forwards_api_key_for_provider_specs(monkeypatch):
+    """A given api_key rides into the adapter for hosted-API provider specs."""
+    import ef.source_manager as source_manager
+
+    calls: list[tuple] = []
+
+    def recorder(spec, **kwargs):
+        calls.append((spec, kwargs))
+        return HashingEmbedder()  # offline stand-in — never touches the network
+
+    monkeypatch.setattr(source_manager, "as_embedder", recorder)
+
+    source_manager._coerce_embedder(
+        "openai:text-embedding-3-small", api_key="sk-test"
+    )
+    assert calls[-1] == ("openai:text-embedding-3-small", {"api_key": "sk-test"})
+
+
+def test_coerce_embedder_does_not_forward_api_key_to_keyless_embedders(monkeypatch):
+    """A key is never forwarded to embedders whose factories take no api_key."""
+    import ef.source_manager as source_manager
+
+    calls: list[tuple] = []
+
+    def recorder(spec, **kwargs):
+        calls.append((spec, kwargs))
+        return HashingEmbedder()
+
+    monkeypatch.setattr(source_manager, "as_embedder", recorder)
+
+    source_manager._coerce_embedder("hashing", api_key="sk-test")
+    assert calls[-1] == ("hashing", {})
+    source_manager._coerce_embedder(None, api_key="sk-test")  # None → DEFAULT_EMBEDDER
+    assert calls[-1] == ("hashing", {})
+
+
+def test_source_manager_threads_embedder_api_key(monkeypatch):
+    """SourceManager(embedder_api_key=...) reaches the embedder adapter."""
+    import ef.source_manager as source_manager
+
+    calls: list[tuple] = []
+
+    def recorder(spec, **kwargs):
+        calls.append((spec, kwargs))
+        return HashingEmbedder()
+
+    monkeypatch.setattr(source_manager, "as_embedder", recorder)
+
+    SourceManager(
+        ["alpha"],
+        embedder="openai:text-embedding-3-small",
+        embedder_api_key="sk-xyz",
+    )
+    assert ("openai:text-embedding-3-small", {"api_key": "sk-xyz"}) in calls
