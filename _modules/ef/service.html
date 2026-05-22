@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.service &mdash; ef 0.1.15 documentation</title>
+  <title>ef.service &mdash; ef 0.1.16 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e2f3408e"></script>
+      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -262,6 +262,7 @@
         <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">segmenter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">corpus_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embedder_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CorpusInfo</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Index ``sources`` into a new corpus, register it, return its :class:`CorpusInfo`.</span>
 
@@ -279,6 +280,15 @@
 <span class="sd">                recursive-character default.</span>
 <span class="sd">            corpus_id: the handle to register the corpus under; ``None`` → a</span>
 <span class="sd">                fresh random id. Reusing a live id is an error.</span>
+<span class="sd">            embedder_api_key: an optional API key for the embedder — the</span>
+<span class="sd">                bring-your-own-key seam. When given and ``embedder`` is a</span>
+<span class="sd">                hosted-API spec (``&quot;openai:…&quot;``, ``&quot;cohere:…&quot;``, …), the key is</span>
+<span class="sd">                forwarded to that adapter, so the service itself never needs to</span>
+<span class="sd">                hold one. ``None`` → the adapter&#39;s usual environment-variable</span>
+<span class="sd">                resolution. Ignored for key-less embedders (e.g. ``&quot;hashing&quot;``).</span>
+<span class="sd">                The corpus&#39;s embedder keeps the key for the life of the corpus,</span>
+<span class="sd">                so :meth:`search` / :meth:`retrieve` / :meth:`explore_corpus`</span>
+<span class="sd">                need no key of their own.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            the :class:`CorpusInfo` of the freshly indexed corpus.</span>
@@ -296,6 +306,7 @@
             <span class="n">sources</span><span class="p">,</span>
             <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
             <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span> <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_embedder</span><span class="p">,</span>
+            <span class="n">embedder_api_key</span><span class="o">=</span><span class="n">embedder_api_key</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">manager</span><span class="o">.</span><span class="n">materialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_corpora</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span> <span class="o">=</span> <span class="n">manager</span>

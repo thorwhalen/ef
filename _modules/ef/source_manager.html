@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.source_manager &mdash; ef 0.1.15 documentation</title>
+  <title>ef.source_manager &mdash; ef 0.1.16 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e2f3408e"></script>
+      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -302,10 +302,30 @@
     <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce an embedder argument, defaulting ``None`` to :data:`DEFAULT_EMBEDDER`.&quot;&quot;&quot;</span>
+<span class="c1">#: Embedder spec prefixes whose adapters accept an ``api_key`` — the hosted</span>
+<span class="c1">#: embedding APIs. A per-call key is forwarded only for these (see</span>
+<span class="c1">#: :func:`_coerce_embedder`); the hashing / sentence-transformers / HTTP /</span>
+<span class="c1">#: callable factories take no ``api_key`` and would reject the kwarg.</span>
+<span class="n">_API_KEY_PROVIDERS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;openai:&quot;</span><span class="p">,</span> <span class="s2">&quot;cohere:&quot;</span><span class="p">,</span> <span class="s2">&quot;voyage:&quot;</span><span class="p">,</span> <span class="s2">&quot;gemini:&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Embedder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce an embedder argument, defaulting ``None`` to :data:`DEFAULT_EMBEDDER`.</span>
+
+<span class="sd">    When ``api_key`` is given *and* ``embedder`` is a hosted-API provider spec</span>
+<span class="sd">    (``&quot;openai:…&quot;``, ``&quot;cohere:…&quot;``, ``&quot;voyage:…&quot;``, ``&quot;gemini:…&quot;``), the key is</span>
+<span class="sd">    forwarded to that adapter — the per-call bring-your-own-key seam. It is</span>
+<span class="sd">    *not* forwarded to any other embedder kind (hashing / sentence-transformers</span>
+<span class="sd">    / HTTP / callable), whose factories take no ``api_key``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">as_embedder</span><span class="p">(</span><span class="n">DEFAULT_EMBEDDER</span><span class="p">)</span>
+        <span class="n">embedder</span> <span class="o">=</span> <span class="n">DEFAULT_EMBEDDER</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">api_key</span>
+        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">embedder</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_API_KEY_PROVIDERS</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">as_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">as_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span>
 
 
@@ -475,6 +495,10 @@
 <span class="sd">        embedder: the default config&#39;s embedder — coerced by</span>
 <span class="sd">            :func:`~ef.embedder_adapters.as_embedder`. If given, a ``&quot;default&quot;``</span>
 <span class="sd">            config is registered; if ``None``, no default config is registered.</span>
+<span class="sd">        embedder_api_key: an optional API key for the default config&#39;s embedder</span>
+<span class="sd">            — forwarded to a hosted-API adapter (``&quot;openai:…&quot;`` etc.) when the</span>
+<span class="sd">            ``embedder`` is such a spec. The bring-your-own-key seam; ignored</span>
+<span class="sd">            for key-less embedders. See :meth:`register_config`.</span>
 <span class="sd">        store: where the vectors go. ``None`` → an in-memory ``vd`` backend; a</span>
 <span class="sd">            ``vd`` client → collections are created on it; a ``vd`` collection →</span>
 <span class="sd">            used directly (then only one config is supported); a backend-name</span>
@@ -507,6 +531,7 @@
         <span class="n">store</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">cache</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="n">ArtifactId</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">auto_refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">embedder_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">as_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">ArtifactGraph</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">cache</span><span class="p">)</span>
@@ -519,7 +544,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_materialized</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">ConfigId</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_refresh</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">embedder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">register_config</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_config</span><span class="p">(</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+                <span class="n">segmenter</span><span class="o">=</span><span class="n">segmenter</span><span class="p">,</span>
+                <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">,</span>
+                <span class="n">embedder_api_key</span><span class="o">=</span><span class="n">embedder_api_key</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">auto_refresh</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_enable_auto_refresh</span><span class="p">()</span>
 
@@ -528,7 +558,12 @@
 <div class="viewcode-block" id="SourceManager.register_config">
 <a class="viewcode-back" href="../../module_docs/ef/source_manager.html#ef.SourceManager.register_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_config</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">segmenter</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">segmenter</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embedder</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embedder_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigId</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a named segmenter+embedder pipeline; return its :class:`~ef.config.ConfigId`.</span>
 
@@ -539,6 +574,11 @@
 <span class="sd">        shared :class:`~ef.artifact_graph.ArtifactGraph` and a ``vd`` collection</span>
 <span class="sd">        is created for the config. Registering a config does *not* index it —</span>
 <span class="sd">        call :meth:`materialize`.</span>
+
+<span class="sd">        ``embedder_api_key`` is the per-call bring-your-own-key seam: when given</span>
+<span class="sd">        and ``embedder`` is a hosted-API provider spec (``&quot;openai:…&quot;`` etc.),</span>
+<span class="sd">        the key is forwarded to that adapter instead of relying on a server</span>
+<span class="sd">        environment variable. Ignored for key-less embedders.</span>
 
 <span class="sd">        Re-registering the same ``name`` replaces it. Two configs that resolve</span>
 <span class="sd">        to the same :class:`~ef.config.PipelineSpec` share one</span>
@@ -554,7 +594,7 @@
 <span class="sd">        64</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">segmenter_obj</span> <span class="o">=</span> <span class="n">as_segmenter</span><span class="p">(</span><span class="n">segmenter</span><span class="p">)</span>
-        <span class="n">embedder_obj</span> <span class="o">=</span> <span class="n">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">)</span>
+        <span class="n">embedder_obj</span> <span class="o">=</span> <span class="n">_coerce_embedder</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">embedder_api_key</span><span class="p">)</span>
         <span class="n">seg_spec</span><span class="p">,</span> <span class="n">seg_fn</span> <span class="o">=</span> <span class="n">segment_step</span><span class="p">(</span><span class="n">segmenter_obj</span><span class="p">)</span>
         <span class="n">emb_spec</span><span class="p">,</span> <span class="n">emb_fn</span> <span class="o">=</span> <span class="n">embed_step</span><span class="p">(</span><span class="n">embedder_obj</span><span class="p">)</span>
         <span class="n">pipeline</span> <span class="o">=</span> <span class="n">PipelineSpec</span><span class="p">(</span><span class="n">segment</span><span class="o">=</span><span class="n">seg_spec</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="n">emb_spec</span><span class="p">)</span>
