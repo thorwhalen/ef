@@ -62,6 +62,8 @@ __all__ = [
     "precision_at_k",
     "reciprocal_rank",
     "average_precision",
+    # the public name->function registry of the metric primitives above
+    "RETRIEVAL_METRICS",
     # retrieval evaluation
     "RetrievalEvalReport",
     "evaluate_retrieval",
@@ -243,8 +245,11 @@ def average_precision(
 
 
 #: The retrieval metrics :func:`evaluate_retrieval` can compute, each keyed by
-#: the short name used in the ``metrics=`` argument and in report keys.
-_RETRIEVAL_METRICS: dict[
+#: the short name used in the ``metrics=`` argument and in report keys. Public
+#: so downstream packages (e.g. ``ir.eval``) can consume this single source of
+#: truth — the name→function registry *and* the set of valid metric names —
+#: instead of hand-mirroring it.
+RETRIEVAL_METRICS: dict[
     str, Callable[[Sequence[str], Mapping[str, float], int], float]
 ] = {
     "ndcg": ndcg_at_k,
@@ -253,6 +258,10 @@ _RETRIEVAL_METRICS: dict[
     "mrr": reciprocal_rank,
     "map": average_precision,
 }
+
+#: Backcompat internal alias for the registry's former private name. Kept so the
+#: internal uses below — and any importer of the old name — keep working.
+_RETRIEVAL_METRICS = RETRIEVAL_METRICS
 
 
 # ===========================================================================

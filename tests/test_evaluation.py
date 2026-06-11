@@ -375,3 +375,37 @@ def test_as_ragas_dataset():
     pytest.importorskip("ragas")
     dataset = as_ragas_dataset(_rag_samples())
     assert len(dataset) == 2
+
+
+# ---------------------------------------------------------------------------
+# RETRIEVAL_METRICS — the public name->function registry (consumed by ir.eval)
+# ---------------------------------------------------------------------------
+
+
+def test_retrieval_metrics_public_registry_contract():
+    from ef import RETRIEVAL_METRICS
+    from ef.evaluation import _RETRIEVAL_METRICS
+
+    # The public registry is exactly the supported metric short-names...
+    assert set(RETRIEVAL_METRICS) == {"ndcg", "recall", "precision", "mrr", "map"}
+    # ...is the very object the private backcompat alias points at (one SSOT)...
+    assert RETRIEVAL_METRICS is _RETRIEVAL_METRICS
+    # ...and every value is a callable metric primitive.
+    assert all(callable(fn) for fn in RETRIEVAL_METRICS.values())
+
+
+def test_retrieval_metrics_is_the_validation_source_of_truth():
+    from ef import RETRIEVAL_METRICS
+
+    qrels = {"q1": {"d1": 1.0}}
+    queries = {"q1": "a"}
+    retriever = _ranking_retriever({"a": ["d1", "x"]})
+    # Every public name is accepted by evaluate_retrieval...
+    for name in RETRIEVAL_METRICS:
+        report = evaluate_retrieval(
+            retriever, qrels, queries, metrics=(name,), k_values=(1,)
+        )
+        assert isinstance(report, RetrievalEvalReport)
+    # ...and a name outside the registry is rejected.
+    with pytest.raises(ValueError, match="Choose from"):
+        evaluate_retrieval(retriever, qrels, queries, metrics=("bogus",), k_values=(1,))
