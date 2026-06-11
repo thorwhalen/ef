@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.evaluation &mdash; ef 0.1.17 documentation</title>
+  <title>ef.evaluation &mdash; ef 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=71734efd"></script>
+      <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -156,6 +156,8 @@
     <span class="s2">&quot;precision_at_k&quot;</span><span class="p">,</span>
     <span class="s2">&quot;reciprocal_rank&quot;</span><span class="p">,</span>
     <span class="s2">&quot;average_precision&quot;</span><span class="p">,</span>
+    <span class="c1"># the public name-&gt;function registry of the metric primitives above</span>
+    <span class="s2">&quot;RETRIEVAL_METRICS&quot;</span><span class="p">,</span>
     <span class="c1"># retrieval evaluation</span>
     <span class="s2">&quot;RetrievalEvalReport&quot;</span><span class="p">,</span>
     <span class="s2">&quot;evaluate_retrieval&quot;</span><span class="p">,</span>
@@ -358,8 +360,11 @@
 
 
 <span class="c1">#: The retrieval metrics :func:`evaluate_retrieval` can compute, each keyed by</span>
-<span class="c1">#: the short name used in the ``metrics=`` argument and in report keys.</span>
-<span class="n">_RETRIEVAL_METRICS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+<span class="c1">#: the short name used in the ``metrics=`` argument and in report keys. Public</span>
+<span class="c1">#: so downstream packages (e.g. ``ir.eval``) can consume this single source of</span>
+<span class="c1">#: truth — the name→function registry *and* the set of valid metric names —</span>
+<span class="c1">#: instead of hand-mirroring it.</span>
+<span class="n">RETRIEVAL_METRICS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
     <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
 <span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;ndcg&quot;</span><span class="p">:</span> <span class="n">ndcg_at_k</span><span class="p">,</span>
@@ -368,6 +373,10 @@
     <span class="s2">&quot;mrr&quot;</span><span class="p">:</span> <span class="n">reciprocal_rank</span><span class="p">,</span>
     <span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">average_precision</span><span class="p">,</span>
 <span class="p">}</span>
+
+<span class="c1">#: Backcompat internal alias for the registry&#39;s former private name. Kept so the</span>
+<span class="c1">#: internal uses below — and any importer of the old name — keep working.</span>
+<span class="n">_RETRIEVAL_METRICS</span> <span class="o">=</span> <span class="n">RETRIEVAL_METRICS</span>
 
 
 <span class="c1"># ===========================================================================</span>

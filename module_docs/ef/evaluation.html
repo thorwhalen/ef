@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ef.evaluation &mdash; ef 0.1.17 documentation</title>
+  <title>ef.evaluation &mdash; ef 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=71734efd"></script>
+      <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -59,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="embedders.html">ef.embedders</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ef.evaluation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ef.evaluation.Qrels"><code class="docutils literal notranslate"><span class="pre">Qrels</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ef.evaluation.RETRIEVAL_METRICS"><code class="docutils literal notranslate"><span class="pre">RETRIEVAL_METRICS</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.evaluation.RagEvalReport"><code class="docutils literal notranslate"><span class="pre">RagEvalReport</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.evaluation.RagSample"><code class="docutils literal notranslate"><span class="pre">RagSample</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ef.evaluation.RetrievalEvalReport"><code class="docutils literal notranslate"><span class="pre">RetrievalEvalReport</span></code></a><ul>
@@ -165,6 +166,16 @@ samples to <a class="reference internal" href="#ef.evaluation.as_ragas_dataset" 
 (graded judgements feed <a class="reference internal" href="#ef.evaluation.ndcg_at_k" title="ef.evaluation.ndcg_at_k"><code class="xref py py-func docutils literal notranslate"><span class="pre">ndcg_at_k()</span></code></a>, binary relevance the rest). This
 is the in-memory form of a BEIR <code class="docutils literal notranslate"><span class="pre">qrels.tsv</span></code>.</p>
 <p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.evaluation.RETRIEVAL_METRICS">
+<span class="sig-prename descclassname"><span class="pre">ef.evaluation.</span></span><span class="sig-name descname"><span class="pre">RETRIEVAL_METRICS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'map':</span> <span class="pre">&lt;function</span> <span class="pre">average_precision&gt;,</span> <span class="pre">'mrr':</span> <span class="pre">&lt;function</span> <span class="pre">reciprocal_rank&gt;,</span> <span class="pre">'ndcg':</span> <span class="pre">&lt;function</span> <span class="pre">ndcg_at_k&gt;,</span> <span class="pre">'precision':</span> <span class="pre">&lt;function</span> <span class="pre">precision_at_k&gt;,</span> <span class="pre">'recall':</span> <span class="pre">&lt;function</span> <span class="pre">recall_at_k&gt;}</span></span><a class="headerlink" href="#ef.evaluation.RETRIEVAL_METRICS" title="Link to this definition"></a></dt>
+<dd><p>The retrieval metrics <a class="reference internal" href="#ef.evaluation.evaluate_retrieval" title="ef.evaluation.evaluate_retrieval"><code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a> can compute, each keyed by
+the short name used in the <code class="docutils literal notranslate"><span class="pre">metrics=</span></code> argument and in report keys. Public
+so downstream packages (e.g. <code class="docutils literal notranslate"><span class="pre">ir.eval</span></code>) can consume this single source of
+truth — the name→function registry <em>and</em> the set of valid metric names —
+instead of hand-mirroring it.</p>
 </dd></dl>
 
 <dl class="py class">
