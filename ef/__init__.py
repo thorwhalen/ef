@@ -234,6 +234,7 @@ from ef.evaluation import (
     Qrels,
     RagEvalReport,
     RagSample,
+    RETRIEVAL_METRICS,
     RetrievalEvalReport,
     as_ragas_dataset,
     average_precision,
@@ -371,6 +372,7 @@ __all__ = [
     "refresh_on_change",
     # --- evaluation (retrieval + RAG quality measurement) ---
     "evaluate_retrieval",
+    "RETRIEVAL_METRICS",
     "RetrievalEvalReport",
     "evaluate_rag",
     "RagEvalReport",
