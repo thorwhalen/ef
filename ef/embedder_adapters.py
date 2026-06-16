@@ -291,7 +291,14 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         batch_size: int,
     ) -> None:
         self._model = model
-        self.dim = int(model.get_sentence_embedding_dimension())
+        # `get_sentence_embedding_dimension` was renamed to
+        # `get_embedding_dimension` in newer sentence-transformers (the old name
+        # now emits a FutureWarning). Prefer the new name, fall back for older
+        # installs so both keep working without warning.
+        get_dim = getattr(model, "get_embedding_dimension", None) or (
+            model.get_sentence_embedding_dimension
+        )
+        self.dim = int(get_dim())
         self.model_id = f"st:{model_name}@{self.dim}"
         self.normalized = normalize
         self.batch_size = batch_size
