@@ -161,6 +161,20 @@ there.
 - **vd** (vector-store interface): https://github.com/i2mint/vd
 - **imbed** (heavy embedding/clustering implementations): https://github.com/thorwhalen/imbed
 
+## Skills
+
+ef ships a **developer** agent skill — install it into your agent host with
+[`gh skill`](https://cli.github.com/manual/gh_skill) (don't have it?
+[install gh](https://cli.github.com/)) before working in this repo:
+
+```bash
+gh skill install thorwhalen/ef ef-architecture --agent claude-code
+```
+
+| Skill | Use it when… |
+|-------|--------------|
+| `ef-architecture` | (developer) starting any non-trivial change in the ef repo — refactoring, the Embedder/Segmenter facades, the Corpus abstraction |
+
 ## License
 
 MIT
