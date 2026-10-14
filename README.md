@@ -85,7 +85,9 @@ the dependency-free `HashingEmbedder` default.
 
 An `Embedder` is just a batch callable `Iterable[str] -> ndarray(n, dim)` with a
 little metadata. Composition wrappers — `CachedEmbedder`, `RetryingEmbedder`,
-`MultiEmbedder`, `NormalizingEmbedder` — each wrap an inner embedder.
+`MultiEmbedder`, `NormalizingEmbedder`, `InstructionEmbedder` — each wrap an inner embedder.
+
+For instruction-tuned models (E5-instruct, BGE, GTE, Qwen3-Embedding), condition the query side on the task: `InstructionEmbedder(inner, query_instruction="Represent this sentence for searching relevant passages: ")` prefixes query texts and leaves documents bare, or pass `query_prompt=` / `prompt_names={"query": "query"}` to `sentence_transformers_embedder`. Either way the conditioned roles show up in `honored_input_types` and the instruction text is baked into `model_id`, so caches never mix vectors. Only trust this on an instruction-tuned model; on `all-MiniLM` it should be a near no-op.
 
 ## The heavy case — `SourceManager`
 

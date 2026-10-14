@@ -25,7 +25,8 @@ only numpy):
 - Composition wrappers: :class:`~ef.embedder_wrappers.CachedEmbedder`,
   :class:`~ef.embedder_wrappers.RetryingEmbedder`,
   :class:`~ef.embedder_wrappers.MultiEmbedder`,
-  :class:`~ef.embedder_wrappers.NormalizingEmbedder`.
+  :class:`~ef.embedder_wrappers.NormalizingEmbedder`,
+  :class:`~ef.embedder_wrappers.InstructionEmbedder`.
 
 The **segmenter facade** is the other always-importable core surface (it needs
 no numpy at all):
@@ -148,6 +149,7 @@ from ef.embedder_wrappers import (
     CachedEmbedder,
     MultiEmbedder,
     NormalizingEmbedder,
+    InstructionEmbedder,
     RetryPolicy,
     RetryingEmbedder,
 )
@@ -293,6 +295,7 @@ __all__ = [
     "RetryPolicy",
     "MultiEmbedder",
     "NormalizingEmbedder",
+    "InstructionEmbedder",
     # adapters & the DI seam
     "as_embedder",
     "openai_embedder",

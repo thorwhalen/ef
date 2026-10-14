@@ -40,12 +40,13 @@ True
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
 import urllib.error
 import urllib.request
-from typing import Any, Callable, Iterable, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence, get_args
 
 import numpy as np
 
@@ -280,8 +281,6 @@ def openai_embedder(
 class _SentenceTransformerEmbedder(BaseEmbedder):
     """Local sentence-transformers adapter — see :func:`sentence_transformers_embedder`."""
 
-    honored_input_types: tuple[InputType, ...] = ()
-
     def __init__(
         self,
         model_name: str,
@@ -289,6 +288,8 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         model: Any,
         normalize: bool,
         batch_size: int,
+        prompts: Mapping[str, str] | None = None,
+        prompt_names: Mapping[str, str] | None = None,
     ) -> None:
         self._model = model
         # `get_sentence_embedding_dimension` was renamed to
@@ -299,9 +300,59 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
             model.get_sentence_embedding_dimension
         )
         self.dim = int(get_dim())
+        # Per-input_type conditioning: a literal prompt string, or the name of a
+        # prompt the model itself defines (``model.prompts``).
+        self.prompts = {k: v for k, v in (prompts or {}).items() if v}
+        self.prompt_names = {k: v for k, v in (prompt_names or {}).items() if v}
+        overlap = set(self.prompts) & set(self.prompt_names)
+        if overlap:
+            raise ValueError(
+                f"both a prompt and a prompt_name were given for {sorted(overlap)}; "
+                "pick one per input_type"
+            )
+        unknown = (set(self.prompts) | set(self.prompt_names)) - set(
+            get_args(InputType)
+        )
+        if unknown:
+            raise ValueError(
+                f"unknown input_type(s) {sorted(unknown)}; "
+                f"expected some of {list(get_args(InputType))}"
+            )
+        model_prompts = getattr(model, "prompts", None) or {}
+        missing = {n for n in self.prompt_names.values() if n not in model_prompts}
+        if missing:
+            raise ValueError(
+                f"prompt_names {sorted(missing)} are not defined by model "
+                f"{model_name!r} (it defines {sorted(model_prompts)})"
+            )
+        self.honored_input_types = tuple(
+            r
+            for r in get_args(InputType)
+            if r in self.prompts or r in self.prompt_names
+        )
         self.model_id = f"st:{model_name}@{self.dim}"
+        if self.honored_input_types:
+            # The prompts change the vectors: bake their actual text into the id
+            # so caches and content-addressed artifacts never mix them.
+            resolved = {
+                **self.prompts,
+                **{r: model_prompts[n] for r, n in self.prompt_names.items()},
+            }
+            payload = json.dumps(resolved, sort_keys=True)
+            digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+            self.model_id += f"+prompts:{digest}"
         self.normalized = normalize
         self.batch_size = batch_size
+
+    def _prompt_kwargs(self, input_type: InputType | None, backend: dict) -> dict:
+        """``prompt=`` / ``prompt_name=`` for ``input_type`` (explicit backend wins)."""
+        if input_type is None or "prompt" in backend or "prompt_name" in backend:
+            return {}
+        if input_type in self.prompts:
+            return {"prompt": self.prompts[input_type]}
+        if input_type in self.prompt_names:
+            return {"prompt_name": self.prompt_names[input_type]}
+        return {}
 
     def __call__(
         self,
@@ -320,6 +371,7 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
             normalize_embeddings=self.normalized,
             convert_to_numpy=True,
             show_progress_bar=False,
+            **self._prompt_kwargs(input_type, backend),
             **backend,
         )
         return np.asarray(embedded, dtype=np.float32)
@@ -332,9 +384,20 @@ def sentence_transformers_embedder(
     normalize: bool = False,
     batch_size: int = 128,
     model_path: str | None = None,
+    query_prompt: str | None = None,
+    document_prompt: str | None = None,
+    prompt_names: Mapping[str, str] | None = None,
     **st_kwargs: Any,
 ) -> Embedder:
     """Build a local sentence-transformers :class:`~ef.embedders.Embedder`.
+
+    Instruction-tuned models (bge, gte, e5-instruct, Qwen3-Embedding...) are
+    conditioned per ``input_type``: pass a literal ``query_prompt`` (and, rarely,
+    ``document_prompt``), or map input types to prompts the model defines itself
+    with ``prompt_names`` (e.g. ``{"query": "query"}`` for Qwen3-Embedding). Those
+    roles are then advertised in ``honored_input_types``, and the prompt text is
+    baked into ``model_id``. Only trust prompts on genuinely instruction-tuned
+    models; on ``all-MiniLM`` they are expected to be a near no-op.
 
     Args:
         model_name: A sentence-transformers model name (also used in
@@ -347,6 +410,13 @@ def sentence_transformers_embedder(
         model_path: A local filesystem path to load from instead of the hub —
             for air-gapped use. Loading still records ``model_name`` in
             ``model_id``.
+        query_prompt: Prompt prepended to ``input_type="query"`` texts (passed
+            as ``encode(prompt=...)``).
+        document_prompt: Prompt for ``input_type="document"`` texts (usually
+            none: the asymmetric pattern leaves documents bare).
+        prompt_names: ``{input_type: name}`` of prompts defined in the model's
+            own ``prompts`` config (passed as ``encode(prompt_name=...)``).
+            An explicit ``prompt=`` / ``prompt_name=`` in a call overrides both.
         **st_kwargs: Forwarded to the ``SentenceTransformer`` constructor.
 
     Requires ``sentence-transformers`` (``pip install 'ef[sentence-transformers]'``).
@@ -360,7 +430,12 @@ def sentence_transformers_embedder(
         ) from exc
     model = SentenceTransformer(model_path or model_name, device=device, **st_kwargs)
     return _SentenceTransformerEmbedder(
-        model_name, model=model, normalize=normalize, batch_size=batch_size
+        model_name,
+        model=model,
+        normalize=normalize,
+        batch_size=batch_size,
+        prompts={"query": query_prompt, "document": document_prompt},
+        prompt_names=prompt_names,
     )
 
 
