@@ -13,11 +13,13 @@ your own LLM.
 ```python
 import ef
 
-index = ef.ingest([
-    "The cat sat on the mat",
-    "Dogs are loyal companions",
-    "Neural networks learn from data",
-])
+index = ef.ingest(
+    [
+        "The cat sat on the mat",
+        "Dogs are loyal companions",
+        "Neural networks learn from data",
+    ]
+)
 
 for hit in index.search("loyal dogs", limit=2):
     print(hit.score, hit.segment["text"])
@@ -71,7 +73,9 @@ from ef import as_embedder, openai_embedder, sentence_transformers_embedder
 
 index = ef.ingest(corpus, embedder=sentence_transformers_embedder("all-MiniLM-L6-v2"))
 index = ef.ingest(corpus, embedder=openai_embedder("text-embedding-3-small"))
-index = ef.ingest(corpus, embedder=as_embedder("cohere:embed-v4.0"))   # also voyage:/gemini:
+index = ef.ingest(
+    corpus, embedder=as_embedder("cohere:embed-v4.0")
+)  # also voyage:/gemini:
 index = ef.ingest(corpus, embedder=as_embedder(my_callable, model_id="custom@768"))
 ```
 
@@ -109,7 +113,7 @@ index = manager.searchable()
 As sources change, an index drifts. `SourceManager` diagnoses and repairs it:
 
 ```python
-report = manager.diagnose()        # the four staleness conditions
+report = manager.diagnose()  # the four staleness conditions
 manager.refresh(mode="incremental")  # none | incremental | full | scoped_full
 manager = SourceManager(corpus, store="my_vectors", auto_refresh=True)  # live
 ```
@@ -121,11 +125,12 @@ quality — it does not synthesize answers.
 
 ```python
 segments = index.retrieve("how do neural networks learn?", limit=5)
-context = "\n\n".join(s["text"] for s in segments)   # feed context to your LLM
+context = "\n\n".join(s["text"] for s in segments)  # feed context to your LLM
 
 from ef import evaluate_retrieval, evaluate_rag
+
 retrieval = evaluate_retrieval(index.retrieve, qrels, queries)  # BEIR-shaped, NDCG@10
-rag = evaluate_rag(samples)                          # deterministic lexical metrics
+rag = evaluate_rag(samples)  # deterministic lexical metrics
 ```
 
 `retrieve()` returns plain `Segment`s (provenance preserved in
@@ -140,8 +145,8 @@ heritage, the backend an `app_ef` corpus map consumes. Three functions, each
 taking a corpus *or* a vector matrix:
 
 ```python
-coords = ef.project(index, dims=2)          # PCA -> UMAP, 2-D coordinates
-labels = ef.cluster(index, n_clusters=8)    # k-means (or method="hdbscan")
+coords = ef.project(index, dims=2)  # PCA -> UMAP, 2-D coordinates
+labels = ef.cluster(index, n_clusters=8)  # k-means (or method="hdbscan")
 titles = ef.label_clusters(segments, labels)  # LLM-titled clusters (via imbed)
 ```
 
