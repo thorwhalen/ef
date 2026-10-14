@@ -1,0 +1,20 @@
+ef.reranking
+============
+
+.. automodule:: ef.reranking
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      rerank
+      with_reranker
+      cross_encoder_reranker
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Reranker
+   

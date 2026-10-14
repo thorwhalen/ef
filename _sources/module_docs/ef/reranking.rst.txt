@@ -1,4 +1,0 @@
-ef.reranking
-============
-.. automodule:: ef.reranking
-   :members:

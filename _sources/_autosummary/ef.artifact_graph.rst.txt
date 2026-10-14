@@ -1,0 +1,30 @@
+ef.artifact\_graph
+==================
+
+.. automodule:: ef.artifact_graph
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      ArtifactId
+      OpKey
+      Freshness
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      artifact_id
+      producer_spec
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ArtifactId
+      OpKey
+      ProducerSpec
+      ArtifactGraph
+   

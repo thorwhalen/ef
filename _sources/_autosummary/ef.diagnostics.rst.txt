@@ -1,0 +1,21 @@
+ef.diagnostics
+==============
+
+.. automodule:: ef.diagnostics
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      indexed_state
+      corpus_state
+      diagnose
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      IndexedSource
+      StalenessReport
+   

@@ -1,4 +1,0 @@
-ef.hashing
-==========
-.. automodule:: ef.hashing
-   :members:

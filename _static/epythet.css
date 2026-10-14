@@ -1,0 +1,8 @@
+:root {
+  --color-brand: #783b83;
+  --color-accent: #783b83;
+}
+html.dark {
+  --color-brand: #dd9bea;
+  --color-accent: #dd9bea;
+}

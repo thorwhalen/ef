@@ -1,0 +1,143 @@
+﻿ef
+==
+
+.. automodule:: ef
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      ready_handle
+      cache_key
+      embed_length_sorted
+      as_embedder
+      openai_embedder
+      sentence_transformers_embedder
+      http_embedder
+      cohere_embedder
+      voyage_embedder
+      gemini_embedder
+      segment_id
+      make_segment
+      as_segment
+      segment_record
+      approx_token_count
+      line_segmenter
+      with_overlap
+      hierarchical
+      materialise
+      as_segmenter
+      imbed_segmenter
+      content_hash
+      as_corpus
+      artifact_id
+      producer_spec
+      config_id
+      full_kwargs
+      step_params
+      ingest
+      hits_to_segments
+      diagnose
+      plan_refresh
+      refresh_on_change
+      evaluate_retrieval
+      evaluate_rag
+      read_beir
+      write_beir
+      as_ragas_dataset
+      ndcg_at_k
+      dcg_at_k
+      recall_at_k
+      precision_at_k
+      reciprocal_rank
+      average_precision
+      exact_match
+      token_f1
+      context_recall
+      context_precision
+      rerank
+      with_reranker
+      cross_encoder_reranker
+      project
+      cluster
+      label_clusters
+      explore
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Embedder
+      BaseEmbedder
+      BatchHandle
+      FunctionEmbedder
+      HashingEmbedder
+      CachedEmbedder
+      RetryingEmbedder
+      RetryPolicy
+      MultiEmbedder
+      NormalizingEmbedder
+      InstructionEmbedder
+      Segment
+      SegmentRecord
+      Segmenter
+      BatchedSegmenter
+      BaseSegmenter
+      RecursiveCharacterSegmenter
+      FunctionSegmenter
+      ChangeDetectingCorpus
+      ChangeEvent
+      CorpusDiff
+      ArtifactGraph
+      ArtifactId
+      OpKey
+      ProducerSpec
+      TransformSpec
+      PipelineSpec
+      ConfigId
+      SearchableCorpus
+      SourceManager
+      SearchHit
+      StalenessReport
+      IndexedSource
+      RefreshReport
+      RefreshPlan
+      RetrievalEvalReport
+      RagEvalReport
+      RagSample
+      Reranker
+      ExploreResult
+      EfService
+      CorpusInfo
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      EmbedderError
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   artifact_graph
+   config
+   corpus
+   diagnostics
+   embedder_adapters
+   embedder_wrappers
+   embedders
+   evaluation
+   exploration
+   hashing
+   ops
+   refresh
+   reranking
+   segmenter_adapters
+   segmenters
+   segments
+   service
+   source_manager

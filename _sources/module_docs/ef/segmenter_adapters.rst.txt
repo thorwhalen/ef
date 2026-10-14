@@ -1,4 +1,0 @@
-ef.segmenter_adapters
-=====================
-.. automodule:: ef.segmenter_adapters
-   :members:

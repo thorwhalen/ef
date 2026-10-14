@@ -1,0 +1,13 @@
+ef.service
+==========
+
+.. automodule:: ef.service
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      CorpusInfo
+      EfService
+   

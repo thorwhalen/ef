@@ -1,0 +1,38 @@
+# ef
+
+> Embeddings Flow -- Tools for workflows involving semantic embeddings
+
+
+## Pages
+
+- [ef — Embedding Flow](index.html.md): &#42;&#42;A facade for boilerplate-less semantic search, corpus indexing, and
+- [API reference](api.html.md): | &#96;ef&#96;   | ef (Embedding Flow) — a facade for semantic-embeddings user journeys.   |
+- [ef](_autosummary/ef.html.md): ef (Embedding Flow) — a facade for semantic-embeddings user journeys.
+- [ef.artifact_graph](_autosummary/ef.artifact_graph.html.md): The &#96;ArtifactGraph&#96; — &#96;ef&#96;’s content-addressed corpus-indexing core.
+- [ef.config](_autosummary/ef.config.html.md): The config layer — declarative, content-addressable pipeline specs.
+- [ef.corpus](_autosummary/ef.corpus.html.md): The &#96;Corpus&#96; abstraction — &#96;ef&#96;’s source layer (L0) — and change detection.
+- [ef.diagnostics](_autosummary/ef.diagnostics.html.md): Staleness diagnostics — has an indexed corpus drifted from its source?
+- [ef.embedder_adapters](_autosummary/ef.embedder_adapters.html.md): Concrete &#96;Embedder&#96; adapters and the DI seam.
+- [ef.embedder_wrappers](_autosummary/ef.embedder_wrappers.html.md): Composition wrappers for &#96;Embedder&#96;.
+- [ef.embedders](_autosummary/ef.embedders.html.md): The &#96;Embedder&#96; facade — &#96;ef&#96;’s embed layer (L3).
+- [ef.evaluation](_autosummary/ef.evaluation.html.md): Evaluation hookpoints — measuring retrieval and RAG quality.
+- [ef.exploration](_autosummary/ef.exploration.html.md): Layer L5 — &#42;explore&#42; a corpus: project to 2-D/3-D, cluster, label clusters.
+- [ef.hashing](_autosummary/ef.hashing.html.md): Content-hashing primitives shared across &#96;ef&#96;’s layers.
+- [ef.ops](_autosummary/ef.ops.html.md): The pipeline ops — the callables an &#96;ArtifactGraph&#96; runs.
+- [ef.refresh](_autosummary/ef.refresh.html.md): Refresh — keeping an indexed corpus in sync as its sources change.
+- [ef.reranking](_autosummary/ef.reranking.html.md): Reranking — a precision pass over retrieved segments (use case F6).
+- [ef.segmenter_adapters](_autosummary/ef.segmenter_adapters.html.md): The segmenter dependency-injection seam and the &#96;imbed&#96; registry bridge.
+- [ef.segmenters](_autosummary/ef.segmenters.html.md): The &#96;Segmenter&#96; facade — &#96;ef&#96;’s segment layer (L2).
+- [ef.segments](_autosummary/ef.segments.html.md): The canonical &#96;Segment&#96; data model — &#96;ef&#96;’s interchange type for L2.
+- [ef.service](_autosummary/ef.service.html.md): The HTTP-service bridge — &#96;EfService&#96;, a stateless-friendly facade.
+- [ef.source_manager](_autosummary/ef.source_manager.html.md): The search facade — one-shot &#96;ingest()&#96;, &#96;SearchableCorpus&#96;, &#96;SourceManager&#96;.
+- [For AI agents](ai-agents.html.md): &#96;ef&#96; ships artifacts for coding agents alongside its code. This page lists
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-14 03:52 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [ef.md](ef.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

@@ -1,425 +1,334 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="./" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ef’s documentation! &mdash; ef 0.1.21 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-
-  
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b3d22ae5"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ef" href="module_docs/ef.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="#" class="icon icon-home">
-            ef
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/config.html">ef.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/reranking.html">ef.reranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/service.html">ef.service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/source_manager.html">ef.source_manager</a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">ef</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to ef’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-ef-s-documentation">
-<h1>Welcome to ef’s documentation!<a class="headerlink" href="#welcome-to-ef-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ArtifactGraph"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ArtifactId"><code class="docutils literal notranslate"><span class="pre">ArtifactId</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BaseEmbedder"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BaseSegmenter"><code class="docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.BatchedSegmenter"><code class="docutils literal notranslate"><span class="pre">BatchedSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ChangeDetectingCorpus"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ChangeEvent"><code class="docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ConfigId"><code class="docutils literal notranslate"><span class="pre">ConfigId</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.CorpusInfo"><code class="docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.EfService"><code class="docutils literal notranslate"><span class="pre">EfService</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ExploreResult"><code class="docutils literal notranslate"><span class="pre">ExploreResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.FunctionSegmenter"><code class="docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.IndexedSource"><code class="docutils literal notranslate"><span class="pre">IndexedSource</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.OpKey"><code class="docutils literal notranslate"><span class="pre">OpKey</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.PipelineSpec"><code class="docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ProducerSpec"><code class="docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RagEvalReport"><code class="docutils literal notranslate"><span class="pre">RagEvalReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RagSample"><code class="docutils literal notranslate"><span class="pre">RagSample</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RecursiveCharacterSegmenter"><code class="docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RefreshPlan"><code class="docutils literal notranslate"><span class="pre">RefreshPlan</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RefreshReport"><code class="docutils literal notranslate"><span class="pre">RefreshReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Reranker"><code class="docutils literal notranslate"><span class="pre">Reranker</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RetrievalEvalReport"><code class="docutils literal notranslate"><span class="pre">RetrievalEvalReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.RetryingEmbedder"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.SearchHit"><code class="docutils literal notranslate"><span class="pre">SearchHit</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.SearchableCorpus"><code class="docutils literal notranslate"><span class="pre">SearchableCorpus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.SegmentRecord"><code class="docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.SourceManager"><code class="docutils literal notranslate"><span class="pre">SourceManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.StalenessReport"><code class="docutils literal notranslate"><span class="pre">StalenessReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.TransformSpec"><code class="docutils literal notranslate"><span class="pre">TransformSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.approx_token_count"><code class="docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.artifact_id"><code class="docutils literal notranslate"><span class="pre">artifact_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_corpus"><code class="docutils literal notranslate"><span class="pre">as_corpus()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_ragas_dataset"><code class="docutils literal notranslate"><span class="pre">as_ragas_dataset()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_segment"><code class="docutils literal notranslate"><span class="pre">as_segment()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.average_precision"><code class="docutils literal notranslate"><span class="pre">average_precision()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.cohere_embedder"><code class="docutils literal notranslate"><span class="pre">cohere_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.context_precision"><code class="docutils literal notranslate"><span class="pre">context_precision()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.context_recall"><code class="docutils literal notranslate"><span class="pre">context_recall()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.cross_encoder_reranker"><code class="docutils literal notranslate"><span class="pre">cross_encoder_reranker()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.dcg_at_k"><code class="docutils literal notranslate"><span class="pre">dcg_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.evaluate_rag"><code class="docutils literal notranslate"><span class="pre">evaluate_rag()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.evaluate_retrieval"><code class="docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.exact_match"><code class="docutils literal notranslate"><span class="pre">exact_match()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.explore"><code class="docutils literal notranslate"><span class="pre">explore()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.gemini_embedder"><code class="docutils literal notranslate"><span class="pre">gemini_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.hits_to_segments"><code class="docutils literal notranslate"><span class="pre">hits_to_segments()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.imbed_segmenter"><code class="docutils literal notranslate"><span class="pre">imbed_segmenter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ingest"><code class="docutils literal notranslate"><span class="pre">ingest()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.label_clusters"><code class="docutils literal notranslate"><span class="pre">label_clusters()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.line_segmenter"><code class="docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.materialise"><code class="docutils literal notranslate"><span class="pre">materialise()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ndcg_at_k"><code class="docutils literal notranslate"><span class="pre">ndcg_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.openai_embedder"><code class="docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.plan_refresh"><code class="docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.precision_at_k"><code class="docutils literal notranslate"><span class="pre">precision_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.producer_spec"><code class="docutils literal notranslate"><span class="pre">producer_spec()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.read_beir"><code class="docutils literal notranslate"><span class="pre">read_beir()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.recall_at_k"><code class="docutils literal notranslate"><span class="pre">recall_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.reciprocal_rank"><code class="docutils literal notranslate"><span class="pre">reciprocal_rank()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.refresh_on_change"><code class="docutils literal notranslate"><span class="pre">refresh_on_change()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.rerank"><code class="docutils literal notranslate"><span class="pre">rerank()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.segment_id"><code class="docutils literal notranslate"><span class="pre">segment_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.segment_record"><code class="docutils literal notranslate"><span class="pre">segment_record()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.step_params"><code class="docutils literal notranslate"><span class="pre">step_params()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.token_f1"><code class="docutils literal notranslate"><span class="pre">token_f1()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.voyage_embedder"><code class="docutils literal notranslate"><span class="pre">voyage_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.with_overlap"><code class="docutils literal notranslate"><span class="pre">with_overlap()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.with_reranker"><code class="docutils literal notranslate"><span class="pre">with_reranker()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef.html#ef.write_beir"><code class="docutils literal notranslate"><span class="pre">write_beir()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/artifact_graph.html">ef.artifact_graph</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph"><code class="docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactId"><code class="docutils literal notranslate"><span class="pre">ArtifactId</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.Freshness"><code class="docutils literal notranslate"><span class="pre">Freshness</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.OpKey"><code class="docutils literal notranslate"><span class="pre">OpKey</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec"><code class="docutils literal notranslate"><span class="pre">ProducerSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.artifact_id"><code class="docutils literal notranslate"><span class="pre">artifact_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/artifact_graph.html#ef.artifact_graph.producer_spec"><code class="docutils literal notranslate"><span class="pre">producer_spec()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/config.html">ef.config</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.ConfigId"><code class="docutils literal notranslate"><span class="pre">ConfigId</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.PipelineSpec"><code class="docutils literal notranslate"><span class="pre">PipelineSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.TransformSpec"><code class="docutils literal notranslate"><span class="pre">TransformSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.config_id"><code class="docutils literal notranslate"><span class="pre">config_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.full_kwargs"><code class="docutils literal notranslate"><span class="pre">full_kwargs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/config.html#ef.config.step_params"><code class="docutils literal notranslate"><span class="pre">step_params()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus"><code class="docutils literal notranslate"><span class="pre">ChangeDetectingCorpus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent"><code class="docutils literal notranslate"><span class="pre">ChangeEvent</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.ChangeKind"><code class="docutils literal notranslate"><span class="pre">ChangeKind</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.Corpus"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff"><code class="docutils literal notranslate"><span class="pre">CorpusDiff</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.as_corpus"><code class="docutils literal notranslate"><span class="pre">as_corpus()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/corpus.html#ef.corpus.content_hash"><code class="docutils literal notranslate"><span class="pre">content_hash()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/diagnostics.html">ef.diagnostics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource"><code class="docutils literal notranslate"><span class="pre">IndexedSource</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/diagnostics.html#ef.diagnostics.StalenessReport"><code class="docutils literal notranslate"><span class="pre">StalenessReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/diagnostics.html#ef.diagnostics.corpus_state"><code class="docutils literal notranslate"><span class="pre">corpus_state()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/diagnostics.html#ef.diagnostics.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/diagnostics.html#ef.diagnostics.indexed_state"><code class="docutils literal notranslate"><span class="pre">indexed_state()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.as_embedder"><code class="docutils literal notranslate"><span class="pre">as_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.cohere_embedder"><code class="docutils literal notranslate"><span class="pre">cohere_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.gemini_embedder"><code class="docutils literal notranslate"><span class="pre">gemini_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.http_embedder"><code class="docutils literal notranslate"><span class="pre">http_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.openai_embedder"><code class="docutils literal notranslate"><span class="pre">openai_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder"><code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.voyage_embedder"><code class="docutils literal notranslate"><span class="pre">voyage_embedder()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder"><code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder"><code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder"><code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy"><code class="docutils literal notranslate"><span class="pre">RetryPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder"><code class="docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.BaseEmbedder"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.BatchStatus"><code class="docutils literal notranslate"><span class="pre">BatchStatus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.InputType"><code class="docutils literal notranslate"><span class="pre">InputType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/embedders.html#ef.embedders.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.Qrels"><code class="docutils literal notranslate"><span class="pre">Qrels</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.RETRIEVAL_METRICS"><code class="docutils literal notranslate"><span class="pre">RETRIEVAL_METRICS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.RagEvalReport"><code class="docutils literal notranslate"><span class="pre">RagEvalReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.RagSample"><code class="docutils literal notranslate"><span class="pre">RagSample</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport"><code class="docutils literal notranslate"><span class="pre">RetrievalEvalReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.as_ragas_dataset"><code class="docutils literal notranslate"><span class="pre">as_ragas_dataset()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.average_precision"><code class="docutils literal notranslate"><span class="pre">average_precision()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.context_precision"><code class="docutils literal notranslate"><span class="pre">context_precision()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.context_recall"><code class="docutils literal notranslate"><span class="pre">context_recall()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.dcg_at_k"><code class="docutils literal notranslate"><span class="pre">dcg_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_rag"><code class="docutils literal notranslate"><span class="pre">evaluate_rag()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_retrieval"><code class="docutils literal notranslate"><span class="pre">evaluate_retrieval()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.exact_match"><code class="docutils literal notranslate"><span class="pre">exact_match()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.ndcg_at_k"><code class="docutils literal notranslate"><span class="pre">ndcg_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.precision_at_k"><code class="docutils literal notranslate"><span class="pre">precision_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.read_beir"><code class="docutils literal notranslate"><span class="pre">read_beir()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.recall_at_k"><code class="docutils literal notranslate"><span class="pre">recall_at_k()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.reciprocal_rank"><code class="docutils literal notranslate"><span class="pre">reciprocal_rank()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.token_f1"><code class="docutils literal notranslate"><span class="pre">token_f1()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/evaluation.html#ef.evaluation.write_beir"><code class="docutils literal notranslate"><span class="pre">write_beir()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.ExploreResult"><code class="docutils literal notranslate"><span class="pre">ExploreResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.cluster"><code class="docutils literal notranslate"><span class="pre">cluster()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.explore"><code class="docutils literal notranslate"><span class="pre">explore()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.label_clusters"><code class="docutils literal notranslate"><span class="pre">label_clusters()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/exploration.html#ef.exploration.project"><code class="docutils literal notranslate"><span class="pre">project()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.canonical_json"><code class="docutils literal notranslate"><span class="pre">canonical_json()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.normalize_text"><code class="docutils literal notranslate"><span class="pre">normalize_text()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/hashing.html#ef.hashing.sha256_hex"><code class="docutils literal notranslate"><span class="pre">sha256_hex()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.EMBED_OP_VERSION"><code class="docutils literal notranslate"><span class="pre">EMBED_OP_VERSION</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.SEGMENT_OP_VERSION"><code class="docutils literal notranslate"><span class="pre">SEGMENT_OP_VERSION</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.embed_step"><code class="docutils literal notranslate"><span class="pre">embed_step()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.embedder_identity"><code class="docutils literal notranslate"><span class="pre">embedder_identity()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.make_embed_op"><code class="docutils literal notranslate"><span class="pre">make_embed_op()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.make_segment_op"><code class="docutils literal notranslate"><span class="pre">make_segment_op()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.segment_step"><code class="docutils literal notranslate"><span class="pre">segment_step()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/ops.html#ef.ops.segmenter_identity"><code class="docutils literal notranslate"><span class="pre">segmenter_identity()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.REFRESH_MODES"><code class="docutils literal notranslate"><span class="pre">REFRESH_MODES</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.RefreshMode"><code class="docutils literal notranslate"><span class="pre">RefreshMode</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.RefreshPlan"><code class="docutils literal notranslate"><span class="pre">RefreshPlan</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.RefreshReport"><code class="docutils literal notranslate"><span class="pre">RefreshReport</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.delete_source_documents"><code class="docutils literal notranslate"><span class="pre">delete_source_documents()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.plan_refresh"><code class="docutils literal notranslate"><span class="pre">plan_refresh()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.prune_dead_leaves"><code class="docutils literal notranslate"><span class="pre">prune_dead_leaves()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/refresh.html#ef.refresh.refresh_on_change"><code class="docutils literal notranslate"><span class="pre">refresh_on_change()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/reranking.html">ef.reranking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/reranking.html#ef.reranking.Reranker"><code class="docutils literal notranslate"><span class="pre">Reranker</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/reranking.html#ef.reranking.cross_encoder_reranker"><code class="docutils literal notranslate"><span class="pre">cross_encoder_reranker()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/reranking.html#ef.reranking.rerank"><code class="docutils literal notranslate"><span class="pre">rerank()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/reranking.html#ef.reranking.with_reranker"><code class="docutils literal notranslate"><span class="pre">with_reranker()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter"><code class="docutils literal notranslate"><span class="pre">as_segmenter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.imbed_segmenter"><code class="docutils literal notranslate"><span class="pre">imbed_segmenter()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.APPROX_TOKENIZER"><code class="docutils literal notranslate"><span class="pre">APPROX_TOKENIZER</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.BaseSegmenter"><code class="docutils literal notranslate"><span class="pre">BaseSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.BatchedSegmenter"><code class="docutils literal notranslate"><span class="pre">BatchedSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.DEFAULT_SEPARATORS"><code class="docutils literal notranslate"><span class="pre">DEFAULT_SEPARATORS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.FunctionSegmenter"><code class="docutils literal notranslate"><span class="pre">FunctionSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.RecursiveCharacterSegmenter"><code class="docutils literal notranslate"><span class="pre">RecursiveCharacterSegmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.approx_token_count"><code class="docutils literal notranslate"><span class="pre">approx_token_count()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.hierarchical"><code class="docutils literal notranslate"><span class="pre">hierarchical()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.line_segmenter"><code class="docutils literal notranslate"><span class="pre">line_segmenter()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.materialise"><code class="docutils literal notranslate"><span class="pre">materialise()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segmenters.html#ef.segmenters.with_overlap"><code class="docutils literal notranslate"><span class="pre">with_overlap()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.PROMOTED_METADATA_KEYS"><code class="docutils literal notranslate"><span class="pre">PROMOTED_METADATA_KEYS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.SegmentRecord"><code class="docutils literal notranslate"><span class="pre">SegmentRecord</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.as_segment"><code class="docutils literal notranslate"><span class="pre">as_segment()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.segment_id"><code class="docutils literal notranslate"><span class="pre">segment_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/segments.html#ef.segments.segment_record"><code class="docutils literal notranslate"><span class="pre">segment_record()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/service.html">ef.service</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/service.html#ef.service.CorpusInfo"><code class="docutils literal notranslate"><span class="pre">CorpusInfo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/service.html#ef.service.EfService"><code class="docutils literal notranslate"><span class="pre">EfService</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/source_manager.html">ef.source_manager</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.DEFAULT_EMBEDDER"><code class="docutils literal notranslate"><span class="pre">DEFAULT_EMBEDDER</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.SearchHit"><code class="docutils literal notranslate"><span class="pre">SearchHit</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.SearchableCorpus"><code class="docutils literal notranslate"><span class="pre">SearchableCorpus</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager"><code class="docutils literal notranslate"><span class="pre">SourceManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.hits_to_segments"><code class="docutils literal notranslate"><span class="pre">hits_to_segments()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ef/source_manager.html#ef.source_manager.ingest"><code class="docutils literal notranslate"><span class="pre">ingest()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 0.1.21</p>
-<p>Last change: Jun 21, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/ef.html" class="btn btn-neutral float-right" title="ef" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
       });
-  </script> 
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="index.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby" type="text/markdown"/>
+<link href="index.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
+<title>ef — Embedding Flow | ef</title>
+<meta content="ef — Embedding Flow | ef" property="og:title"/>
+<meta content="ef — Embedding Flow | ef" name="twitter:title"/>
+<link href="_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="_static/epythet.css?v=e6b54dbb" rel="stylesheet" type="text/css"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="api.html" rel="next" title="API reference"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="#"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">ef</span>
+</a><nav class="flex items-center gap-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="https://github.com/thorwhalen/ef" rel="noopener nofollow">GitHub</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="#"><span class="font-bold text-clip whitespace-nowrap">ef</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+<a href="https://github.com/thorwhalen/ef" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="api.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="_autosummary/ef.html">ef<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.config.html">ef.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.corpus.html">ef.corpus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedders.html">ef.embedders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.exploration.html">ef.exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.hashing.html">ef.hashing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.ops.html">ef.ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.refresh.html">ef.refresh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.reranking.html">ef.reranking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segments.html">ef.segments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.service.html">ef.service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.source_manager.html">ef.source_manager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ai-agents.html">For AI agents</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<div id="content" role="main">
 
+<section id="ef-embedding-flow">
+<h1>ef — Embedding Flow<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef-embedding-flow">¶</a></h1>
+<p><strong>A facade for boilerplate-less semantic search, corpus indexing, and
+RAG-plug-in readiness.</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">ef</span></code> makes the modern embedding pipeline — corpus → segment → embed → vector
+store → retrieve — usable with <em>progressive disclosure</em>: the light case (a list
+of strings, search in one or two lines) and the heavy case (huge corpora, many
+segmentations and embedders, varied sources and vector DBs) share <strong>one
+facade</strong>. <code class="docutils literal notranslate"><span class="pre">ef</span></code> is <em>not</em> a RAG framework — it returns ranked context; you bring
+your own LLM.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">ef</span>
+</span><span id="line-2">
+</span><span id="line-3"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">([</span>
+</span><span id="line-4">    <span class="s2">"The cat sat on the mat"</span><span class="p">,</span>
+</span><span id="line-5">    <span class="s2">"Dogs are loyal companions"</span><span class="p">,</span>
+</span><span id="line-6">    <span class="s2">"Neural networks learn from data"</span><span class="p">,</span>
+</span><span id="line-7"><span class="p">])</span>
+</span><span id="line-8">
+</span><span id="line-9"><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"loyal dogs"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+</span><span id="line-10">    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">score</span><span class="p">,</span> <span class="n">hit</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="s2">"text"</span><span class="p">])</span>
+</span></code></pre></div>
+</div>
+<p>That is the whole light path — no configuration, no install beyond <code class="docutils literal notranslate"><span class="pre">ef</span></code> itself.
+<code class="docutils literal notranslate"><span class="pre">ingest</span></code> returns a <code class="docutils literal notranslate"><span class="pre">SearchableCorpus</span></code> ready to <code class="docutils literal notranslate"><span class="pre">search</span></code>.</p>
+<section id="installation">
+<h2>Installation<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#installation" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#installation'">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">pip<span class="w"> </span>install<span class="w"> </span>ef<span class="w">                       </span><span class="c1"># core: search, indexing, refresh, eval</span>
+</span><span id="line-2">pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ef[openai]"</span><span class="w">             </span><span class="c1"># OpenAI embeddings</span>
+</span><span id="line-3">pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ef[sentence-transformers]"</span><span class="w">  </span><span class="c1"># local sentence-transformers embeddings</span>
+</span><span id="line-4">pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ef[explore]"</span><span class="w">            </span><span class="c1"># the L5 explore layer (UMAP, HDBSCAN)</span>
+</span><span id="line-5">pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ef[imbed]"</span><span class="w">              </span><span class="c1"># imbed-backed components &amp; cluster labelling</span>
+</span></code></pre></div>
+</div>
+<p>The core install needs only <strong>numpy</strong> (plus <code class="docutils literal notranslate"><span class="pre">dol</span></code>, <code class="docutils literal notranslate"><span class="pre">i2</span></code>, <code class="docutils literal notranslate"><span class="pre">vd</span></code>). The default
+embedder is dependency-free — feature hashing, lexical not semantic; for real
+semantic search pass a <code class="docutils literal notranslate"><span class="pre">sentence-transformers</span></code> or provider embedder (see below).</p>
+</section>
+<section id="what-ef-is">
+<h2>What <code class="docutils literal notranslate"><span class="pre">ef</span></code> is<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#what-ef-is" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#what-ef-is'">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ef</span></code> is a <strong>facade, not a framework</strong>. It owns the schemas (<code class="docutils literal notranslate"><span class="pre">Segment</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Embedder</span></code>, <code class="docutils literal notranslate"><span class="pre">Segmenter</span></code>, <code class="docutils literal notranslate"><span class="pre">Corpus</span></code>), the indexing core, refresh, and the
+RAG-plug-in surface — and it stops there: no agent loops, no prompt templating,
+no answer synthesis. “Bring your own LLM, your own agent framework, your own UI.”</p>
+<p>It is built on five layers, the same facade covering all of them:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">L0 Sources    Corpus = MutableMapping[source_id, Source]   (dol store: fs/S3/API/RAM)
+</span><span id="line-2">L1 Parse      pluggable text extraction
+</span><span id="line-3">L2 Segment    Segmenter facade (chunkers)
+</span><span id="line-4">L3 Embed      Embedder facade (provider / local adapters)
+</span><span id="line-5">L4 Index      vd.Collection  (ef writes; vd owns the index)
+</span><span id="line-6">L5 Derive     project / cluster / label   ("explore the corpus")
+</span><span id="line-7">──────────────────────────────────────────────────────────────
+</span><span id="line-8">   Search     search(query) -&gt; ranked SearchHits
+</span><span id="line-9">   RAG plug   retrieve(query) -&gt; list[Segment]  handed to your LLM/agent
+</span></code></pre></div>
+</div>
+</section>
+<section id="choosing-an-embedder">
+<h2>Choosing an embedder<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#choosing-an-embedder" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#choosing-an-embedder'">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ingest</span></code> and <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code> take an <code class="docutils literal notranslate"><span class="pre">embedder=</span></code> — a string, a callable, a URL,
+or an <code class="docutils literal notranslate"><span class="pre">Embedder</span></code>. The <code class="docutils literal notranslate"><span class="pre">as_embedder</span></code> seam normalizes all of them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_embedder</span><span class="p">,</span> <span class="n">openai_embedder</span><span class="p">,</span> <span class="n">sentence_transformers_embedder</span>
+</span><span id="line-2">
+</span><span id="line-3"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">sentence_transformers_embedder</span><span class="p">(</span><span class="s2">"all-MiniLM-L6-v2"</span><span class="p">))</span>
+</span><span id="line-4"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">openai_embedder</span><span class="p">(</span><span class="s2">"text-embedding-3-small"</span><span class="p">))</span>
+</span><span id="line-5"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="s2">"cohere:embed-v4.0"</span><span class="p">))</span>   <span class="c1"># also voyage:/gemini:</span>
+</span><span id="line-6"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="n">my_callable</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">"custom@768"</span><span class="p">))</span>
+</span></code></pre></div>
+</div>
+<p>Hosted-API adapters: <code class="docutils literal notranslate"><span class="pre">openai_embedder</span></code> (needs <code class="docutils literal notranslate"><span class="pre">ef[openai]</span></code>) plus
+<code class="docutils literal notranslate"><span class="pre">cohere_embedder</span></code>, <code class="docutils literal notranslate"><span class="pre">voyage_embedder</span></code> and <code class="docutils literal notranslate"><span class="pre">gemini_embedder</span></code> — the latter three
+speak their providers’ REST endpoints directly, so they need only an API key,
+no SDK. Each translates <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s canonical <code class="docutils literal notranslate"><span class="pre">input_type</span></code> (<code class="docutils literal notranslate"><span class="pre">query</span></code> / <code class="docutils literal notranslate"><span class="pre">document</span></code> /
+<code class="docutils literal notranslate"><span class="pre">classification</span></code> / <code class="docutils literal notranslate"><span class="pre">clustering</span></code>) to the vendor’s own task name. Local options:
+<code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder</span></code>, <code class="docutils literal notranslate"><span class="pre">http_embedder</span></code> (any TEI-style service), and
+the dependency-free <code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code> default.</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Embedder</span></code> is just a batch callable <code class="docutils literal notranslate"><span class="pre">Iterable[str]</span> <span class="pre">-&gt;</span> <span class="pre">ndarray(n,</span> <span class="pre">dim)</span></code> with a
+little metadata. Composition wrappers — <code class="docutils literal notranslate"><span class="pre">CachedEmbedder</span></code>, <code class="docutils literal notranslate"><span class="pre">RetryingEmbedder</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MultiEmbedder</span></code>, <code class="docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code>, <code class="docutils literal notranslate"><span class="pre">InstructionEmbedder</span></code> — each wrap an inner embedder.</p>
+<p>For instruction-tuned models (E5-instruct, BGE, GTE, Qwen3-Embedding), condition the query side on the task: <code class="docutils literal notranslate"><span class="pre">InstructionEmbedder(inner,</span> <span class="pre">query_instruction="Represent</span> <span class="pre">this</span> <span class="pre">sentence</span> <span class="pre">for</span> <span class="pre">searching</span> <span class="pre">relevant</span> <span class="pre">passages:</span> <span class="pre">")</span></code> prefixes query texts and leaves documents bare, or pass <code class="docutils literal notranslate"><span class="pre">query_prompt=</span></code> / <code class="docutils literal notranslate"><span class="pre">prompt_names={"query":</span> <span class="pre">"query"}</span></code> to <code class="docutils literal notranslate"><span class="pre">sentence_transformers_embedder</span></code>. Either way the conditioned roles show up in <code class="docutils literal notranslate"><span class="pre">honored_input_types</span></code> and the instruction text is baked into <code class="docutils literal notranslate"><span class="pre">model_id</span></code>, so caches never mix vectors. Only trust this on an instruction-tuned model; on <code class="docutils literal notranslate"><span class="pre">all-MiniLM</span></code> it should be a near no-op.</p>
+</section>
+<section id="the-heavy-case-sourcemanager">
+<h2>The heavy case — <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#the-heavy-case-sourcemanager" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#the-heavy-case-sourcemanager'">¶</a></h2>
+<p>For large or changing corpora, multiple segmentations/embedders, and explicit
+control, use <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code>. Configs that share a pipeline step <strong>share its
+artifacts for free</strong> — the indexing core is a content-addressed producer graph,
+so a second embedder or segmenter re-uses everything upstream of it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceManager</span>
+</span><span id="line-2">
+</span><span id="line-3"><span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="s2">"my_vectors"</span><span class="p">)</span>
+</span><span id="line-4"><span class="n">manager</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">segmenter</span><span class="o">=</span><span class="s2">"recursive"</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="s2">"openai:text-embedding-3-small"</span><span class="p">)</span>
+</span><span id="line-5"><span class="n">index</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">searchable</span><span class="p">()</span>
+</span></code></pre></div>
+</div>
+</section>
+<section id="keeping-an-index-fresh">
+<h2>Keeping an index fresh<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#keeping-an-index-fresh" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#keeping-an-index-fresh'">¶</a></h2>
+<p>As sources change, an index drifts. <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code> diagnoses and repairs it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">report</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">diagnose</span><span class="p">()</span>        <span class="c1"># the four staleness conditions</span>
+</span><span id="line-2"><span class="n">manager</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"incremental"</span><span class="p">)</span>  <span class="c1"># none | incremental | full | scoped_full</span>
+</span><span id="line-3"><span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="s2">"my_vectors"</span><span class="p">,</span> <span class="n">auto_refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># live</span>
+</span></code></pre></div>
+</div>
+</section>
+<section id="rag-plug-in-evaluation">
+<h2>RAG plug-in &amp; evaluation<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#rag-plug-in-evaluation" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#rag-plug-in-evaluation'">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ef</span></code> hands a corpus to <em>your</em> RAG/agent framework and measures retrieval
+quality — it does not synthesize answers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">segments</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">"how do neural networks learn?"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="line-2"><span class="n">context</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span>   <span class="c1"># feed context to your LLM</span>
+</span><span id="line-3">
+</span><span id="line-4"><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_retrieval</span><span class="p">,</span> <span class="n">evaluate_rag</span>
+</span><span id="line-5"><span class="n">retrieval</span> <span class="o">=</span> <span class="n">evaluate_retrieval</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">,</span> <span class="n">qrels</span><span class="p">,</span> <span class="n">queries</span><span class="p">)</span>  <span class="c1"># BEIR-shaped, NDCG@10</span>
+</span><span id="line-6"><span class="n">rag</span> <span class="o">=</span> <span class="n">evaluate_rag</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>                          <span class="c1"># deterministic lexical metrics</span>
+</span></code></pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">retrieve()</span></code> returns plain <code class="docutils literal notranslate"><span class="pre">Segment</span></code>s (provenance preserved in
+<code class="docutils literal notranslate"><span class="pre">metadata["source"]</span></code>); <code class="docutils literal notranslate"><span class="pre">search()</span></code> returns scored <code class="docutils literal notranslate"><span class="pre">SearchHit</span></code>s. <code class="docutils literal notranslate"><span class="pre">with_reranker</span></code>
+adds a two-stage reranking pass. <code class="docutils literal notranslate"><span class="pre">as_ragas_dataset</span></code> bridges to Ragas for
+LLM-judged metrics.</p>
+</section>
+<section id="exploring-a-corpus-layer-l5">
+<h2>Exploring a corpus (layer L5)<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#exploring-a-corpus-layer-l5" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#exploring-a-corpus-layer-l5'">¶</a></h2>
+<p>The secondary “see the shape of the corpus” surface — <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s visualization
+heritage, the backend an <code class="docutils literal notranslate"><span class="pre">app_ef</span></code> corpus map consumes. Three functions, each
+taking a corpus <em>or</em> a vector matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">coords</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>          <span class="c1"># PCA -&gt; UMAP, 2-D coordinates</span>
+</span><span id="line-2"><span class="n">labels</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>    <span class="c1"># k-means (or method="hdbscan")</span>
+</span><span id="line-3"><span class="n">titles</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>  <span class="c1"># LLM-titled clusters (via imbed)</span>
+</span></code></pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">project</span></code> and <code class="docutils literal notranslate"><span class="pre">cluster</span></code> import numpy-only; their default paths (PCA, k-means)
+need no extra. <code class="docutils literal notranslate"><span class="pre">method="umap"</span></code>, <code class="docutils literal notranslate"><span class="pre">method="hdbscan"</span></code> and <code class="docutils literal notranslate"><span class="pre">label_clusters</span></code> use the
+<code class="docutils literal notranslate"><span class="pre">ef[explore]</span></code> / <code class="docutils literal notranslate"><span class="pre">ef[imbed]</span></code> extras, imported lazily.</p>
+</section>
+<section id="what-ef-is-not">
+<h2>What <code class="docutils literal notranslate"><span class="pre">ef</span></code> is <em>not</em><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#what-ef-is-not" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#what-ef-is-not'">¶</a></h2>
+<p>No agent loops, no tool-calling, no conversation memory, no prompt templating,
+no <strong>LLM answer synthesis</strong>, no bundled UI, no global config singleton. The
+RAG-plug-in surface is the boundary: <code class="docutils literal notranslate"><span class="pre">ef</span></code> returns <code class="docutils literal notranslate"><span class="pre">retrieve(query)</span> <span class="pre">-&gt;</span> <span class="pre">list[Segment]</span></code>; the application (or <code class="docutils literal notranslate"><span class="pre">srag</span></code> / <code class="docutils literal notranslate"><span class="pre">raglab</span></code> / LangGraph) takes it from
+there.</p>
+</section>
+<section id="links">
+<h2>Links<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#links" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#links'">¶</a></h2>
+<ul class="simple">
+<li><p><strong>GitHub</strong>: https://github.com/thorwhalen/ef</p></li>
+<li><p><strong>vd</strong> (vector-store interface): https://github.com/i2mint/vd</p></li>
+<li><p><strong>imbed</strong> (heavy embedding/clustering implementations): https://github.com/thorwhalen/imbed</p></li>
+</ul>
+</section>
+<section id="skills">
+<h2>Skills<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#skills" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#skills'">¶</a></h2>
+<p>ef ships a <strong>developer</strong> agent skill — install it into your agent host with
+<a class="reference external" href="https://cli.github.com/manual/gh_skill" rel="nofollow noopener"><code class="docutils literal notranslate"><span class="pre">gh</span> <span class="pre">skill</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a> (don’t have it?
+<a class="reference external" href="https://cli.github.com/" rel="nofollow noopener">install gh<svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>) before working in this repo:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">gh<span class="w"> </span>skill<span class="w"> </span>install<span class="w"> </span>thorwhalen/ef<span class="w"> </span>ef-architecture<span class="w"> </span>--agent<span class="w"> </span>claude-code
+</span></code></pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Skill</p></th>
+<th class="head"><p>Use it when…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ef-architecture</span></code></p></td>
+<td><p>(developer) starting any non-trivial change in the ef repo — refactoring, the Embedder/Segmenter facades, the Corpus abstraction</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="license">
+<h2>License<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#license" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#license'">¶</a></h2>
+<p>MIT</p>
+<p class="epythet-aggregates">This documentation as a single file: <a href="ef.md">ef.md</a> (Markdown, for agents).</p>
+
+</section>
+</section>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-14 03:52 UTC from <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089">15ac259</a> (main) · ef 0.1.22 · <a href="about-this-build.html">about this build</a></p>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#installation'" class="reference internal" href="#installation">Installation</a></li>
+<li><a :data-current="activeSection === '#what-ef-is'" class="reference internal" href="#what-ef-is">What <code class="docutils literal notranslate"><span class="pre">ef</span></code> is</a></li>
+<li><a :data-current="activeSection === '#choosing-an-embedder'" class="reference internal" href="#choosing-an-embedder">Choosing an embedder</a></li>
+<li><a :data-current="activeSection === '#the-heavy-case-sourcemanager'" class="reference internal" href="#the-heavy-case-sourcemanager">The heavy case — <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code></a></li>
+<li><a :data-current="activeSection === '#keeping-an-index-fresh'" class="reference internal" href="#keeping-an-index-fresh">Keeping an index fresh</a></li>
+<li><a :data-current="activeSection === '#rag-plug-in-evaluation'" class="reference internal" href="#rag-plug-in-evaluation">RAG plug-in &amp; evaluation</a></li>
+<li><a :data-current="activeSection === '#exploring-a-corpus-layer-l5'" class="reference internal" href="#exploring-a-corpus-layer-l5">Exploring a corpus (layer L5)</a></li>
+<li><a :data-current="activeSection === '#what-ef-is-not'" class="reference internal" href="#what-ef-is-not">What <code class="docutils literal notranslate"><span class="pre">ef</span></code> is <em>not</em></a></li>
+<li><a :data-current="activeSection === '#links'" class="reference internal" href="#links">Links</a></li>
+<li><a :data-current="activeSection === '#skills'" class="reference internal" href="#skills">Skills</a></li>
+<li><a :data-current="activeSection === '#license'" class="reference internal" href="#license">License</a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="_static/documentation_options.js?v=842aa08f"></script>
+<script src="_static/doctools.js?v=fd6eb6e6"></script>
+<script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="_static/copybutton.js?v=fd10adb8"></script>
+<script defer="defer" src="_static/theme.js?v=5db23cf8"></script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+ef.segmenter\_adapters
+======================
+
+.. automodule:: ef.segmenter_adapters
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      as_segmenter
+      imbed_segmenter
+   

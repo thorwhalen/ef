@@ -1,1592 +1,2050 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ef 0.1.21 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+<html lang="en" data-content_root="./"
+  x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}"
+  :class="{ 'dark' : darkMode === true }">
 
+<head>
+  <script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#030711" />
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b3d22ae5"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+<link rel="alternate" type="text/markdown" href="genindex.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+  <title>Index | ef</title>
+  <meta property="og:title" content="Index | ef" />
+  <meta name="twitter:title" content="Index | ef" />
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+  <link rel="stylesheet" type="text/css" href="_static/theme.css?v=d6d7c91b" />
+  <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  <link rel="stylesheet" type="text/css" href="_static/epythet.css?v=e6b54dbb" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="index" title="Index" href="#" />
 </head>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<body x-data="{ showSidebar: false, showScrollTop: false }"
+  class="min-h-screen font-sans antialiased bg-background text-foreground" :class="{ 'overflow-hidden': showSidebar }">
+  <div x-cloak x-show="showSidebar"
+    class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden"
+    @click.self="showSidebar = false"></div><div id="page" class="relative flex flex-col min-h-screen"><a href="#content"
+      class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+    <div class="hidden mr-4 md:flex">
+      <a href="index.html" class="flex items-center mr-6"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">ef</span>
+      </a><nav class="flex items-center gap-6 text-sm font-medium">
+        <a href="https://github.com/thorwhalen/ef" class="transition-colors hover:text-foreground/80 text-foreground/60" rel="noopener nofollow">GitHub</a>
+      </nav></div><button
+      class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden"
+      type="button" @click="showSidebar = true">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" aria-hidden="true"
+        fill="currentColor">
+        <path
+          d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z" />
+      </svg>
+      <span class="sr-only">Toggle navigation menu</span>
+    </button>
+    <div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+      <div class="flex-1 w-full md:w-auto md:flex-none"><form id="searchbox"
+      action="search.html"
+      method="get"
+      class="relative flex items-center group"
+      @keydown.k.window.meta="$refs.search.focus()">
+  <input x-ref="search"
+          name="q"
+          id="search-input"
+          type="search"
+          aria-label="Search the docs"
+          placeholder="Search ..."
+          class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" />
+  <kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+    <span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+      </div>
+      <nav class="flex items-center gap-1">
+        <button @click="darkMode = !darkMode"
+          class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9"
+          type="button"
+          title="Toggle color scheme">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0">
+            <path
+              d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 96 960 960" fill="currentColor"
+            class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100">
+            <path
+              d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</header>
 
-          
-          
-          <a href="index.html" class="icon icon-home">
-            ef
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef.html">ef</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/artifact_graph.html">ef.artifact_graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/config.html">ef.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/corpus.html">ef.corpus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/diagnostics.html">ef.diagnostics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_adapters.html">ef.embedder_adapters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedder_wrappers.html">ef.embedder_wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/embedders.html">ef.embedders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/evaluation.html">ef.evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/exploration.html">ef.exploration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/hashing.html">ef.hashing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/ops.html">ef.ops</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/refresh.html">ef.refresh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/reranking.html">ef.reranking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenter_adapters.html">ef.segmenter_adapters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segmenters.html">ef.segmenters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/segments.html">ef.segments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/service.html">ef.service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ef/source_manager.html">ef.source_manager</a></li>
+    <div class="flex-1"><div
+        class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside id="left-sidebar"
+  class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky"
+  :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }">
+
+    <a href="index.html" class="justify-start text-sm md:!hidden bg-background"><span class="font-bold text-clip whitespace-nowrap">ef</span>
+    </a>
+
+    <div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+      <div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+  <a href="https://github.com/thorwhalen/ef" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/ef.html">ef</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.config.html">ef.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.corpus.html">ef.corpus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.embedders.html">ef.embedders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.exploration.html">ef.exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.hashing.html">ef.hashing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.ops.html">ef.ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.refresh.html">ef.refresh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.reranking.html">ef.reranking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.segments.html">ef.segments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.service.html">ef.service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.source_manager.html">ef.source_manager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ai-agents.html">For AI agents</a></li>
 </ul>
 
-        </div>
+</nav>
       </div>
-    </nav>
+    </div>
+    <button type="button" @click="showSidebar = false"
+      class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 96 960 960" fill="currentColor"
+        stroke="none" class="h-4 w-4">
+        <path
+          d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z" />
+      </svg>
+    </button>
+  </aside>
+          <main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs"
+     class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+  <a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground"
+     href="index.html">
+    <span class="hidden md:inline">ef</span>
+    <svg xmlns="http://www.w3.org/2000/svg"
+         height="18"
+         width="18"
+         viewBox="0 96 960 960"
+         aria-label="Home"
+         fill="currentColor"
+         stroke="none"
+         class="md:hidden">
+      <path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z" />
+    </svg>
+  </a>
+  
+<div class="mr-1">/</div><span aria-current="page"
+        class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Index</span>
+</nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ef</a>
-      </nav>
+<div id="content" role="main">
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Index</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+  <h1 id="index">Index</h1>
+  <h2 id="A">A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.add">add() (ef.artifact_graph.ArtifactGraph method)</a>
 
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
- | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#J"><strong>J</strong></a>
- | <a href="#K"><strong>K</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
- | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
- 
-</div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.add">add() (ef.artifact_graph.ArtifactGraph method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.add">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.add">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.ancestors">ancestors() (ef.artifact_graph.ArtifactGraph method)</a>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.ancestors">ancestors() (ef.artifact_graph.ArtifactGraph method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.ancestors">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.ancestors">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.approx_token_count">approx_token_count() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.approx_token_count">approx_token_count() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.approx_token_count">(in module ef.segmenters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.approx_token_count">(in module ef.segmenters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/segmenters.html#ef.segmenters.APPROX_TOKENIZER">APPROX_TOKENIZER (in module ef.segmenters)</a>
+      <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.APPROX_TOKENIZER">APPROX_TOKENIZER (in module ef.segmenters)</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.artifact_id">artifact_id() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.artifact_id">artifact_id() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.artifact_id">(in module ef.artifact_graph)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ArtifactGraph">ArtifactGraph (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph">(class in ef.artifact_graph)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.artifact_id">(in module ef.artifact_graph)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.ArtifactId">ArtifactId (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.ArtifactGraph">ArtifactGraph (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactId">(in module ef.artifact_graph)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph">(class in ef.artifact_graph)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.as_corpus">as_corpus() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.ArtifactId">ArtifactId (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.as_corpus">(in module ef.corpus)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactId">(in module ef.artifact_graph)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.as_corpus">as_corpus() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.as_corpus">(in module ef.corpus)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.as_dict">as_dict() (ef.artifact_graph.ProducerSpec method)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.as_dict">as_dict() (ef.artifact_graph.ProducerSpec method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.PipelineSpec.as_dict">(ef.config.PipelineSpec method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.PipelineSpec.as_dict">(ef.config.PipelineSpec method)</a>
 </li>
-        <li><a href="module_docs/ef/config.html#ef.config.TransformSpec.as_dict">(ef.config.TransformSpec method)</a>
+        <li><a href="_autosummary/ef.config.html#ef.config.TransformSpec.as_dict">(ef.config.TransformSpec method)</a>
 </li>
-        <li><a href="module_docs/ef.html#ef.PipelineSpec.as_dict">(ef.PipelineSpec method)</a>
+        <li><a href="_autosummary/ef.html#ef.PipelineSpec.as_dict">(ef.PipelineSpec method)</a>
 </li>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.as_dict">(ef.ProducerSpec method)</a>
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.as_dict">(ef.ProducerSpec method)</a>
 </li>
-        <li><a href="module_docs/ef.html#ef.TransformSpec.as_dict">(ef.TransformSpec method)</a>
+        <li><a href="_autosummary/ef.html#ef.TransformSpec.as_dict">(ef.TransformSpec method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.as_embedder">as_embedder() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.as_embedder">as_embedder() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.as_embedder">(in module ef.embedder_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.as_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.as_ragas_dataset">as_ragas_dataset() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.as_ragas_dataset">as_ragas_dataset() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.as_ragas_dataset">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.as_ragas_dataset">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.as_segment">as_segment() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.as_segment">as_segment() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.as_segment">(in module ef.segments)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.as_segment">(in module ef.segments)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.as_segmenter">as_segmenter() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.as_segmenter">as_segmenter() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.as_segmenter">(in module ef.segmenter_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenter_adapters.html#ef.segmenter_adapters.as_segmenter">(in module ef.segmenter_adapters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.average_precision">average_precision() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.average_precision">average_precision() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.average_precision">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.base_delay">base_delay (ef.embedder_wrappers.RetryPolicy attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetryPolicy.base_delay">(ef.RetryPolicy attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BaseEmbedder">BaseEmbedder (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BaseEmbedder">(class in ef.embedders)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BaseSegmenter">BaseSegmenter (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BaseSegmenter">(class in ef.segmenters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BaseSegmenter.batch">batch() (ef.BaseSegmenter method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.BatchedSegmenter.batch">(ef.BatchedSegmenter method)</a>
-</li>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BaseSegmenter.batch">(ef.segmenters.BaseSegmenter method)</a>
-</li>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BatchedSegmenter.batch">(ef.segmenters.BatchedSegmenter method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.average_precision">(in module ef.evaluation)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.BatchedSegmenter">BatchedSegmenter (class in ef)</a>
+  </tr>
+      </table>
+  
+  <h2 id="B">B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.base_delay">base_delay (ef.embedder_wrappers.RetryPolicy attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.BatchedSegmenter">(class in ef.segmenters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetryPolicy.base_delay">(ef.RetryPolicy attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.BatchHandle">BatchHandle (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.BaseEmbedder">BaseEmbedder (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle">(class in ef.embedders)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BaseEmbedder">(class in ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchStatus">BatchStatus (in module ef.embedders)</a>
-</li>
-  </ul></td>
-</tr></table>
+      <li><a href="_autosummary/ef.html#ef.BaseSegmenter">BaseSegmenter (class in ef)</a>
 
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.cache_key">cache_key() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.cache_key">(in module ef.embedders)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.BaseSegmenter">(class in ef.segmenters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.CachedEmbedder">CachedEmbedder (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.BaseSegmenter.batch">batch() (ef.BaseSegmenter method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder">(class in ef.embedder_wrappers)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.BatchedSegmenter.batch">(ef.BatchedSegmenter method)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BatchHandle.cancel">cancel (ef.BatchHandle attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.cancel">(ef.embedders.BatchHandle attribute)</a>
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.BaseSegmenter.batch">(ef.segmenters.BaseSegmenter method)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef/hashing.html#ef.hashing.canonical_json">canonical_json() (in module ef.hashing)</a>
-</li>
-      <li><a href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff.changed">changed (ef.corpus.CorpusDiff property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.CorpusDiff.changed">(ef.CorpusDiff property)</a>
-</li>
-        <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshReport.changed">(ef.refresh.RefreshReport property)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.RefreshReport.changed">(ef.RefreshReport property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus">ChangeDetectingCorpus (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus">(class in ef.corpus)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ChangeEvent">ChangeEvent (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent">(class in ef.corpus)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeKind">ChangeKind (in module ef.corpus)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.cluster">cluster() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#ef.exploration.cluster">(in module ef.exploration)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.cohere_embedder">cohere_embedder() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.cohere_embedder">(in module ef.embedder_adapters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource.config_hashes">config_hashes (ef.diagnostics.IndexedSource attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.IndexedSource.config_hashes">(ef.IndexedSource attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.config_id">config_id() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.config_id">(in module ef.config)</a>
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.BatchedSegmenter.batch">(ef.segmenters.BatchedSegmenter method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ConfigId">ConfigId (in module ef)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.BatchedSegmenter">BatchedSegmenter (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.ConfigId">(in module ef.config)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.BatchedSegmenter">(class in ef.segmenters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.configs">configs (ef.source_manager.SourceManager property)</a>
+      <li><a href="_autosummary/ef.html#ef.BatchHandle">BatchHandle (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.configs">(ef.SourceManager property)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BatchHandle">(class in ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.content_hash">content_hash() (in module ef)</a>
+      <li><a href="_autosummary/ef.embedders.html#ef.embedders.BatchStatus">BatchStatus (in module ef.embedders)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="C">C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.cache_key">cache_key() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.content_hash">(in module ef.corpus)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.cache_key">(in module ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.context_precision">context_precision() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.CachedEmbedder">CachedEmbedder (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.context_precision">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder">(class in ef.embedder_wrappers)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.context_recall">context_recall() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.BatchHandle.cancel">cancel (ef.BatchHandle attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.context_recall">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BatchHandle.cancel">(ef.embedders.BatchHandle attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/corpus.html#ef.corpus.Corpus">Corpus (in module ef.corpus)</a>
+      <li><a href="_autosummary/ef.hashing.html#ef.hashing.canonical_json">canonical_json() (in module ef.hashing)</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.EfService.corpus_info">corpus_info() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.corpus.html#ef.corpus.CorpusDiff.changed">changed (ef.corpus.CorpusDiff property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.corpus_info">(ef.service.EfService method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.CorpusDiff.changed">(ef.CorpusDiff property)</a>
+</li>
+        <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshReport.changed">(ef.refresh.RefreshReport property)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.RefreshReport.changed">(ef.RefreshReport property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.corpus_state">corpus_state() (in module ef.diagnostics)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.CorpusDiff">CorpusDiff (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.ChangeDetectingCorpus">ChangeDetectingCorpus (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.CorpusDiff">(class in ef.corpus)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeDetectingCorpus">(class in ef.corpus)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.CorpusInfo">CorpusInfo (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.ChangeEvent">ChangeEvent (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.CorpusInfo">(class in ef.service)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeEvent">(class in ef.corpus)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.create_corpus">create_corpus() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeKind">ChangeKind (in module ef.corpus)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.cluster">cluster() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.create_corpus">(ef.service.EfService method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#ef.exploration.cluster">(in module ef.exploration)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.cross_encoder_reranker">cross_encoder_reranker() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.cohere_embedder">cohere_embedder() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/reranking.html#ef.reranking.cross_encoder_reranker">(in module ef.reranking)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.cohere_embedder">(in module ef.embedder_adapters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.IndexedSource.config_hashes">config_hashes (ef.diagnostics.IndexedSource attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.IndexedSource.config_hashes">(ef.IndexedSource attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.config_id">config_id() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.config_id">(in module ef.config)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.ConfigId">ConfigId (in module ef)</a>
 
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.dcg_at_k">dcg_at_k() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.dcg_at_k">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.ConfigId">(in module ef.config)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.DEFAULT_EMBEDDER">DEFAULT_EMBEDDER (in module ef.source_manager)</a>
-</li>
-      <li><a href="module_docs/ef/segmenters.html#ef.segmenters.DEFAULT_SEPARATORS">DEFAULT_SEPARATORS (in module ef.segmenters)</a>
-</li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.delete_cascade">delete_cascade() (ef.artifact_graph.ArtifactGraph method)</a>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.configs">configs (ef.source_manager.SourceManager property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.delete_cascade">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.configs">(ef.SourceManager property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.delete_corpus">delete_corpus() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.html#ef.content_hash">content_hash() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.delete_corpus">(ef.service.EfService method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.content_hash">(in module ef.corpus)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.delete_source_documents">delete_source_documents() (in module ef.refresh)</a>
-</li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.descendants">descendants() (ef.artifact_graph.ArtifactGraph method)</a>
+      <li><a href="_autosummary/ef.html#ef.context_precision">context_precision() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.descendants">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.context_precision">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.context_recall">context_recall() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.context_recall">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.corpus.html#ef.corpus.Corpus">Corpus (in module ef.corpus)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.EfService.corpus_info">corpus_info() (ef.EfService method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.corpus_info">(ef.service.EfService method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.corpus_state">corpus_state() (in module ef.diagnostics)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.CorpusDiff">CorpusDiff (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.CorpusDiff">(class in ef.corpus)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.CorpusInfo">CorpusInfo (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.CorpusInfo">(class in ef.service)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.EfService.create_corpus">create_corpus() (ef.EfService method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.create_corpus">(ef.service.EfService method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.cross_encoder_reranker">cross_encoder_reranker() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.reranking.html#ef.reranking.cross_encoder_reranker">(in module ef.reranking)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.diagnose">diagnose() (ef.source_manager.SourceManager method)</a>
+  </tr>
+      </table>
+  
+  <h2 id="D">D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.dcg_at_k">dcg_at_k() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.diagnose">(ef.SourceManager method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.diagnose">(in module ef)</a>
-</li>
-        <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.diagnose">(in module ef.diagnostics)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.dcg_at_k">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus.diff">diff() (ef.ChangeDetectingCorpus method)</a>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.DEFAULT_EMBEDDER">DEFAULT_EMBEDDER (in module ef.source_manager)</a>
+</li>
+      <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.DEFAULT_SEPARATORS">DEFAULT_SEPARATORS (in module ef.segmenters)</a>
+</li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.delete_cascade">delete_cascade() (ef.artifact_graph.ArtifactGraph method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus.diff">(ef.corpus.ChangeDetectingCorpus method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.delete_cascade">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Embedder.dim">dim (ef.Embedder attribute)</a>
+      <li><a href="_autosummary/ef.html#ef.EfService.delete_corpus">delete_corpus() (ef.EfService method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder.dim">(ef.embedders.Embedder attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.delete_corpus">(ef.service.EfService method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource.doc_ids">doc_ids (ef.diagnostics.IndexedSource attribute)</a>
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.delete_source_documents">delete_source_documents() (in module ef.refresh)</a>
+</li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.descendants">descendants() (ef.artifact_graph.ArtifactGraph method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.IndexedSource.doc_ids">(ef.IndexedSource attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.descendants">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.diagnose">diagnose() (ef.source_manager.SourceManager method)</a>
 
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.diagnose">(ef.SourceManager method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.diagnose">(in module ef)</a>
+</li>
+        <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.diagnose">(in module ef.diagnostics)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.ChangeDetectingCorpus.diff">diff() (ef.ChangeDetectingCorpus method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeDetectingCorpus.diff">(ef.corpus.ChangeDetectingCorpus method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.Embedder.dim">dim (ef.Embedder attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder.dim">(ef.embedders.Embedder attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.IndexedSource.doc_ids">doc_ids (ef.diagnostics.IndexedSource attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.IndexedSource.doc_ids">(ef.IndexedSource attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="E">E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     ef
 
-      <ul>
-        <li><a href="module_docs/ef.html#module-ef">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#module-ef">module</a>
 </li>
       </ul></li>
       <li>
     ef.artifact_graph
 
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#module-ef.artifact_graph">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#module-ef.artifact_graph">module</a>
 </li>
       </ul></li>
       <li>
     ef.config
 
-      <ul>
-        <li><a href="module_docs/ef/config.html#module-ef.config">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#module-ef.config">module</a>
 </li>
       </ul></li>
       <li>
     ef.corpus
 
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#module-ef.corpus">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#module-ef.corpus">module</a>
 </li>
       </ul></li>
       <li>
     ef.diagnostics
 
-      <ul>
-        <li><a href="module_docs/ef/diagnostics.html#module-ef.diagnostics">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.diagnostics.html#module-ef.diagnostics">module</a>
 </li>
       </ul></li>
       <li>
     ef.embedder_adapters
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#module-ef.embedder_adapters">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#module-ef.embedder_adapters">module</a>
 </li>
       </ul></li>
       <li>
     ef.embedder_wrappers
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#module-ef.embedder_wrappers">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#module-ef.embedder_wrappers">module</a>
 </li>
       </ul></li>
       <li>
     ef.embedders
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#module-ef.embedders">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#module-ef.embedders">module</a>
 </li>
       </ul></li>
       <li>
     ef.evaluation
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#module-ef.evaluation">module</a>
 </li>
       </ul></li>
       <li>
     ef.exploration
 
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#module-ef.exploration">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#module-ef.exploration">module</a>
 </li>
       </ul></li>
       <li>
     ef.hashing
 
-      <ul>
-        <li><a href="module_docs/ef/hashing.html#module-ef.hashing">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.hashing.html#module-ef.hashing">module</a>
 </li>
       </ul></li>
       <li>
     ef.ops
 
-      <ul>
-        <li><a href="module_docs/ef/ops.html#module-ef.ops">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ops.html#module-ef.ops">module</a>
 </li>
       </ul></li>
       <li>
     ef.refresh
 
-      <ul>
-        <li><a href="module_docs/ef/refresh.html#module-ef.refresh">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.refresh.html#module-ef.refresh">module</a>
 </li>
       </ul></li>
       <li>
     ef.reranking
 
-      <ul>
-        <li><a href="module_docs/ef/reranking.html#module-ef.reranking">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.reranking.html#module-ef.reranking">module</a>
 </li>
       </ul></li>
       <li>
     ef.segmenter_adapters
 
-      <ul>
-        <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenter_adapters.html#module-ef.segmenter_adapters">module</a>
 </li>
       </ul></li>
       <li>
     ef.segmenters
 
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#module-ef.segmenters">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#module-ef.segmenters">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ef.segments
 
-      <ul>
-        <li><a href="module_docs/ef/segments.html#module-ef.segments">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#module-ef.segments">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     ef.service
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#module-ef.service">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#module-ef.service">module</a>
 </li>
       </ul></li>
       <li>
     ef.source_manager
 
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#module-ef.source_manager">module</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#module-ef.source_manager">module</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService">EfService (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.EfService">EfService (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService">(class in ef.service)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService">(class in ef.service)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.BaseEmbedder.embed_batch">embed_batch() (ef.BaseEmbedder method)</a>
+      <li><a href="_autosummary/ef.html#ef.BaseEmbedder.embed_batch">embed_batch() (ef.BaseEmbedder method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.Embedder.embed_batch">(ef.Embedder method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.Embedder.embed_batch">(ef.Embedder method)</a>
 </li>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BaseEmbedder.embed_batch">(ef.embedders.BaseEmbedder method)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.InstructionEmbedder.embed_batch">(ef.embedder_wrappers.InstructionEmbedder method)</a>
 </li>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder.embed_batch">(ef.embedders.Embedder method)</a>
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BaseEmbedder.embed_batch">(ef.embedders.BaseEmbedder method)</a>
+</li>
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder.embed_batch">(ef.embedders.Embedder method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.InstructionEmbedder.embed_batch">(ef.InstructionEmbedder method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.embed_length_sorted">embed_length_sorted() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.embed_length_sorted">embed_length_sorted() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.embed_length_sorted">(in module ef.embedders)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.embed_length_sorted">(in module ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.EMBED_OP_VERSION">EMBED_OP_VERSION (in module ef.ops)</a>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.EMBED_OP_VERSION">EMBED_OP_VERSION (in module ef.ops)</a>
 </li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.embed_step">embed_step() (in module ef.ops)</a>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.embed_step">embed_step() (in module ef.ops)</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.Embedder">Embedder (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.Embedder">Embedder (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder">(class in ef.embedders)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder">(class in ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.embedder_identity">embedder_identity() (in module ef.ops)</a>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.embedder_identity">embedder_identity() (in module ef.ops)</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.EmbedderError">EmbedderError</a>, <a href="module_docs/ef/embedders.html#ef.embedders.EmbedderError">[1]</a>
+      <li><a href="_autosummary/ef.embedders.html#ef.embedders.EmbedderError">EmbedderError</a>, <a href="_autosummary/ef.html#ef.EmbedderError">[1]</a>
 </li>
-      <li><a href="module_docs/ef.html#ef.evaluate_rag">evaluate_rag() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.evaluate_rag">evaluate_rag() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_rag">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.evaluate_rag">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.evaluate_retrieval">evaluate_retrieval() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.evaluate_retrieval">evaluate_retrieval() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.evaluate_retrieval">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.evaluate_retrieval">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.exact_match">exact_match() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.exact_match">exact_match() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.exact_match">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.exact_match">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.explore">explore() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.explore">explore() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#ef.exploration.explore">(in module ef.exploration)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#ef.exploration.explore">(in module ef.exploration)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.explore_corpus">explore_corpus() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.html#ef.EfService.explore_corpus">explore_corpus() (ef.EfService method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.explore_corpus">(ef.service.EfService method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.explore_corpus">(ef.service.EfService method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.ExploreResult">ExploreResult (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.ExploreResult">ExploreResult (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#ef.exploration.ExploreResult">(class in ef.exploration)</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.Freshness">Freshness (in module ef.artifact_graph)</a>
-</li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.freshness">freshness() (ef.artifact_graph.ArtifactGraph method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.freshness">(ef.ArtifactGraph method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.from_dict">from_dict() (ef.artifact_graph.ProducerSpec class method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.PipelineSpec.from_dict">(ef.config.PipelineSpec class method)</a>
-</li>
-        <li><a href="module_docs/ef/config.html#ef.config.TransformSpec.from_dict">(ef.config.TransformSpec class method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.PipelineSpec.from_dict">(ef.PipelineSpec class method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.from_dict">(ef.ProducerSpec class method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.TransformSpec.from_dict">(ef.TransformSpec class method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#ef.exploration.ExploreResult">(class in ef.exploration)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.full_kwargs">full_kwargs() (in module ef)</a>
+  </tr>
+      </table>
+  
+  <h2 id="F">F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.Freshness">Freshness (in module ef.artifact_graph)</a>
+</li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.freshness">freshness() (ef.artifact_graph.ArtifactGraph method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.full_kwargs">(in module ef.config)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.freshness">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.FunctionEmbedder">FunctionEmbedder (class in ef)</a>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.from_dict">from_dict() (ef.artifact_graph.ProducerSpec class method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.FunctionEmbedder">(class in ef.embedders)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.PipelineSpec.from_dict">(ef.config.PipelineSpec class method)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.FunctionSegmenter">FunctionSegmenter (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.FunctionSegmenter">(class in ef.segmenters)</a>
+        <li><a href="_autosummary/ef.config.html#ef.config.TransformSpec.from_dict">(ef.config.TransformSpec class method)</a>
 </li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.gc_orphans">gc_orphans() (ef.source_manager.SourceManager method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.gc_orphans">(ef.SourceManager method)</a>
+        <li><a href="_autosummary/ef.html#ef.PipelineSpec.from_dict">(ef.PipelineSpec class method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.from_dict">(ef.ProducerSpec class method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.TransformSpec.from_dict">(ef.TransformSpec class method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.gemini_embedder">gemini_embedder() (in module ef)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.full_kwargs">full_kwargs() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.gemini_embedder">(in module ef.embedder_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.full_kwargs">(in module ef.config)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.FunctionEmbedder">FunctionEmbedder (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.FunctionEmbedder">(class in ef.embedders)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.FunctionSegmenter">FunctionSegmenter (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.FunctionSegmenter">(class in ef.segmenters)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="G">G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.gc_orphans">gc_orphans() (ef.source_manager.SourceManager method)</a>
 
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.HashingEmbedder">HashingEmbedder (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.HashingEmbedder">(class in ef.embedders)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.hierarchical">hierarchical() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.hierarchical">(in module ef.segmenters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.hits_to_segments">hits_to_segments() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.hits_to_segments">(in module ef.source_manager)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.CachedEmbedder.honored_input_types">honored_input_types (ef.CachedEmbedder property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.Embedder.honored_input_types">(ef.Embedder attribute)</a>
-</li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder.honored_input_types">(ef.embedder_wrappers.CachedEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder.honored_input_types">(ef.embedder_wrappers.NormalizingEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder.honored_input_types">(ef.embedder_wrappers.RetryingEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder.honored_input_types">(ef.embedders.Embedder attribute)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.NormalizingEmbedder.honored_input_types">(ef.NormalizingEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.RetryingEmbedder.honored_input_types">(ef.RetryingEmbedder property)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.gc_orphans">(ef.SourceManager method)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.http_embedder">http_embedder() (in module ef)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.gemini_embedder">gemini_embedder() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.http_embedder">(in module ef.embedder_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.gemini_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="H">H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.HashingEmbedder">HashingEmbedder (class in ef)</a>
 
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.imbed_segmenter">imbed_segmenter() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenter_adapters.html#ef.segmenter_adapters.imbed_segmenter">(in module ef.segmenter_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.HashingEmbedder">(class in ef.embedders)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.indexed_state">indexed_state() (in module ef.diagnostics)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.IndexedSource">IndexedSource (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.hierarchical">hierarchical() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource">(class in ef.diagnostics)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.hierarchical">(in module ef.segmenters)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ingest">ingest() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.hits_to_segments">hits_to_segments() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.ingest">(in module ef.source_manager)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.hits_to_segments">(in module ef.source_manager)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.inputs">inputs (ef.artifact_graph.ProducerSpec attribute)</a>
+      <li><a href="_autosummary/ef.html#ef.CachedEmbedder.honored_input_types">honored_input_types (ef.CachedEmbedder property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.inputs">(ef.ProducerSpec attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.Embedder.honored_input_types">(ef.Embedder attribute)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef/embedders.html#ef.embedders.InputType">InputType (in module ef.embedders)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder.honored_input_types">(ef.embedder_wrappers.CachedEmbedder property)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="J">J</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.jitter">jitter (ef.embedder_wrappers.RetryPolicy attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetryPolicy.jitter">(ef.RetryPolicy attribute)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.InstructionEmbedder.honored_input_types">(ef.embedder_wrappers.InstructionEmbedder property)</a>
 </li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ChangeEvent.kind">kind (ef.ChangeEvent attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.kind">(ef.corpus.ChangeEvent attribute)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder.honored_input_types">(ef.embedder_wrappers.NormalizingEmbedder property)</a>
+</li>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder.honored_input_types">(ef.embedder_wrappers.RetryingEmbedder property)</a>
+</li>
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder.honored_input_types">(ef.embedders.Embedder attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.InstructionEmbedder.honored_input_types">(ef.InstructionEmbedder property)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.NormalizingEmbedder.honored_input_types">(ef.NormalizingEmbedder property)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.RetryingEmbedder.honored_input_types">(ef.RetryingEmbedder property)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.http_embedder">http_embedder() (in module ef)</a>
 
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.label_clusters">label_clusters() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#ef.exploration.label_clusters">(in module ef.exploration)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.line_segmenter">line_segmenter() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.line_segmenter">(in module ef.segmenters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.http_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.lineage">lineage() (ef.source_manager.SourceManager method)</a>
+  </tr>
+      </table>
+  
+  <h2 id="I">I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.imbed_segmenter">imbed_segmenter() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.lineage">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenter_adapters.html#ef.segmenter_adapters.imbed_segmenter">(in module ef.segmenter_adapters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.list_corpora">list_corpora() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.indexed_state">indexed_state() (in module ef.diagnostics)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.IndexedSource">IndexedSource (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.list_corpora">(ef.service.EfService method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.IndexedSource">(class in ef.diagnostics)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.ingest">ingest() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.ingest">(in module ef.source_manager)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.inputs">inputs (ef.artifact_graph.ProducerSpec attribute)</a>
 
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/ops.html#ef.ops.make_embed_op">make_embed_op() (in module ef.ops)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.make_segment">make_segment() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.make_segment">(in module ef.segments)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.inputs">(ef.ProducerSpec attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.make_segment_op">make_segment_op() (in module ef.ops)</a>
+      <li><a href="_autosummary/ef.embedders.html#ef.embedders.InputType">InputType (in module ef.embedders)</a>
 </li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.mark_stale">mark_stale() (ef.artifact_graph.ArtifactGraph method)</a>
+      <li><a href="_autosummary/ef.html#ef.InstructionEmbedder">InstructionEmbedder (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.mark_stale">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.InstructionEmbedder">(class in ef.embedder_wrappers)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.materialise">materialise() (in module ef)</a>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="J">J</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.jitter">jitter (ef.embedder_wrappers.RetryPolicy attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.materialise">(in module ef.segmenters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetryPolicy.jitter">(ef.RetryPolicy attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.materialize">materialize() (ef.artifact_graph.ArtifactGraph method)</a>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="K">K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.ChangeEvent.kind">kind (ef.ChangeEvent attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.materialize">(ef.ArtifactGraph method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.materialize">(ef.source_manager.SourceManager method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.SourceManager.materialize">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeEvent.kind">(ef.corpus.ChangeEvent attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.max_attempts">max_attempts (ef.embedder_wrappers.RetryPolicy attribute)</a>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="L">L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.label_clusters">label_clusters() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetryPolicy.max_attempts">(ef.RetryPolicy attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#ef.exploration.label_clusters">(in module ef.exploration)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.max_delay">max_delay (ef.embedder_wrappers.RetryPolicy attribute)</a>
+      <li><a href="_autosummary/ef.html#ef.line_segmenter">line_segmenter() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetryPolicy.max_delay">(ef.RetryPolicy attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.line_segmenter">(in module ef.segmenters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Embedder.model_id">model_id (ef.Embedder attribute)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.lineage">lineage() (ef.source_manager.SourceManager method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder.model_id">(ef.embedders.Embedder attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.lineage">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.EfService.list_corpora">list_corpora() (ef.EfService method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.list_corpora">(ef.service.EfService method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="M">M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.ops.html#ef.ops.make_embed_op">make_embed_op() (in module ef.ops)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.make_segment">make_segment() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.make_segment">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.make_segment_op">make_segment_op() (in module ef.ops)</a>
+</li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.mark_stale">mark_stale() (ef.artifact_graph.ArtifactGraph method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.mark_stale">(ef.ArtifactGraph method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.materialise">materialise() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.materialise">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.materialize">materialize() (ef.artifact_graph.ArtifactGraph method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.materialize">(ef.ArtifactGraph method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.materialize">(ef.source_manager.SourceManager method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.SourceManager.materialize">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.max_attempts">max_attempts (ef.embedder_wrappers.RetryPolicy attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetryPolicy.max_attempts">(ef.RetryPolicy attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.max_delay">max_delay (ef.embedder_wrappers.RetryPolicy attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetryPolicy.max_delay">(ef.RetryPolicy attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.Embedder.model_id">model_id (ef.Embedder attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.InstructionEmbedder.model_id">(ef.embedder_wrappers.InstructionEmbedder property)</a>
+</li>
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder.model_id">(ef.embedders.Embedder attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.InstructionEmbedder.model_id">(ef.InstructionEmbedder property)</a>
 </li>
       </ul></li>
       <li>
     module
 
-      <ul>
-        <li><a href="module_docs/ef.html#module-ef">ef</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#module-ef">ef</a>
 </li>
-        <li><a href="module_docs/ef/artifact_graph.html#module-ef.artifact_graph">ef.artifact_graph</a>
+        <li><a href="_autosummary/ef.artifact_graph.html#module-ef.artifact_graph">ef.artifact_graph</a>
 </li>
-        <li><a href="module_docs/ef/config.html#module-ef.config">ef.config</a>
+        <li><a href="_autosummary/ef.config.html#module-ef.config">ef.config</a>
 </li>
-        <li><a href="module_docs/ef/corpus.html#module-ef.corpus">ef.corpus</a>
+        <li><a href="_autosummary/ef.corpus.html#module-ef.corpus">ef.corpus</a>
 </li>
-        <li><a href="module_docs/ef/diagnostics.html#module-ef.diagnostics">ef.diagnostics</a>
+        <li><a href="_autosummary/ef.diagnostics.html#module-ef.diagnostics">ef.diagnostics</a>
 </li>
-        <li><a href="module_docs/ef/embedder_adapters.html#module-ef.embedder_adapters">ef.embedder_adapters</a>
+        <li><a href="_autosummary/ef.embedder_adapters.html#module-ef.embedder_adapters">ef.embedder_adapters</a>
 </li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#module-ef.embedder_wrappers">ef.embedder_wrappers</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#module-ef.embedder_wrappers">ef.embedder_wrappers</a>
 </li>
-        <li><a href="module_docs/ef/embedders.html#module-ef.embedders">ef.embedders</a>
+        <li><a href="_autosummary/ef.embedders.html#module-ef.embedders">ef.embedders</a>
 </li>
-        <li><a href="module_docs/ef/evaluation.html#module-ef.evaluation">ef.evaluation</a>
+        <li><a href="_autosummary/ef.evaluation.html#module-ef.evaluation">ef.evaluation</a>
 </li>
-        <li><a href="module_docs/ef/exploration.html#module-ef.exploration">ef.exploration</a>
+        <li><a href="_autosummary/ef.exploration.html#module-ef.exploration">ef.exploration</a>
 </li>
-        <li><a href="module_docs/ef/hashing.html#module-ef.hashing">ef.hashing</a>
+        <li><a href="_autosummary/ef.hashing.html#module-ef.hashing">ef.hashing</a>
 </li>
-        <li><a href="module_docs/ef/ops.html#module-ef.ops">ef.ops</a>
+        <li><a href="_autosummary/ef.ops.html#module-ef.ops">ef.ops</a>
 </li>
-        <li><a href="module_docs/ef/refresh.html#module-ef.refresh">ef.refresh</a>
+        <li><a href="_autosummary/ef.refresh.html#module-ef.refresh">ef.refresh</a>
 </li>
-        <li><a href="module_docs/ef/reranking.html#module-ef.reranking">ef.reranking</a>
+        <li><a href="_autosummary/ef.reranking.html#module-ef.reranking">ef.reranking</a>
 </li>
-        <li><a href="module_docs/ef/segmenter_adapters.html#module-ef.segmenter_adapters">ef.segmenter_adapters</a>
+        <li><a href="_autosummary/ef.segmenter_adapters.html#module-ef.segmenter_adapters">ef.segmenter_adapters</a>
 </li>
-        <li><a href="module_docs/ef/segmenters.html#module-ef.segmenters">ef.segmenters</a>
+        <li><a href="_autosummary/ef.segmenters.html#module-ef.segmenters">ef.segmenters</a>
 </li>
-        <li><a href="module_docs/ef/segments.html#module-ef.segments">ef.segments</a>
+        <li><a href="_autosummary/ef.segments.html#module-ef.segments">ef.segments</a>
 </li>
-        <li><a href="module_docs/ef/service.html#module-ef.service">ef.service</a>
+        <li><a href="_autosummary/ef.service.html#module-ef.service">ef.service</a>
 </li>
-        <li><a href="module_docs/ef/source_manager.html#module-ef.source_manager">ef.source_manager</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.MultiEmbedder">MultiEmbedder (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder">(class in ef.embedder_wrappers)</a>
+        <li><a href="_autosummary/ef.source_manager.html#module-ef.source_manager">ef.source_manager</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.MultiEmbedder">MultiEmbedder (class in ef)</a>
 
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ndcg_at_k">ndcg_at_k() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.ndcg_at_k">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.StalenessReport.needs_reindexing">needs_reindexing (ef.diagnostics.StalenessReport property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.StalenessReport.needs_reindexing">(ef.StalenessReport property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ChangeEvent.new_hash">new_hash (ef.ChangeEvent attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.new_hash">(ef.corpus.ChangeEvent attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/hashing.html#ef.hashing.normalize_text">normalize_text() (in module ef.hashing)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.CachedEmbedder.normalized">normalized (ef.CachedEmbedder property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.Embedder.normalized">(ef.Embedder attribute)</a>
-</li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder.normalized">(ef.embedder_wrappers.CachedEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder.normalized">(ef.embedder_wrappers.RetryingEmbedder property)</a>
-</li>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.Embedder.normalized">(ef.embedders.Embedder attribute)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.RetryingEmbedder.normalized">(ef.RetryingEmbedder property)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.NormalizingEmbedder">NormalizingEmbedder (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder">(class in ef.embedder_wrappers)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.MultiEmbedder">(class in ef.embedder_wrappers)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="N">N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.ndcg_at_k">ndcg_at_k() (in module ef)</a>
 
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ChangeEvent.old_hash">old_hash (ef.ChangeEvent attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.old_hash">(ef.corpus.ChangeEvent attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.ndcg_at_k">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.op">op (ef.artifact_graph.ProducerSpec attribute)</a>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.StalenessReport.needs_reindexing">needs_reindexing (ef.diagnostics.StalenessReport property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.op">(ef.ProducerSpec attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.StalenessReport.needs_reindexing">(ef.StalenessReport property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.op_version">op_version (ef.artifact_graph.ProducerSpec attribute)</a>
+      <li><a href="_autosummary/ef.html#ef.ChangeEvent.new_hash">new_hash (ef.ChangeEvent attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.op_version">(ef.ProducerSpec attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeEvent.new_hash">(ef.corpus.ChangeEvent attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.openai_embedder">openai_embedder() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.openai_embedder">(in module ef.embedder_adapters)</a>
+      <li><a href="_autosummary/ef.hashing.html#ef.hashing.normalize_text">normalize_text() (in module ef.hashing)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.OpKey">OpKey (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.CachedEmbedder.normalized">normalized (ef.CachedEmbedder property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.OpKey">(in module ef.artifact_graph)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.Embedder.normalized">(ef.Embedder attribute)</a>
 </li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec.params">params (ef.artifact_graph.ProducerSpec attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ProducerSpec.params">(ef.ProducerSpec attribute)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder.normalized">(ef.embedder_wrappers.CachedEmbedder property)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.pipeline">pipeline() (ef.source_manager.SourceManager method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.pipeline">(ef.SourceManager method)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.InstructionEmbedder.normalized">(ef.embedder_wrappers.InstructionEmbedder property)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.PipelineSpec">PipelineSpec (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.PipelineSpec">(class in ef.config)</a>
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder.normalized">(ef.embedder_wrappers.RetryingEmbedder property)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.plan_refresh">plan_refresh() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/refresh.html#ef.refresh.plan_refresh">(in module ef.refresh)</a>
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.Embedder.normalized">(ef.embedders.Embedder attribute)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BatchHandle.poll">poll (ef.BatchHandle attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.poll">(ef.embedders.BatchHandle attribute)</a>
+        <li><a href="_autosummary/ef.html#ef.InstructionEmbedder.normalized">(ef.InstructionEmbedder property)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.precision_at_k">precision_at_k() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.precision_at_k">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary">primary (ef.evaluation.RetrievalEvalReport property)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetrievalEvalReport.primary">(ef.RetrievalEvalReport property)</a>
+        <li><a href="_autosummary/ef.html#ef.RetryingEmbedder.normalized">(ef.RetryingEmbedder property)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport.primary_at">primary_at() (ef.evaluation.RetrievalEvalReport method)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.NormalizingEmbedder">NormalizingEmbedder (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetrievalEvalReport.primary_at">(ef.RetrievalEvalReport method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.producer_spec">producer_spec() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.producer_spec">(in module ef.artifact_graph)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ProducerSpec">ProducerSpec (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ProducerSpec">(class in ef.artifact_graph)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.project">project() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/exploration.html#ef.exploration.project">(in module ef.exploration)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/segments.html#ef.segments.PROMOTED_METADATA_KEYS">PROMOTED_METADATA_KEYS (in module ef.segments)</a>
-</li>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.prune_dead_leaves">prune_dead_leaves() (in module ef.refresh)</a>
-</li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.put">put() (ef.artifact_graph.ArtifactGraph method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.put">(ef.ArtifactGraph method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder">(class in ef.embedder_wrappers)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="O">O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.ChangeEvent.old_hash">old_hash (ef.ChangeEvent attribute)</a>
 
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.Qrels">Qrels (in module ef.evaluation)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.RagEvalReport">RagEvalReport (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RagEvalReport">(class in ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeEvent.old_hash">(ef.corpus.ChangeEvent attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.RagSample">RagSample (class in ef)</a>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.op">op (ef.artifact_graph.ProducerSpec attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RagSample">(class in ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.op">(ef.ProducerSpec attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.read_beir">read_beir() (in module ef)</a>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.op_version">op_version (ef.artifact_graph.ProducerSpec attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.read_beir">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ready_handle">ready_handle() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.ready_handle">(in module ef.embedders)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.rebuild">rebuild() (ef.source_manager.SourceManager method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.rebuild">(ef.SourceManager method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.recall_at_k">recall_at_k() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.recall_at_k">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.reciprocal_rank">reciprocal_rank() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.reciprocal_rank">(in module ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.RecursiveCharacterSegmenter">RecursiveCharacterSegmenter (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.RecursiveCharacterSegmenter">(class in ef.segmenters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.refresh">refresh() (ef.source_manager.SourceManager method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.refresh">(ef.SourceManager method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.REFRESH_MODES">REFRESH_MODES (in module ef.refresh)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.refresh_on_change">refresh_on_change() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/refresh.html#ef.refresh.refresh_on_change">(in module ef.refresh)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshMode">RefreshMode (in module ef.refresh)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.RefreshPlan">RefreshPlan (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshPlan">(class in ef.refresh)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.RefreshReport">RefreshReport (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshReport">(class in ef.refresh)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.op_version">(ef.ProducerSpec attribute)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.register_config">register_config() (ef.source_manager.SourceManager method)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.openai_embedder">openai_embedder() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.register_config">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.openai_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/artifact_graph.html#ef.artifact_graph.ArtifactGraph.register_op">register_op() (ef.artifact_graph.ArtifactGraph method)</a>
+      <li><a href="_autosummary/ef.html#ef.OpKey">OpKey (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.ArtifactGraph.register_op">(ef.ArtifactGraph method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.rerank">rerank() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/reranking.html#ef.reranking.rerank">(in module ef.reranking)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.Reranker">Reranker (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/reranking.html#ef.reranking.Reranker">(class in ef.reranking)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.BatchHandle.result">result (ef.BatchHandle attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedders.html#ef.embedders.BatchHandle.result">(ef.embedders.BatchHandle attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RETRIEVAL_METRICS">RETRIEVAL_METRICS (in module ef.evaluation)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.RetrievalEvalReport">RetrievalEvalReport (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.RetrievalEvalReport">(class in ef.evaluation)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.retrieve">retrieve() (ef.EfService method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SearchableCorpus.retrieve">(ef.SearchableCorpus method)</a>
-</li>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.retrieve">(ef.service.EfService method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchableCorpus.retrieve">(ef.source_manager.SearchableCorpus method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.retrieve">(ef.source_manager.SourceManager method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.SourceManager.retrieve">(ef.SourceManager method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.retry_on">retry_on (ef.embedder_wrappers.RetryPolicy attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RetryPolicy.retry_on">(ef.RetryPolicy attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/embedder_wrappers.html#id0">retry_on() (ef.embedder_wrappers.RetryPolicy method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#id0">(ef.RetryPolicy method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.RetryingEmbedder">RetryingEmbedder (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder">(class in ef.embedder_wrappers)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.RetryPolicy">RetryPolicy (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy">(class in ef.embedder_wrappers)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.OpKey">(in module ef.artifact_graph)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="P">P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.params">params (ef.artifact_graph.ProducerSpec attribute)</a>
 
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.ChangeDetectingCorpus.scan">scan() (ef.ChangeDetectingCorpus method)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeDetectingCorpus.scan">(ef.corpus.ChangeDetectingCorpus method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.scan">(ef.source_manager.SourceManager method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.SourceManager.scan">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ProducerSpec.params">(ef.ProducerSpec attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.SearchHit.score">score (ef.SearchHit attribute)</a>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.pipeline">pipeline() (ef.source_manager.SourceManager method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchHit.score">(ef.source_manager.SearchHit attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.pipeline">(ef.SourceManager method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.EfService.search">search() (ef.EfService method)</a>
+      <li><a href="_autosummary/ef.html#ef.PipelineSpec">PipelineSpec (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SearchableCorpus.search">(ef.SearchableCorpus method)</a>
-</li>
-        <li><a href="module_docs/ef/service.html#ef.service.EfService.search">(ef.service.EfService method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchableCorpus.search">(ef.source_manager.SearchableCorpus method)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.search">(ef.source_manager.SourceManager method)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.SourceManager.search">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.PipelineSpec">(class in ef.config)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager.searchable">searchable() (ef.source_manager.SourceManager method)</a>
+      <li><a href="_autosummary/ef.html#ef.plan_refresh">plan_refresh() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.SourceManager.searchable">(ef.SourceManager method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.refresh.html#ef.refresh.plan_refresh">(in module ef.refresh)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.SearchableCorpus">SearchableCorpus (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.BatchHandle.poll">poll (ef.BatchHandle attribute)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchableCorpus">(class in ef.source_manager)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BatchHandle.poll">(ef.embedders.BatchHandle attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.SearchHit">SearchHit (class in ef)</a>
+      <li><a href="_autosummary/ef.html#ef.precision_at_k">precision_at_k() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchHit">(class in ef.source_manager)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.precision_at_k">(in module ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.Segment">Segment (class in ef)</a>
+      <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RetrievalEvalReport.primary">primary (ef.evaluation.RetrievalEvalReport property)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.Segment">(class in ef.segments)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.SearchHit.segment">segment (ef.SearchHit attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchHit.segment">(ef.source_manager.SearchHit attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.segment_id">segment_id() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.segment_id">(in module ef.segments)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.SEGMENT_OP_VERSION">SEGMENT_OP_VERSION (in module ef.ops)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.segment_record">segment_record() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.segment_record">(in module ef.segments)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.segment_step">segment_step() (in module ef.ops)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.Segmenter">Segmenter (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.Segmenter">(class in ef.segmenters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/ops.html#ef.ops.segmenter_identity">segmenter_identity() (in module ef.ops)</a>
-</li>
-      <li><a href="module_docs/ef.html#ef.SegmentRecord">SegmentRecord (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord">(class in ef.segments)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.sentence_transformers_embedder">sentence_transformers_embedder() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder">(in module ef.embedder_adapters)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef/hashing.html#ef.hashing.sha256_hex">sha256_hex() (in module ef.hashing)</a>
-</li>
-      <li><a href="module_docs/ef/corpus.html#ef.corpus.Source">Source (in module ef.corpus)</a>
-</li>
-      <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource.source_hashes">source_hashes (ef.diagnostics.IndexedSource attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.IndexedSource.source_hashes">(ef.IndexedSource attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.ChangeEvent.source_id">source_id (ef.ChangeEvent attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/corpus.html#ef.corpus.ChangeEvent.source_id">(ef.corpus.ChangeEvent attribute)</a>
-</li>
-        <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.IndexedSource.source_id">(ef.diagnostics.IndexedSource attribute)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.IndexedSource.source_id">(ef.IndexedSource attribute)</a>
-</li>
-        <li><a href="module_docs/ef.html#ef.SearchHit.source_id">(ef.SearchHit attribute)</a>
-</li>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SearchHit.source_id">(ef.source_manager.SearchHit attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.SourceManager">SourceManager (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/source_manager.html#ef.source_manager.SourceManager">(class in ef.source_manager)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.StalenessReport">StalenessReport (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/diagnostics.html#ef.diagnostics.StalenessReport">(class in ef.diagnostics)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ef.html#ef.step_params">step_params() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.step_params">(in module ef.config)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetrievalEvalReport.primary">(ef.RetrievalEvalReport property)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RetrievalEvalReport.primary_at">primary_at() (ef.evaluation.RetrievalEvalReport method)</a>
 
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshPlan.to_delete">to_delete (ef.refresh.RefreshPlan attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RefreshPlan.to_delete">(ef.RefreshPlan attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetrievalEvalReport.primary_at">(ef.RetrievalEvalReport method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef/refresh.html#ef.refresh.RefreshPlan.to_materialize">to_materialize (ef.refresh.RefreshPlan attribute)</a>
+      <li><a href="_autosummary/ef.html#ef.producer_spec">producer_spec() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef.html#ef.RefreshPlan.to_materialize">(ef.RefreshPlan attribute)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.producer_spec">(in module ef.artifact_graph)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.SegmentRecord.to_segment">to_segment() (ef.SegmentRecord method)</a>
+      <li><a href="_autosummary/ef.html#ef.ProducerSpec">ProducerSpec (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/segments.html#ef.segments.SegmentRecord.to_segment">(ef.segments.SegmentRecord method)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec">(class in ef.artifact_graph)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.token_f1">token_f1() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.project">project() (in module ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.token_f1">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.exploration.html#ef.exploration.project">(in module ef.exploration)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.TransformSpec">TransformSpec (class in ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/config.html#ef.config.TransformSpec">(class in ef.config)</a>
+      <li><a href="_autosummary/ef.segments.html#ef.segments.PROMOTED_METADATA_KEYS">PROMOTED_METADATA_KEYS (in module ef.segments)</a>
 </li>
-      </ul></li>
-  </ul></td>
-</tr></table>
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.prune_dead_leaves">prune_dead_leaves() (in module ef.refresh)</a>
+</li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.put">put() (ef.artifact_graph.ArtifactGraph method)</a>
 
-<h2 id="V">V</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.voyage_embedder">voyage_embedder() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/embedder_adapters.html#ef.embedder_adapters.voyage_embedder">(in module ef.embedder_adapters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.put">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="Q">Q</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.Qrels">Qrels (in module ef.evaluation)</a>
+</li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="R">R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.RagEvalReport">RagEvalReport (class in ef)</a>
 
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.with_overlap">with_overlap() (in module ef)</a>
-
-      <ul>
-        <li><a href="module_docs/ef/segmenters.html#ef.segmenters.with_overlap">(in module ef.segmenters)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RagEvalReport">(class in ef.evaluation)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ef.html#ef.with_reranker">with_reranker() (in module ef)</a>
+      <li><a href="_autosummary/ef.html#ef.RagSample">RagSample (class in ef)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/reranking.html#ef.reranking.with_reranker">(in module ef.reranking)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RagSample">(class in ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.read_beir">read_beir() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.read_beir">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.ready_handle">ready_handle() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.ready_handle">(in module ef.embedders)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.rebuild">rebuild() (ef.source_manager.SourceManager method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.rebuild">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.recall_at_k">recall_at_k() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.recall_at_k">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.reciprocal_rank">reciprocal_rank() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.reciprocal_rank">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.RecursiveCharacterSegmenter">RecursiveCharacterSegmenter (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.RecursiveCharacterSegmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.refresh">refresh() (ef.source_manager.SourceManager method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.refresh">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.REFRESH_MODES">REFRESH_MODES (in module ef.refresh)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.refresh_on_change">refresh_on_change() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.refresh.html#ef.refresh.refresh_on_change">(in module ef.refresh)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshMode">RefreshMode (in module ef.refresh)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.RefreshPlan">RefreshPlan (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshPlan">(class in ef.refresh)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.RefreshReport">RefreshReport (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshReport">(class in ef.refresh)</a>
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ef.html#ef.write_beir">write_beir() (in module ef)</a>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.register_config">register_config() (ef.source_manager.SourceManager method)</a>
 
-      <ul>
-        <li><a href="module_docs/ef/evaluation.html#ef.evaluation.write_beir">(in module ef.evaluation)</a>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.register_config">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.register_op">register_op() (ef.artifact_graph.ArtifactGraph method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.ArtifactGraph.register_op">(ef.ArtifactGraph method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.rerank">rerank() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.reranking.html#ef.reranking.rerank">(in module ef.reranking)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.Reranker">Reranker (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.reranking.html#ef.reranking.Reranker">(class in ef.reranking)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.BatchHandle.result">result (ef.BatchHandle attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedders.html#ef.embedders.BatchHandle.result">(ef.embedders.BatchHandle attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RETRIEVAL_METRICS">RETRIEVAL_METRICS (in module ef.evaluation)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.RetrievalEvalReport">RetrievalEvalReport (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.RetrievalEvalReport">(class in ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.EfService.retrieve">retrieve() (ef.EfService method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SearchableCorpus.retrieve">(ef.SearchableCorpus method)</a>
+</li>
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.retrieve">(ef.service.EfService method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchableCorpus.retrieve">(ef.source_manager.SearchableCorpus method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.retrieve">(ef.source_manager.SourceManager method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.SourceManager.retrieve">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy.retry_on">retry_on (ef.embedder_wrappers.RetryPolicy attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RetryPolicy.retry_on">(ef.RetryPolicy attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.embedder_wrappers.html#id0">retry_on() (ef.embedder_wrappers.RetryPolicy method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#id0">(ef.RetryPolicy method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.RetryingEmbedder">RetryingEmbedder (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryingEmbedder">(class in ef.embedder_wrappers)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.RetryPolicy">RetryPolicy (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy">(class in ef.embedder_wrappers)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
+  </tr>
+      </table>
+  
+  <h2 id="S">S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.ChangeDetectingCorpus.scan">scan() (ef.ChangeDetectingCorpus method)</a>
 
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeDetectingCorpus.scan">(ef.corpus.ChangeDetectingCorpus method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.scan">(ef.source_manager.SourceManager method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.SourceManager.scan">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SearchHit.score">score (ef.SearchHit attribute)</a>
 
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchHit.score">(ef.source_manager.SearchHit attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.EfService.search">search() (ef.EfService method)</a>
 
-           </div>
-          </div>
-          <footer>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SearchableCorpus.search">(ef.SearchableCorpus method)</a>
+</li>
+        <li><a href="_autosummary/ef.service.html#ef.service.EfService.search">(ef.service.EfService method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchableCorpus.search">(ef.source_manager.SearchableCorpus method)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.search">(ef.source_manager.SourceManager method)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.SourceManager.search">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.searchable">searchable() (ef.source_manager.SourceManager method)</a>
 
-  <hr/>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.SourceManager.searchable">(ef.SourceManager method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SearchableCorpus">SearchableCorpus (class in ef)</a>
 
-  <div role="contentinfo">
-    <p></p>
-  </div>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchableCorpus">(class in ef.source_manager)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SearchHit">SearchHit (class in ef)</a>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchHit">(class in ef.source_manager)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.Segment">Segment (class in ef)</a>
 
-</footer>
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.Segment">(class in ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SearchHit.segment">segment (ef.SearchHit attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchHit.segment">(ef.source_manager.SearchHit attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.segment_id">segment_id() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.segment_id">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.SEGMENT_OP_VERSION">SEGMENT_OP_VERSION (in module ef.ops)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.segment_record">segment_record() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.segment_record">(in module ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.segment_step">segment_step() (in module ef.ops)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.Segmenter">Segmenter (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.Segmenter">(class in ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.ops.html#ef.ops.segmenter_identity">segmenter_identity() (in module ef.ops)</a>
+</li>
+      <li><a href="_autosummary/ef.html#ef.SegmentRecord">SegmentRecord (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.SegmentRecord">(class in ef.segments)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.sentence_transformers_embedder">sentence_transformers_embedder() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.sentence_transformers_embedder">(in module ef.embedder_adapters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.hashing.html#ef.hashing.sha256_hex">sha256_hex() (in module ef.hashing)</a>
+</li>
+      <li><a href="_autosummary/ef.corpus.html#ef.corpus.Source">Source (in module ef.corpus)</a>
+</li>
+      <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.IndexedSource.source_hashes">source_hashes (ef.diagnostics.IndexedSource attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.IndexedSource.source_hashes">(ef.IndexedSource attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.ChangeEvent.source_id">source_id (ef.ChangeEvent attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.corpus.html#ef.corpus.ChangeEvent.source_id">(ef.corpus.ChangeEvent attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.IndexedSource.source_id">(ef.diagnostics.IndexedSource attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.IndexedSource.source_id">(ef.IndexedSource attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.html#ef.SearchHit.source_id">(ef.SearchHit attribute)</a>
+</li>
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchHit.source_id">(ef.source_manager.SearchHit attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SourceManager">SourceManager (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager">(class in ef.source_manager)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.StalenessReport">StalenessReport (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.diagnostics.html#ef.diagnostics.StalenessReport">(class in ef.diagnostics)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.step_params">step_params() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.step_params">(in module ef.config)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="T">T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshPlan.to_delete">to_delete (ef.refresh.RefreshPlan attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RefreshPlan.to_delete">(ef.RefreshPlan attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshPlan.to_materialize">to_materialize (ef.refresh.RefreshPlan attribute)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.html#ef.RefreshPlan.to_materialize">(ef.RefreshPlan attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.SegmentRecord.to_segment">to_segment() (ef.SegmentRecord method)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segments.html#ef.segments.SegmentRecord.to_segment">(ef.segments.SegmentRecord method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.token_f1">token_f1() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.token_f1">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.TransformSpec">TransformSpec (class in ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.config.html#ef.config.TransformSpec">(class in ef.config)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="V">V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.voyage_embedder">voyage_embedder() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.voyage_embedder">(in module ef.embedder_adapters)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+  <h2 id="W">W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.with_overlap">with_overlap() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.with_overlap">(in module ef.segmenters)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.with_reranker">with_reranker() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.reranking.html#ef.reranking.with_reranker">(in module ef.reranking)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.html#ef.write_beir">write_beir() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.write_beir">(in module ef.evaluation)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  </tr>
+      </table>
+  
+
+</div></div>
+<aside id="right-sidebar" class="hidden text-sm xl:block">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-6 space-y-2">
+<a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#A">A</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#B">B</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#C">C</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#D">D</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#E">E</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#F">F</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#G">G</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#H">H</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#I">I</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#J">J</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#K">K</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#L">L</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#M">M</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#N">N</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#O">O</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#P">P</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#Q">Q</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#R">R</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#S">S</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#T">T</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#V">V</a><a class="pt-2 block text-muted-foreground no-underline transition-colors hover:text-foreground focus-visible:outline-offset-[-1px]" href="#W">W</a>
+</div>
+</aside>
+          </main>
         </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      </div><footer class="py-6 border-t border-border md:py-0">
+    <div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+      <div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+        <p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+    </div>
+    
+    <script src="_static/documentation_options.js?v=842aa08f"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script defer="defer" src="_static/theme.js?v=5db23cf8"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    
 </body>
+
 </html>

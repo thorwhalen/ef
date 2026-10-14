@@ -1,0 +1,30 @@
+# ef
+
+> Embeddings Flow -- Tools for workflows involving semantic embeddings
+
+
+## Pages in this subsection
+
+- [ef](ef.html.md): ef (Embedding Flow) — a facade for semantic-embeddings user journeys.
+- [ef.artifact_graph](ef.artifact_graph.html.md): The &#96;ArtifactGraph&#96; — &#96;ef&#96;’s content-addressed corpus-indexing core.
+- [ef.config](ef.config.html.md): The config layer — declarative, content-addressable pipeline specs.
+- [ef.corpus](ef.corpus.html.md): The &#96;Corpus&#96; abstraction — &#96;ef&#96;’s source layer (L0) — and change detection.
+- [ef.diagnostics](ef.diagnostics.html.md): Staleness diagnostics — has an indexed corpus drifted from its source?
+- [ef.embedder_adapters](ef.embedder_adapters.html.md): Concrete &#96;Embedder&#96; adapters and the DI seam.
+- [ef.embedder_wrappers](ef.embedder_wrappers.html.md): Composition wrappers for &#96;Embedder&#96;.
+- [ef.embedders](ef.embedders.html.md): The &#96;Embedder&#96; facade — &#96;ef&#96;’s embed layer (L3).
+- [ef.evaluation](ef.evaluation.html.md): Evaluation hookpoints — measuring retrieval and RAG quality.
+- [ef.exploration](ef.exploration.html.md): Layer L5 — &#42;explore&#42; a corpus: project to 2-D/3-D, cluster, label clusters.
+- [ef.hashing](ef.hashing.html.md): Content-hashing primitives shared across &#96;ef&#96;’s layers.
+- [ef.ops](ef.ops.html.md): The pipeline ops — the callables an &#96;ArtifactGraph&#96; runs.
+- [ef.refresh](ef.refresh.html.md): Refresh — keeping an indexed corpus in sync as its sources change.
+- [ef.reranking](ef.reranking.html.md): Reranking — a precision pass over retrieved segments (use case F6).
+- [ef.segmenter_adapters](ef.segmenter_adapters.html.md): The segmenter dependency-injection seam and the &#96;imbed&#96; registry bridge.
+- [ef.segmenters](ef.segmenters.html.md): The &#96;Segmenter&#96; facade — &#96;ef&#96;’s segment layer (L2).
+- [ef.segments](ef.segments.html.md): The canonical &#96;Segment&#96; data model — &#96;ef&#96;’s interchange type for L2.
+- [ef.service](ef.service.html.md): The HTTP-service bridge — &#96;EfService&#96;, a stateless-friendly facade.
+- [ef.source_manager](ef.source_manager.html.md): The search facade — one-shot &#96;ingest()&#96;, &#96;SearchableCorpus&#96;, &#96;SourceManager&#96;.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

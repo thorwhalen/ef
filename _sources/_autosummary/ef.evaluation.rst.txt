@@ -1,0 +1,41 @@
+ef.evaluation
+=============
+
+.. automodule:: ef.evaluation
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      Qrels
+      RETRIEVAL_METRICS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      dcg_at_k
+      ndcg_at_k
+      recall_at_k
+      precision_at_k
+      reciprocal_rank
+      average_precision
+      evaluate_retrieval
+      read_beir
+      write_beir
+      exact_match
+      token_f1
+      context_recall
+      context_precision
+      evaluate_rag
+      as_ragas_dataset
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      RagSample
+      RetrievalEvalReport
+      RagEvalReport
+   

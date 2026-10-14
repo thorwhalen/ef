@@ -1,4 +1,0 @@
-ef.embedder_adapters
-====================
-.. automodule:: ef.embedder_adapters
-   :members:

@@ -1,0 +1,28 @@
+ef.config
+=========
+
+.. automodule:: ef.config
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      ConfigId
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      full_kwargs
+      step_params
+      config_id
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConfigId
+      TransformSpec
+      PipelineSpec
+   

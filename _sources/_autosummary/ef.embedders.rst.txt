@@ -1,0 +1,37 @@
+ef.embedders
+============
+
+.. automodule:: ef.embedders
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      InputType
+      BatchStatus
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      ready_handle
+      cache_key
+      embed_length_sorted
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BatchHandle
+      Embedder
+      BaseEmbedder
+      FunctionEmbedder
+      HashingEmbedder
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      EmbedderError
+   

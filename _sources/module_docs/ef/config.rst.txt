@@ -1,4 +1,0 @@
-ef.config
-=========
-.. automodule:: ef.config
-   :members:

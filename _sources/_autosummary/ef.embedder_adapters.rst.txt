@@ -1,0 +1,18 @@
+ef.embedder\_adapters
+=====================
+
+.. automodule:: ef.embedder_adapters
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      openai_embedder
+      sentence_transformers_embedder
+      http_embedder
+      cohere_embedder
+      voyage_embedder
+      gemini_embedder
+      as_embedder
+   

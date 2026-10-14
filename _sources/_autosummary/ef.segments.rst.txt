@@ -1,0 +1,28 @@
+ef.segments
+===========
+
+.. automodule:: ef.segments
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      PROMOTED_METADATA_KEYS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      segment_id
+      make_segment
+      as_segment
+      segment_record
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Segment
+      SegmentRecord
+   

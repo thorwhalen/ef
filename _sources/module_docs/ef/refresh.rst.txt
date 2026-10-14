@@ -1,4 +1,0 @@
-ef.refresh
-==========
-.. automodule:: ef.refresh
-   :members:

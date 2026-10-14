@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-14T03:52:54Z",
+  "package": {
+    "name": "ef",
+    "version": "0.1.22",
+    "display_name": "ef",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "15ac259c80bdc5077b683499982a4e35a1eca089",
+    "short_commit": "15ac259",
+    "branch": "main",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/thorwhalen/ef",
+    "commit_url": "https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "thorwhalen/ef",
+    "sha": "15ac259c80bdc5077b683499982a4e35a1eca089",
+    "sha_in_history": true,
+    "ref": "refs/heads/main",
+    "ref_name": "main",
+    "run_id": "38508395735",
+    "run_url": "https://github.com/thorwhalen/ef/actions/runs/38508395735",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.17",
+    "sphinx": "9.1.0",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "sphinxawesome_theme",
+    "accent": "#783b83",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 19,
+    "objects_documented": 399
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.1.23",
+    "relation": "behind",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/thorwhalen/ef && cd ef\ngit checkout 15ac259c80bdc5077b683499982a4e35a1eca089\npip install \"epythet==0.2.17\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ef` gives newer code than these docs describe."
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+ef.segmenters
+=============
+
+.. automodule:: ef.segmenters
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      APPROX_TOKENIZER
+      DEFAULT_SEPARATORS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      line_segmenter
+      with_overlap
+      hierarchical
+      materialise
+      approx_token_count
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Segmenter
+      BatchedSegmenter
+      BaseSegmenter
+      FunctionSegmenter
+      RecursiveCharacterSegmenter
+   

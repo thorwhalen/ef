@@ -1,0 +1,29 @@
+ef.corpus
+=========
+
+.. automodule:: ef.corpus
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      Source
+      Corpus
+      ChangeKind
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      content_hash
+      as_corpus
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ChangeEvent
+      CorpusDiff
+      ChangeDetectingCorpus
+   

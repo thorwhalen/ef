@@ -1,0 +1,27 @@
+ef.source\_manager
+==================
+
+.. automodule:: ef.source_manager
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_EMBEDDER
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      hits_to_segments
+      ingest
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SearchHit
+      SearchableCorpus
+      SourceManager
+   

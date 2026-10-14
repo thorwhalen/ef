@@ -1,0 +1,21 @@
+ef.exploration
+==============
+
+.. automodule:: ef.exploration
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      project
+      cluster
+      label_clusters
+      explore
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ExploreResult
+   

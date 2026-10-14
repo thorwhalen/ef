@@ -1,0 +1,14 @@
+ef.hashing
+==========
+
+.. automodule:: ef.hashing
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      normalize_text
+      canonical_json
+      sha256_hex
+   

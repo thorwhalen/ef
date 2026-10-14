@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="ef.embedders.html.md" rel="alternate" type="text/markdown"/>
+<link href="../llms.txt" rel="describedby" type="text/markdown"/>
+<link href="ef.embedders.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
+<title>ef.embedders | ef</title>
+<meta content="ef.embedders | ef" property="og:title"/>
+<meta content="ef.embedders | ef" name="twitter:title"/>
+<link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/epythet.css?v=e6b54dbb" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="ef.evaluation.html" rel="next" title="ef.evaluation"/>
+<link href="ef.embedder_wrappers.html" rel="prev" title="ef.embedder_wrappers"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">ef</span>
+</a><nav class="flex items-center gap-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="https://github.com/thorwhalen/ef" rel="noopener nofollow">GitHub</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">ef</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+<a href="https://github.com/thorwhalen/ef" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="ef.html">ef<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="ef.artifact_graph.html">ef.artifact_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.config.html">ef.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.corpus.html">ef.corpus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.diagnostics.html">ef.diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.embedder_adapters.html">ef.embedder_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.embedder_wrappers.html">ef.embedder_wrappers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ef.embedders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.evaluation.html">ef.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.exploration.html">ef.exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.hashing.html">ef.hashing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.ops.html">ef.ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.refresh.html">ef.refresh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.reranking.html">ef.reranking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.segmenter_adapters.html">ef.segmenter_adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.segmenters.html">ef.segmenters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.segments.html">ef.segments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.service.html">ef.service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ef.source_manager.html">ef.source_manager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ai-agents.html">For AI agents</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">ef</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../api.html">API reference</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="ef.html">ef</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">ef.embedders</span>
+</nav>
+<div id="content" role="main">
+<section id="module-ef.embedders">
+<span id="ef-embedders"></span><h1>ef.embedders<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#module-ef.embedders">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Embedder</span></code> facade — <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s embed layer (L3).</p>
+<p>An <em>embedder</em> is, fundamentally, a batch callable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">ndarray</span> <span class="n">of</span> <span class="n">shape</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<p>Everything else — batching, async/batch-APIs, normalization, task hints,
+caching, retries — is <em>layered scaffolding</em> over that one contract.</p>
+<p>This module defines the small, structural core of the facade:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> — the <code class="docutils literal notranslate"><span class="pre">@runtime_checkable</span></code> protocol (a callable plus four
+introspectable metadata attributes). It is a protocol, <strong>not</strong> an ABC: any
+object with the right shape <em>is</em> an embedder.</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a> / <a class="reference internal" href="#ef.embedders.ready_handle" title="ef.embedders.ready_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">ready_handle()</span></code></a> — a uniform poll/result shape that
+collapses synchronous embedding and provider Batch APIs into one thing.</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.BaseEmbedder" title="ef.embedders.BaseEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a> — an implementation convenience base (supplies a default
+synchronous <a class="reference internal" href="#ef.embedders.BaseEmbedder.embed_batch" title="ef.embedders.BaseEmbedder.embed_batch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">embed_batch()</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">repr</span></code>). Subclassing it
+is optional; satisfying <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> structurally is what matters.</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.FunctionEmbedder" title="ef.embedders.FunctionEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a> — wraps a bare <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">vectors</span></code> callable into a
+full <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> (the bridge for e.g. <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s embedder functions).</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a> — a dependency-free embedder (the feature-hashing
+trick, numpy only); <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s zero-install default when no embedder is given.</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.cache_key" title="ef.embedders.cache_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache_key()</span></code></a> — a deterministic key pinning everything that changes a
+vector, for <a class="reference internal" href="ef.embedder_wrappers.html#ef.embedder_wrappers.CachedEmbedder" title="ef.embedder_wrappers.CachedEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CachedEmbedder</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="#ef.embedders.embed_length_sorted" title="ef.embedders.embed_length_sorted"><code class="xref py py-func docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a> — length-sorted batching with order
+reconstruction; a 5–10× throughput win that <code class="docutils literal notranslate"><span class="pre">ef</span></code> owns so users never have
+to think about padding or sort order.</p></li>
+</ul>
+<p>Composition wrappers live in <a class="reference internal" href="ef.embedder_wrappers.html#module-ef.embedder_wrappers" title="ef.embedder_wrappers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.embedder_wrappers</span></code></a>; concrete provider /
+local adapters and the <a class="reference internal" href="ef.embedder_adapters.html#ef.embedder_adapters.as_embedder" title="ef.embedder_adapters.as_embedder"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_embedder()</span></code></a> dependency
+-injection seam live in <a class="reference internal" href="ef.embedder_adapters.html#module-ef.embedder_adapters" title="ef.embedder_adapters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ef.embedder_adapters</span></code></a>.</p>
+<p>Example — wrap a plain function and embed two strings:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">toy</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>  <span class="c1"># a bare callable: list[str] -&gt; array(n, 3)</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">' '</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">])</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">embedder</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="n">toy</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">'toy@3'</span><span class="p">)</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span> <span class="o">=</span> <span class="n">embedder</span><span class="p">([</span><span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'a b c'</span><span class="p">])</span>
+</span><span id="line-6"><span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span>
+</span><span id="line-7"><span class="go">(2, 3)</span>
+</span><span id="line-8"><span class="gp">&gt;&gt;&gt; </span><span class="n">embedder</span><span class="o">.</span><span class="n">dim</span>  <span class="c1"># inferred on first call</span>
+</span><span id="line-9"><span class="go">3</span>
+</span><span id="line-10"><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">embedder</span><span class="p">,</span> <span class="n">Embedder</span><span class="p">)</span>
+</span><span id="line-11"><span class="go">True</span>
+</span></code></pre></div>
+</div>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.InputType" title="ef.embedders.InputType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InputType</span></code></a></p></td>
+<td><p>Canonical embedding-task vocabulary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ef.embedders.BatchStatus" title="ef.embedders.BatchStatus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchStatus</span></code></a></p></td>
+<td><p>The lifecycle states of a <a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.ready_handle" title="ef.embedders.ready_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ready_handle</span></code></a>(array)</p></td>
+<td><p>Wrap an already-computed array in a finished <a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ef.embedders.cache_key" title="ef.embedders.cache_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_key</span></code></a>(embedder, text[, input_type])</p></td>
+<td><p>Deterministic cache key for one <code class="docutils literal notranslate"><span class="pre">(embedder,</span> <span class="pre">text,</span> <span class="pre">input_type)</span></code> triple.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.embed_length_sorted" title="ef.embedders.embed_length_sorted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_length_sorted</span></code></a>(texts, encode, *[, ...])</p></td>
+<td><p>Encode <code class="docutils literal notranslate"><span class="pre">texts</span></code> in length-sorted batches; return vectors in caller order.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>(poll, result[, cancel])</p></td>
+<td><p>A poll/result handle over an in-flight (or already-finished) embed job.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Embedder</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Structural type for an embedder: a batch callable plus metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.BaseEmbedder" title="ef.embedders.BaseEmbedder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a>()</p></td>
+<td><p>Implementation base for embedders (optional — <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> is structural).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ef.embedders.FunctionEmbedder" title="ef.embedders.FunctionEmbedder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a>(func, *[, model_id, dim, ...])</p></td>
+<td><p>Promote a bare <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">vectors</span></code> callable to a full <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>(*[, dim, ngram_range, ...])</p></td>
+<td><p>A dependency-free embedder — the feature-hashing trick, numpy only.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ef.embedders.EmbedderError" title="ef.embedders.EmbedderError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></p></td>
+<td><p>Raised for embedder-specific failures (shape mismatch, batch job failure).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.BaseEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">BaseEmbedder</span></span><a class="reference internal" href="../_modules/ef/embedders.html#BaseEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BaseEmbedder" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BaseEmbedder'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>Implementation base for embedders (optional — <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> is structural).</p>
+<p>Subclasses set <code class="docutils literal notranslate"><span class="pre">model_id</span></code> / <code class="docutils literal notranslate"><span class="pre">dim</span></code> / <code class="docutils literal notranslate"><span class="pre">normalized</span></code> /
+<code class="docutils literal notranslate"><span class="pre">honored_input_types</span></code> and implement <code class="docutils literal notranslate"><span class="pre">__call__</span></code>; they then satisfy
+<a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a> structurally. In return they get:</p>
+<ul class="simple">
+<li><p>a default <em>synchronous</em> <a class="reference internal" href="#ef.embedders.BaseEmbedder.embed_batch" title="ef.embedders.BaseEmbedder.embed_batch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">embed_batch()</span></code></a> (<code class="docutils literal notranslate"><span class="pre">ready_handle(self(...))</span></code>) —
+override it only for a genuinely async provider Batch API;</p></li>
+<li><p>a readable <code class="docutils literal notranslate"><span class="pre">repr</span></code>.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.embedders.BaseEmbedder.embed_batch">
+<span class="sig-name descname"><span class="pre">embed_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#BaseEmbedder.embed_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BaseEmbedder.embed_batch" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BaseEmbedder.embed_batch'">¶</a></dt>
+<dd><p>Default: embed synchronously and return a finished handle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.BatchHandle">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">BatchHandle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poll</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">BatchHandle.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#BatchHandle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BatchHandle" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BatchHandle'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>A poll/result handle over an in-flight (or already-finished) embed job.</p>
+<p>Batch-and-poll is just a special case of async. A synchronous backend
+returns a <em>ready</em> handle (via <a class="reference internal" href="#ef.embedders.ready_handle" title="ef.embedders.ready_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">ready_handle()</span></code></a>); a provider Batch API
+returns a genuinely pending one. Either way the caller sees one shape.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.BatchHandle.poll">
+<span class="sig-name descname"><span class="pre">poll</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BatchHandle.poll" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BatchHandle.poll'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">BatchStatus</span></code> — non-blocking status check.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.BatchHandle.result">
+<span class="sig-name descname"><span class="pre">result</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BatchHandle.result" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BatchHandle.result'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">np.ndarray</span></code> — blocks until done, returns <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code>.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.BatchHandle.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BatchHandle.cancel" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BatchHandle.cancel'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">()</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code> — best-effort cancellation.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.embedders.BatchStatus">
+<span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">BatchStatus</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.BatchStatus" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.BatchStatus'">¶</a></dt>
+<dd><p>The lifecycle states of a <a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p>
+<p>alias of <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Literal</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[‘pending’, ‘done’, ‘failed’]</p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.Embedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">Embedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#Embedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Protocol" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>Structural type for an embedder: a batch callable plus metadata.</p>
+<p>An embedder maps <code class="docutils literal notranslate"><span class="pre">Iterable[str]</span></code> to an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code>.
+The four metadata attributes are the single source of truth *on the object
+itself* — no global registry, no config singleton.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.Embedder.model_id">
+<span class="sig-name descname"><span class="pre">model_id</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder.model_id" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder.model_id'">¶</a></dt>
+<dd><p>Identity that bakes in everything affecting the vector —
+<code class="docutils literal notranslate"><span class="pre">"openai:text-embedding-3-large@1024"</span></code> (<code class="docutils literal notranslate"><span class="pre">provider:model@dim</span></code>).
+Works directly as a cache namespace.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.Embedder.dim">
+<span class="sig-name descname"><span class="pre">dim</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder.dim" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder.dim'">¶</a></dt>
+<dd><p>Output dimensionality. May be <code class="docutils literal notranslate"><span class="pre">None</span></code> until first call for
+lazily-probed embedders (e.g. a bare callable of unknown width).</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.Embedder.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder.normalized" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder.normalized'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> iff <code class="docutils literal notranslate"><span class="pre">||v||</span> <span class="pre">==</span> <span class="pre">1</span></code> by construction.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ef.embedders.Embedder.honored_input_types">
+<span class="sig-name descname"><span class="pre">honored_input_types</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder.honored_input_types" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder.honored_input_types'">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#ef.embedders.InputType" title="ef.embedders.InputType"><code class="xref py py-data docutils literal notranslate"><span class="pre">InputType</span></code></a> values this embedder acts on
+(empty if it ignores the task hint).</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ef.embedders.Embedder.embed_batch">
+<span class="sig-name descname"><span class="pre">embed_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#Embedder.embed_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.Embedder.embed_batch" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.Embedder.embed_batch'">¶</a></dt>
+<dd><p>Submit an embed job, returning a <a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ef.embedders.EmbedderError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">EmbedderError</span></span><a class="reference internal" href="../_modules/ef/embedders.html#EmbedderError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.EmbedderError" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.EmbedderError'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#Exception" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>Raised for embedder-specific failures (shape mismatch, batch job failure).</p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.FunctionEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">FunctionEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">honored_input_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pass_backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#FunctionEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.FunctionEmbedder" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.FunctionEmbedder'">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ef.embedders.BaseEmbedder" title="ef.embedders.BaseEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a></p>
+<p>Promote a bare <code class="docutils literal notranslate"><span class="pre">texts</span> <span class="pre">-&gt;</span> <span class="pre">vectors</span></code> callable to a full <a class="reference internal" href="#ef.embedders.Embedder" title="ef.embedders.Embedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Embedder</span></code></a>.</p>
+<p>This is the bridge for embedder <em>functions</em> that carry no metadata — most
+importantly <code class="docutils literal notranslate"><span class="pre">imbed</span></code>’s registered embedders. The wrapped callable is asked
+only for <code class="docutils literal notranslate"><span class="pre">func(texts)</span></code> (it knows nothing of <code class="docutils literal notranslate"><span class="pre">input_type</span></code>); the wrapper
+advertises <code class="docutils literal notranslate"><span class="pre">honored_input_types=()</span></code> accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span>) – A callable mapping a list of strings to an array-like of shape
+<code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">dim)</span></code> (a numpy array or a nested sequence — both accepted).</p></li>
+<li><p><strong>model_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Vector-identity string. Defaults to <code class="docutils literal notranslate"><span class="pre">"function:&lt;name&gt;"</span></code>.</p></li>
+<li><p><strong>dim</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Output width. If <code class="docutils literal notranslate"><span class="pre">None</span></code> it is inferred (and frozen) on the first
+call.</p></li>
+<li><p><strong>normalized</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Whether <code class="docutils literal notranslate"><span class="pre">func</span></code> already returns unit vectors.</p></li>
+<li><p><strong>honored_input_types</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<code class="docutils literal notranslate"><span class="pre">'query'</span></code>, <code class="docutils literal notranslate"><span class="pre">'document'</span></code>, <code class="docutils literal notranslate"><span class="pre">'classification'</span></code>, <code class="docutils literal notranslate"><span class="pre">'clustering'</span></code>]]</span>) – Task hints <code class="docutils literal notranslate"><span class="pre">func</span></code> honors (usually none).</p></li>
+<li><p><strong>pass_backend</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), forward any <code class="docutils literal notranslate"><span class="pre">**backend</span></code> kwargs to
+<code class="docutils literal notranslate"><span class="pre">func</span></code>; set <code class="docutils literal notranslate"><span class="pre">False</span></code> for callables with a strict <code class="docutils literal notranslate"><span class="pre">(texts,)</span></code>
+signature.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">FunctionEmbedder</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">'ones@4'</span><span class="p">)</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
+</span><span id="line-4"><span class="go">(3, 4)</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ef.embedders.HashingEmbedder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">HashingEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">2)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sublinear_tf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#HashingEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.HashingEmbedder" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.HashingEmbedder'">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ef.embedders.BaseEmbedder" title="ef.embedders.BaseEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a></p>
+<p>A dependency-free embedder — the feature-hashing trick, numpy only.</p>
+<p><a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a> is <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s <strong>zero-install default</strong>: the embedder
+<a class="reference internal" href="ef.source_manager.html#ef.source_manager.ingest" title="ef.source_manager.ingest"><code class="xref py py-func docutils literal notranslate"><span class="pre">ingest()</span></code></a> resolves to when none is given, so the
+headline <code class="docutils literal notranslate"><span class="pre">ingest([...]).search(query)</span></code> works on a bare <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ef</span></code>
+— no torch, no model download, no network.</p>
+<p>It is a <em>lexical</em> embedder, not a neural one. Each text is tokenized into
+lowercased word n-grams; every token is hashed into one of <code class="docutils literal notranslate"><span class="pre">dim</span></code> buckets
+with a sign (the hashing trick — no vocabulary, no fitting, fixed memory);
+the signed, sublinear-tf-weighted bucket counts are L2-normalized. The
+cosine similarity of two vectors then ranks by shared vocabulary — enough
+for demos, doctests and offline tests, and a sane fallback in production.
+For genuine semantic quality install a real embedder (<code class="docutils literal notranslate"><span class="pre">ef[sentence-transformers]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ef[openai]</span></code>) and pass it explicitly.</p>
+<p>Every parameter that changes a vector is baked into <code class="xref py py-attr docutils literal notranslate"><span class="pre">model_id</span></code>, so a
+<a class="reference internal" href="#ef.embedders.HashingEmbedder" title="ef.embedders.HashingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a>’s artifacts stay correctly content-addressed in the
+<a class="reference internal" href="ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph" title="ef.artifact_graph.ArtifactGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactGraph</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Output width. Wider → fewer hash collisions, larger vectors.</p></li>
+<li><p><strong>ngram_range</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span>) – Inclusive <code class="docutils literal notranslate"><span class="pre">(min,</span> <span class="pre">max)</span></code> word-n-gram sizes. The default
+<code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2)</span></code> mixes single words with adjacent pairs — a little phrase
+sensitivity at no real cost.</p></li>
+<li><p><strong>sublinear_tf</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Weight a token by <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">log(count)</span></code> rather than its raw
+<code class="docutils literal notranslate"><span class="pre">count</span></code>, damping a word repeated many times in one text.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">HashingEmbedder</span><span class="p">()</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="o">.</span><span class="n">model_id</span>
+</span><span id="line-3"><span class="go">'hashing:v1@512'</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="p">([</span><span class="s1">'the quick brown fox'</span><span class="p">])</span>
+</span><span id="line-6"><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">shape</span>
+</span><span id="line-7"><span class="go">(1, 512)</span>
+</span><span id="line-8"><span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">1.0</span><span class="p">))</span>  <span class="c1"># rows are L2-normalized</span>
+</span><span id="line-9"><span class="go">True</span>
+</span><span id="line-10"><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">e</span><span class="p">([</span><span class="s1">'hello world'</span><span class="p">]),</span> <span class="n">e</span><span class="p">([</span><span class="s1">'hello world'</span><span class="p">])</span>
+</span><span id="line-11"><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># identical text → cosine similarity 1.0</span>
+</span><span id="line-12"><span class="go">1.0</span>
+</span><span id="line-13"><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Embedder</span><span class="p">)</span>
+</span><span id="line-14"><span class="go">True</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="ef.embedders.InputType">
+<span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">InputType</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.InputType" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.InputType'">¶</a></dt>
+<dd><p>Canonical embedding-task vocabulary. Every provider names the same
+distinction differently (<code class="docutils literal notranslate"><span class="pre">input_type</span></code> / <code class="docutils literal notranslate"><span class="pre">task_type</span></code> / <code class="docutils literal notranslate"><span class="pre">task</span></code> /
+<code class="docutils literal notranslate"><span class="pre">prompt_name</span></code>); <code class="docutils literal notranslate"><span class="pre">ef</span></code> defines <em>one</em> canonical set and each adapter
+translates it at its boundary. This is the facade’s single most valuable
+normalization. Backends that ignore the hint advertise an empty
+<code class="docutils literal notranslate"><span class="pre">honored_input_types</span></code>.</p>
+<p>alias of <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Literal</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[‘query’, ‘document’, ‘classification’, ‘clustering’]</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.embedders.cache_key">
+<span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">cache_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#cache_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.cache_key" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.cache_key'">¶</a></dt>
+<dd><p>Deterministic cache key for one <code class="docutils literal notranslate"><span class="pre">(embedder,</span> <span class="pre">text,</span> <span class="pre">input_type)</span></code> triple.</p>
+<p>The key pins everything that changes the resulting vector. <code class="docutils literal notranslate"><span class="pre">model_id</span></code> is
+the embedder-identity SSOT — it already bakes in provider, model and <code class="docutils literal notranslate"><span class="pre">dim</span></code>
+— so <code class="docutils literal notranslate"><span class="pre">dim</span></code> is <em>not</em> keyed separately (keying it would also break
+<a class="reference internal" href="#ef.embedders.FunctionEmbedder" title="ef.embedders.FunctionEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a>’s lazy <code class="docutils literal notranslate"><span class="pre">dim</span></code> inference). <code class="docutils literal notranslate"><span class="pre">normalized</span></code> is keyed
+because a <a class="reference internal" href="ef.embedder_wrappers.html#ef.embedder_wrappers.NormalizingEmbedder" title="ef.embedder_wrappers.NormalizingEmbedder"><code class="xref py py-class docutils literal notranslate"><span class="pre">NormalizingEmbedder</span></code></a> shares its
+inner’s <code class="docutils literal notranslate"><span class="pre">model_id</span></code> yet yields different vectors.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">"&lt;model_id&gt;/&lt;sha256&gt;"</span></code> — a namespaced key safe for any
+<code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">_E</span><span class="p">:</span>
+</span><span id="line-2"><span class="gp">... </span>    <span class="n">model_id</span><span class="p">,</span> <span class="n">normalized</span> <span class="o">=</span> <span class="s1">'m@8'</span><span class="p">,</span> <span class="kc">False</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span> <span class="o">=</span> <span class="n">cache_key</span><span class="p">(</span><span class="n">_E</span><span class="p">(),</span> <span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'document'</span><span class="p">)</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">k2</span> <span class="o">=</span> <span class="n">cache_key</span><span class="p">(</span><span class="n">_E</span><span class="p">(),</span> <span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'query'</span><span class="p">)</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span> <span class="o">==</span> <span class="n">k2</span>  <span class="c1"># input_type participates</span>
+</span><span id="line-6"><span class="go">False</span>
+</span><span id="line-7"><span class="gp">&gt;&gt;&gt; </span><span class="n">k1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'m@8/'</span><span class="p">)</span>
+</span><span id="line-8"><span class="go">True</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.embedders.embed_length_sorted">
+<span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">embed_length_sorted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#embed_length_sorted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.embed_length_sorted" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.embed_length_sorted'">¶</a></dt>
+<dd><p>Encode <code class="docutils literal notranslate"><span class="pre">texts</span></code> in length-sorted batches; return vectors in caller order.</p>
+<p>Transformer self-attention is O(n²) in sequence length and a batch is padded
+to its longest member, so grouping similar-length texts together avoids
+wasted compute — a 5–10× speedup on skewed corpora. <code class="docutils literal notranslate"><span class="pre">ef</span></code> owns this so
+callers never sort, pad, or un-sort themselves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texts</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span>) – The strings to embed.</p></li>
+<li><p><strong>encode</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span>) – Maps a list of strings to an array-like of shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">dim)</span></code>.</p></li>
+<li><p><strong>batch_size</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Texts per call to <code class="docutils literal notranslate"><span class="pre">encode</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">float32</span></code> array of shape <code class="docutils literal notranslate"><span class="pre">(len(texts),</span> <span class="pre">dim)</span></code> in the <em>original</em>
+order of <code class="docutils literal notranslate"><span class="pre">texts</span></code>.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">enc</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>  <span class="c1"># toy encoder: vector = [length]</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span><span id="line-4"><span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">embed_length_sorted</span><span class="p">([</span><span class="s1">'aaa'</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'aaaaa'</span><span class="p">,</span> <span class="s1">'aa'</span><span class="p">],</span> <span class="n">enc</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>  <span class="c1"># order preserved despite internal sorting</span>
+</span><span id="line-6"><span class="go">[3.0, 1.0, 5.0, 2.0]</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ef.embedders.ready_handle">
+<span class="sig-prename descclassname"><span class="pre">ef.embedders.</span></span><span class="sig-name descname"><span class="pre">ready_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ef/embedders.html#ready_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#ef.embedders.ready_handle" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ef.embedders.ready_handle'">¶</a></dt>
+<dd><p>Wrap an already-computed array in a finished <a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#ef.embedders.BatchHandle" title="ef.embedders.BatchHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchHandle</span></code></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">ready_handle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+</span><span id="line-4"><span class="go">'done'</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+</span><span id="line-6"><span class="go">(2, 3)</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#ef.embedders.BaseEmbedder'" class="reference internal" href="#ef.embedders.BaseEmbedder"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder</span></code></a><ul>
+<li><a :data-current="activeSection === '#ef.embedders.BaseEmbedder.embed_batch'" class="reference internal" href="#ef.embedders.BaseEmbedder.embed_batch"><code class="docutils literal notranslate"><span class="pre">BaseEmbedder.embed_batch()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ef.embedders.BatchHandle'" class="reference internal" href="#ef.embedders.BatchHandle"><code class="docutils literal notranslate"><span class="pre">BatchHandle</span></code></a><ul>
+<li><a :data-current="activeSection === '#ef.embedders.BatchHandle.poll'" class="reference internal" href="#ef.embedders.BatchHandle.poll"><code class="docutils literal notranslate"><span class="pre">BatchHandle.poll</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.BatchHandle.result'" class="reference internal" href="#ef.embedders.BatchHandle.result"><code class="docutils literal notranslate"><span class="pre">BatchHandle.result</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.BatchHandle.cancel'" class="reference internal" href="#ef.embedders.BatchHandle.cancel"><code class="docutils literal notranslate"><span class="pre">BatchHandle.cancel</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ef.embedders.BatchStatus'" class="reference internal" href="#ef.embedders.BatchStatus"><code class="docutils literal notranslate"><span class="pre">BatchStatus</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder'" class="reference internal" href="#ef.embedders.Embedder"><code class="docutils literal notranslate"><span class="pre">Embedder</span></code></a><ul>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder.model_id'" class="reference internal" href="#ef.embedders.Embedder.model_id"><code class="docutils literal notranslate"><span class="pre">Embedder.model_id</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder.dim'" class="reference internal" href="#ef.embedders.Embedder.dim"><code class="docutils literal notranslate"><span class="pre">Embedder.dim</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder.normalized'" class="reference internal" href="#ef.embedders.Embedder.normalized"><code class="docutils literal notranslate"><span class="pre">Embedder.normalized</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder.honored_input_types'" class="reference internal" href="#ef.embedders.Embedder.honored_input_types"><code class="docutils literal notranslate"><span class="pre">Embedder.honored_input_types</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.Embedder.embed_batch'" class="reference internal" href="#ef.embedders.Embedder.embed_batch"><code class="docutils literal notranslate"><span class="pre">Embedder.embed_batch()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#ef.embedders.EmbedderError'" class="reference internal" href="#ef.embedders.EmbedderError"><code class="docutils literal notranslate"><span class="pre">EmbedderError</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.FunctionEmbedder'" class="reference internal" href="#ef.embedders.FunctionEmbedder"><code class="docutils literal notranslate"><span class="pre">FunctionEmbedder</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.HashingEmbedder'" class="reference internal" href="#ef.embedders.HashingEmbedder"><code class="docutils literal notranslate"><span class="pre">HashingEmbedder</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.InputType'" class="reference internal" href="#ef.embedders.InputType"><code class="docutils literal notranslate"><span class="pre">InputType</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.cache_key'" class="reference internal" href="#ef.embedders.cache_key"><code class="docutils literal notranslate"><span class="pre">cache_key()</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.embed_length_sorted'" class="reference internal" href="#ef.embedders.embed_length_sorted"><code class="docutils literal notranslate"><span class="pre">embed_length_sorted()</span></code></a></li>
+<li><a :data-current="activeSection === '#ef.embedders.ready_handle'" class="reference internal" href="#ef.embedders.ready_handle"><code class="docutils literal notranslate"><span class="pre">ready_handle()</span></code></a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=842aa08f"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=fd10adb8"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
