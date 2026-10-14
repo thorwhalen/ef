@@ -302,7 +302,9 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         self.dim = int(get_dim())
         # Per-input_type conditioning: a literal prompt string, or the name of a
         # prompt the model itself defines (``model.prompts``).
-        self.prompts = {k: v for k, v in (prompts or {}).items() if v}
+        # ``""`` is kept (unlike ``None``): it is an explicit "no prompt", which
+        # overrides a model's ``default_prompt_name`` for that role.
+        self.prompts = {k: v for k, v in (prompts or {}).items() if v is not None}
         self.prompt_names = {k: v for k, v in (prompt_names or {}).items() if v}
         overlap = set(self.prompts) & set(self.prompt_names)
         if overlap:
@@ -328,10 +330,10 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         self.honored_input_types = tuple(
             r
             for r in get_args(InputType)
-            if r in self.prompts or r in self.prompt_names
+            if self.prompts.get(r) or r in self.prompt_names
         )
         self.model_id = f"st:{model_name}@{self.dim}"
-        if self.honored_input_types:
+        if self.prompts or self.prompt_names:
             # The prompts change the vectors: bake their actual text into the id
             # so caches and content-addressed artifacts never mix them.
             resolved = {
@@ -397,7 +399,11 @@ def sentence_transformers_embedder(
     with ``prompt_names`` (e.g. ``{"query": "query"}`` for Qwen3-Embedding). Those
     roles are then advertised in ``honored_input_types``, and the prompt text is
     baked into ``model_id``. Only trust prompts on genuinely instruction-tuned
-    models; on ``all-MiniLM`` they are expected to be a near no-op.
+    models; on ``all-MiniLM`` they are expected to be a near no-op. Prefer these
+    over wrapping the adapter in :class:`~ef.embedder_wrappers.InstructionEmbedder`:
+    sentence-transformers knows the prompt's length, so models that pool without
+    the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs
+    sentence-transformers >= 2.3.
 
     Args:
         model_name: A sentence-transformers model name (also used in
@@ -413,7 +419,9 @@ def sentence_transformers_embedder(
         query_prompt: Prompt prepended to ``input_type="query"`` texts (passed
             as ``encode(prompt=...)``).
         document_prompt: Prompt for ``input_type="document"`` texts (usually
-            none: the asymmetric pattern leaves documents bare).
+            none: the asymmetric pattern leaves documents bare). ``""`` means an
+            explicit empty prompt, which stops a model's ``default_prompt_name``
+            from being applied to documents.
         prompt_names: ``{input_type: name}`` of prompts defined in the model's
             own ``prompts`` config (passed as ``encode(prompt_name=...)``).
             An explicit ``prompt=`` / ``prompt_name=`` in a call overrides both.

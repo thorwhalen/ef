@@ -58,7 +58,7 @@ openai = [
     "openai>=1.0",
 ]
 sentence-transformers = [
-    "sentence-transformers>=2.2",
+    "sentence-transformers>=2.3",  # encode(prompt=, prompt_name=)
 ]
 testing = [
     "pytest",

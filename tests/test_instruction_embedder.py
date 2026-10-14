@@ -208,3 +208,10 @@ def test_st_rejects_prompt_and_prompt_name_for_same_role():
 def test_st_rejects_unknown_input_type():
     with pytest.raises(ValueError, match="unknown input_type"):
         _st(prompts={"queries": "q: "})
+
+
+def test_st_empty_document_prompt_is_an_explicit_no_prompt():
+    emb = _st(prompts={"query": "query: ", "document": ""})
+    emb(["x"], input_type="document")
+    assert emb._model.calls[0]["prompt"] == ""  # overrides a default_prompt_name
+    assert emb.honored_input_types == ("query",)

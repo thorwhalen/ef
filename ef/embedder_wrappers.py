@@ -437,8 +437,10 @@ class InstructionEmbedder(BaseEmbedder):
       made with different instructions.
     - ``honored_input_types`` is the inner embedder's plus every instructed role.
     - ``input_type`` is still forwarded to ``inner``; a backend that also acts on
-      it natively (Cohere, Voyage, Gemini) would then be conditioned twice, so use
-      this wrapper for backends that ignore the hint.
+      it natively (Cohere, Voyage, Gemini, or a sentence-transformers adapter
+      built with ``query_prompt=``) would then be conditioned twice, so use this
+      wrapper for backends that ignore the hint. For sentence-transformers models
+      prefer the adapter's own ``query_prompt=``.
 
     Args:
         inner: The embedder to condition.
