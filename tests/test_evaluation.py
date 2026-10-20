@@ -409,3 +409,43 @@ def test_retrieval_metrics_is_the_validation_source_of_truth():
     # ...and a name outside the registry is rejected.
     with pytest.raises(ValueError, match="Choose from"):
         evaluate_retrieval(retriever, qrels, queries, metrics=("bogus",), k_values=(1,))
+
+
+def test_distractor_and_hard_positive_metrics():
+    from ef.evaluation import evaluate_retrieval
+
+    rank = {'q': ['au', 'a', 'imbed', 'b']}
+
+    def retriever(query, *, limit=10):
+        return rank[query][:limit]
+
+    report = evaluate_retrieval(
+        retriever,
+        {'q': {'a': 1.0, 'imbed': 1.0}},
+        {'q': 'q'},
+        k_values=(2, 4),
+        distractors={'q': ['au', 'su']},
+        hard_positives={'q': ['imbed']},
+    )
+    assert report.metrics['fp_rate@2'] == 0.5
+    assert report.metrics['hard_recall@2'] == 0.0
+    assert report.metrics['hard_recall@4'] == 1.0
+    assert report.distractor_hits == {'q': {'au': 1}}
+
+
+def test_benchmark_embedders_offline_sweep():
+    from ef import benchmark_embedders
+    from ef.embedders import HashingEmbedder
+
+    corpus = {'d1': 'red apple fruit', 'd2': 'blue car engine', 'd3': 'green apple pie'}
+    report = benchmark_embedders(
+        corpus,
+        {'h64': HashingEmbedder(), 'h-other': HashingEmbedder()},
+        {'q': {'d1': 1.0, 'd3': 1.0}},
+        {'q': 'apple'},
+        distractors={'q': ['d2']},
+        hard_positives={'q': ['d3']},
+        k_values=(2,),
+    )
+    assert [r['embedder'] for r in report.rows] == ['h64', 'h-other']
+    assert {'ndcg@2', 'fp_rate@2', 'hard_recall@2'} <= set(report.rows[0])
