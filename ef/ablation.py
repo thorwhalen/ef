@@ -107,7 +107,10 @@ class GradedBenchmark:
             return {q: tuple(d for d in ds if d in keep) for q, ds in named.items()}
 
         return GradedBenchmark(
-            qrels={q: {d: g for d, g in r.items() if d in keep} for q, r in self.qrels.items()},
+            qrels={
+                q: {d: g for d, g in r.items() if d in keep}
+                for q, r in self.qrels.items()
+            },
             queries=dict(self.queries),
             distractors=only(self.distractors),
             hard_positives=only(self.hard_positives),
@@ -150,7 +153,9 @@ def read_graded_cases(
             raise ValueError(f"{cases_path}:{lineno}: case has no 'artifact_id'")
         for theme, level in (record.get("labels") or {}).items():
             if level in grades:
-                qrels.setdefault(theme, {})[str(record["artifact_id"])] = float(grades[level])
+                qrels.setdefault(theme, {})[str(record["artifact_id"])] = float(
+                    grades[level]
+                )
     queries = {**(meta.get("probes") or {}), **(probes or {})}
     missing = sorted(set(qrels) - set(queries))
     if missing:
@@ -162,7 +167,9 @@ def read_graded_cases(
         qrels=qrels,
         queries={t: queries[t] for t in qrels},
         distractors={t: tuple(s.get("distractors", ())) for t, s in named.items()},
-        hard_positives={t: tuple(s.get("hard_positives", ())) for t, s in named.items()},
+        hard_positives={
+            t: tuple(s.get("hard_positives", ())) for t, s in named.items()
+        },
     )
 
 
@@ -233,7 +240,9 @@ class MaxPoolRetriever:
     ['fruit']
     """
 
-    def __init__(self, doc_ids: Sequence[str], vectors: np.ndarray, query_embedder: Any):
+    def __init__(
+        self, doc_ids: Sequence[str], vectors: np.ndarray, query_embedder: Any
+    ):
         vectors = np.asarray(vectors)
         if vectors.ndim != 2 or vectors.shape[0] != len(doc_ids):
             raise ValueError(
@@ -251,12 +260,18 @@ class MaxPoolRetriever:
 
     @classmethod
     def from_segments(
-        cls, segments: Mapping[str, Sequence[str]], embedder: Any, *, query_embedder: Any = None
+        cls,
+        segments: Mapping[str, Sequence[str]],
+        embedder: Any,
+        *,
+        query_embedder: Any = None,
     ) -> MaxPoolRetriever:
         owners = [d for d, texts in segments.items() for _ in texts]
         texts = [t for ts in segments.values() for t in ts]
         vectors = embedder(texts, input_type="document")
-        return cls(owners, vectors, embedder if query_embedder is None else query_embedder)
+        return cls(
+            owners, vectors, embedder if query_embedder is None else query_embedder
+        )
 
     def __call__(self, query: str, *, limit: int = 10) -> list[str]:
         q = _unit_rows(self.query_embedder([query], input_type="query"))[0]
@@ -317,7 +332,9 @@ def run_arms(
         arm = arm if isinstance(arm, Arm) else Arm(arm)
         query_side, doc_side = as_embedder(arm.embedder), as_embedder(arm.documents)
         model_id = getattr(doc_side, "model_id", None)
-        store, key = (cache, f"{model_id}/{digest}") if model_id else (local, id(doc_side))
+        store, key = (
+            (cache, f"{model_id}/{digest}") if model_id else (local, id(doc_side))
+        )
         if key not in store:
             store[key] = np.asarray(doc_side(texts, input_type="document"))
         retriever = MaxPoolRetriever(owners, store[key], query_side)
@@ -375,10 +392,14 @@ def instruction_arms(
 
     def pair(model, prefix):
         model = as_embedder(model)
-        return Arm(model), Arm(InstructionEmbedder(model, query_instruction=prefix), model)
+        return Arm(model), Arm(
+            InstructionEmbedder(model, query_instruction=prefix), model
+        )
 
     arms: dict[str, Arm] = {}
-    arms["A"], arms["B"] = pair(base, instruction if base_instruction is None else base_instruction)
+    arms["A"], arms["B"] = pair(
+        base, instruction if base_instruction is None else base_instruction
+    )
     if tuned is not None:
         arms["C'"], arms["C"] = pair(tuned, instruction)
     return arms
@@ -424,7 +445,9 @@ def instruction_verdict(
     }
     for arm, keys in needed.items():
         if arm not in metrics:
-            raise ValueError(f"instruction_verdict needs arm {arm!r}; got {sorted(metrics)}")
+            raise ValueError(
+                f"instruction_verdict needs arm {arm!r}; got {sorted(metrics)}"
+            )
         missing = sorted(keys - set(metrics[arm]))
         if missing:
             raise ValueError(f"arm {arm!r} lacks {missing} (was k={k} in k_values?)")
@@ -435,7 +458,9 @@ def instruction_verdict(
 
     fp_baseline_zero = a[fp] == 0
     fp_reduction = 0.0 if fp_baseline_zero else _r(1 - c[fp] / a[fp])
-    control_moves = {f"{m}@{k}": _r(b[f"{m}@{k}"] - a[f"{m}@{k}"]) for m in control_metrics}
+    control_moves = {
+        f"{m}@{k}": _r(b[f"{m}@{k}"] - a[f"{m}@{k}"]) for m in control_metrics
+    }
     verdict = {
         "fp_reduction": fp_reduction,
         # nothing to cut when A has no distractor in its top k: not a pass
@@ -448,5 +473,7 @@ def instruction_verdict(
     }
     if "C'" in metrics:
         verdict["instruction_beats_bare"] = bool(c[fp] < metrics["C'"][fp])
-    verdict["success"] = verdict["fp_cut_met"] and verdict["recall_held"] and verdict["control_held"]
+    verdict["success"] = (
+        verdict["fp_cut_met"] and verdict["recall_held"] and verdict["control_held"]
+    )
     return verdict
