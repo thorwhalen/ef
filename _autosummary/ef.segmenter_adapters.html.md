@@ -52,16 +52,13 @@ is already a segmenter).
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Segmenter*](ef.segmenters.html.md#ef.segmenters.Segmenter)
+  [`Segmenter`](ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ```pycon
 >>> seg = as_segmenter(chunk_size=256, chunk_overlap=32)
 >>> (seg.chunk_size, seg.chunk_overlap)
 (256, 32)
 ```
-
-* **Return type:**
-  [`Segmenter`](ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ### ef.segmenter_adapters.imbed_segmenter(name='default', , \*\*kwargs)
 

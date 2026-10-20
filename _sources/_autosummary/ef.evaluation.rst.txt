@@ -21,7 +21,10 @@ ef.evaluation
       precision_at_k
       reciprocal_rank
       average_precision
+      fp_rate_at_k
+      hard_positive_recall_at_k
       evaluate_retrieval
+      benchmark_embedders
       read_beir
       write_beir
       exact_match
@@ -37,5 +40,6 @@ ef.evaluation
    
       RagSample
       RetrievalEvalReport
+      BenchmarkReport
       RagEvalReport
    

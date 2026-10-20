@@ -113,13 +113,22 @@ returns a genuinely pending one. Either way the caller sees one shape.
 
 `() -> BatchStatus` — non-blocking status check.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'pending'`, `'done'`, `'failed'`]]
+
 #### result
 
 `() -> np.ndarray` — blocks until done, returns `(n, dim)`.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], `ndarray`]
+
 #### cancel
 
 `() -> None` — best-effort cancellation.
+
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`None`](https://docs.python.org/3/builtins/constants.html#None)]
 
 ### ef.embedders.BatchStatus
 
@@ -143,19 +152,31 @@ Identity that bakes in everything affecting the vector —
 `"openai:text-embedding-3-large@1024"` (`provider:model@dim`).
 Works directly as a cache namespace.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### dim
 
 Output dimensionality. May be `None` until first call for
 lazily-probed embedders (e.g. a bare callable of unknown width).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### normalized
 
 `True` iff `||v|| == 1` by construction.
+
+* **Type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 #### honored_input_types
 
 The [`InputType`](#ef.embedders.InputType) values this embedder acts on
 (empty if it ignores the task hint).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'query'`, `'document'`, `'classification'`, `'clustering'`], [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### embed_batch(texts, , input_type=None, \*\*backend)
 
@@ -274,9 +295,6 @@ inner’s `model_id` yet yields different vectors.
 Returns `"<model_id>/<sha256>"` — a namespaced key safe for any
 `MutableMapping` store.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> class _E:
 ...     model_id, normalized = 'm@8', False
@@ -287,6 +305,9 @@ False
 >>> k1.startswith('m@8/')
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.embedders.embed_length_sorted(texts, encode, , batch_size=128)
 
@@ -320,9 +341,6 @@ callers never sort, pad, or un-sort themselves.
 
 Wrap an already-computed array in a finished [`BatchHandle`](#ef.embedders.BatchHandle).
 
-* **Return type:**
-  [`BatchHandle`](#ef.embedders.BatchHandle)
-
 ```pycon
 >>> import numpy as np
 >>> h = ready_handle(np.zeros((2, 3)))
@@ -331,3 +349,6 @@ Wrap an already-computed array in a finished [`BatchHandle`](#ef.embedders.Batch
 >>> h.result().shape
 (2, 3)
 ```
+
+* **Return type:**
+  [`BatchHandle`](#ef.embedders.BatchHandle)

@@ -91,7 +91,7 @@ Keys:
   metadata: Free-form mapping; framework-specific keys live here. See
   : [`PROMOTED_METADATA_KEYS`](#ef.segments.PROMOTED_METADATA_KEYS) for the conventional keys.
 
-### *class* ef.segments.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=<factory>)
+### *class* ef.segments.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -139,7 +139,7 @@ The `id` is always present on the result (derived if absent).
   * [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the accepted forms.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if `x` is a `Mapping` without a `text` key.
 * **Return type:**
-  [*Segment*](#ef.segments.Segment)
+  [`Segment`](#ef.segments.Segment)
 
 ```pycon
 >>> as_segment('plain text', index=3)['index']
@@ -148,18 +148,12 @@ The `id` is always present on the result (derived if absent).
 0
 ```
 
-* **Return type:**
-  [`Segment`](#ef.segments.Segment)
-
 ### ef.segments.make_segment(text, , id=None, parent_id=None, start=None, end=None, index=None, tokens=None, metadata=None)
 
 Build a [`Segment`](#ef.segments.Segment), deriving a content-based `id` if none given.
 
 Optional fields are omitted from the result when `None` — a segment
 `dict` carries only the keys it actually has.
-
-* **Return type:**
-  [`Segment`](#ef.segments.Segment)
 
 ```pycon
 >>> seg = make_segment('chunk one', index=0, start=0, end=9)
@@ -168,6 +162,9 @@ Optional fields are omitted from the result when `None` — a segment
 >>> seg['id'] == segment_id('chunk one')
 True
 ```
+
+* **Return type:**
+  [`Segment`](#ef.segments.Segment)
 
 ### ef.segments.segment_id(text, metadata=None)
 
@@ -182,9 +179,6 @@ duplicate). Pass `metadata` only when two segments could share identical
 `text` yet must stay distinct (e.g. same boilerplate from different
 sources).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> segment_id('hello') == segment_id('hello')
 True
@@ -194,6 +188,9 @@ False
 False
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.segments.segment_record(x)
 
 Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](#ef.segments.SegmentRecord)) into a record.
@@ -201,12 +198,12 @@ Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](#ef.segments.SegmentRecord)) i
 The dataclass counterpart of [`as_segment()`](#ef.segments.as_segment) — the convenience-surface
 constructor.
 
-* **Return type:**
-  [`SegmentRecord`](#ef.segments.SegmentRecord)
-
 ```pycon
 >>> segment_record('hello').text
 'hello'
 >>> segment_record({'text': 'hi', 'tokens': 1}).tokens
 1
 ```
+
+* **Return type:**
+  [`SegmentRecord`](#ef.segments.SegmentRecord)

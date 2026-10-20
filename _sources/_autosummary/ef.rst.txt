@@ -49,6 +49,9 @@
       ndcg_at_k
       dcg_at_k
       recall_at_k
+      fp_rate_at_k
+      hard_positive_recall_at_k
+      benchmark_embedders
       precision_at_k
       reciprocal_rank
       average_precision
@@ -106,6 +109,7 @@
       RetrievalEvalReport
       RagEvalReport
       RagSample
+      BenchmarkReport
       Reranker
       ExploreResult
       EfService

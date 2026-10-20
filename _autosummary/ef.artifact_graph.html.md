@@ -175,9 +175,6 @@ registers one node and returns the same id — the basis of free config
 branching. Inputs need not exist yet; the graph is declarative and
 [`materialize()`](#ef.artifact_graph.ArtifactGraph.materialize) resolves them lazily.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> a = graph.add(producer_spec('op', 'leaf', op_version='1'))
@@ -187,6 +184,9 @@ True
 1
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### ancestors(key)
 
 The lineage of `key` — every artifact it was transitively produced from.
@@ -194,9 +194,6 @@ The lineage of `key` — every artifact it was transitively produced from.
 Excludes `key` itself. Answers “what produced this?” — provenance /
 lineage queries. The leaves of the returned set are the original
 sources the artifact ultimately derives from.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -206,6 +203,9 @@ sources the artifact ultimately derives from.
 >>> graph.ancestors(b) == {'src', a}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### delete_cascade(key)
 
@@ -220,9 +220,6 @@ cascade away with it).
 
 Returns the ids actually removed (those that had a value or a recipe).
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -235,6 +232,9 @@ True
 (False, False)
 ```
 
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### descendants(key)
 
 The downstream cone of `key` — every artifact transitively produced from it.
@@ -242,9 +242,6 @@ The downstream cone of `key` — every artifact transitively produced from it.
 Excludes `key` itself. This is the set of artifacts a change to
 `key` would invalidate; [`mark_stale()`](#ef.artifact_graph.ArtifactGraph.mark_stale) and [`delete_cascade()`](#ef.artifact_graph.ArtifactGraph.delete_cascade)
 are built on it.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -254,6 +251,9 @@ are built on it.
 >>> graph.descendants('src') == {a, b}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### freshness(key)
 
@@ -269,9 +269,6 @@ correct *for its id* — staleness here means “not yet computed”, never
 misconfigured, computed against `vd` index metadata) belong to a later
 diagnostics phase, not to the graph core.
 
-* **Return type:**
-  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -281,6 +278,9 @@ diagnostics phase, not to the graph core.
 >>> graph.freshness('s'), graph.freshness(a), graph.freshness('?')
 ('materialized', 'stale', 'unknown')
 ```
+
+* **Return type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
 
 #### mark_stale(key)
 
@@ -297,9 +297,6 @@ changes, or to force a recompute. (A *source* change is usually a
 [`delete_cascade()`](#ef.artifact_graph.ArtifactGraph.delete_cascade) of the old content hash — the new content yields
 a new leaf id.) Returns the produced artifacts that are now stale.
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -312,6 +309,9 @@ True
 >>> graph.freshness(a)
 'stale'
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### materialize(key)
 
@@ -331,7 +331,7 @@ computed exactly once however many configs depend on it.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if the producer graph contains a cycle (a content-
         addressed graph cannot — this guards a hand-corrupted registry).
 * **Return type:**
-  [*Any*](https://docs.python.org/3/library/typing.html#typing.Any)
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -342,9 +342,6 @@ computed exactly once however many configs depend on it.
 >>> graph.materialize(out)
 42
 ```
-
-* **Return type:**
-  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 #### put(key, value)
 
@@ -357,9 +354,6 @@ A leaf has a value but no recipe — typically an L0 source keyed by its
 src = graph.put(content_hash(text), text)
 ```
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.put('doc-1', 'some text')
@@ -367,6 +361,9 @@ src = graph.put(content_hash(text), text)
 >>> graph.freshness('doc-1')
 'materialized'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### register_op(name, fn)
 
@@ -376,14 +373,14 @@ Register the callable `fn` under the op key `name`; return `fn`.
 through this registry. The op is called `fn(*input_values, **params)`:
 the materialized inputs positionally, the spec’s `params` as keywords.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.register_op('upper', str.upper)
 <method 'upper' of 'str' objects>
 ```
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ### ef.artifact_graph.ArtifactId
 
@@ -406,7 +403,7 @@ The key an [`ArtifactGraph`](#ef.artifact_graph.ArtifactGraph) resolves to a pro
 `ops` registry. A short, stable operation name, e.g. `"segment"` or
 `"embed"`.
 
-### *class* ef.artifact_graph.ProducerSpec(op, op_version, inputs=(), params=<factory>)
+### *class* ef.artifact_graph.ProducerSpec(op, op_version, inputs=(), params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -427,6 +424,9 @@ mutating `params` in place would silently desynchronize it from its id.
 
 the op key, resolved to a callable via the graph’s `ops` registry.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### op_version
 
 the op’s version string. It participates in the id, so a
@@ -434,10 +434,16 @@ behavior change to an op **must** be paired with a version bump —
 reusing a version for changed behavior silently serves stale cached
 values (the graph trusts the version; it cannot inspect the code).
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### inputs
 
 the input artifact ids, in the order the op receives them
 positionally. Order is significant — it is part of the id.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### params
 
@@ -445,6 +451,9 @@ the op’s keyword arguments. Key order is *not* significant
 (the id is computed over canonical, sorted-key JSON); pass
 defaults-filled, fully-named params so that two semantically equal
 calls hash equal.
+
+* **Type:**
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ```pycon
 >>> spec = producer_spec('embed', 'seg-1', op_version='3', model='small')
@@ -461,26 +470,26 @@ Return a plain-`dict` form of the spec — JSON-serializable.
 The inverse of [`from_dict()`](#ef.artifact_graph.ProducerSpec.from_dict). Use it to persist a `producers`
 registry to a `dol` JSON store.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> producer_spec('embed', 'a', 'b', op_version='1', dim=256).as_dict()
 {'op': 'embed', 'op_version': '1', 'inputs': ['a', 'b'], 'params': {'dim': 256}}
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
 #### *classmethod* from_dict(d)
 
 Rebuild a [`ProducerSpec`](#ef.artifact_graph.ProducerSpec) from its [`as_dict()`](#ef.artifact_graph.ProducerSpec.as_dict) form.
-
-* **Return type:**
-  [`ProducerSpec`](#ef.artifact_graph.ProducerSpec)
 
 ```pycon
 >>> spec = producer_spec('embed', 'a', 'b', op_version='1', dim=256)
 >>> ProducerSpec.from_dict(spec.as_dict()) == spec
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](#ef.artifact_graph.ProducerSpec)
 
 ### ef.artifact_graph.artifact_id(spec)
 
@@ -491,9 +500,6 @@ The id is `sha256` of canonical (sorted-key) JSON of
 computation hash *identically*; any change to the op, its version, its
 inputs (including their order) or its params yields a *different* id. That
 is what makes the graph content-addressed: the id *is* the recipe.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> a = producer_spec('embed', 'seg-1', op_version='2', model='small')
@@ -510,6 +516,9 @@ False
 False
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.artifact_graph.producer_spec(op, \*inputs, op_version, \*\*params)
 
 Build a [`ProducerSpec`](#ef.artifact_graph.ProducerSpec) ergonomically — inputs positional, params keyword.
@@ -520,9 +529,6 @@ every keyword argument is an op parameter. `op_version` is keyword-only
 and required — an op without a stated version cannot be content-addressed
 safely.
 
-* **Return type:**
-  [`ProducerSpec`](#ef.artifact_graph.ProducerSpec)
-
 ```pycon
 >>> spec = producer_spec('segment', 'doc-1', op_version='1', size=512, overlap=64)
 >>> spec.op, spec.inputs
@@ -530,3 +536,6 @@ safely.
 >>> spec.params == {'size': 512, 'overlap': 64}
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](#ef.artifact_graph.ProducerSpec)

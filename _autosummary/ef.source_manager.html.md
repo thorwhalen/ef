@@ -111,13 +111,22 @@ interchange `TypedDict`) pure of a result-only `score` key, a
 
 the matched segment — the canonical [`Segment`](ef.segments.html.md#ef.segments.Segment).
 
+* **Type:**
+  [`Segment`](ef.segments.html.md#ef.segments.Segment)
+
 #### score
 
 the similarity score from the vector store (higher = closer).
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### source_id
 
 the corpus key of the source document, if recorded.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
@@ -158,12 +167,12 @@ notes §F5). `ef` returns the context; it does *not* synthesize answers.
 See [`hits_to_segments()`](#ef.source_manager.hits_to_segments) for how the score is dropped and the
 `source_id` provenance is preserved in `metadata["source"]`.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> # idx.retrieve('a query') -> [{'text': ..., 'id': ..., 'metadata': ...}, ...]
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
 
 #### search(query, , limit=10, filter=None)
 
@@ -244,9 +253,6 @@ Computes the four staleness conditions — `orphan` / `missing` /
 collection against the current corpus (see [`ef.diagnostics`](ef.diagnostics.html.md#module-ef.diagnostics)).
 Read-only: it changes nothing. [`refresh()`](#ef.source_manager.SourceManager.refresh) acts on the result.
 
-* **Return type:**
-  [`StalenessReport`](ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
-
 ```pycon
 >>> sm = SourceManager({'a': 'alpha', 'b': 'beta'}, embedder='hashing')
 >>> _ = sm.materialize()
@@ -256,6 +262,9 @@ False
 >>> sm.diagnose().stale
 ('a',)
 ```
+
+* **Return type:**
+  [`StalenessReport`](ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
 
 #### gc_orphans(config=None)
 
@@ -391,9 +400,6 @@ Re-registering the same `name` replaces it. Two configs that resolve
 to the same [`PipelineSpec`](ef.config.html.md#ef.config.PipelineSpec) share one
 [`ConfigId`](ef.config.html.md#ef.config.ConfigId) (and one collection).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> import numpy as np
 >>> from ef import as_embedder
@@ -404,6 +410,9 @@ to the same [`PipelineSpec`](ef.config.html.md#ef.config.PipelineSpec) share one
 >>> len(cid)
 64
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### retrieve(query, , config=None, limit=10, filter=None)
 
@@ -476,9 +485,6 @@ key (one of [`PROMOTED_METADATA_KEYS`](ef.segments.html.md#ef.segments.PROMOTED_
 still records which source document it was retrieved from. A segment that
 already carries `metadata["source"]` keeps its own value.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
 >>> segs = hits_to_segments([hit])
@@ -487,6 +493,9 @@ already carries `metadata["source"]` keeps its own value.
 >>> 'score' in segs[0]                          # the score is not a Segment key
 False
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.source_manager.ingest(sources, , segmenter=None, embedder=None, store=None, cache=None)
 

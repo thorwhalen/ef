@@ -76,7 +76,7 @@ Extra `**kwargs` are forwarded to the chosen factory.
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Embedder*](ef.embedders.html.md#ef.embedders.Embedder)
+  [`Embedder`](ef.embedders.html.md#ef.embedders.Embedder)
 
 ```pycon
 >>> import numpy as np
@@ -84,9 +84,6 @@ Extra `**kwargs` are forwarded to the chosen factory.
 >>> type(e).__name__
 'FunctionEmbedder'
 ```
-
-* **Return type:**
-  [`Embedder`](ef.embedders.html.md#ef.embedders.Embedder)
 
 ### ef.embedder_adapters.cohere_embedder(model='embed-v4.0', , dim=None, api_key=None, batch_size=96, timeout=60.0)
 

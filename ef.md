@@ -1,4 +1,4 @@
-> built 2026-10-14 03:52 UTC from 15ac259 (main) · ef 0.1.22. Details: build_info.json
+> built 2026-10-20 12:15 UTC from 4a54f7a (main) · ef 0.1.23. Details: build_info.json
 
 # index.html.md
 
@@ -19,11 +19,13 @@ your own LLM.
 ```python
 import ef
 
-index = ef.ingest([
-    "The cat sat on the mat",
-    "Dogs are loyal companions",
-    "Neural networks learn from data",
-])
+index = ef.ingest(
+    [
+        "The cat sat on the mat",
+        "Dogs are loyal companions",
+        "Neural networks learn from data",
+    ]
+)
 
 for hit in index.search("loyal dogs", limit=2):
     print(hit.score, hit.segment["text"])
@@ -77,7 +79,9 @@ from ef import as_embedder, openai_embedder, sentence_transformers_embedder
 
 index = ef.ingest(corpus, embedder=sentence_transformers_embedder("all-MiniLM-L6-v2"))
 index = ef.ingest(corpus, embedder=openai_embedder("text-embedding-3-small"))
-index = ef.ingest(corpus, embedder=as_embedder("cohere:embed-v4.0"))   # also voyage:/gemini:
+index = ef.ingest(
+    corpus, embedder=as_embedder("cohere:embed-v4.0")
+)  # also voyage:/gemini:
 index = ef.ingest(corpus, embedder=as_embedder(my_callable, model_id="custom@768"))
 ```
 
@@ -115,7 +119,7 @@ index = manager.searchable()
 As sources change, an index drifts. `SourceManager` diagnoses and repairs it:
 
 ```python
-report = manager.diagnose()        # the four staleness conditions
+report = manager.diagnose()  # the four staleness conditions
 manager.refresh(mode="incremental")  # none | incremental | full | scoped_full
 manager = SourceManager(corpus, store="my_vectors", auto_refresh=True)  # live
 ```
@@ -127,11 +131,12 @@ quality — it does not synthesize answers.
 
 ```python
 segments = index.retrieve("how do neural networks learn?", limit=5)
-context = "\n\n".join(s["text"] for s in segments)   # feed context to your LLM
+context = "\n\n".join(s["text"] for s in segments)  # feed context to your LLM
 
 from ef import evaluate_retrieval, evaluate_rag
+
 retrieval = evaluate_retrieval(index.retrieve, qrels, queries)  # BEIR-shaped, NDCG@10
-rag = evaluate_rag(samples)                          # deterministic lexical metrics
+rag = evaluate_rag(samples)  # deterministic lexical metrics
 ```
 
 `retrieve()` returns plain `Segment`s (provenance preserved in
@@ -146,8 +151,8 @@ heritage, the backend an `app_ef` corpus map consumes. Three functions, each
 taking a corpus *or* a vector matrix:
 
 ```python
-coords = ef.project(index, dims=2)          # PCA -> UMAP, 2-D coordinates
-labels = ef.cluster(index, n_clusters=8)    # k-means (or method="hdbscan")
+coords = ef.project(index, dims=2)  # PCA -> UMAP, 2-D coordinates
+labels = ef.cluster(index, n_clusters=8)  # k-means (or method="hdbscan")
 titles = ef.label_clusters(segments, labels)  # LLM-titled clusters (via imbed)
 ```
 
@@ -368,9 +373,6 @@ registers one node and returns the same id — the basis of free config
 branching. Inputs need not exist yet; the graph is declarative and
 [`materialize()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ArtifactGraph.materialize) resolves them lazily.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> a = graph.add(producer_spec('op', 'leaf', op_version='1'))
@@ -380,6 +382,9 @@ True
 1
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### ancestors(key)
 
 The lineage of `key` — every artifact it was transitively produced from.
@@ -387,9 +392,6 @@ The lineage of `key` — every artifact it was transitively produced from.
 Excludes `key` itself. Answers “what produced this?” — provenance /
 lineage queries. The leaves of the returned set are the original
 sources the artifact ultimately derives from.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -399,6 +401,9 @@ sources the artifact ultimately derives from.
 >>> graph.ancestors(b) == {'src', a}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### delete_cascade(key)
 
@@ -413,9 +418,6 @@ cascade away with it).
 
 Returns the ids actually removed (those that had a value or a recipe).
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -428,6 +430,9 @@ True
 (False, False)
 ```
 
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### descendants(key)
 
 The downstream cone of `key` — every artifact transitively produced from it.
@@ -435,9 +440,6 @@ The downstream cone of `key` — every artifact transitively produced from it.
 Excludes `key` itself. This is the set of artifacts a change to
 `key` would invalidate; [`mark_stale()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ArtifactGraph.mark_stale) and [`delete_cascade()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ArtifactGraph.delete_cascade)
 are built on it.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -447,6 +449,9 @@ are built on it.
 >>> graph.descendants('src') == {a, b}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### freshness(key)
 
@@ -462,9 +467,6 @@ correct *for its id* — staleness here means “not yet computed”, never
 misconfigured, computed against `vd` index metadata) belong to a later
 diagnostics phase, not to the graph core.
 
-* **Return type:**
-  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -474,6 +476,9 @@ diagnostics phase, not to the graph core.
 >>> graph.freshness('s'), graph.freshness(a), graph.freshness('?')
 ('materialized', 'stale', 'unknown')
 ```
+
+* **Return type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
 
 #### mark_stale(key)
 
@@ -490,9 +495,6 @@ changes, or to force a recompute. (A *source* change is usually a
 [`delete_cascade()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ArtifactGraph.delete_cascade) of the old content hash — the new content yields
 a new leaf id.) Returns the produced artifacts that are now stale.
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -505,6 +507,9 @@ True
 >>> graph.freshness(a)
 'stale'
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### materialize(key)
 
@@ -524,7 +529,7 @@ computed exactly once however many configs depend on it.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if the producer graph contains a cycle (a content-
         addressed graph cannot — this guards a hand-corrupted registry).
 * **Return type:**
-  [*Any*](https://docs.python.org/3/library/typing.html#typing.Any)
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -535,9 +540,6 @@ computed exactly once however many configs depend on it.
 >>> graph.materialize(out)
 42
 ```
-
-* **Return type:**
-  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 #### put(key, value)
 
@@ -550,9 +552,6 @@ A leaf has a value but no recipe — typically an L0 source keyed by its
 src = graph.put(content_hash(text), text)
 ```
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.put('doc-1', 'some text')
@@ -560,6 +559,9 @@ src = graph.put(content_hash(text), text)
 >>> graph.freshness('doc-1')
 'materialized'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### register_op(name, fn)
 
@@ -569,14 +571,14 @@ Register the callable `fn` under the op key `name`; return `fn`.
 through this registry. The op is called `fn(*input_values, **params)`:
 the materialized inputs positionally, the spec’s `params` as keywords.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.register_op('upper', str.upper)
 <method 'upper' of 'str' objects>
 ```
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ### ef.artifact_graph.ArtifactId
 
@@ -599,7 +601,7 @@ The key an [`ArtifactGraph`](_autosummary/ef.artifact_graph.html.md#ef.artifact_
 `ops` registry. A short, stable operation name, e.g. `"segment"` or
 `"embed"`.
 
-### *class* ef.artifact_graph.ProducerSpec(op, op_version, inputs=(), params=<factory>)
+### *class* ef.artifact_graph.ProducerSpec(op, op_version, inputs=(), params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -620,6 +622,9 @@ mutating `params` in place would silently desynchronize it from its id.
 
 the op key, resolved to a callable via the graph’s `ops` registry.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### op_version
 
 the op’s version string. It participates in the id, so a
@@ -627,10 +632,16 @@ behavior change to an op **must** be paired with a version bump —
 reusing a version for changed behavior silently serves stale cached
 values (the graph trusts the version; it cannot inspect the code).
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### inputs
 
 the input artifact ids, in the order the op receives them
 positionally. Order is significant — it is part of the id.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### params
 
@@ -638,6 +649,9 @@ the op’s keyword arguments. Key order is *not* significant
 (the id is computed over canonical, sorted-key JSON); pass
 defaults-filled, fully-named params so that two semantically equal
 calls hash equal.
+
+* **Type:**
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ```pycon
 >>> spec = producer_spec('embed', 'seg-1', op_version='3', model='small')
@@ -654,26 +668,26 @@ Return a plain-`dict` form of the spec — JSON-serializable.
 The inverse of [`from_dict()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec.from_dict). Use it to persist a `producers`
 registry to a `dol` JSON store.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> producer_spec('embed', 'a', 'b', op_version='1', dim=256).as_dict()
 {'op': 'embed', 'op_version': '1', 'inputs': ['a', 'b'], 'params': {'dim': 256}}
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
 #### *classmethod* from_dict(d)
 
 Rebuild a [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec) from its [`as_dict()`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec.as_dict) form.
-
-* **Return type:**
-  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 ```pycon
 >>> spec = producer_spec('embed', 'a', 'b', op_version='1', dim=256)
 >>> ProducerSpec.from_dict(spec.as_dict()) == spec
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 ### ef.artifact_graph.artifact_id(spec)
 
@@ -684,9 +698,6 @@ The id is `sha256` of canonical (sorted-key) JSON of
 computation hash *identically*; any change to the op, its version, its
 inputs (including their order) or its params yields a *different* id. That
 is what makes the graph content-addressed: the id *is* the recipe.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> a = producer_spec('embed', 'seg-1', op_version='2', model='small')
@@ -703,6 +714,9 @@ False
 False
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.artifact_graph.producer_spec(op, \*inputs, op_version, \*\*params)
 
 Build a [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec) ergonomically — inputs positional, params keyword.
@@ -713,9 +727,6 @@ every keyword argument is an op parameter. `op_version` is keyword-only
 and required — an op without a stated version cannot be content-addressed
 safely.
 
-* **Return type:**
-  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
-
 ```pycon
 >>> spec = producer_spec('segment', 'doc-1', op_version='1', size=512, overlap=64)
 >>> spec.op, spec.inputs
@@ -723,6 +734,9 @@ safely.
 >>> spec.params == {'size': 512, 'overlap': 64}
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 
 # _autosummary/ef.config.html.md
@@ -827,15 +841,15 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the pipeline.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m', op_version='1', params={})
 >>> PipelineSpec(segment=seg, embed=emb).as_dict()['segment']['op']
 'segment:r'
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -844,7 +858,7 @@ Rebuild a [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSpec
 * **Return type:**
   [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSpec)
 
-### *class* ef.config.TransformSpec(op, op_version, params=<factory>)
+### *class* ef.config.TransformSpec(op, op_version, params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -875,13 +889,13 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the spec.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> TransformSpec(op='segment:r', op_version='1', params={}).as_dict()
 {'op': 'segment:r', 'op_version': '1', 'params': {}}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -900,9 +914,6 @@ computation hash identically; any change to a step’s op, version or params
 yields a different id. `ef` writes this digest into `vd` index metadata
 as `config_hash`.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m@8', op_version='1', params={})
@@ -912,6 +923,9 @@ as `config_hash`.
 >>> cid == config_id(PipelineSpec(segment=seg, embed=emb))
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.config.full_kwargs(op, args=(), kwargs=None)
 
@@ -1141,17 +1155,29 @@ for a `"deleted"` one.
 
 the key of the source that changed.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### kind
 
 `"added"`, `"modified"` or `"deleted"`.
+
+* **Type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'added'`, `'modified'`, `'deleted'`]
 
 #### old_hash
 
 the source’s previous content hash, if any.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### new_hash
 
 the source’s new content hash, if any.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### ef.corpus.ChangeKind
 
@@ -1361,18 +1387,30 @@ source — collecting the hashes as **sets** so a partially re-indexed source
 
 the corpus key of the source these documents were cut from.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### doc_ids
 
 the ids of every `vd` document belonging to the source.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### source_hashes
 
 the distinct `source_hash` values its documents record
 — a single-element set for a cleanly indexed source.
 
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### config_hashes
 
 likewise the distinct `config_hash` values.
+
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### *class* ef.diagnostics.StalenessReport(config, orphan=(), missing=(), stale=(), misconfigured=(), fresh=())
 
@@ -1412,15 +1450,15 @@ registry, so it reflects out-of-band edits to the backing store. It matches
 the `source_hash` [`SourceManager`](_autosummary/ef.source_manager.html.md#ef.source_manager.SourceManager) writes into
 `vd` (both are `content_hash` of the source with no `content_keys`).
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> sorted(corpus_state({'a': 'one', 'b': 'two'}))
 ['a', 'b']
 >>> corpus_state({'a': 'x'})['a'] == corpus_state({'a': 'x'})['a']
 True
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ef.diagnostics.diagnose(corpus, collection, config)
 
@@ -1544,7 +1582,7 @@ Extra `**kwargs` are forwarded to the chosen factory.
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Embedder*](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
+  [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
 
 ```pycon
 >>> import numpy as np
@@ -1552,9 +1590,6 @@ Extra `**kwargs` are forwarded to the chosen factory.
 >>> type(e).__name__
 'FunctionEmbedder'
 ```
-
-* **Return type:**
-  [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
 
 ### ef.embedder_adapters.cohere_embedder(model='embed-v4.0', , dim=None, api_key=None, batch_size=96, timeout=60.0)
 
@@ -1940,23 +1975,37 @@ Exponential-backoff retry policy for [`RetryingEmbedder`](_autosummary/ef.embedd
 
 Total tries (the first call counts as attempt 1).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
+
 #### base_delay
 
 Seconds before the first retry; doubles each attempt.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### max_delay
 
 Upper bound on any single backoff sleep.
+
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 #### jitter
 
 Random fraction (`0..1`) of the delay added on top, to
 de-correlate concurrent clients.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### retry_on
 
 Predicate deciding whether an exception is worth retrying.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BaseException`](https://docs.python.org/3/builtins/exceptions.html#BaseException)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 * **Return type:**
   [*bool*](https://docs.python.org/3/builtins/functions.html#bool)
 
@@ -2117,13 +2166,22 @@ returns a genuinely pending one. Either way the caller sees one shape.
 
 `() -> BatchStatus` — non-blocking status check.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'pending'`, `'done'`, `'failed'`]]
+
 #### result
 
 `() -> np.ndarray` — blocks until done, returns `(n, dim)`.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], `ndarray`]
+
 #### cancel
 
 `() -> None` — best-effort cancellation.
+
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`None`](https://docs.python.org/3/builtins/constants.html#None)]
 
 ### ef.embedders.BatchStatus
 
@@ -2147,19 +2205,31 @@ Identity that bakes in everything affecting the vector —
 `"openai:text-embedding-3-large@1024"` (`provider:model@dim`).
 Works directly as a cache namespace.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### dim
 
 Output dimensionality. May be `None` until first call for
 lazily-probed embedders (e.g. a bare callable of unknown width).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### normalized
 
 `True` iff `||v|| == 1` by construction.
+
+* **Type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 #### honored_input_types
 
 The [`InputType`](_autosummary/ef.embedders.html.md#ef.embedders.InputType) values this embedder acts on
 (empty if it ignores the task hint).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'query'`, `'document'`, `'classification'`, `'clustering'`], [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### embed_batch(texts, , input_type=None, \*\*backend)
 
@@ -2278,9 +2348,6 @@ inner’s `model_id` yet yields different vectors.
 Returns `"<model_id>/<sha256>"` — a namespaced key safe for any
 `MutableMapping` store.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> class _E:
 ...     model_id, normalized = 'm@8', False
@@ -2291,6 +2358,9 @@ False
 >>> k1.startswith('m@8/')
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.embedders.embed_length_sorted(texts, encode, , batch_size=128)
 
@@ -2324,9 +2394,6 @@ callers never sort, pad, or un-sort themselves.
 
 Wrap an already-computed array in a finished [`BatchHandle`](_autosummary/ef.embedders.html.md#ef.embedders.BatchHandle).
 
-* **Return type:**
-  [`BatchHandle`](_autosummary/ef.embedders.html.md#ef.embedders.BatchHandle)
-
 ```pycon
 >>> import numpy as np
 >>> h = ready_handle(np.zeros((2, 3)))
@@ -2335,6 +2402,9 @@ Wrap an already-computed array in a finished [`BatchHandle`](_autosummary/ef.emb
 >>> h.result().shape
 (2, 3)
 ```
+
+* **Return type:**
+  [`BatchHandle`](_autosummary/ef.embedders.html.md#ef.embedders.BatchHandle)
 
 
 # _autosummary/ef.evaluation.html.md
@@ -2398,7 +2468,10 @@ Example — score a retriever against a tiny BEIR-shaped triple:
 | [`precision_at_k`](_autosummary/ef.evaluation.html.md#ef.evaluation.precision_at_k)(ranked, relevant, k)               | Fraction of the top `k` results that are relevant.                                                                               |
 | [`reciprocal_rank`](_autosummary/ef.evaluation.html.md#ef.evaluation.reciprocal_rank)(ranked, relevant[, k])            | Reciprocal of the rank of the first relevant result (`0` if none).                                                               |
 | [`average_precision`](_autosummary/ef.evaluation.html.md#ef.evaluation.average_precision)(ranked, relevant[, k])          | Average precision of `ranked` — the per-query term of MAP.                                                                       |
+| [`fp_rate_at_k`](_autosummary/ef.evaluation.html.md#ef.evaluation.fp_rate_at_k)(ranked, distractors, k)              | Fraction of the *named distractors* that intrude into the top `k`.                                                               |
+| [`hard_positive_recall_at_k`](_autosummary/ef.evaluation.html.md#ef.evaluation.hard_positive_recall_at_k)(ranked, ...)            | Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.                                              |
 | [`evaluate_retrieval`](_autosummary/ef.evaluation.html.md#ef.evaluation.evaluate_retrieval)(retriever, qrels, queries, \*) | Score a retriever against a BEIR-shaped evaluation set.                                                                          |
+| [`benchmark_embedders`](_autosummary/ef.evaluation.html.md#ef.evaluation.benchmark_embedders)(corpus_sources, ...[, ...])   | Re-index the same corpus under each embedder and tabulate the metrics.                                                           |
 | [`read_beir`](_autosummary/ef.evaluation.html.md#ef.evaluation.read_beir)(directory, \*[, qrels])                 | Load a BEIR-format dataset from disk into the in-memory evaluation triple.                                                       |
 | [`write_beir`](_autosummary/ef.evaluation.html.md#ef.evaluation.write_beir)(directory, corpus, queries, qrels)     | Write an evaluation triple to disk in BEIR format — the inverse of [`read_beir()`](_autosummary/ef.evaluation.html.md#ef.evaluation.read_beir). |
 | [`exact_match`](_autosummary/ef.evaluation.html.md#ef.evaluation.exact_match)(response, reference)                  | `1.0` if `response` equals `reference` after normalization, else `0.0`.                                                          |
@@ -2413,7 +2486,24 @@ Example — score a retriever against a tiny BEIR-shaped triple:
 | [`RagSample`](_autosummary/ef.evaluation.html.md#ef.evaluation.RagSample)                                    | One end-to-end RAG interaction — the unit [`evaluate_rag()`](_autosummary/ef.evaluation.html.md#ef.evaluation.evaluate_rag) scores.       |
 |-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | [`RetrievalEvalReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.RetrievalEvalReport)(metrics, per_query, ...) | The outcome of [`evaluate_retrieval()`](_autosummary/ef.evaluation.html.md#ef.evaluation.evaluate_retrieval) — metrics over a query set.        |
+| [`BenchmarkReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.BenchmarkReport)(rows, reports)               | One row per embedder: its `{metric: value}` (plus an `embedder` key).                                                   |
 | [`RagEvalReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.RagEvalReport)(metrics, coverage, n_samples)  | The outcome of [`evaluate_rag()`](_autosummary/ef.evaluation.html.md#ef.evaluation.evaluate_rag) — lexical RAG metrics over a sample set. |
+
+### *class* ef.evaluation.BenchmarkReport(rows, reports)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+One row per embedder: its `{metric: value}` (plus an `embedder` key).
+
+`reports` keeps each full [`RetrievalEvalReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.RetrievalEvalReport) for drill-down
+(e.g. `distractor_hits`). `to_frame()` gives a pandas DataFrame
+(pandas is imported lazily).
+
+```pycon
+>>> r = BenchmarkReport(rows=[{'embedder': 'a', 'ndcg@10': 0.5}], reports={})
+>>> r.to_records()
+[{'embedder': 'a', 'ndcg@10': 0.5}]
+```
 
 ### ef.evaluation.Qrels
 
@@ -2471,7 +2561,7 @@ Keys:
   reference: the ground-truth answer, if known.
   reference_contexts: the ground-truth context passages, if known.
 
-### *class* ef.evaluation.RetrievalEvalReport(metrics, per_query, n_queries, k_values)
+### *class* ef.evaluation.RetrievalEvalReport(metrics, per_query, n_queries, k_values, distractor_hits=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2488,6 +2578,11 @@ scored (a query with no positive judgement is skipped).
 >>> report.primary
 0.83
 ```
+
+#### distractor_hits *: [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [int](https://docs.python.org/3/builtins/functions.html#int)]]*
+
+`{query_id: {distractor_id: rank}}` — the named distractors that landed in
+the top `max(k_values)` (1-based rank); empty unless `distractors` was given.
 
 #### *property* primary *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
 
@@ -2533,13 +2628,37 @@ Average precision of `ranked` — the per-query term of MAP.
 The mean of the precision measured at each relevant result’s rank. `k`
 optionally caps the ranking.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> average_precision(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0})
 0.8333333333333333
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.benchmark_embedders(corpus_sources, embedders, qrels, queries, , distractors=None, hard_positives=None, k_values=(10, 20), segmenter=None, limit=None)
+
+Re-index the same corpus under each embedder and tabulate the metrics.
+
+For every `name -> spec` in `embedders` (a spec is anything
+[`ef.as_embedder()`](_autosummary/ef.html.md#ef.as_embedder) accepts: an `Embedder`, `'st:bge-large-en-v1.5'`,
+`'openai:text-embedding-3-large'` …) it runs [`ef.source_manager.ingest()`](_autosummary/ef.source_manager.html.md#ef.source_manager.ingest),
+then [`evaluate_retrieval()`](_autosummary/ef.evaluation.html.md#ef.evaluation.evaluate_retrieval), and stacks one row per embedder. Heavy
+adapters are only imported when their spec is resolved. Deterministic
+metrics only — no LLM.
+
+```pycon
+>>> from ef.embedders import HashingEmbedder
+>>> corpus = {'d1': 'red apple fruit', 'd2': 'blue car engine'}
+>>> report = benchmark_embedders(
+...     corpus, {'hash': HashingEmbedder()},
+...     {'q': {'d1': 1.0}}, {'q': 'apple'}, k_values=(1,))
+>>> report.rows[0]['embedder'], report.rows[0]['recall@1']
+('hash', 1.0)
+```
+
+* **Return type:**
+  [`BenchmarkReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.BenchmarkReport)
 
 ### ef.evaluation.context_precision(reference, retrieved_contexts)
 
@@ -2548,13 +2667,13 @@ Fraction of the retrieved contexts that lexically overlap the `reference`.
 A deterministic *proxy* for retrieval precision — a context counts as useful
 if it shares at least one (normalized) token with the reference answer.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_precision('paris', ['Paris is in France.', 'Unrelated text.'])
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.context_recall(reference, retrieved_contexts)
 
@@ -2565,15 +2684,15 @@ anywhere in `retrieved_contexts` — a deterministic *proxy* for “did
 retrieval surface the information the answer needs”. For the LLM-judged
 context recall, use [`as_ragas_dataset()`](_autosummary/ef.evaluation.html.md#ef.evaluation.as_ragas_dataset) and Ragas.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_recall('paris france', ['Paris is the capital of France.'])
 1.0
 >>> context_recall('paris france', ['London is in England.'])
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.dcg_at_k(ranked, relevant, k)
 
@@ -2583,13 +2702,13 @@ Discounted cumulative gain of `ranked` at cutoff `k`.
 with `grade_i` the relevance of the `i`-th doc (`0` if unjudged) — the
 linear-gain DCG that BEIR / `pytrec_eval` use.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> round(dcg_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 3), 4)
 1.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.evaluate_rag(samples, , metrics=('exact_match', 'token_f1', 'context_recall', 'context_precision', 'non_empty_rate'))
 
@@ -2634,7 +2753,7 @@ same samples to [`as_ragas_dataset()`](_autosummary/ef.evaluation.html.md#ef.eva
 0.5
 ```
 
-### ef.evaluation.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None)
+### ef.evaluation.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None, distractors=None, hard_positives=None)
 
 Score a retriever against a BEIR-shaped evaluation set.
 
@@ -2669,6 +2788,11 @@ report.primary            # mean NDCG@10
   * **limit** ([`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – how many results to retrieve per query. `None` uses
     `max(k_values)`; raise it when sources segment into many pieces
     (de-duplication to source level can otherwise shorten the ranking).
+  * **distractors** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: named distractor doc ids}`; adds
+    `fp_rate@k` ([`fp_rate_at_k()`](_autosummary/ef.evaluation.html.md#ef.evaluation.fp_rate_at_k)) to the metrics, averaged over the
+    queries that name distractors, and fills `report.distractor_hits`.
+  * **hard_positives** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: hard-positive doc ids}`; adds
+    `hard_recall@k` ([`hard_positive_recall_at_k()`](_autosummary/ef.evaluation.html.md#ef.evaluation.hard_positive_recall_at_k)), likewise.
 * **Return type:**
   [`RetrievalEvalReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.RetrievalEvalReport)
 * **Returns:**
@@ -2690,15 +2814,45 @@ report.primary            # mean NDCG@10
 
 `1.0` if `response` equals `reference` after normalization, else `0.0`.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> exact_match('The Eiffel Tower', 'eiffel tower')
 1.0
 >>> exact_match('Paris', 'London')
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.fp_rate_at_k(ranked, distractors, k)
+
+Fraction of the *named distractors* that intrude into the top `k`.
+
+A distractor is a document known to be topically near the query but not
+relevant; aggregate NDCG can improve while these keep over-ranking. 0.0 is
+best.
+
+```pycon
+>>> fp_rate_at_k(['au', 'a', 'su', 'b'], ['au', 'su', 'csm'], 3)
+0.6666666666666666
+>>> fp_rate_at_k(['a', 'b'], ['au'], 2)
+0.0
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.hard_positive_recall_at_k(ranked, hard_positives, k)
+
+Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.
+
+```pycon
+>>> hard_positive_recall_at_k(['a', 'imbed', 'b'], ['imbed', 'meshed'], 2)
+0.5
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.ndcg_at_k(ranked, relevant, k)
 
@@ -2708,9 +2862,6 @@ Normalized DCG at cutoff `k` — `ef`’s **primary** retrieval metric.
 ranking of the judged docs). `1.0` is a perfect ranking; `0.0` when no
 relevant doc was judged.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> ndcg_at_k(['d1', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)   # perfect order
 1.0
@@ -2718,17 +2869,20 @@ relevant doc was judged.
 0.6309
 ```
 
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 ### ef.evaluation.precision_at_k(ranked, relevant, k)
 
 Fraction of the top `k` results that are relevant.
-
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ```pycon
 >>> precision_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.read_beir(directory, , qrels=None)
 
@@ -2758,15 +2912,15 @@ record’s `title` and `text` joined — the BEIR convention.
 
 Fraction of the relevant docs that appear in the top `k` results.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> recall_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
 0.5
 >>> recall_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 3)
 1.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.reciprocal_rank(ranked, relevant, k=None)
 
@@ -2775,15 +2929,15 @@ Reciprocal of the rank of the first relevant result (`0` if none).
 Averaged over queries this is MRR. `k` optionally caps how far down the
 ranking to look.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> reciprocal_rank(['x', 'd1', 'd2'], {'d1': 1.0})
 0.5
 >>> reciprocal_rank(['x', 'd1'], {'d1': 1.0}, k=1)       # relevant doc past the cutoff
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.token_f1(response, reference)
 
@@ -2792,15 +2946,15 @@ Token-overlap F1 of `response` against `reference` (the SQuAD F1).
 The harmonic mean of token precision and recall over the normalized token
 bags — a graded credit where [`exact_match()`](_autosummary/ef.evaluation.html.md#ef.evaluation.exact_match) is all-or-nothing.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> token_f1('the quick brown fox', 'a quick brown fox')
 1.0
 >>> round(token_f1('quick brown fox', 'quick brown dog'), 4)
 0.6667
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.write_beir(directory, corpus, queries, qrels)
 
@@ -3114,15 +3268,15 @@ the *same* string — so they hash identically. Non-JSON values fall back to
 their `str` form, so the function never raises on exotic input (at the
 cost of those values not round-tripping).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> canonical_json({'b': 1, 'a': 2})
 '{"a":2,"b":1}'
 >>> canonical_json({'a': 2, 'b': 1}) == canonical_json({'b': 1, 'a': 2})
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.hashing.normalize_text(text)
 
@@ -3133,9 +3287,6 @@ meaning: a composed vs decomposed accent, a leading byte-order mark, or
 Windows vs Unix line endings. Only the *hash input* is normalized — callers
 keep the original `text` verbatim.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> normalize_text('a\r\nb\rc') == 'a\nb\nc'
 True
@@ -3145,12 +3296,12 @@ True
 True
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.hashing.sha256_hex(payload)
 
 Return the `SHA-256` hex digest of `payload` (`str` is UTF-8 encoded).
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> sha256_hex('')
@@ -3158,6 +3309,9 @@ Return the `SHA-256` hex digest of `payload` (`str` is UTF-8 encoded).
 >>> sha256_hex('abc') == sha256_hex(b'abc')
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 
 # _autosummary/ef.html.md
@@ -3343,6 +3497,9 @@ Example — wrap a plain function and embed two strings:
 | [`ndcg_at_k`](_autosummary/ef.html.md#ef.ndcg_at_k)(ranked, relevant, k)                      | Normalized DCG at cutoff `k` — `ef`'s **primary** retrieval metric.                                                                                                         |
 | [`dcg_at_k`](_autosummary/ef.html.md#ef.dcg_at_k)(ranked, relevant, k)                       | Discounted cumulative gain of `ranked` at cutoff `k`.                                                                                                                       |
 | [`recall_at_k`](_autosummary/ef.html.md#ef.recall_at_k)(ranked, relevant, k)                    | Fraction of the relevant docs that appear in the top `k` results.                                                                                                           |
+| [`fp_rate_at_k`](_autosummary/ef.html.md#ef.fp_rate_at_k)(ranked, distractors, k)                | Fraction of the *named distractors* that intrude into the top `k`.                                                                                                          |
+| [`hard_positive_recall_at_k`](_autosummary/ef.html.md#ef.hard_positive_recall_at_k)(ranked, ...)              | Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.                                                                                         |
+| [`benchmark_embedders`](_autosummary/ef.html.md#ef.benchmark_embedders)(corpus_sources, ...[, ...])     | Re-index the same corpus under each embedder and tabulate the metrics.                                                                                                      |
 | [`precision_at_k`](_autosummary/ef.html.md#ef.precision_at_k)(ranked, relevant, k)                 | Fraction of the top `k` results that are relevant.                                                                                                                          |
 | [`reciprocal_rank`](_autosummary/ef.html.md#ef.reciprocal_rank)(ranked, relevant[, k])              | Reciprocal of the rank of the first relevant result (`0` if none).                                                                                                          |
 | [`average_precision`](_autosummary/ef.html.md#ef.average_precision)(ranked, relevant[, k])            | Average precision of `ranked` — the per-query term of MAP.                                                                                                                  |
@@ -3399,6 +3556,7 @@ Example — wrap a plain function and embed two strings:
 | [`RetrievalEvalReport`](_autosummary/ef.html.md#ef.RetrievalEvalReport)(metrics, per_query, ...)       | The outcome of [`evaluate_retrieval()`](_autosummary/ef.html.md#ef.evaluate_retrieval) — metrics over a query set.          |
 | [`RagEvalReport`](_autosummary/ef.html.md#ef.RagEvalReport)(metrics, coverage, n_samples)        | The outcome of [`evaluate_rag()`](_autosummary/ef.html.md#ef.evaluate_rag) — lexical RAG metrics over a sample set.   |
 | [`RagSample`](_autosummary/ef.html.md#ef.RagSample)                                          | One end-to-end RAG interaction — the unit [`evaluate_rag()`](_autosummary/ef.html.md#ef.evaluate_rag) scores.         |
+| [`BenchmarkReport`](_autosummary/ef.html.md#ef.BenchmarkReport)(rows, reports)                     | One row per embedder: its `{metric: value}` (plus an `embedder` key).                                                     |
 | [`Reranker`](_autosummary/ef.html.md#ef.Reranker)(\*args, \*\*kwargs)                       | A callable that re-scores `(query, segments)` — higher means more relevant.                                               |
 | [`ExploreResult`](_autosummary/ef.html.md#ef.ExploreResult)                                      | A structured, JSON-friendly corpus-exploration result.                                                                    |
 | [`EfService`](_autosummary/ef.html.md#ef.EfService)(\*[, default_embedder])                  | A registry-backed facade bridging stateful `ef` to a stateless transport.                                                 |
@@ -3483,9 +3641,6 @@ registers one node and returns the same id — the basis of free config
 branching. Inputs need not exist yet; the graph is declarative and
 [`materialize()`](_autosummary/ef.html.md#ef.ArtifactGraph.materialize) resolves them lazily.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> a = graph.add(producer_spec('op', 'leaf', op_version='1'))
@@ -3495,6 +3650,9 @@ True
 1
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### ancestors(key)
 
 The lineage of `key` — every artifact it was transitively produced from.
@@ -3502,9 +3660,6 @@ The lineage of `key` — every artifact it was transitively produced from.
 Excludes `key` itself. Answers “what produced this?” — provenance /
 lineage queries. The leaves of the returned set are the original
 sources the artifact ultimately derives from.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -3514,6 +3669,9 @@ sources the artifact ultimately derives from.
 >>> graph.ancestors(b) == {'src', a}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### delete_cascade(key)
 
@@ -3528,9 +3686,6 @@ cascade away with it).
 
 Returns the ids actually removed (those that had a value or a recipe).
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -3543,6 +3698,9 @@ True
 (False, False)
 ```
 
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### descendants(key)
 
 The downstream cone of `key` — every artifact transitively produced from it.
@@ -3550,9 +3708,6 @@ The downstream cone of `key` — every artifact transitively produced from it.
 Excludes `key` itself. This is the set of artifacts a change to
 `key` would invalidate; [`mark_stale()`](_autosummary/ef.html.md#ef.ArtifactGraph.mark_stale) and [`delete_cascade()`](_autosummary/ef.html.md#ef.ArtifactGraph.delete_cascade)
 are built on it.
-
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -3562,6 +3717,9 @@ are built on it.
 >>> graph.descendants('src') == {a, b}
 True
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### freshness(key)
 
@@ -3577,9 +3735,6 @@ correct *for its id* — staleness here means “not yet computed”, never
 misconfigured, computed against `vd` index metadata) belong to a later
 diagnostics phase, not to the graph core.
 
-* **Return type:**
-  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -3589,6 +3744,9 @@ diagnostics phase, not to the graph core.
 >>> graph.freshness('s'), graph.freshness(a), graph.freshness('?')
 ('materialized', 'stale', 'unknown')
 ```
+
+* **Return type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'materialized'`, `'stale'`, `'unknown'`]
 
 #### mark_stale(key)
 
@@ -3605,9 +3763,6 @@ changes, or to force a recompute. (A *source* change is usually a
 [`delete_cascade()`](_autosummary/ef.html.md#ef.ArtifactGraph.delete_cascade) of the old content hash — the new content yields
 a new leaf id.) Returns the produced artifacts that are now stale.
 
-* **Return type:**
-  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> _ = graph.register_op('id', lambda x: x)
@@ -3620,6 +3775,9 @@ True
 >>> graph.freshness(a)
 'stale'
 ```
+
+* **Return type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 #### materialize(key)
 
@@ -3639,7 +3797,7 @@ computed exactly once however many configs depend on it.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if the producer graph contains a cycle (a content-
         addressed graph cannot — this guards a hand-corrupted registry).
 * **Return type:**
-  [*Any*](https://docs.python.org/3/library/typing.html#typing.Any)
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 ```pycon
 >>> graph = ArtifactGraph()
@@ -3650,9 +3808,6 @@ computed exactly once however many configs depend on it.
 >>> graph.materialize(out)
 42
 ```
-
-* **Return type:**
-  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 
 #### put(key, value)
 
@@ -3665,9 +3820,6 @@ A leaf has a value but no recipe — typically an L0 source keyed by its
 src = graph.put(content_hash(text), text)
 ```
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.put('doc-1', 'some text')
@@ -3675,6 +3827,9 @@ src = graph.put(content_hash(text), text)
 >>> graph.freshness('doc-1')
 'materialized'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### register_op(name, fn)
 
@@ -3684,14 +3839,14 @@ Register the callable `fn` under the op key `name`; return `fn`.
 through this registry. The op is called `fn(*input_values, **params)`:
 the materialized inputs positionally, the spec’s `params` as keywords.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> graph = ArtifactGraph()
 >>> graph.register_op('upper', str.upper)
 <method 'upper' of 'str' objects>
 ```
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ### ef.ArtifactId
 
@@ -3750,13 +3905,22 @@ returns a genuinely pending one. Either way the caller sees one shape.
 
 `() -> BatchStatus` — non-blocking status check.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'pending'`, `'done'`, `'failed'`]]
+
 #### result
 
 `() -> np.ndarray` — blocks until done, returns `(n, dim)`.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], `ndarray`]
+
 #### cancel
 
 `() -> None` — best-effort cancellation.
+
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`None`](https://docs.python.org/3/builtins/constants.html#None)]
 
 ### *class* ef.BatchedSegmenter(\*args, \*\*kwargs)
 
@@ -3776,6 +3940,22 @@ Segment each document in `docs`, yielding one segment-stream each.
 
 * **Return type:**
   [`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]]
+
+### *class* ef.BenchmarkReport(rows, reports)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+One row per embedder: its `{metric: value}` (plus an `embedder` key).
+
+`reports` keeps each full [`RetrievalEvalReport`](_autosummary/ef.html.md#ef.RetrievalEvalReport) for drill-down
+(e.g. `distractor_hits`). `to_frame()` gives a pandas DataFrame
+(pandas is imported lazily).
+
+```pycon
+>>> r = BenchmarkReport(rows=[{'embedder': 'a', 'ndcg@10': 0.5}], reports={})
+>>> r.to_records()
+[{'embedder': 'a', 'ndcg@10': 0.5}]
+```
 
 ### *class* ef.CachedEmbedder(inner, store, , cache_queries=False)
 
@@ -3914,17 +4094,29 @@ for a `"deleted"` one.
 
 the key of the source that changed.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### kind
 
 `"added"`, `"modified"` or `"deleted"`.
+
+* **Type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'added'`, `'modified'`, `'deleted'`]
 
 #### old_hash
 
 the source’s previous content hash, if any.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### new_hash
 
 the source’s new content hash, if any.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### ef.ConfigId
 
@@ -4139,19 +4331,31 @@ Identity that bakes in everything affecting the vector —
 `"openai:text-embedding-3-large@1024"` (`provider:model@dim`).
 Works directly as a cache namespace.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### dim
 
 Output dimensionality. May be `None` until first call for
 lazily-probed embedders (e.g. a bare callable of unknown width).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### normalized
 
 `True` iff `||v|| == 1` by construction.
+
+* **Type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 #### honored_input_types
 
 The `InputType` values this embedder acts on
 (empty if it ignores the task hint).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'query'`, `'document'`, `'classification'`, `'clustering'`], [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### embed_batch(texts, , input_type=None, \*\*backend)
 
@@ -4317,18 +4521,30 @@ source — collecting the hashes as **sets** so a partially re-indexed source
 
 the corpus key of the source these documents were cut from.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### doc_ids
 
 the ids of every `vd` document belonging to the source.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### source_hashes
 
 the distinct `source_hash` values its documents record
 — a single-element set for a cleanly indexed source.
 
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### config_hashes
 
 likewise the distinct `config_hash` values.
+
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### *class* ef.InstructionEmbedder(inner, , query_instruction=None, document_instruction=None, classification_instruction=None, clustering_instruction=None)
 
@@ -4498,15 +4714,15 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the pipeline.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m', op_version='1', params={})
 >>> PipelineSpec(segment=seg, embed=emb).as_dict()['segment']['op']
 'segment:r'
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -4515,7 +4731,7 @@ Rebuild a [`PipelineSpec`](_autosummary/ef.html.md#ef.PipelineSpec) from its [`a
 * **Return type:**
   [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSpec)
 
-### *class* ef.ProducerSpec(op, op_version, inputs=(), params=<factory>)
+### *class* ef.ProducerSpec(op, op_version, inputs=(), params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -4536,6 +4752,9 @@ mutating `params` in place would silently desynchronize it from its id.
 
 the op key, resolved to a callable via the graph’s `ops` registry.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### op_version
 
 the op’s version string. It participates in the id, so a
@@ -4543,10 +4762,16 @@ behavior change to an op **must** be paired with a version bump —
 reusing a version for changed behavior silently serves stale cached
 values (the graph trusts the version; it cannot inspect the code).
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### inputs
 
 the input artifact ids, in the order the op receives them
 positionally. Order is significant — it is part of the id.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### params
 
@@ -4554,6 +4779,9 @@ the op’s keyword arguments. Key order is *not* significant
 (the id is computed over canonical, sorted-key JSON); pass
 defaults-filled, fully-named params so that two semantically equal
 calls hash equal.
+
+* **Type:**
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ```pycon
 >>> spec = producer_spec('embed', 'seg-1', op_version='3', model='small')
@@ -4570,26 +4798,26 @@ Return a plain-`dict` form of the spec — JSON-serializable.
 The inverse of [`from_dict()`](_autosummary/ef.html.md#ef.ProducerSpec.from_dict). Use it to persist a `producers`
 registry to a `dol` JSON store.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> producer_spec('embed', 'a', 'b', op_version='1', dim=256).as_dict()
 {'op': 'embed', 'op_version': '1', 'inputs': ['a', 'b'], 'params': {'dim': 256}}
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
 #### *classmethod* from_dict(d)
 
 Rebuild a [`ProducerSpec`](_autosummary/ef.html.md#ef.ProducerSpec) from its [`as_dict()`](_autosummary/ef.html.md#ef.ProducerSpec.as_dict) form.
-
-* **Return type:**
-  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 ```pycon
 >>> spec = producer_spec('embed', 'a', 'b', op_version='1', dim=256)
 >>> ProducerSpec.from_dict(spec.as_dict()) == spec
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 ### *class* ef.RagEvalReport(metrics, coverage, n_samples)
 
@@ -4630,7 +4858,7 @@ Keys:
   reference: the ground-truth answer, if known.
   reference_contexts: the ground-truth context passages, if known.
 
-### *class* ef.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\\\n\\\\n', '\\\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
+### *class* ef.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\n\\n', '\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
 
 Bases: [`BaseSegmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.BaseSegmenter)
 
@@ -4679,10 +4907,16 @@ in `to_materialize`.
 
 source ids to (re-)run through the pipeline.
 
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
+
 #### to_delete
 
 source ids whose currently-indexed documents are removed
 (before re-materializing, for the ones that also reappear above).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 ### *class* ef.RefreshReport(config, mode, added=(), modified=(), deleted=(), unchanged=(), documents_written=0, documents_removed=0, artifacts_removed=0)
 
@@ -4727,7 +4961,7 @@ right shape already *is* a [`Reranker`](_autosummary/ef.html.md#ef.Reranker).
 True
 ```
 
-### *class* ef.RetrievalEvalReport(metrics, per_query, n_queries, k_values)
+### *class* ef.RetrievalEvalReport(metrics, per_query, n_queries, k_values, distractor_hits=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -4744,6 +4978,11 @@ scored (a query with no positive judgement is skipped).
 >>> report.primary
 0.83
 ```
+
+#### distractor_hits *: [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [int](https://docs.python.org/3/builtins/functions.html#int)]]*
+
+`{query_id: {distractor_id: rank}}` — the named distractors that landed in
+the top `max(k_values)` (1-based rank); empty unless `distractors` was given.
 
 #### *property* primary *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
 
@@ -4766,23 +5005,37 @@ Exponential-backoff retry policy for [`RetryingEmbedder`](_autosummary/ef.html.m
 
 Total tries (the first call counts as attempt 1).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
+
 #### base_delay
 
 Seconds before the first retry; doubles each attempt.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### max_delay
 
 Upper bound on any single backoff sleep.
+
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 #### jitter
 
 Random fraction (`0..1`) of the delay added on top, to
 de-correlate concurrent clients.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### retry_on
 
 Predicate deciding whether an exception is worth retrying.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BaseException`](https://docs.python.org/3/builtins/exceptions.html#BaseException)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 * **Return type:**
   [*bool*](https://docs.python.org/3/builtins/functions.html#bool)
 
@@ -4841,13 +5094,22 @@ interchange `TypedDict`) pure of a result-only `score` key, a
 
 the matched segment — the canonical [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment).
 
+* **Type:**
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
+
 #### score
 
 the similarity score from the vector store (higher = closer).
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### source_id
 
 the corpus key of the source document, if recorded.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
@@ -4888,12 +5150,12 @@ notes §F5). `ef` returns the context; it does *not* synthesize answers.
 See [`hits_to_segments()`](_autosummary/ef.html.md#ef.hits_to_segments) for how the score is dropped and the
 `source_id` provenance is preserved in `metadata["source"]`.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> # idx.retrieve('a query') -> [{'text': ..., 'id': ..., 'metadata': ...}, ...]
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 #### search(query, , limit=10, filter=None)
 
@@ -4931,7 +5193,7 @@ Keys:
   metadata: Free-form mapping; framework-specific keys live here. See
   : `PROMOTED_METADATA_KEYS` for the conventional keys.
 
-### *class* ef.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=<factory>)
+### *class* ef.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -5043,9 +5305,6 @@ Computes the four staleness conditions — `orphan` / `missing` /
 collection against the current corpus (see [`ef.diagnostics`](_autosummary/ef.diagnostics.html.md#module-ef.diagnostics)).
 Read-only: it changes nothing. [`refresh()`](_autosummary/ef.refresh.html.md#module-ef.refresh) acts on the result.
 
-* **Return type:**
-  [`StalenessReport`](_autosummary/ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
-
 ```pycon
 >>> sm = SourceManager({'a': 'alpha', 'b': 'beta'}, embedder='hashing')
 >>> _ = sm.materialize()
@@ -5055,6 +5314,9 @@ False
 >>> sm.diagnose().stale
 ('a',)
 ```
+
+* **Return type:**
+  [`StalenessReport`](_autosummary/ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
 
 #### gc_orphans(config=None)
 
@@ -5190,9 +5452,6 @@ Re-registering the same `name` replaces it. Two configs that resolve
 to the same [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSpec) share one
 [`ConfigId`](_autosummary/ef.config.html.md#ef.config.ConfigId) (and one collection).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> import numpy as np
 >>> from ef import as_embedder
@@ -5203,6 +5462,9 @@ to the same [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSp
 >>> len(cid)
 64
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### retrieve(query, , config=None, limit=10, filter=None)
 
@@ -5283,7 +5545,7 @@ False
 
 Sources whose vectors must be recomputed — `stale` ∪ `misconfigured`.
 
-### *class* ef.TransformSpec(op, op_version, params=<factory>)
+### *class* ef.TransformSpec(op, op_version, params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -5314,13 +5576,13 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the spec.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> TransformSpec(op='segment:r', op_version='1', params={}).as_dict()
 {'op': 'segment:r', 'op_version': '1', 'params': {}}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -5337,15 +5599,15 @@ A dependency-free default so `ef` can talk in “tokens” without pulling in
 `tiktoken` or a model tokenizer. Inject a real counter (and its name) into
 a segmenter when an exact count matters.
 
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
-
 ```pycon
 >>> approx_token_count('a' * 40)
 10
 >>> approx_token_count('')
 0
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### ef.artifact_id(spec)
 
@@ -5356,9 +5618,6 @@ The id is `sha256` of canonical (sorted-key) JSON of
 computation hash *identically*; any change to the op, its version, its
 inputs (including their order) or its params yields a *different* id. That
 is what makes the graph content-addressed: the id *is* the recipe.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> a = producer_spec('embed', 'seg-1', op_version='2', model='small')
@@ -5374,6 +5633,9 @@ False
 ...     producer_spec('op', 'y', 'x', op_version='1'))      # input order matters
 False
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.as_corpus(x=None, , \*\*kwargs)
 
@@ -5435,7 +5697,7 @@ Extra `**kwargs` are forwarded to the chosen factory.
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Embedder*](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
+  [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
 
 ```pycon
 >>> import numpy as np
@@ -5443,9 +5705,6 @@ Extra `**kwargs` are forwarded to the chosen factory.
 >>> type(e).__name__
 'FunctionEmbedder'
 ```
-
-* **Return type:**
-  [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
 
 ### ef.as_ragas_dataset(samples)
 
@@ -5494,7 +5753,7 @@ The `id` is always present on the result (derived if absent).
   * [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the accepted forms.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if `x` is a `Mapping` without a `text` key.
 * **Return type:**
-  [*Segment*](_autosummary/ef.segments.html.md#ef.segments.Segment)
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ```pycon
 >>> as_segment('plain text', index=3)['index']
@@ -5502,9 +5761,6 @@ The `id` is always present on the result (derived if absent).
 >>> as_segment({'text': 'kept', 'index': 0}, index=9)['index']  # x wins
 0
 ```
-
-* **Return type:**
-  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ### ef.as_segmenter(x=None, , \*\*kwargs)
 
@@ -5528,16 +5784,13 @@ is already a segmenter).
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Segmenter*](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
+  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ```pycon
 >>> seg = as_segmenter(chunk_size=256, chunk_overlap=32)
 >>> (seg.chunk_size, seg.chunk_overlap)
 (256, 32)
 ```
-
-* **Return type:**
-  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ### ef.average_precision(ranked, relevant, k=None)
 
@@ -5546,13 +5799,37 @@ Average precision of `ranked` — the per-query term of MAP.
 The mean of the precision measured at each relevant result’s rank. `k`
 optionally caps the ranking.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> average_precision(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0})
 0.8333333333333333
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.benchmark_embedders(corpus_sources, embedders, qrels, queries, , distractors=None, hard_positives=None, k_values=(10, 20), segmenter=None, limit=None)
+
+Re-index the same corpus under each embedder and tabulate the metrics.
+
+For every `name -> spec` in `embedders` (a spec is anything
+[`ef.as_embedder()`](_autosummary/ef.html.md#ef.as_embedder) accepts: an `Embedder`, `'st:bge-large-en-v1.5'`,
+`'openai:text-embedding-3-large'` …) it runs [`ef.source_manager.ingest()`](_autosummary/ef.source_manager.html.md#ef.source_manager.ingest),
+then [`evaluate_retrieval()`](_autosummary/ef.html.md#ef.evaluate_retrieval), and stacks one row per embedder. Heavy
+adapters are only imported when their spec is resolved. Deterministic
+metrics only — no LLM.
+
+```pycon
+>>> from ef.embedders import HashingEmbedder
+>>> corpus = {'d1': 'red apple fruit', 'd2': 'blue car engine'}
+>>> report = benchmark_embedders(
+...     corpus, {'hash': HashingEmbedder()},
+...     {'q': {'d1': 1.0}}, {'q': 'apple'}, k_values=(1,))
+>>> report.rows[0]['embedder'], report.rows[0]['recall@1']
+('hash', 1.0)
+```
+
+* **Return type:**
+  [`BenchmarkReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.BenchmarkReport)
 
 ### ef.cache_key(embedder, text, input_type=None)
 
@@ -5568,9 +5845,6 @@ inner’s `model_id` yet yields different vectors.
 Returns `"<model_id>/<sha256>"` — a namespaced key safe for any
 `MutableMapping` store.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> class _E:
 ...     model_id, normalized = 'm@8', False
@@ -5581,6 +5855,9 @@ False
 >>> k1.startswith('m@8/')
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.cluster(data, , method='kmeans', n_clusters=8, min_cluster_size=5, embedder=None, normalize=True, random_state=42)
 
@@ -5649,9 +5926,6 @@ computation hash identically; any change to a step’s op, version or params
 yields a different id. `ef` writes this digest into `vd` index metadata
 as `config_hash`.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m@8', op_version='1', params={})
@@ -5661,6 +5935,9 @@ as `config_hash`.
 >>> cid == config_id(PipelineSpec(segment=seg, embed=emb))
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.content_hash(source, , content_keys=None)
 
@@ -5722,13 +5999,13 @@ Fraction of the retrieved contexts that lexically overlap the `reference`.
 A deterministic *proxy* for retrieval precision — a context counts as useful
 if it shares at least one (normalized) token with the reference answer.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_precision('paris', ['Paris is in France.', 'Unrelated text.'])
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.context_recall(reference, retrieved_contexts)
 
@@ -5739,15 +6016,15 @@ anywhere in `retrieved_contexts` — a deterministic *proxy* for “did
 retrieval surface the information the answer needs”. For the LLM-judged
 context recall, use [`as_ragas_dataset()`](_autosummary/ef.html.md#ef.as_ragas_dataset) and Ragas.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_recall('paris france', ['Paris is the capital of France.'])
 1.0
 >>> context_recall('paris france', ['London is in England.'])
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.cross_encoder_reranker(model_name='cross-encoder/ms-marco-MiniLM-L-6-v2', , device=None, batch_size=32, \*\*predict_kwargs)
 
@@ -5789,13 +6066,13 @@ Discounted cumulative gain of `ranked` at cutoff `k`.
 with `grade_i` the relevance of the `i`-th doc (`0` if unjudged) — the
 linear-gain DCG that BEIR / `pytrec_eval` use.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> round(dcg_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 3), 4)
 1.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.diagnose(corpus, collection, config)
 
@@ -5893,7 +6170,7 @@ same samples to [`as_ragas_dataset()`](_autosummary/ef.html.md#ef.as_ragas_datas
 0.5
 ```
 
-### ef.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None)
+### ef.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None, distractors=None, hard_positives=None)
 
 Score a retriever against a BEIR-shaped evaluation set.
 
@@ -5928,6 +6205,11 @@ report.primary            # mean NDCG@10
   * **limit** ([`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – how many results to retrieve per query. `None` uses
     `max(k_values)`; raise it when sources segment into many pieces
     (de-duplication to source level can otherwise shorten the ranking).
+  * **distractors** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: named distractor doc ids}`; adds
+    `fp_rate@k` ([`fp_rate_at_k()`](_autosummary/ef.html.md#ef.fp_rate_at_k)) to the metrics, averaged over the
+    queries that name distractors, and fills `report.distractor_hits`.
+  * **hard_positives** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: hard-positive doc ids}`; adds
+    `hard_recall@k` ([`hard_positive_recall_at_k()`](_autosummary/ef.html.md#ef.hard_positive_recall_at_k)), likewise.
 * **Return type:**
   [`RetrievalEvalReport`](_autosummary/ef.evaluation.html.md#ef.evaluation.RetrievalEvalReport)
 * **Returns:**
@@ -5949,15 +6231,15 @@ report.primary            # mean NDCG@10
 
 `1.0` if `response` equals `reference` after normalization, else `0.0`.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> exact_match('The Eiffel Tower', 'eiffel tower')
 1.0
 >>> exact_match('Paris', 'London')
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.explore(data, , dims=2, projection_method='auto', cluster_method='kmeans', n_clusters=8, min_cluster_size=5, label=False, context=' ', n_words=4, embedder=None, random_state=42)
 
@@ -6016,6 +6298,24 @@ True
 {}
 ```
 
+### ef.fp_rate_at_k(ranked, distractors, k)
+
+Fraction of the *named distractors* that intrude into the top `k`.
+
+A distractor is a document known to be topically near the query but not
+relevant; aggregate NDCG can improve while these keep over-ranking. 0.0 is
+best.
+
+```pycon
+>>> fp_rate_at_k(['au', 'a', 'su', 'b'], ['au', 'su', 'csm'], 3)
+0.6666666666666666
+>>> fp_rate_at_k(['a', 'b'], ['au'], 2)
+0.0
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 ### ef.full_kwargs(op, args=(), kwargs=None)
 
 Normalize a call into a canonical, fully-named, defaults-filled kwargs dict.
@@ -6066,6 +6366,18 @@ directly — no `google-genai` SDK, no extra dependency.
 * **Returns:**
   An [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder) over the Gemini API.
 
+### ef.hard_positive_recall_at_k(ranked, hard_positives, k)
+
+Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.
+
+```pycon
+>>> hard_positive_recall_at_k(['a', 'imbed', 'b'], ['imbed', 'meshed'], 2)
+0.5
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 ### ef.hierarchical(segmenters,)
 
 Compose segmenters into levels — each segments the previous level’s output.
@@ -6104,9 +6416,6 @@ key (one of [`PROMOTED_METADATA_KEYS`](_autosummary/ef.segments.html.md#ef.segme
 still records which source document it was retrieved from. A segment that
 already carries `metadata["source"]` keeps its own value.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
 >>> segs = hits_to_segments([hit])
@@ -6115,6 +6424,9 @@ already carries `metadata["source"]` keeps its own value.
 >>> 'score' in segs[0]                          # the score is not a Segment key
 False
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.http_embedder(url, \*, model_id=None, dim=None, normalized=False, batch_size=64, headers=None, timeout=30.0, payload_builder=<function \_tei_payload>, response_parser=<function \_tei_parse>)
 
@@ -6234,13 +6546,13 @@ A plain function — and therefore already a [`Segmenter`](_autosummary/ef.html.
 the marker [`as_segmenter()`](_autosummary/ef.segmenter_adapters.html.md#ef.segmenter_adapters.as_segmenter) uses to recognize a
 ready-made segmenter.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> [s['text'] for s in line_segmenter('  hello  \n\nworld\n')]
 ['hello', 'world']
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.make_segment(text, , id=None, parent_id=None, start=None, end=None, index=None, tokens=None, metadata=None)
 
@@ -6249,9 +6561,6 @@ Build a [`Segment`](_autosummary/ef.html.md#ef.Segment), deriving a content-base
 Optional fields are omitted from the result when `None` — a segment
 `dict` carries only the keys it actually has.
 
-* **Return type:**
-  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
-
 ```pycon
 >>> seg = make_segment('chunk one', index=0, start=0, end=9)
 >>> sorted(seg)
@@ -6259,6 +6568,9 @@ Optional fields are omitted from the result when `None` — a segment
 >>> seg['id'] == segment_id('chunk one')
 True
 ```
+
+* **Return type:**
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ### ef.materialise(x)
 
@@ -6293,15 +6605,15 @@ Normalized DCG at cutoff `k` — `ef`’s **primary** retrieval metric.
 ranking of the judged docs). `1.0` is a perfect ranking; `0.0` when no
 relevant doc was judged.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> ndcg_at_k(['d1', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)   # perfect order
 1.0
 >>> round(ndcg_at_k(['x', 'd1'], {'d1': 1.0}, 2), 4)     # relevant doc at rank 2
 0.6309
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.openai_embedder(model='text-embedding-3-small', , dim=None, api_key=None, client=None, batch_size=2048, poll_interval=30.0)
 
@@ -6366,13 +6678,13 @@ The pure, side-effect-free core of the refresh policy. Every source that is
 
 Fraction of the top `k` results that are relevant.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> precision_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.producer_spec(op, \*inputs, op_version, \*\*params)
 
@@ -6384,9 +6696,6 @@ every keyword argument is an op parameter. `op_version` is keyword-only
 and required — an op without a stated version cannot be content-addressed
 safely.
 
-* **Return type:**
-  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
-
 ```pycon
 >>> spec = producer_spec('segment', 'doc-1', op_version='1', size=512, overlap=64)
 >>> spec.op, spec.inputs
@@ -6394,6 +6703,9 @@ safely.
 >>> spec.params == {'size': 512, 'overlap': 64}
 True
 ```
+
+* **Return type:**
+  [`ProducerSpec`](_autosummary/ef.artifact_graph.html.md#ef.artifact_graph.ProducerSpec)
 
 ### ef.project(data, , dims=2, method='auto', embedder=None, n_neighbors=15, min_dist=0.1, metric='cosine', pca_components=50, random_state=42)
 
@@ -6467,9 +6779,6 @@ record’s `title` and `text` joined — the BEIR convention.
 
 Wrap an already-computed array in a finished [`BatchHandle`](_autosummary/ef.html.md#ef.BatchHandle).
 
-* **Return type:**
-  [`BatchHandle`](_autosummary/ef.embedders.html.md#ef.embedders.BatchHandle)
-
 ```pycon
 >>> import numpy as np
 >>> h = ready_handle(np.zeros((2, 3)))
@@ -6479,12 +6788,12 @@ Wrap an already-computed array in a finished [`BatchHandle`](_autosummary/ef.htm
 (2, 3)
 ```
 
+* **Return type:**
+  [`BatchHandle`](_autosummary/ef.embedders.html.md#ef.embedders.BatchHandle)
+
 ### ef.recall_at_k(ranked, relevant, k)
 
 Fraction of the relevant docs that appear in the top `k` results.
-
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ```pycon
 >>> recall_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
@@ -6493,6 +6802,9 @@ Fraction of the relevant docs that appear in the top `k` results.
 1.0
 ```
 
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 ### ef.reciprocal_rank(ranked, relevant, k=None)
 
 Reciprocal of the rank of the first relevant result (`0` if none).
@@ -6500,15 +6812,15 @@ Reciprocal of the rank of the first relevant result (`0` if none).
 Averaged over queries this is MRR. `k` optionally caps how far down the
 ranking to look.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> reciprocal_rank(['x', 'd1', 'd2'], {'d1': 1.0})
 0.5
 >>> reciprocal_rank(['x', 'd1'], {'d1': 1.0}, k=1)       # relevant doc past the cutoff
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.refresh_on_change(manager)
 
@@ -6578,9 +6890,6 @@ duplicate). Pass `metadata` only when two segments could share identical
 `text` yet must stay distinct (e.g. same boilerplate from different
 sources).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> segment_id('hello') == segment_id('hello')
 True
@@ -6590,6 +6899,9 @@ False
 False
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.segment_record(x)
 
 Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](_autosummary/ef.html.md#ef.SegmentRecord)) into a record.
@@ -6597,15 +6909,15 @@ Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](_autosummary/ef.html.md#ef.Seg
 The dataclass counterpart of [`as_segment()`](_autosummary/ef.html.md#ef.as_segment) — the convenience-surface
 constructor.
 
-* **Return type:**
-  [`SegmentRecord`](_autosummary/ef.segments.html.md#ef.segments.SegmentRecord)
-
 ```pycon
 >>> segment_record('hello').text
 'hello'
 >>> segment_record({'text': 'hi', 'tokens': 1}).tokens
 1
 ```
+
+* **Return type:**
+  [`SegmentRecord`](_autosummary/ef.segments.html.md#ef.segments.SegmentRecord)
 
 ### ef.sentence_transformers_embedder(model_name='all-MiniLM-L6-v2', , device=None, normalize=False, batch_size=128, model_path=None, query_prompt=None, document_prompt=None, prompt_names=None, \*\*st_kwargs)
 
@@ -6687,15 +6999,15 @@ Token-overlap F1 of `response` against `reference` (the SQuAD F1).
 The harmonic mean of token precision and recall over the normalized token
 bags — a graded credit where [`exact_match()`](_autosummary/ef.html.md#ef.exact_match) is all-or-nothing.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> token_f1('the quick brown fox', 'a quick brown fox')
 1.0
 >>> round(token_f1('quick brown fox', 'quick brown dog'), 4)
 0.6667
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.voyage_embedder(model='voyage-3.5', , dim=None, api_key=None, batch_size=1000, timeout=60.0)
 
@@ -6731,9 +7043,6 @@ through untouched.
 Overlap is expressed in *characters* here (this is a generic post-hoc
 helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 
-* **Return type:**
-  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
-
 ```pycon
 >>> base = RecursiveCharacterSegmenter(chunk_size=3, chunk_overlap=0)
 >>> [c['text'] for c in base('one two three four')]
@@ -6741,6 +7050,9 @@ helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 >>> [c['text'] for c in with_overlap(base, 100)('one two three four')]
 ['one two three four', 'four']
 ```
+
+* **Return type:**
+  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ### ef.with_reranker(retriever, reranker, , fetch_k=50)
 
@@ -6897,9 +7209,6 @@ The mirror of [`segment_step()`](_autosummary/ef.ops.html.md#ef.ops.segment_step
 `"embed:<model_id>"` — the model identity already content-addresses the
 vector — and `params` carries the defaults-filled `input_type`.
 
-* **Return type:**
-  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TransformSpec`](_autosummary/ef.config.html.md#ef.config.TransformSpec), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]
-
 ```pycon
 >>> import numpy as np
 >>> from ef import as_embedder
@@ -6907,6 +7216,9 @@ vector — and `params` carries the defaults-filled `input_type`.
 >>> spec.op, spec.params
 ('embed:m@2', {'input_type': 'document'})
 ```
+
+* **Return type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TransformSpec`](_autosummary/ef.config.html.md#ef.config.TransformSpec), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]
 
 ### ef.ops.embedder_identity(embedder)
 
@@ -6917,15 +7229,15 @@ everything that changes the vector (provider, model, dimensionality), so it
 *is* the identity — this function just names that fact for symmetry with
 [`segmenter_identity()`](_autosummary/ef.ops.html.md#ef.ops.segmenter_identity).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> from ef import as_embedder
 >>> import numpy as np
 >>> embedder_identity(as_embedder(lambda ts: np.ones((len(ts), 2)), model_id='m@2'))
 'm@2'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.ops.make_embed_op(embedder)
 
@@ -6935,9 +7247,6 @@ The returned callable closes over `embedder` and embeds the segments’
 `text` in caller order; row `i` of the result is the vector of segment
 `i`. `input_type` is a hashable step param (it changes the vector for
 task-aware embedders) — it defaults to `"document"`, the indexing role.
-
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ```pycon
 >>> import numpy as np
@@ -6949,6 +7258,9 @@ task-aware embedders) — it defaults to `"document"`, the indexing role.
 0
 ```
 
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
 ### ef.ops.make_segment_op(segmenter)
 
 Build the **segment** op — a leaf source → its list of `Segment`s.
@@ -6959,15 +7271,15 @@ the key [`segment_step()`](_autosummary/ef.ops.html.md#ef.ops.segment_step) comp
 segmenter output into a `list` — a graph artifact must be a concrete,
 re-readable value.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]]
-
 ```pycon
 >>> from ef import as_segmenter
 >>> op = make_segment_op(as_segmenter('lines'))
 >>> [s['text'] for s in op('one\ntwo')]
 ['one', 'two']
 ```
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]]
 
 ### ef.ops.segment_step(segmenter)
 
@@ -7109,10 +7421,16 @@ in `to_materialize`.
 
 source ids to (re-)run through the pipeline.
 
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
+
 #### to_delete
 
 source ids whose currently-indexed documents are removed
 (before re-materializing, for the ones that also reappear above).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 ### *class* ef.refresh.RefreshReport(config, mode, added=(), modified=(), deleted=(), unchanged=(), documents_written=0, documents_removed=0, artifacts_removed=0)
 
@@ -7501,16 +7819,13 @@ is already a segmenter).
 * **Raises:**
   [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the above.
 * **Return type:**
-  [*Segmenter*](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
+  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ```pycon
 >>> seg = as_segmenter(chunk_size=256, chunk_overlap=32)
 >>> (seg.chunk_size, seg.chunk_overlap)
 (256, 32)
 ```
-
-* **Return type:**
-  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 ### ef.segmenter_adapters.imbed_segmenter(name='default', , \*\*kwargs)
 
@@ -7690,7 +8005,7 @@ of plain strings. Each piece the callable yields is normalized:
 (2, 3, 1)
 ```
 
-### *class* ef.segmenters.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\\\n\\\\n', '\\\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
+### *class* ef.segmenters.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\n\\n', '\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
 
 Bases: [`BaseSegmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.BaseSegmenter)
 
@@ -7749,15 +8064,15 @@ A dependency-free default so `ef` can talk in “tokens” without pulling in
 `tiktoken` or a model tokenizer. Inject a real counter (and its name) into
 a segmenter when an exact count matters.
 
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
-
 ```pycon
 >>> approx_token_count('a' * 40)
 10
 >>> approx_token_count('')
 0
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### ef.segmenters.hierarchical(segmenters,)
 
@@ -7788,13 +8103,13 @@ A plain function — and therefore already a [`Segmenter`](_autosummary/ef.segme
 the marker [`as_segmenter()`](_autosummary/ef.segmenter_adapters.html.md#ef.segmenter_adapters.as_segmenter) uses to recognize a
 ready-made segmenter.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> [s['text'] for s in line_segmenter('  hello  \n\nworld\n')]
 ['hello', 'world']
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.segmenters.materialise(x)
 
@@ -7834,9 +8149,6 @@ through untouched.
 Overlap is expressed in *characters* here (this is a generic post-hoc
 helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 
-* **Return type:**
-  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
-
 ```pycon
 >>> base = RecursiveCharacterSegmenter(chunk_size=3, chunk_overlap=0)
 >>> [c['text'] for c in base('one two three four')]
@@ -7844,6 +8156,9 @@ helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 >>> [c['text'] for c in with_overlap(base, 100)('one two three four')]
 ['one two three four', 'four']
 ```
+
+* **Return type:**
+  [`Segmenter`](_autosummary/ef.segmenters.html.md#ef.segmenters.Segmenter)
 
 
 # _autosummary/ef.segments.html.md
@@ -7941,7 +8256,7 @@ Keys:
   metadata: Free-form mapping; framework-specific keys live here. See
   : [`PROMOTED_METADATA_KEYS`](_autosummary/ef.segments.html.md#ef.segments.PROMOTED_METADATA_KEYS) for the conventional keys.
 
-### *class* ef.segments.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=<factory>)
+### *class* ef.segments.SegmentRecord(text, id='', parent_id=None, start=None, end=None, index=None, tokens=None, metadata=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -7989,7 +8304,7 @@ The `id` is always present on the result (derived if absent).
   * [**TypeError**](https://docs.python.org/3/builtins/exceptions.html#TypeError) – if `x` is none of the accepted forms.
   * [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – if `x` is a `Mapping` without a `text` key.
 * **Return type:**
-  [*Segment*](_autosummary/ef.segments.html.md#ef.segments.Segment)
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ```pycon
 >>> as_segment('plain text', index=3)['index']
@@ -7998,18 +8313,12 @@ The `id` is always present on the result (derived if absent).
 0
 ```
 
-* **Return type:**
-  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
-
 ### ef.segments.make_segment(text, , id=None, parent_id=None, start=None, end=None, index=None, tokens=None, metadata=None)
 
 Build a [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment), deriving a content-based `id` if none given.
 
 Optional fields are omitted from the result when `None` — a segment
 `dict` carries only the keys it actually has.
-
-* **Return type:**
-  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ```pycon
 >>> seg = make_segment('chunk one', index=0, start=0, end=9)
@@ -8018,6 +8327,9 @@ Optional fields are omitted from the result when `None` — a segment
 >>> seg['id'] == segment_id('chunk one')
 True
 ```
+
+* **Return type:**
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
 
 ### ef.segments.segment_id(text, metadata=None)
 
@@ -8032,9 +8344,6 @@ duplicate). Pass `metadata` only when two segments could share identical
 `text` yet must stay distinct (e.g. same boilerplate from different
 sources).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> segment_id('hello') == segment_id('hello')
 True
@@ -8044,6 +8353,9 @@ False
 False
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.segments.segment_record(x)
 
 Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](_autosummary/ef.segments.html.md#ef.segments.SegmentRecord)) into a record.
@@ -8051,15 +8363,15 @@ Coerce `x` (`str` / `Mapping` / [`SegmentRecord`](_autosummary/ef.segments.html.
 The dataclass counterpart of [`as_segment()`](_autosummary/ef.segments.html.md#ef.segments.as_segment) — the convenience-surface
 constructor.
 
-* **Return type:**
-  [`SegmentRecord`](_autosummary/ef.segments.html.md#ef.segments.SegmentRecord)
-
 ```pycon
 >>> segment_record('hello').text
 'hello'
 >>> segment_record({'text': 'hi', 'tokens': 1}).tokens
 1
 ```
+
+* **Return type:**
+  [`SegmentRecord`](_autosummary/ef.segments.html.md#ef.segments.SegmentRecord)
 
 
 # _autosummary/ef.service.html.md
@@ -8419,13 +8731,22 @@ interchange `TypedDict`) pure of a result-only `score` key, a
 
 the matched segment — the canonical [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment).
 
+* **Type:**
+  [`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)
+
 #### score
 
 the similarity score from the vector store (higher = closer).
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### source_id
 
 the corpus key of the source document, if recorded.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
@@ -8466,12 +8787,12 @@ notes §F5). `ef` returns the context; it does *not* synthesize answers.
 See [`hits_to_segments()`](_autosummary/ef.source_manager.html.md#ef.source_manager.hits_to_segments) for how the score is dropped and the
 `source_id` provenance is preserved in `metadata["source"]`.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> # idx.retrieve('a query') -> [{'text': ..., 'id': ..., 'metadata': ...}, ...]
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 #### search(query, , limit=10, filter=None)
 
@@ -8552,9 +8873,6 @@ Computes the four staleness conditions — `orphan` / `missing` /
 collection against the current corpus (see [`ef.diagnostics`](_autosummary/ef.diagnostics.html.md#module-ef.diagnostics)).
 Read-only: it changes nothing. [`refresh()`](_autosummary/ef.source_manager.html.md#ef.source_manager.SourceManager.refresh) acts on the result.
 
-* **Return type:**
-  [`StalenessReport`](_autosummary/ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
-
 ```pycon
 >>> sm = SourceManager({'a': 'alpha', 'b': 'beta'}, embedder='hashing')
 >>> _ = sm.materialize()
@@ -8564,6 +8882,9 @@ False
 >>> sm.diagnose().stale
 ('a',)
 ```
+
+* **Return type:**
+  [`StalenessReport`](_autosummary/ef.diagnostics.html.md#ef.diagnostics.StalenessReport)
 
 #### gc_orphans(config=None)
 
@@ -8699,9 +9020,6 @@ Re-registering the same `name` replaces it. Two configs that resolve
 to the same [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSpec) share one
 [`ConfigId`](_autosummary/ef.config.html.md#ef.config.ConfigId) (and one collection).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> import numpy as np
 >>> from ef import as_embedder
@@ -8712,6 +9030,9 @@ to the same [`PipelineSpec`](_autosummary/ef.config.html.md#ef.config.PipelineSp
 >>> len(cid)
 64
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### retrieve(query, , config=None, limit=10, filter=None)
 
@@ -8784,9 +9105,6 @@ key (one of [`PROMOTED_METADATA_KEYS`](_autosummary/ef.segments.html.md#ef.segme
 still records which source document it was retrieved from. A segment that
 already carries `metadata["source"]` keeps its own value.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> hit = SearchHit(segment={'text': 'hi', 'id': 'x'}, score=0.9, source_id='doc-1')
 >>> segs = hits_to_segments([hit])
@@ -8795,6 +9113,9 @@ already carries `metadata["source"]` keeps its own value.
 >>> 'score' in segs[0]                          # the score is not a Segment key
 False
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](_autosummary/ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.source_manager.ingest(sources, , segmenter=None, embedder=None, store=None, cache=None)
 
@@ -8832,18 +9153,18 @@ See the module docstring for a complete offline example.
 
 # About this build
 
-This documentation was built on **2026-10-14 03:52 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089"><code>15ac259</code></a> on branch <code>main</code>, for **ef 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 12:15 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a"><code>4a54f7a</code></a> on branch <code>main</code>, for **ef 0.1.23** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ef` gives newer code than these docs describe.
+- The documented version (0.1.23) is behind the latest release on PyPI (0.1.24): `pip install ef` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089"><code>15ac259c80bdc5077b683499982a4e35a1eca089</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a"><code>4a54f7a2278002afdcda05fdd55adee33f36966a</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -8854,16 +9175,16 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ef</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/38508395735">38508395735</a>        |
+| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/39420653808">39420653808</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>15ac259c80bdc5077b683499982a4e35a1eca089</code> (in the history of the built commit) |
+| Event commit | <code>4a54f7a2278002afdcda05fdd55adee33f36966a</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.17  |
-| Sphinx   | 9.1.0   |
+| epythet  | 0.2.20  |
+| Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
 
@@ -8881,14 +9202,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ef/0.1.23/">0.1.23</a>, newer than the documented version (0.1.22).
+Latest release: <a href="https://pypi.org/project/ef/0.1.24/">0.1.24</a>, newer than the documented version (0.1.23).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ef && cd ef
-git checkout 15ac259c80bdc5077b683499982a4e35a1eca089
-pip install "epythet==0.2.17"
+git checkout 4a54f7a2278002afdcda05fdd55adee33f36966a
+pip install "epythet==0.2.20"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

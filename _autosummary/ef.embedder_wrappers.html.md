@@ -228,23 +228,37 @@ Exponential-backoff retry policy for [`RetryingEmbedder`](#ef.embedder_wrappers.
 
 Total tries (the first call counts as attempt 1).
 
+* **Type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
+
 #### base_delay
 
 Seconds before the first retry; doubles each attempt.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### max_delay
 
 Upper bound on any single backoff sleep.
+
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 #### jitter
 
 Random fraction (`0..1`) of the delay added on top, to
 de-correlate concurrent clients.
 
+* **Type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 #### retry_on
 
 Predicate deciding whether an exception is worth retrying.
 
+* **Type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BaseException`](https://docs.python.org/3/builtins/exceptions.html#BaseException)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 * **Return type:**
   [*bool*](https://docs.python.org/3/builtins/functions.html#bool)
 

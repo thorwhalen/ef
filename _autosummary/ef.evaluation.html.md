@@ -57,7 +57,10 @@ Example — score a retriever against a tiny BEIR-shaped triple:
 | [`precision_at_k`](#ef.evaluation.precision_at_k)(ranked, relevant, k)               | Fraction of the top `k` results that are relevant.                                                                               |
 | [`reciprocal_rank`](#ef.evaluation.reciprocal_rank)(ranked, relevant[, k])            | Reciprocal of the rank of the first relevant result (`0` if none).                                                               |
 | [`average_precision`](#ef.evaluation.average_precision)(ranked, relevant[, k])          | Average precision of `ranked` — the per-query term of MAP.                                                                       |
+| [`fp_rate_at_k`](#ef.evaluation.fp_rate_at_k)(ranked, distractors, k)              | Fraction of the *named distractors* that intrude into the top `k`.                                                               |
+| [`hard_positive_recall_at_k`](#ef.evaluation.hard_positive_recall_at_k)(ranked, ...)            | Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.                                              |
 | [`evaluate_retrieval`](#ef.evaluation.evaluate_retrieval)(retriever, qrels, queries, \*) | Score a retriever against a BEIR-shaped evaluation set.                                                                          |
+| [`benchmark_embedders`](#ef.evaluation.benchmark_embedders)(corpus_sources, ...[, ...])   | Re-index the same corpus under each embedder and tabulate the metrics.                                                           |
 | [`read_beir`](#ef.evaluation.read_beir)(directory, \*[, qrels])                 | Load a BEIR-format dataset from disk into the in-memory evaluation triple.                                                       |
 | [`write_beir`](#ef.evaluation.write_beir)(directory, corpus, queries, qrels)     | Write an evaluation triple to disk in BEIR format — the inverse of [`read_beir()`](#ef.evaluation.read_beir). |
 | [`exact_match`](#ef.evaluation.exact_match)(response, reference)                  | `1.0` if `response` equals `reference` after normalization, else `0.0`.                                                          |
@@ -72,7 +75,24 @@ Example — score a retriever against a tiny BEIR-shaped triple:
 | [`RagSample`](#ef.evaluation.RagSample)                                    | One end-to-end RAG interaction — the unit [`evaluate_rag()`](#ef.evaluation.evaluate_rag) scores.       |
 |-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | [`RetrievalEvalReport`](#ef.evaluation.RetrievalEvalReport)(metrics, per_query, ...) | The outcome of [`evaluate_retrieval()`](#ef.evaluation.evaluate_retrieval) — metrics over a query set.        |
+| [`BenchmarkReport`](#ef.evaluation.BenchmarkReport)(rows, reports)               | One row per embedder: its `{metric: value}` (plus an `embedder` key).                                                   |
 | [`RagEvalReport`](#ef.evaluation.RagEvalReport)(metrics, coverage, n_samples)  | The outcome of [`evaluate_rag()`](#ef.evaluation.evaluate_rag) — lexical RAG metrics over a sample set. |
+
+### *class* ef.evaluation.BenchmarkReport(rows, reports)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+One row per embedder: its `{metric: value}` (plus an `embedder` key).
+
+`reports` keeps each full [`RetrievalEvalReport`](#ef.evaluation.RetrievalEvalReport) for drill-down
+(e.g. `distractor_hits`). `to_frame()` gives a pandas DataFrame
+(pandas is imported lazily).
+
+```pycon
+>>> r = BenchmarkReport(rows=[{'embedder': 'a', 'ndcg@10': 0.5}], reports={})
+>>> r.to_records()
+[{'embedder': 'a', 'ndcg@10': 0.5}]
+```
 
 ### ef.evaluation.Qrels
 
@@ -130,7 +150,7 @@ Keys:
   reference: the ground-truth answer, if known.
   reference_contexts: the ground-truth context passages, if known.
 
-### *class* ef.evaluation.RetrievalEvalReport(metrics, per_query, n_queries, k_values)
+### *class* ef.evaluation.RetrievalEvalReport(metrics, per_query, n_queries, k_values, distractor_hits=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -147,6 +167,11 @@ scored (a query with no positive judgement is skipped).
 >>> report.primary
 0.83
 ```
+
+#### distractor_hits *: [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [int](https://docs.python.org/3/builtins/functions.html#int)]]*
+
+`{query_id: {distractor_id: rank}}` — the named distractors that landed in
+the top `max(k_values)` (1-based rank); empty unless `distractors` was given.
 
 #### *property* primary *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
 
@@ -192,13 +217,37 @@ Average precision of `ranked` — the per-query term of MAP.
 The mean of the precision measured at each relevant result’s rank. `k`
 optionally caps the ranking.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> average_precision(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0})
 0.8333333333333333
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.benchmark_embedders(corpus_sources, embedders, qrels, queries, , distractors=None, hard_positives=None, k_values=(10, 20), segmenter=None, limit=None)
+
+Re-index the same corpus under each embedder and tabulate the metrics.
+
+For every `name -> spec` in `embedders` (a spec is anything
+[`ef.as_embedder()`](ef.html.md#ef.as_embedder) accepts: an `Embedder`, `'st:bge-large-en-v1.5'`,
+`'openai:text-embedding-3-large'` …) it runs [`ef.source_manager.ingest()`](ef.source_manager.html.md#ef.source_manager.ingest),
+then [`evaluate_retrieval()`](#ef.evaluation.evaluate_retrieval), and stacks one row per embedder. Heavy
+adapters are only imported when their spec is resolved. Deterministic
+metrics only — no LLM.
+
+```pycon
+>>> from ef.embedders import HashingEmbedder
+>>> corpus = {'d1': 'red apple fruit', 'd2': 'blue car engine'}
+>>> report = benchmark_embedders(
+...     corpus, {'hash': HashingEmbedder()},
+...     {'q': {'d1': 1.0}}, {'q': 'apple'}, k_values=(1,))
+>>> report.rows[0]['embedder'], report.rows[0]['recall@1']
+('hash', 1.0)
+```
+
+* **Return type:**
+  [`BenchmarkReport`](#ef.evaluation.BenchmarkReport)
 
 ### ef.evaluation.context_precision(reference, retrieved_contexts)
 
@@ -207,13 +256,13 @@ Fraction of the retrieved contexts that lexically overlap the `reference`.
 A deterministic *proxy* for retrieval precision — a context counts as useful
 if it shares at least one (normalized) token with the reference answer.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_precision('paris', ['Paris is in France.', 'Unrelated text.'])
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.context_recall(reference, retrieved_contexts)
 
@@ -224,15 +273,15 @@ anywhere in `retrieved_contexts` — a deterministic *proxy* for “did
 retrieval surface the information the answer needs”. For the LLM-judged
 context recall, use [`as_ragas_dataset()`](#ef.evaluation.as_ragas_dataset) and Ragas.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> context_recall('paris france', ['Paris is the capital of France.'])
 1.0
 >>> context_recall('paris france', ['London is in England.'])
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.dcg_at_k(ranked, relevant, k)
 
@@ -242,13 +291,13 @@ Discounted cumulative gain of `ranked` at cutoff `k`.
 with `grade_i` the relevance of the `i`-th doc (`0` if unjudged) — the
 linear-gain DCG that BEIR / `pytrec_eval` use.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> round(dcg_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 3), 4)
 1.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.evaluate_rag(samples, , metrics=('exact_match', 'token_f1', 'context_recall', 'context_precision', 'non_empty_rate'))
 
@@ -293,7 +342,7 @@ same samples to [`as_ragas_dataset()`](#ef.evaluation.as_ragas_dataset) and run 
 0.5
 ```
 
-### ef.evaluation.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None)
+### ef.evaluation.evaluate_retrieval(retriever, qrels, queries, , k_values=(1, 5, 10, 100), metrics=('ndcg', 'recall', 'precision', 'mrr', 'map'), limit=None, distractors=None, hard_positives=None)
 
 Score a retriever against a BEIR-shaped evaluation set.
 
@@ -328,6 +377,11 @@ report.primary            # mean NDCG@10
   * **limit** ([`int`](https://docs.python.org/3/builtins/functions.html#int) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – how many results to retrieve per query. `None` uses
     `max(k_values)`; raise it when sources segment into many pieces
     (de-duplication to source level can otherwise shorten the ranking).
+  * **distractors** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: named distractor doc ids}`; adds
+    `fp_rate@k` ([`fp_rate_at_k()`](#ef.evaluation.fp_rate_at_k)) to the metrics, averaged over the
+    queries that name distractors, and fills `report.distractor_hits`.
+  * **hard_positives** ([`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – optional `{query_id: hard-positive doc ids}`; adds
+    `hard_recall@k` ([`hard_positive_recall_at_k()`](#ef.evaluation.hard_positive_recall_at_k)), likewise.
 * **Return type:**
   [`RetrievalEvalReport`](#ef.evaluation.RetrievalEvalReport)
 * **Returns:**
@@ -349,15 +403,45 @@ report.primary            # mean NDCG@10
 
 `1.0` if `response` equals `reference` after normalization, else `0.0`.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> exact_match('The Eiffel Tower', 'eiffel tower')
 1.0
 >>> exact_match('Paris', 'London')
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.fp_rate_at_k(ranked, distractors, k)
+
+Fraction of the *named distractors* that intrude into the top `k`.
+
+A distractor is a document known to be topically near the query but not
+relevant; aggregate NDCG can improve while these keep over-ranking. 0.0 is
+best.
+
+```pycon
+>>> fp_rate_at_k(['au', 'a', 'su', 'b'], ['au', 'su', 'csm'], 3)
+0.6666666666666666
+>>> fp_rate_at_k(['a', 'b'], ['au'], 2)
+0.0
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### ef.evaluation.hard_positive_recall_at_k(ranked, hard_positives, k)
+
+Fraction of the *hard positives* (e.g. thin-description docs) found in the top `k`.
+
+```pycon
+>>> hard_positive_recall_at_k(['a', 'imbed', 'b'], ['imbed', 'meshed'], 2)
+0.5
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.ndcg_at_k(ranked, relevant, k)
 
@@ -367,9 +451,6 @@ Normalized DCG at cutoff `k` — `ef`’s **primary** retrieval metric.
 ranking of the judged docs). `1.0` is a perfect ranking; `0.0` when no
 relevant doc was judged.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> ndcg_at_k(['d1', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)   # perfect order
 1.0
@@ -377,17 +458,20 @@ relevant doc was judged.
 0.6309
 ```
 
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
 ### ef.evaluation.precision_at_k(ranked, relevant, k)
 
 Fraction of the top `k` results that are relevant.
-
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ```pycon
 >>> precision_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
 0.5
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.read_beir(directory, , qrels=None)
 
@@ -417,15 +501,15 @@ record’s `title` and `text` joined — the BEIR convention.
 
 Fraction of the relevant docs that appear in the top `k` results.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> recall_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 2)
 0.5
 >>> recall_at_k(['d1', 'x', 'd2'], {'d1': 1.0, 'd2': 1.0}, 3)
 1.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.reciprocal_rank(ranked, relevant, k=None)
 
@@ -434,15 +518,15 @@ Reciprocal of the rank of the first relevant result (`0` if none).
 Averaged over queries this is MRR. `k` optionally caps how far down the
 ranking to look.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> reciprocal_rank(['x', 'd1', 'd2'], {'d1': 1.0})
 0.5
 >>> reciprocal_rank(['x', 'd1'], {'d1': 1.0}, k=1)       # relevant doc past the cutoff
 0.0
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.token_f1(response, reference)
 
@@ -451,15 +535,15 @@ Token-overlap F1 of `response` against `reference` (the SQuAD F1).
 The harmonic mean of token precision and recall over the normalized token
 bags — a graded credit where [`exact_match()`](#ef.evaluation.exact_match) is all-or-nothing.
 
-* **Return type:**
-  [`float`](https://docs.python.org/3/builtins/functions.html#float)
-
 ```pycon
 >>> token_f1('the quick brown fox', 'a quick brown fox')
 1.0
 >>> round(token_f1('quick brown fox', 'quick brown dog'), 4)
 0.6667
 ```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
 
 ### ef.evaluation.write_beir(directory, corpus, queries, qrels)
 

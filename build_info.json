@@ -1,37 +1,37 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-14T03:52:54Z",
+  "built_at": "2026-10-20T12:15:07Z",
   "package": {
     "name": "ef",
-    "version": "0.1.22",
+    "version": "0.1.23",
     "display_name": "ef",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "15ac259c80bdc5077b683499982a4e35a1eca089",
-    "short_commit": "15ac259",
+    "commit": "4a54f7a2278002afdcda05fdd55adee33f36966a",
+    "short_commit": "4a54f7a",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ef",
-    "commit_url": "https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089",
+    "commit_url": "https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ef",
-    "sha": "15ac259c80bdc5077b683499982a4e35a1eca089",
+    "sha": "4a54f7a2278002afdcda05fdd55adee33f36966a",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "38508395735",
-    "run_url": "https://github.com/thorwhalen/ef/actions/runs/38508395735",
+    "run_id": "39420653808",
+    "run_url": "https://github.com/thorwhalen/ef/actions/runs/39420653808",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.17",
-    "sphinx": "9.1.0",
+    "epythet": "0.2.20",
+    "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.15"
   },
@@ -56,20 +56,20 @@
   },
   "site": {
     "modules_documented": 19,
-    "objects_documented": 399
+    "objects_documented": 409
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.23",
+    "latest": "0.1.24",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ef && cd ef\ngit checkout 15ac259c80bdc5077b683499982a4e35a1eca089\npip install \"epythet==0.2.17\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ef && cd ef\ngit checkout 4a54f7a2278002afdcda05fdd55adee33f36966a\npip install \"epythet==0.2.20\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ef` gives newer code than these docs describe."
+      "The documented version (0.1.23) is behind the latest release on PyPI (0.1.24): `pip install ef` gives newer code than these docs describe."
     ]
   }
 }

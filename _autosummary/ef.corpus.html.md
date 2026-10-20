@@ -165,17 +165,29 @@ for a `"deleted"` one.
 
 the key of the source that changed.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### kind
 
 `"added"`, `"modified"` or `"deleted"`.
+
+* **Type:**
+  [`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'added'`, `'modified'`, `'deleted'`]
 
 #### old_hash
 
 the source’s previous content hash, if any.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### new_hash
 
 the source’s new content hash, if any.
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### ef.corpus.ChangeKind
 

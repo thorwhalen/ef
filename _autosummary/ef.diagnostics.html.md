@@ -69,18 +69,30 @@ source — collecting the hashes as **sets** so a partially re-indexed source
 
 the corpus key of the source these documents were cut from.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### doc_ids
 
 the ids of every `vd` document belonging to the source.
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 #### source_hashes
 
 the distinct `source_hash` values its documents record
 — a single-element set for a cleanly indexed source.
 
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### config_hashes
 
 likewise the distinct `config_hash` values.
+
+* **Type:**
+  [`frozenset`](https://docs.python.org/3/builtins/stdtypes.html#frozenset)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### *class* ef.diagnostics.StalenessReport(config, orphan=(), missing=(), stale=(), misconfigured=(), fresh=())
 
@@ -120,15 +132,15 @@ registry, so it reflects out-of-band edits to the backing store. It matches
 the `source_hash` [`SourceManager`](ef.source_manager.html.md#ef.source_manager.SourceManager) writes into
 `vd` (both are `content_hash` of the source with no `content_keys`).
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ```pycon
 >>> sorted(corpus_state({'a': 'one', 'b': 'two'}))
 ['a', 'b']
 >>> corpus_state({'a': 'x'})['a'] == corpus_state({'a': 'x'})['a']
 True
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ef.diagnostics.diagnose(corpus, collection, config)
 

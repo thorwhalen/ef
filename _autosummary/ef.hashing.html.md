@@ -35,15 +35,15 @@ the *same* string — so they hash identically. Non-JSON values fall back to
 their `str` form, so the function never raises on exotic input (at the
 cost of those values not round-tripping).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> canonical_json({'b': 1, 'a': 2})
 '{"a":2,"b":1}'
 >>> canonical_json({'a': 2, 'b': 1}) == canonical_json({'b': 1, 'a': 2})
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.hashing.normalize_text(text)
 
@@ -54,9 +54,6 @@ meaning: a composed vs decomposed accent, a leading byte-order mark, or
 Windows vs Unix line endings. Only the *hash input* is normalized — callers
 keep the original `text` verbatim.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> normalize_text('a\r\nb\rc') == 'a\nb\nc'
 True
@@ -66,12 +63,12 @@ True
 True
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### ef.hashing.sha256_hex(payload)
 
 Return the `SHA-256` hex digest of `payload` (`str` is UTF-8 encoded).
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> sha256_hex('')
@@ -79,3 +76,6 @@ Return the `SHA-256` hex digest of `payload` (`str` is UTF-8 encoded).
 >>> sha256_hex('abc') == sha256_hex(b'abc')
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)

@@ -5,19 +5,19 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-10-14 03:52 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089"><code>15ac259</code></a> on branch <code>main</code>, for **ef 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 12:15 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a"><code>4a54f7a</code></a> on branch <code>main</code>, for **ef 0.1.23** (from <code>pyproject.toml</code>).
 
 :::{warning}
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ef` gives newer code than these docs describe.
+- The documented version (0.1.23) is behind the latest release on PyPI (0.1.24): `pip install ef` gives newer code than these docs describe.
 :::
 
 ## Source
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089"><code>15ac259c80bdc5077b683499982a4e35a1eca089</code></a> |
+| Commit | <a href="https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a"><code>4a54f7a2278002afdcda05fdd55adee33f36966a</code></a> |
 | Branch | <code>main</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -28,16 +28,16 @@ The documentation and the package may be misaligned:
 | | |
 |---|---|
 | Repository | <code>thorwhalen/ef</code> |
-| Run | <a href="https://github.com/thorwhalen/ef/actions/runs/38508395735">38508395735</a> |
+| Run | <a href="https://github.com/thorwhalen/ef/actions/runs/39420653808">39420653808</a> |
 | Ref | <code>refs/heads/main</code> |
-| Event commit | <code>15ac259c80bdc5077b683499982a4e35a1eca089</code> (in the history of the built commit) |
+| Event commit | <code>4a54f7a2278002afdcda05fdd55adee33f36966a</code> (in the history of the built commit) |
 
 ## Tools
 
 | | |
 |---|---|
-| epythet | 0.2.17 |
-| Sphinx | 9.1.0 |
+| epythet | 0.2.20 |
+| Sphinx | 9.1.1 |
 | docutils | 0.22.4 |
 | Python | 3.12.15 |
 
@@ -55,14 +55,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ef/0.1.23/">0.1.23</a>, newer than the documented version (0.1.22).
+Latest release: <a href="https://pypi.org/project/ef/0.1.24/">0.1.24</a>, newer than the documented version (0.1.23).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ef && cd ef
-git checkout 15ac259c80bdc5077b683499982a4e35a1eca089
-pip install "epythet==0.2.17"
+git checkout 4a54f7a2278002afdcda05fdd55adee33f36966a
+pip install "epythet==0.2.20"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

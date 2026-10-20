@@ -77,9 +77,6 @@ The mirror of [`segment_step()`](#ef.ops.segment_step) for the embed layer. The 
 `"embed:<model_id>"` — the model identity already content-addresses the
 vector — and `params` carries the defaults-filled `input_type`.
 
-* **Return type:**
-  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TransformSpec`](ef.config.html.md#ef.config.TransformSpec), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]
-
 ```pycon
 >>> import numpy as np
 >>> from ef import as_embedder
@@ -87,6 +84,9 @@ vector — and `params` carries the defaults-filled `input_type`.
 >>> spec.op, spec.params
 ('embed:m@2', {'input_type': 'document'})
 ```
+
+* **Return type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TransformSpec`](ef.config.html.md#ef.config.TransformSpec), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]
 
 ### ef.ops.embedder_identity(embedder)
 
@@ -97,15 +97,15 @@ everything that changes the vector (provider, model, dimensionality), so it
 *is* the identity — this function just names that fact for symmetry with
 [`segmenter_identity()`](#ef.ops.segmenter_identity).
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> from ef import as_embedder
 >>> import numpy as np
 >>> embedder_identity(as_embedder(lambda ts: np.ones((len(ts), 2)), model_id='m@2'))
 'm@2'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.ops.make_embed_op(embedder)
 
@@ -115,9 +115,6 @@ The returned callable closes over `embedder` and embeds the segments’
 `text` in caller order; row `i` of the result is the vector of segment
 `i`. `input_type` is a hashable step param (it changes the vector for
 task-aware embedders) — it defaults to `"document"`, the indexing role.
-
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 ```pycon
 >>> import numpy as np
@@ -129,6 +126,9 @@ task-aware embedders) — it defaults to `"document"`, the indexing role.
 0
 ```
 
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
 ### ef.ops.make_segment_op(segmenter)
 
 Build the **segment** op — a leaf source → its list of `Segment`s.
@@ -139,15 +139,15 @@ the key [`segment_step()`](#ef.ops.segment_step) computes. It materializes the (
 segmenter output into a `list` — a graph artifact must be a concrete,
 re-readable value.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]]
-
 ```pycon
 >>> from ef import as_segmenter
 >>> op = make_segment_op(as_segmenter('lines'))
 >>> [s['text'] for s in op('one\ntwo')]
 ['one', 'two']
 ```
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]]
 
 ### ef.ops.segment_step(segmenter)
 

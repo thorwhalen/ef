@@ -30,6 +30,7 @@
 <meta content="ef — Embedding Flow | ef" name="twitter:title"/>
 <link href="_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
 <link href="_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="_static/epythet.css?v=e6b54dbb" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
@@ -131,14 +132,16 @@ facade</strong>. <code class="docutils literal notranslate"><span class="pre">ef
 your own LLM.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">ef</span>
 </span><span id="line-2">
-</span><span id="line-3"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">([</span>
-</span><span id="line-4">    <span class="s2">"The cat sat on the mat"</span><span class="p">,</span>
-</span><span id="line-5">    <span class="s2">"Dogs are loyal companions"</span><span class="p">,</span>
-</span><span id="line-6">    <span class="s2">"Neural networks learn from data"</span><span class="p">,</span>
-</span><span id="line-7"><span class="p">])</span>
-</span><span id="line-8">
-</span><span id="line-9"><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"loyal dogs"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-</span><span id="line-10">    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">score</span><span class="p">,</span> <span class="n">hit</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="s2">"text"</span><span class="p">])</span>
+</span><span id="line-3"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
+</span><span id="line-4">    <span class="p">[</span>
+</span><span id="line-5">        <span class="s2">"The cat sat on the mat"</span><span class="p">,</span>
+</span><span id="line-6">        <span class="s2">"Dogs are loyal companions"</span><span class="p">,</span>
+</span><span id="line-7">        <span class="s2">"Neural networks learn from data"</span><span class="p">,</span>
+</span><span id="line-8">    <span class="p">]</span>
+</span><span id="line-9"><span class="p">)</span>
+</span><span id="line-10">
+</span><span id="line-11"><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"loyal dogs"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+</span><span id="line-12">    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">score</span><span class="p">,</span> <span class="n">hit</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="s2">"text"</span><span class="p">])</span>
 </span></code></pre></div>
 </div>
 <p>That is the whole light path — no configuration, no install beyond <code class="docutils literal notranslate"><span class="pre">ef</span></code> itself.
@@ -183,8 +186,10 @@ or an <code class="docutils literal notranslate"><span class="pre">Embedder</spa
 </span><span id="line-2">
 </span><span id="line-3"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">sentence_transformers_embedder</span><span class="p">(</span><span class="s2">"all-MiniLM-L6-v2"</span><span class="p">))</span>
 </span><span id="line-4"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">openai_embedder</span><span class="p">(</span><span class="s2">"text-embedding-3-small"</span><span class="p">))</span>
-</span><span id="line-5"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="s2">"cohere:embed-v4.0"</span><span class="p">))</span>   <span class="c1"># also voyage:/gemini:</span>
-</span><span id="line-6"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="n">my_callable</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">"custom@768"</span><span class="p">))</span>
+</span><span id="line-5"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
+</span><span id="line-6">    <span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="s2">"cohere:embed-v4.0"</span><span class="p">)</span>
+</span><span id="line-7"><span class="p">)</span>  <span class="c1"># also voyage:/gemini:</span>
+</span><span id="line-8"><span class="n">index</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">as_embedder</span><span class="p">(</span><span class="n">my_callable</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">"custom@768"</span><span class="p">))</span>
 </span></code></pre></div>
 </div>
 <p>Hosted-API adapters: <code class="docutils literal notranslate"><span class="pre">openai_embedder</span></code> (needs <code class="docutils literal notranslate"><span class="pre">ef[openai]</span></code>) plus
@@ -216,7 +221,7 @@ so a second embedder or segmenter re-uses everything upstream of it.</p>
 <section id="keeping-an-index-fresh">
 <h2>Keeping an index fresh<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#keeping-an-index-fresh" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#keeping-an-index-fresh'">¶</a></h2>
 <p>As sources change, an index drifts. <code class="docutils literal notranslate"><span class="pre">SourceManager</span></code> diagnoses and repairs it:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">report</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">diagnose</span><span class="p">()</span>        <span class="c1"># the four staleness conditions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">report</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">diagnose</span><span class="p">()</span>  <span class="c1"># the four staleness conditions</span>
 </span><span id="line-2"><span class="n">manager</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"incremental"</span><span class="p">)</span>  <span class="c1"># none | incremental | full | scoped_full</span>
 </span><span id="line-3"><span class="n">manager</span> <span class="o">=</span> <span class="n">SourceManager</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="s2">"my_vectors"</span><span class="p">,</span> <span class="n">auto_refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># live</span>
 </span></code></pre></div>
@@ -227,11 +232,12 @@ so a second embedder or segmenter re-uses everything upstream of it.</p>
 <p><code class="docutils literal notranslate"><span class="pre">ef</span></code> hands a corpus to <em>your</em> RAG/agent framework and measures retrieval
 quality — it does not synthesize answers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">segments</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">"how do neural networks learn?"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</span><span id="line-2"><span class="n">context</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span>   <span class="c1"># feed context to your LLM</span>
+</span><span id="line-2"><span class="n">context</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span>  <span class="c1"># feed context to your LLM</span>
 </span><span id="line-3">
 </span><span id="line-4"><span class="kn">from</span><span class="w"> </span><span class="nn">ef</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_retrieval</span><span class="p">,</span> <span class="n">evaluate_rag</span>
-</span><span id="line-5"><span class="n">retrieval</span> <span class="o">=</span> <span class="n">evaluate_retrieval</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">,</span> <span class="n">qrels</span><span class="p">,</span> <span class="n">queries</span><span class="p">)</span>  <span class="c1"># BEIR-shaped, NDCG@10</span>
-</span><span id="line-6"><span class="n">rag</span> <span class="o">=</span> <span class="n">evaluate_rag</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>                          <span class="c1"># deterministic lexical metrics</span>
+</span><span id="line-5">
+</span><span id="line-6"><span class="n">retrieval</span> <span class="o">=</span> <span class="n">evaluate_retrieval</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">retrieve</span><span class="p">,</span> <span class="n">qrels</span><span class="p">,</span> <span class="n">queries</span><span class="p">)</span>  <span class="c1"># BEIR-shaped, NDCG@10</span>
+</span><span id="line-7"><span class="n">rag</span> <span class="o">=</span> <span class="n">evaluate_rag</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>  <span class="c1"># deterministic lexical metrics</span>
 </span></code></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">retrieve()</span></code> returns plain <code class="docutils literal notranslate"><span class="pre">Segment</span></code>s (provenance preserved in
@@ -244,8 +250,8 @@ LLM-judged metrics.</p>
 <p>The secondary “see the shape of the corpus” surface — <code class="docutils literal notranslate"><span class="pre">ef</span></code>’s visualization
 heritage, the backend an <code class="docutils literal notranslate"><span class="pre">app_ef</span></code> corpus map consumes. Three functions, each
 taking a corpus <em>or</em> a vector matrix:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">coords</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>          <span class="c1"># PCA -&gt; UMAP, 2-D coordinates</span>
-</span><span id="line-2"><span class="n">labels</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>    <span class="c1"># k-means (or method="hdbscan")</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">coords</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># PCA -&gt; UMAP, 2-D coordinates</span>
+</span><span id="line-2"><span class="n">labels</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># k-means (or method="hdbscan")</span>
 </span><span id="line-3"><span class="n">titles</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>  <span class="c1"># LLM-titled clusters (via imbed)</span>
 </span></code></pre></div>
 </div>
@@ -296,7 +302,7 @@ there.</p>
 
 </section>
 </section>
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-14 03:52 UTC from <a href="https://github.com/thorwhalen/ef/commit/15ac259c80bdc5077b683499982a4e35a1eca089">15ac259</a> (main) · ef 0.1.22 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-20 12:15 UTC from <a href="https://github.com/thorwhalen/ef/commit/4a54f7a2278002afdcda05fdd55adee33f36966a">4a54f7a</a> (main) · ef 0.1.23 · <a href="about-this-build.html">about this build</a></p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
@@ -324,7 +330,7 @@ there.</p>
 </div>
 </footer>
 </div>
-<script src="_static/documentation_options.js?v=842aa08f"></script>
+<script src="_static/documentation_options.js?v=20522496"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="_static/clipboard.min.js?v=a7894cd8"></script>

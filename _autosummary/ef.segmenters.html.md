@@ -153,7 +153,7 @@ of plain strings. Each piece the callable yields is normalized:
 (2, 3, 1)
 ```
 
-### *class* ef.segmenters.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\\\n\\\\n', '\\\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
+### *class* ef.segmenters.RecursiveCharacterSegmenter(\*, chunk_size=512, chunk_overlap=64, separators=('\\n\\n', '\\n', '. ', ', ', ' ', ''), count_tokens=<function approx_token_count>, tokenizer='char-approx')
 
 Bases: [`BaseSegmenter`](#ef.segmenters.BaseSegmenter)
 
@@ -212,15 +212,15 @@ A dependency-free default so `ef` can talk in “tokens” without pulling in
 `tiktoken` or a model tokenizer. Inject a real counter (and its name) into
 a segmenter when an exact count matters.
 
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
-
 ```pycon
 >>> approx_token_count('a' * 40)
 10
 >>> approx_token_count('')
 0
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### ef.segmenters.hierarchical(segmenters,)
 
@@ -251,13 +251,13 @@ A plain function — and therefore already a [`Segmenter`](#ef.segmenters.Segmen
 the marker [`as_segmenter()`](ef.segmenter_adapters.html.md#ef.segmenter_adapters.as_segmenter) uses to recognize a
 ready-made segmenter.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
-
 ```pycon
 >>> [s['text'] for s in line_segmenter('  hello  \n\nworld\n')]
 ['hello', 'world']
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`Segment`](ef.segments.html.md#ef.segments.Segment)]
 
 ### ef.segmenters.materialise(x)
 
@@ -297,9 +297,6 @@ through untouched.
 Overlap is expressed in *characters* here (this is a generic post-hoc
 helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 
-* **Return type:**
-  [`Segmenter`](#ef.segmenters.Segmenter)
-
 ```pycon
 >>> base = RecursiveCharacterSegmenter(chunk_size=3, chunk_overlap=0)
 >>> [c['text'] for c in base('one two three four')]
@@ -307,3 +304,6 @@ helper) — for token-measured overlap use a segmenter’s own `chunk_overlap`.
 >>> [c['text'] for c in with_overlap(base, 100)('one two three four')]
 ['one two three four', 'four']
 ```
+
+* **Return type:**
+  [`Segmenter`](#ef.segmenters.Segmenter)

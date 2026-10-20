@@ -98,15 +98,15 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the pipeline.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m', op_version='1', params={})
 >>> PipelineSpec(segment=seg, embed=emb).as_dict()['segment']['op']
 'segment:r'
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -115,7 +115,7 @@ Rebuild a [`PipelineSpec`](#ef.config.PipelineSpec) from its [`as_dict()`](#ef.c
 * **Return type:**
   [`PipelineSpec`](#ef.config.PipelineSpec)
 
-### *class* ef.config.TransformSpec(op, op_version, params=<factory>)
+### *class* ef.config.TransformSpec(op, op_version, params=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -146,13 +146,13 @@ True
 
 Return a plain-`dict` (JSON-serializable) form of the spec.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
-
 ```pycon
 >>> TransformSpec(op='segment:r', op_version='1', params={}).as_dict()
 {'op': 'segment:r', 'op_version': '1', 'params': {}}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
 
 #### *classmethod* from_dict(d)
 
@@ -171,9 +171,6 @@ computation hash identically; any change to a step’s op, version or params
 yields a different id. `ef` writes this digest into `vd` index metadata
 as `config_hash`.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> seg = TransformSpec(op='segment:r', op_version='1', params={})
 >>> emb = TransformSpec(op='embed:m@8', op_version='1', params={})
@@ -183,6 +180,9 @@ as `config_hash`.
 >>> cid == config_id(PipelineSpec(segment=seg, embed=emb))
 True
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ef.config.full_kwargs(op, args=(), kwargs=None)
 

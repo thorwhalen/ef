@@ -86,10 +86,16 @@ in `to_materialize`.
 
 source ids to (re-)run through the pipeline.
 
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
+
 #### to_delete
 
 source ids whose currently-indexed documents are removed
 (before re-materializing, for the ones that also reappear above).
+
+* **Type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis)]
 
 ### *class* ef.refresh.RefreshReport(config, mode, added=(), modified=(), deleted=(), unchanged=(), documents_written=0, documents_removed=0, artifacts_removed=0)
 
