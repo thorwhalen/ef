@@ -33,6 +33,7 @@ a JSONL of ``{"artifact_id", "labels": {theme: level}}`` cases with an optional
 
 from __future__ import annotations
 
+import hashlib
 import json
 from collections.abc import Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import dataclass, field
@@ -60,9 +61,10 @@ __all__ = [
 #: recall is "core/strong recall".
 DFLT_GRADES: Mapping[str, float] = {"core": 2.0, "strong": 1.0}
 
-#: The topical instruction for the instruction-tuned arm (Qwen3 / E5-instruct
-#: format: ``Instruct: <task>\nQuery:``). It asks for what a document is *about*,
-#: which is what a plain model confuses with surface keywords.
+#: The topical instruction for the instruction-tuned arm, in Qwen3-Embedding's
+#: format (``Instruct: <task>\nQuery:`` with the query appended directly; E5-instruct
+#: wants ``Query: `` with a space, so pass ``instruction=`` there). It asks for
+#: what a document is *about*, which a plain model confuses with surface keywords.
 DFLT_TOPICAL_INSTRUCTION = (
     "Instruct: Given a topic, retrieve software packages whose main purpose is "
     "that topic, not packages that only mention related words\nQuery:"
@@ -123,7 +125,7 @@ def read_graded_cases(
 
     Each theme is one query: its text comes from ``probes`` or, failing that, the
     ``__meta__`` header's ``probes``; its qrels are the cases whose level for that
-    theme is in ``grades``.
+    theme is in ``grades``. A theme with no such case is left out.
 
     Args:
         cases_path: JSONL of ``{"artifact_id", "labels": {theme: level}}``.
@@ -136,17 +138,19 @@ def read_graded_cases(
     """
     meta: dict[str, Any] = {}
     qrels: dict[str, dict[str, float]] = {}
-    for line in Path(cases_path).read_text(encoding="utf-8").splitlines():
+    lines = Path(cases_path).read_text(encoding="utf-8").splitlines()
+    for lineno, line in enumerate(lines, 1):
         if not line.strip():
             continue
         record = json.loads(line)
         if "__meta__" in record:
             meta = record["__meta__"]
             continue
+        if "artifact_id" not in record:
+            raise ValueError(f"{cases_path}:{lineno}: case has no 'artifact_id'")
         for theme, level in (record.get("labels") or {}).items():
-            graded = qrels.setdefault(theme, {})
             if level in grades:
-                graded[str(record["artifact_id"])] = float(grades[level])
+                qrels.setdefault(theme, {})[str(record["artifact_id"])] = float(grades[level])
     queries = {**(meta.get("probes") or {}), **(probes or {})}
     missing = sorted(set(qrels) - set(queries))
     if missing:
@@ -173,7 +177,8 @@ class Arm:
 
     ``doc_embedder`` defaults to ``embedder``. Give an instructed arm its bare
     twin as ``doc_embedder`` when the instruction is query-side only, so the
-    corpus vectors are shared rather than recomputed.
+    corpus vectors are shared rather than recomputed. Either may be anything
+    :func:`ef.as_embedder` accepts (an ``Embedder``, a spec string, a callable).
     """
 
     embedder: Any
@@ -229,8 +234,19 @@ class MaxPoolRetriever:
     """
 
     def __init__(self, doc_ids: Sequence[str], vectors: np.ndarray, query_embedder: Any):
-        self.doc_ids = list(doc_ids)  # one per row of vectors (repeated per segment)
-        self.vectors = _unit_rows(vectors)
+        vectors = np.asarray(vectors)
+        if vectors.ndim != 2 or vectors.shape[0] != len(doc_ids):
+            raise ValueError(
+                f"need one vector row per segment: {len(doc_ids)} segment owners, "
+                f"vectors of shape {vectors.shape}"
+            )
+        # Group rows by document so the per-document max is one reduceat.
+        order = np.argsort(np.asarray(doc_ids, dtype=object).astype(str), kind="stable")
+        owners = [doc_ids[i] for i in order]
+        starts = [i for i in range(len(owners)) if i == 0 or owners[i] != owners[i - 1]]
+        self.doc_ids = [owners[i] for i in starts]
+        self._starts = np.asarray(starts, dtype=np.intp)
+        self.vectors = _unit_rows(vectors[order])
         self.query_embedder = query_embedder
 
     @classmethod
@@ -240,19 +256,20 @@ class MaxPoolRetriever:
         owners = [d for d, texts in segments.items() for _ in texts]
         texts = [t for ts in segments.values() for t in ts]
         vectors = embedder(texts, input_type="document")
-        return cls(owners, vectors, query_embedder or embedder)
+        return cls(owners, vectors, embedder if query_embedder is None else query_embedder)
 
     def __call__(self, query: str, *, limit: int = 10) -> list[str]:
         q = _unit_rows(self.query_embedder([query], input_type="query"))[0]
-        best: dict[str, float] = {}
-        for doc_id, score in zip(self.doc_ids, self.vectors @ q):
-            if score > best.get(doc_id, -np.inf):
-                best[doc_id] = float(score)
-        return sorted(best, key=best.__getitem__, reverse=True)[:limit]
+        if not self.doc_ids:
+            return []
+        best = np.maximum.reduceat(self.vectors @ q, self._starts)
+        top = np.argsort(-best, kind="stable")[:limit]
+        return [self.doc_ids[i] for i in top]
 
 
-def _doc_key(embedder: Any) -> str:
-    return getattr(embedder, "model_id", None) or f"object:{id(embedder)}"
+def _corpus_digest(owners: Sequence[str], texts: Sequence[str]) -> str:
+    payload = json.dumps([list(owners), list(texts)], ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
 def run_arms(
@@ -273,8 +290,11 @@ def run_arms(
         benchmark: what to score against (:func:`read_graded_cases`).
         k_values: rank cutoffs.
         segmenter: for string documents; see :func:`segment_corpus`.
-        doc_vectors: cache of segment matrices keyed by the document-side
-            embedder's ``model_id`` (a fresh dict by default).
+        doc_vectors: cache of segment matrices keyed by
+            ``"<document-side model_id>/<digest of the segmented corpus>"``, so a
+            persistent store (e.g. a ``dol`` store) can be reused across runs and
+            corpora. A fresh dict by default; embedders without a ``model_id``
+            are never cached.
 
     >>> from ef.embedders import HashingEmbedder
     >>> bench = GradedBenchmark({'q': {'fruit': 1.0}}, {'q': 'apple'})
@@ -286,15 +306,21 @@ def run_arms(
     segments = segment_corpus(corpus, segmenter=segmenter)
     owners = [d for d, texts in segments.items() for _ in texts]
     texts = [t for ts in segments.values() for t in ts]
+    from ef.embedder_adapters import as_embedder
+
+    digest = _corpus_digest(owners, texts)
     cache = {} if doc_vectors is None else doc_vectors
+    local: dict[int, np.ndarray] = {}  # per-call fallback for id-less embedders
     rows: list[dict[str, Any]] = []
     reports: dict[str, RetrievalEvalReport] = {}
     for name, arm in arms.items():
         arm = arm if isinstance(arm, Arm) else Arm(arm)
-        key = _doc_key(arm.documents)
-        if key not in cache:
-            cache[key] = np.asarray(arm.documents(texts, input_type="document"))
-        retriever = MaxPoolRetriever(owners, cache[key], arm.embedder)
+        query_side, doc_side = as_embedder(arm.embedder), as_embedder(arm.documents)
+        model_id = getattr(doc_side, "model_id", None)
+        store, key = (cache, f"{model_id}/{digest}") if model_id else (local, id(doc_side))
+        if key not in store:
+            store[key] = np.asarray(doc_side(texts, input_type="document"))
+        retriever = MaxPoolRetriever(owners, store[key], query_side)
         report = evaluate_retrieval(
             retriever,
             benchmark.qrels,
@@ -373,6 +399,11 @@ def instruction_verdict(
     the control B moves every ``control_metrics`` at ``k`` by less than
     ``control_tolerance`` (absolute; 0.02 = 2 points). Also reports whether C
     beats its bare twin C' on ``fp_rate@k`` (the gain is the instruction's).
+    If A has no distractor in its top ``k`` there is nothing to cut:
+    ``fp_baseline_zero`` is set and the verdict is not a success.
+
+    Raises:
+        ValueError: when an arm (A, B, C) or one of its metrics at ``k`` is missing.
 
     Accepts :attr:`BenchmarkReport.rows` turned into a mapping, e.g.
     ``{r['embedder']: r for r in report.rows}``.
@@ -385,19 +416,33 @@ def instruction_verdict(
     >>> v['success'], round(v['fp_reduction'], 2), v['instruction_beats_bare']
     (True, 0.75, True)
     """
-    a, c = metrics["A"], metrics["C"]
     fp, rec = f"fp_rate@{k}", f"recall@{k}"
-    fp_reduction = (1 - c[fp] / a[fp]) if a[fp] > 0 else (0.0 if c[fp] == 0 else -np.inf)
-    control_moves = {
-        f"{m}@{k}": metrics["B"][f"{m}@{k}"] - a[f"{m}@{k}"]
-        for m in control_metrics
-        if f"{m}@{k}" in a and f"{m}@{k}" in metrics["B"]
+    needed = {
+        "A": {fp, rec, *(f"{m}@{k}" for m in control_metrics)},
+        "B": {f"{m}@{k}" for m in control_metrics},
+        "C": {fp, rec},
     }
+    for arm, keys in needed.items():
+        if arm not in metrics:
+            raise ValueError(f"instruction_verdict needs arm {arm!r}; got {sorted(metrics)}")
+        missing = sorted(keys - set(metrics[arm]))
+        if missing:
+            raise ValueError(f"arm {arm!r} lacks {missing} (was k={k} in k_values?)")
+    a, b, c = metrics["A"], metrics["B"], metrics["C"]
+
+    def _r(x):  # metrics are ratios of small counts: round off float fuzz
+        return round(float(x), 9)
+
+    fp_baseline_zero = a[fp] == 0
+    fp_reduction = 0.0 if fp_baseline_zero else _r(1 - c[fp] / a[fp])
+    control_moves = {f"{m}@{k}": _r(b[f"{m}@{k}"] - a[f"{m}@{k}"]) for m in control_metrics}
     verdict = {
-        "fp_reduction": float(fp_reduction),
-        "fp_cut_met": bool(fp_reduction >= fp_cut),
-        "recall_delta": float(c[rec] - a[rec]),
-        "recall_held": bool(c[rec] >= a[rec]),
+        "fp_reduction": fp_reduction,
+        # nothing to cut when A has no distractor in its top k: not a pass
+        "fp_baseline_zero": fp_baseline_zero,
+        "fp_cut_met": (not fp_baseline_zero) and fp_reduction >= fp_cut,
+        "recall_delta": _r(c[rec] - a[rec]),
+        "recall_held": _r(c[rec] - a[rec]) >= 0,
         "control_moves": control_moves,
         "control_held": all(abs(d) < control_tolerance for d in control_moves.values()),
     }

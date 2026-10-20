@@ -112,7 +112,31 @@ def test_arms_share_document_vectors(labels):
     run_arms(CORPUS, arms, read_graded_cases(*labels), k_values=(2,), doc_vectors=cache)
     n_segments = sum(len(v) for v in CORPUS.values())
     assert [len(c) for c in calls].count(n_segments) == 1  # corpus embedded once
-    assert list(cache) == [base.model_id]
+    [key] = cache
+    assert key.startswith(base.model_id + "/")
+
+
+def test_doc_vector_cache_is_keyed_by_corpus_too():
+    cache = {}
+    bench = GradedBenchmark({"q": {"x": 1.0}}, {"q": "graph"})
+    emb = _bag_embedder()
+    first = run_arms({"x": ["graph"], "y": ["audio"]}, {"A": emb}, bench,
+                     k_values=(1,), doc_vectors=cache)
+    second = run_arms({"x": ["audio"], "y": ["graph"], "z": ["topic"]}, {"A": emb}, bench,
+                      k_values=(1,), doc_vectors=cache)
+    assert first.rows[0]["recall@1"] == 1.0 and second.rows[0]["recall@1"] == 0.0
+    assert len(cache) == 2
+
+
+def test_retriever_rejects_misaligned_vectors():
+    with pytest.raises(ValueError, match="one vector row per segment"):
+        MaxPoolRetriever(["a", "b"], np.ones((3, 2)), _bag_embedder())
+
+
+def test_arm_accepts_an_embedder_spec():
+    bench = GradedBenchmark({"q": {"nx": 1.0}}, {"q": "graph"})
+    report = run_arms(CORPUS, {"A": "hashing"}, bench, k_values=(1,))
+    assert report.rows[0]["embedder"] == "A"
 
 
 def test_instruction_experiment_end_to_end(labels):
@@ -139,4 +163,20 @@ def test_bare_embedder_is_an_arm():
 def test_verdict_handles_zero_baseline_fp():
     m = {k: {"fp_rate@20": 0.0, "recall@20": 0.5, "ndcg@20": 0.5} for k in "ABC"}
     v = instruction_verdict(m)
-    assert v["fp_reduction"] == 0.0 and v["control_held"] and "instruction_beats_bare" not in v
+    assert v["fp_baseline_zero"] and not v["fp_cut_met"] and not v["success"]
+    assert v["control_held"] and "instruction_beats_bare" not in v
+
+
+def test_verdict_names_what_is_missing():
+    full = {"fp_rate@20": 0.2, "recall@20": 0.4, "ndcg@20": 0.7}
+    with pytest.raises(ValueError, match="'B'"):
+        instruction_verdict({"A": full, "B": {}, "C": full})
+    with pytest.raises(ValueError, match="'C'"):
+        instruction_verdict({"A": full, "B": full})
+
+
+def test_verdict_two_points_exactly_is_not_held():
+    a = {"fp_rate@20": 0.2, "recall@20": 0.40, "ndcg@20": 0.7}
+    b = {**a, "recall@20": 0.42}
+    c = {"fp_rate@20": 0.05, "recall@20": 0.5}
+    assert not instruction_verdict({"A": a, "B": b, "C": c})["control_held"]

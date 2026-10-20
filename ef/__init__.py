@@ -238,8 +238,6 @@ from ef.source_manager import (
     ingest,
 )
 from ef.ablation import (
-    Arm,
-    GradedBenchmark,
     instruction_arms,
     instruction_verdict,
     read_graded_cases,
@@ -408,8 +406,6 @@ __all__ = [
     "hard_positive_recall_at_k",
     "benchmark_embedders",
     "BenchmarkReport",
-    "Arm",
-    "GradedBenchmark",
     "read_graded_cases",
     "run_arms",
     "instruction_arms",
