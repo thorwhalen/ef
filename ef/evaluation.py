@@ -46,7 +46,7 @@ import re
 import string
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from statistics import mean
 from typing import Any, Callable, TypedDict
@@ -62,11 +62,15 @@ __all__ = [
     "precision_at_k",
     "reciprocal_rank",
     "average_precision",
+    "fp_rate_at_k",
+    "hard_positive_recall_at_k",
     # the public name->function registry of the metric primitives above
     "RETRIEVAL_METRICS",
     # retrieval evaluation
     "RetrievalEvalReport",
     "evaluate_retrieval",
+    "BenchmarkReport",
+    "benchmark_embedders",
     # BEIR interchange
     "read_beir",
     "write_beir",
@@ -264,6 +268,38 @@ RETRIEVAL_METRICS: dict[
 _RETRIEVAL_METRICS = RETRIEVAL_METRICS
 
 
+def fp_rate_at_k(ranked: Sequence[str], distractors: Iterable[str], k: int) -> float:
+    """Fraction of the *named distractors* that intrude into the top ``k``.
+
+    A distractor is a document known to be topically near the query but not
+    relevant; aggregate NDCG can improve while these keep over-ranking. 0.0 is
+    best.
+
+    >>> fp_rate_at_k(['au', 'a', 'su', 'b'], ['au', 'su', 'csm'], 3)
+    0.6666666666666666
+    >>> fp_rate_at_k(['a', 'b'], ['au'], 2)
+    0.0
+    """
+    named = set(distractors)
+    if not named:
+        return 0.0
+    return len(named.intersection(ranked[:k])) / len(named)
+
+
+def hard_positive_recall_at_k(
+    ranked: Sequence[str], hard_positives: Iterable[str], k: int
+) -> float:
+    """Fraction of the *hard positives* (e.g. thin-description docs) found in the top ``k``.
+
+    >>> hard_positive_recall_at_k(['a', 'imbed', 'b'], ['imbed', 'meshed'], 2)
+    0.5
+    """
+    named = set(hard_positives)
+    if not named:
+        return 0.0
+    return len(named.intersection(ranked[:k])) / len(named)
+
+
 # ===========================================================================
 # Retrieval evaluation
 # ===========================================================================
@@ -288,6 +324,9 @@ class RetrievalEvalReport:
     per_query: Mapping[str, Mapping[str, float]]
     n_queries: int
     k_values: tuple[int, ...]
+    #: ``{query_id: {distractor_id: rank}}`` — the named distractors that landed in
+    #: the top ``max(k_values)`` (1-based rank); empty unless ``distractors`` was given.
+    distractor_hits: Mapping[str, Mapping[str, int]] = field(default_factory=dict)
 
     @property
     def primary(self) -> float | None:
@@ -373,6 +412,8 @@ def evaluate_retrieval(
     k_values: Sequence[int] = (1, 5, 10, 100),
     metrics: Sequence[str] = ("ndcg", "recall", "precision", "mrr", "map"),
     limit: int | None = None,
+    distractors: Mapping[str, Iterable[str]] | None = None,
+    hard_positives: Mapping[str, Iterable[str]] | None = None,
 ) -> RetrievalEvalReport:
     """Score a retriever against a BEIR-shaped evaluation set.
 
@@ -405,6 +446,11 @@ def evaluate_retrieval(
         limit: how many results to retrieve per query. ``None`` uses
             ``max(k_values)``; raise it when sources segment into many pieces
             (de-duplication to source level can otherwise shorten the ranking).
+        distractors: optional ``{query_id: named distractor doc ids}``; adds
+            ``fp_rate@k`` (:func:`fp_rate_at_k`) to the metrics, averaged over the
+            queries that name distractors, and fills ``report.distractor_hits``.
+        hard_positives: optional ``{query_id: hard-positive doc ids}``; adds
+            ``hard_recall@k`` (:func:`hard_positive_recall_at_k`), likewise.
 
     Returns:
         a :class:`RetrievalEvalReport`.
@@ -437,6 +483,7 @@ def evaluate_retrieval(
         )
 
     per_query: dict[str, dict[str, float]] = {}
+    distractor_hits: dict[str, dict[str, int]] = {}
     for qid in scorable:
         results = _retrieve_ranking(retriever, queries[qid], limit)
         ranking = _dedup(_result_doc_id(result) for result in results)
@@ -446,18 +493,119 @@ def evaluate_retrieval(
             metric_fn = _RETRIEVAL_METRICS[name]
             for k in k_values:
                 scores[f"{name}@{k}"] = metric_fn(ranking, relevant, k)
+        named_d = list((distractors or {}).get(qid, ()))
+        if named_d:
+            for k in k_values:
+                scores[f"fp_rate@{k}"] = fp_rate_at_k(ranking, named_d, k)
+            top = ranking[: max(k_values, default=limit)]
+            hits = {d: top.index(d) + 1 for d in named_d if d in top}
+            distractor_hits[qid] = hits
+        named_h = list((hard_positives or {}).get(qid, ()))
+        if named_h:
+            for k in k_values:
+                scores[f"hard_recall@{k}"] = hard_positive_recall_at_k(
+                    ranking, named_h, k
+                )
         per_query[qid] = scores
 
     metric_keys = [f"{name}@{k}" for name in metrics for k in k_values]
+    for extra in ("fp_rate", "hard_recall"):
+        metric_keys += [
+            f"{extra}@{k}"
+            for k in k_values
+            if any(f"{extra}@{k}" in sc for sc in per_query.values())
+        ]
     aggregated = {
-        key: mean(per_query[qid][key] for qid in per_query) for key in metric_keys
+        key: mean(sc[key] for sc in per_query.values() if key in sc)
+        for key in metric_keys
     }
     return RetrievalEvalReport(
         metrics=aggregated,
         per_query=per_query,
         n_queries=len(per_query),
         k_values=tuple(k_values),
+        distractor_hits=distractor_hits,
     )
+
+
+@dataclass(frozen=True, slots=True)
+class BenchmarkReport:
+    """One row per embedder: its ``{metric: value}`` (plus an ``embedder`` key).
+
+    ``reports`` keeps each full :class:`RetrievalEvalReport` for drill-down
+    (e.g. ``distractor_hits``). :meth:`to_frame` gives a pandas DataFrame
+    (pandas is imported lazily).
+
+    >>> r = BenchmarkReport(rows=[{'embedder': 'a', 'ndcg@10': 0.5}], reports={})
+    >>> r.to_records()
+    [{'embedder': 'a', 'ndcg@10': 0.5}]
+    """
+
+    rows: Sequence[Mapping[str, Any]]
+    reports: Mapping[str, RetrievalEvalReport]
+
+    def to_records(self) -> list[dict[str, Any]]:
+        return [dict(row) for row in self.rows]
+
+    def to_frame(self) -> Any:
+        import pandas as pd
+
+        return pd.DataFrame(self.to_records()).set_index("embedder")
+
+    def __str__(self) -> str:
+        try:
+            return str(self.to_frame().round(4))
+        except ImportError:
+            return "\n".join(str(row) for row in self.rows)
+
+
+def benchmark_embedders(
+    corpus_sources: Any,
+    embedders: Mapping[str, Any],
+    qrels: Qrels,
+    queries: Mapping[str, str],
+    *,
+    distractors: Mapping[str, Iterable[str]] | None = None,
+    hard_positives: Mapping[str, Iterable[str]] | None = None,
+    k_values: Sequence[int] = (10, 20),
+    segmenter: Any = None,
+    limit: int | None = None,
+) -> BenchmarkReport:
+    """Re-index the same corpus under each embedder and tabulate the metrics.
+
+    For every ``name -> spec`` in ``embedders`` (a spec is anything
+    :func:`ef.as_embedder` accepts: an ``Embedder``, ``'st:bge-large-en-v1.5'``,
+    ``'openai:text-embedding-3-large'`` …) it runs :func:`ef.source_manager.ingest`,
+    then :func:`evaluate_retrieval`, and stacks one row per embedder. Heavy
+    adapters are only imported when their spec is resolved. Deterministic
+    metrics only — no LLM.
+
+    >>> from ef.embedders import HashingEmbedder
+    >>> corpus = {'d1': 'red apple fruit', 'd2': 'blue car engine'}
+    >>> report = benchmark_embedders(
+    ...     corpus, {'hash': HashingEmbedder()},
+    ...     {'q': {'d1': 1.0}}, {'q': 'apple'}, k_values=(1,))
+    >>> report.rows[0]['embedder'], report.rows[0]['recall@1']
+    ('hash', 1.0)
+    """
+    from ef.source_manager import ingest
+
+    rows: list[dict[str, Any]] = []
+    reports: dict[str, RetrievalEvalReport] = {}
+    for name, spec in embedders.items():
+        index = ingest(corpus_sources, embedder=spec, segmenter=segmenter)
+        report = evaluate_retrieval(
+            index,
+            qrels,
+            queries,
+            k_values=k_values,
+            limit=limit,
+            distractors=distractors,
+            hard_positives=hard_positives,
+        )
+        reports[name] = report
+        rows.append({"embedder": name, **report.metrics})
+    return BenchmarkReport(rows=rows, reports=reports)
 
 
 # ===========================================================================
