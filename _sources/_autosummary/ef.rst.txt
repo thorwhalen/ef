@@ -52,6 +52,10 @@
       fp_rate_at_k
       hard_positive_recall_at_k
       benchmark_embedders
+      read_graded_cases
+      run_arms
+      instruction_arms
+      instruction_verdict
       precision_at_k
       reciprocal_rank
       average_precision
@@ -127,6 +131,7 @@
    :toctree:
    :recursive:
 
+   ablation
    artifact_graph
    config
    corpus

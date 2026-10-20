@@ -8,6 +8,7 @@
 - [ef — Embedding Flow](index.html.md): &#42;&#42;A facade for boilerplate-less semantic search, corpus indexing, and
 - [API reference](api.html.md): | &#96;ef&#96;   | ef (Embedding Flow) — a facade for semantic-embeddings user journeys.   |
 - [ef](_autosummary/ef.html.md): ef (Embedding Flow) — a facade for semantic-embeddings user journeys.
+- [ef.ablation](_autosummary/ef.ablation.html.md): Embedder ablations on a graded benchmark: run named &#42;arms&#42; over one corpus.
 - [ef.artifact_graph](_autosummary/ef.artifact_graph.html.md): The &#96;ArtifactGraph&#96; — &#96;ef&#96;’s content-addressed corpus-indexing core.
 - [ef.config](_autosummary/ef.config.html.md): The config layer — declarative, content-addressable pipeline specs.
 - [ef.corpus](_autosummary/ef.corpus.html.md): The &#96;Corpus&#96; abstraction — &#96;ef&#96;’s source layer (L0) — and change detection.
@@ -27,7 +28,7 @@
 - [ef.service](_autosummary/ef.service.html.md): The HTTP-service bridge — &#96;EfService&#96;, a stateless-friendly facade.
 - [ef.source_manager](_autosummary/ef.source_manager.html.md): The search facade — one-shot &#96;ingest()&#96;, &#96;SearchableCorpus&#96;, &#96;SourceManager&#96;.
 - [For AI agents](ai-agents.html.md): &#96;ef&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 12:15 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 16:13 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 

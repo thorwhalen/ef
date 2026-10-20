@@ -114,6 +114,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/ef.html">ef</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.ablation.html">ef.ablation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.artifact_graph.html">ef.artifact_graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.config.html">ef.config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/ef.corpus.html">ef.corpus</a></li>
@@ -199,6 +200,8 @@
 </li>
       </ul></li>
       <li><a href="_autosummary/ef.segmenters.html#ef.segmenters.APPROX_TOKENIZER">APPROX_TOKENIZER (in module ef.segmenters)</a>
+</li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.Arm">Arm (class in ef.ablation)</a>
 </li>
       <li><a href="_autosummary/ef.html#ef.artifact_id">artifact_id() (in module ef)</a>
 
@@ -511,8 +514,12 @@
         <li><a href="_autosummary/ef.html#ef.ArtifactGraph.descendants">(ef.ArtifactGraph method)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.DFLT_GRADES">DFLT_GRADES (in module ef.ablation)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.DFLT_TOPICAL_INSTRUCTION">DFLT_TOPICAL_INSTRUCTION (in module ef.ablation)</a>
+</li>
       <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.diagnose">diagnose() (ef.source_manager.SourceManager method)</a>
 
       <ul style="list-style-type:none">
@@ -559,6 +566,13 @@
 
       <ul style="list-style-type:none">
         <li><a href="_autosummary/ef.html#module-ef">module</a>
+</li>
+      </ul></li>
+      <li>
+    ef.ablation
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ablation.html#module-ef.ablation">module</a>
 </li>
       </ul></li>
       <li>
@@ -666,6 +680,8 @@
         <li><a href="_autosummary/ef.segmenters.html#module-ef.segmenters">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     ef.segments
 
@@ -673,8 +689,6 @@
         <li><a href="_autosummary/ef.segments.html#module-ef.segments">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li>
     ef.service
 
@@ -841,6 +855,8 @@
         <li><a href="_autosummary/ef.embedder_adapters.html#ef.embedder_adapters.gemini_embedder">(in module ef.embedder_adapters)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.GradedBenchmark">GradedBenchmark (class in ef.ablation)</a>
+</li>
   </ul></td>
   </tr>
       </table>
@@ -929,16 +945,28 @@
         <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.ingest">(in module ef.source_manager)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ProducerSpec.inputs">inputs (ef.artifact_graph.ProducerSpec attribute)</a>
 
       <ul style="list-style-type:none">
         <li><a href="_autosummary/ef.html#ef.ProducerSpec.inputs">(ef.ProducerSpec attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="_autosummary/ef.embedders.html#ef.embedders.InputType">InputType (in module ef.embedders)</a>
 </li>
+      <li><a href="_autosummary/ef.html#ef.instruction_arms">instruction_arms() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ablation.html#ef.ablation.instruction_arms">(in module ef.ablation)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.instruction_verdict">instruction_verdict() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ablation.html#ef.ablation.instruction_verdict">(in module ef.ablation)</a>
+</li>
+      </ul></li>
       <li><a href="_autosummary/ef.html#ef.InstructionEmbedder">InstructionEmbedder (class in ef)</a>
 
       <ul style="list-style-type:none">
@@ -1055,6 +1083,8 @@
         <li><a href="_autosummary/ef.html#ef.RetryPolicy.max_delay">(ef.RetryPolicy attribute)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.MaxPoolRetriever">MaxPoolRetriever (class in ef.ablation)</a>
+</li>
       <li><a href="_autosummary/ef.html#ef.Embedder.model_id">model_id (ef.Embedder attribute)</a>
 
       <ul style="list-style-type:none">
@@ -1070,6 +1100,8 @@
 
       <ul style="list-style-type:none">
         <li><a href="_autosummary/ef.html#module-ef">ef</a>
+</li>
+        <li><a href="_autosummary/ef.ablation.html#module-ef.ablation">ef.ablation</a>
 </li>
         <li><a href="_autosummary/ef.artifact_graph.html#module-ef.artifact_graph">ef.artifact_graph</a>
 </li>
@@ -1327,6 +1359,12 @@
         <li><a href="_autosummary/ef.evaluation.html#ef.evaluation.read_beir">(in module ef.evaluation)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.html#ef.read_graded_cases">read_graded_cases() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ablation.html#ef.ablation.read_graded_cases">(in module ef.ablation)</a>
+</li>
+      </ul></li>
       <li><a href="_autosummary/ef.html#ef.ready_handle">ready_handle() (in module ef)</a>
 
       <ul style="list-style-type:none">
@@ -1385,14 +1423,14 @@
         <li><a href="_autosummary/ef.refresh.html#ef.refresh.RefreshReport">(class in ef.refresh)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SourceManager.register_config">register_config() (ef.source_manager.SourceManager method)</a>
 
       <ul style="list-style-type:none">
         <li><a href="_autosummary/ef.html#ef.SourceManager.register_config">(ef.SourceManager method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul style="margin-left:0;list-style-type:none">
       <li><a href="_autosummary/ef.artifact_graph.html#ef.artifact_graph.ArtifactGraph.register_op">register_op() (ef.artifact_graph.ArtifactGraph method)</a>
 
       <ul style="list-style-type:none">
@@ -1411,6 +1449,8 @@
         <li><a href="_autosummary/ef.reranking.html#ef.reranking.Reranker">(class in ef.reranking)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.GradedBenchmark.restrict">restrict() (ef.ablation.GradedBenchmark method)</a>
+</li>
       <li><a href="_autosummary/ef.html#ef.BatchHandle.result">result (ef.BatchHandle attribute)</a>
 
       <ul style="list-style-type:none">
@@ -1461,6 +1501,12 @@
 
       <ul style="list-style-type:none">
         <li><a href="_autosummary/ef.embedder_wrappers.html#ef.embedder_wrappers.RetryPolicy">(class in ef.embedder_wrappers)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/ef.html#ef.run_arms">run_arms() (in module ef)</a>
+
+      <ul style="list-style-type:none">
+        <li><a href="_autosummary/ef.ablation.html#ef.ablation.run_arms">(in module ef.ablation)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1530,6 +1576,8 @@
         <li><a href="_autosummary/ef.source_manager.html#ef.source_manager.SearchHit.segment">(ef.source_manager.SearchHit attribute)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ef.ablation.html#ef.ablation.segment_corpus">segment_corpus() (in module ef.ablation)</a>
+</li>
       <li><a href="_autosummary/ef.html#ef.segment_id">segment_id() (in module ef)</a>
 
       <ul style="list-style-type:none">
@@ -1711,7 +1759,7 @@
 </footer>
     </div>
     
-    <script src="_static/documentation_options.js?v=20522496"></script>
+    <script src="_static/documentation_options.js?v=ebdbb45b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>

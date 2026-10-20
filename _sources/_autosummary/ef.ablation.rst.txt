@@ -1,0 +1,31 @@
+ef.ablation
+===========
+
+.. automodule:: ef.ablation
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_GRADES
+      DFLT_TOPICAL_INSTRUCTION
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      instruction_arms
+      instruction_verdict
+      read_graded_cases
+      run_arms
+      segment_corpus
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Arm
+      GradedBenchmark
+      MaxPoolRetriever
+   

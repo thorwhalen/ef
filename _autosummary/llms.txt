@@ -6,6 +6,7 @@
 ## Pages in this subsection
 
 - [ef](ef.html.md): ef (Embedding Flow) — a facade for semantic-embeddings user journeys.
+- [ef.ablation](ef.ablation.html.md): Embedder ablations on a graded benchmark: run named &#42;arms&#42; over one corpus.
 - [ef.artifact_graph](ef.artifact_graph.html.md): The &#96;ArtifactGraph&#96; — &#96;ef&#96;’s content-addressed corpus-indexing core.
 - [ef.config](ef.config.html.md): The config layer — declarative, content-addressable pipeline specs.
 - [ef.corpus](ef.corpus.html.md): The &#96;Corpus&#96; abstraction — &#96;ef&#96;’s source layer (L0) — and change detection.
