@@ -389,17 +389,9 @@ def _resolves_to_cpu(device: str | None) -> bool:
         return str(device).split(":")[0] == "cpu"
     try:  # defer to sentence-transformers' own pick (cuda/mps/npu/xpu/hpu/cpu)
         from sentence_transformers.util import get_device_name
-    except ImportError:  # sentence-transformers < 2.7 has no get_device_name
-        return _torch_picks_cpu()
+    except ImportError:  # pragma: no cover - the extra requires >= 2.4
+        return False
     return str(get_device_name()).split(":")[0] == "cpu"
-
-
-def _torch_picks_cpu() -> bool:
-    """CPU unless torch sees cuda or mps (the pre-``get_device_name`` auto-pick)."""
-    import torch
-
-    mps = getattr(torch.backends, "mps", None)
-    return not (torch.cuda.is_available() or (mps is not None and mps.is_available()))
 
 
 def _dtype_key() -> str:
@@ -460,7 +452,7 @@ def sentence_transformers_embedder(
     over wrapping the adapter in :class:`~ef.embedder_wrappers.InstructionEmbedder`:
     sentence-transformers knows the prompt's length, so models that pool without
     the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs
-    sentence-transformers >= 2.3.
+    sentence-transformers >= 2.4.
 
     Args:
         model_name: A sentence-transformers model name (also used in
