@@ -173,7 +173,7 @@ Build an OpenAI-embeddings [`Embedder`](ef.embedders.html.md#ef.embedders.Embedd
 
 Requires the `openai` package (`pip install 'ef[openai]'`).
 
-### ef.embedder_adapters.sentence_transformers_embedder(model_name='all-MiniLM-L6-v2', , device=None, normalize=False, batch_size=128, model_path=None, query_prompt=None, document_prompt=None, prompt_names=None, \*\*st_kwargs)
+### ef.embedder_adapters.sentence_transformers_embedder(model_name='all-MiniLM-L6-v2', , device=None, normalize=False, batch_size=128, model_path=None, query_prompt=None, document_prompt=None, prompt_names=None, dtype=None, \*\*st_kwargs)
 
 Build a local sentence-transformers [`Embedder`](ef.embedders.html.md#ef.embedders.Embedder).
 
@@ -209,6 +209,12 @@ sentence-transformers >= 2.3.
   * **prompt_names** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – `{input_type: name}` of prompts defined in the model’s
     own `prompts` config (passed as `encode(prompt_name=...)`).
     An explicit `prompt=` / `prompt_name=` in a call overrides both.
+  * **dtype** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Torch dtype (or its name, e.g. `"bfloat16"`) to load the model
+    in. By default, on a CPU device the model is loaded in float32:
+    bf16 checkpoints (Qwen3-Embedding…) otherwise stay bf16, which is
+    ~5x slower on CPUs without native bf16 matmul. Elsewhere the
+    checkpoint’s dtype is kept. An explicit `model_kwargs["torch_dtype"]`
+    takes precedence over the default.
   * **\*\*st_kwargs** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Forwarded to the `SentenceTransformer` constructor.
 * **Return type:**
   [`Embedder`](ef.embedders.html.md#ef.embedders.Embedder)

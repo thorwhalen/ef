@@ -28,7 +28,7 @@
 - [ef.service](_autosummary/ef.service.html.md): The HTTP-service bridge — &#96;EfService&#96;, a stateless-friendly facade.
 - [ef.source_manager](_autosummary/ef.source_manager.html.md): The search facade — one-shot &#96;ingest()&#96;, &#96;SearchableCorpus&#96;, &#96;SourceManager&#96;.
 - [For AI agents](ai-agents.html.md): &#96;ef&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 16:13 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-26 09:15 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 
