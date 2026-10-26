@@ -379,39 +379,49 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         return np.asarray(embedded, dtype=np.float32)
 
 
+_CPU_DEFAULT_DTYPE = "float32"
+_RENAMED_DTYPE_KEY_SINCE = "4.56"  # transformers: torch_dtype -> dtype
+
+
 def _resolves_to_cpu(device: str | None) -> bool:
     """Whether ``device`` (``None`` = auto-select, as sentence-transformers does) is CPU."""
     if device is not None:
         return str(device).split(":")[0] == "cpu"
-    try:
-        import torch
-    except ImportError:  # pragma: no cover - torch comes with sentence-transformers
+    try:  # defer to sentence-transformers' own pick (cuda/mps/npu/xpu/hpu/cpu)
+        from sentence_transformers.util import get_device_name
+    except ImportError:  # pragma: no cover - very old sentence-transformers
         return False
-    has_mps = getattr(getattr(torch, "backends", None), "mps", None)
-    return not (
-        torch.cuda.is_available() or (has_mps is not None and has_mps.is_available())
-    )
+    return str(get_device_name()).split(":")[0] == "cpu"
+
+
+def _dtype_key() -> str:
+    """``model_kwargs`` key for the weight dtype (``torch_dtype`` was renamed ``dtype``)."""
+    try:
+        import transformers
+        from packaging.version import Version
+
+        if Version(transformers.__version__) >= Version(_RENAMED_DTYPE_KEY_SINCE):
+            return "dtype"
+    except Exception:  # pragma: no cover - missing/odd transformers
+        pass
+    return "torch_dtype"
 
 
 def _with_cpu_float32_default(
     st_kwargs: Mapping[str, Any], *, device: str | None, dtype: Any
 ) -> dict[str, Any]:
-    """Return ``st_kwargs`` with ``model_kwargs["torch_dtype"]`` set per ``dtype``.
+    """Return ``st_kwargs`` with the weight dtype set in ``model_kwargs``.
 
-    An explicit ``torch_dtype`` in ``model_kwargs`` always wins; otherwise ``dtype``
-    is used, else float32 when the device is CPU.
+    An explicit ``torch_dtype``/``dtype`` in ``model_kwargs`` always wins; otherwise
+    ``dtype`` is used, else float32 when the device is CPU.
     """
     out = dict(st_kwargs)
     model_kwargs = dict(out.get("model_kwargs") or {})
-    if "torch_dtype" not in model_kwargs:
+    if not {"torch_dtype", "dtype"} & model_kwargs.keys():
         if dtype is None and _resolves_to_cpu(device):
-            dtype = "float32"
+            dtype = _CPU_DEFAULT_DTYPE
         if dtype is not None:
-            if isinstance(dtype, str):
-                import torch
-
-                dtype = getattr(torch, dtype)
-            model_kwargs["torch_dtype"] = dtype
+            model_kwargs[_dtype_key()] = dtype
     if model_kwargs:
         out["model_kwargs"] = model_kwargs
     return out
@@ -464,12 +474,13 @@ def sentence_transformers_embedder(
         prompt_names: ``{input_type: name}`` of prompts defined in the model's
             own ``prompts`` config (passed as ``encode(prompt_name=...)``).
             An explicit ``prompt=`` / ``prompt_name=`` in a call overrides both.
-        dtype: Torch dtype (or its name, e.g. ``"bfloat16"``) to load the model
-            in. By default, on a CPU device the model is loaded in float32:
+        dtype: Torch dtype (or its name, e.g. ``"bfloat16"``, ``"auto"``) to
+            load the model in; names are passed through to transformers. By default, on a CPU device the model is loaded in float32:
             bf16 checkpoints (Qwen3-Embedding...) otherwise stay bf16, which is
             ~5x slower on CPUs without native bf16 matmul. Elsewhere the
-            checkpoint's dtype is kept. An explicit ``model_kwargs["torch_dtype"]``
-            takes precedence over the default.
+            checkpoint's dtype is kept. A dtype already present in
+            ``model_kwargs`` (``"torch_dtype"`` or ``"dtype"``) takes precedence
+            over both this argument and the CPU default.
         **st_kwargs: Forwarded to the ``SentenceTransformer`` constructor.
 
     Requires ``sentence-transformers`` (``pip install 'ef[sentence-transformers]'``).
