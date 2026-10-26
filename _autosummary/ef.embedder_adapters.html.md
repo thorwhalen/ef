@@ -187,7 +187,7 @@ models; on `all-MiniLM` they are expected to be a near no-op. Prefer these
 over wrapping the adapter in [`InstructionEmbedder`](ef.embedder_wrappers.html.md#ef.embedder_wrappers.InstructionEmbedder):
 sentence-transformers knows the prompt’s length, so models that pool without
 the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs
-sentence-transformers >= 2.3.
+sentence-transformers >= 2.4.
 
 * **Parameters:**
   * **model_name** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A sentence-transformers model name (also used in

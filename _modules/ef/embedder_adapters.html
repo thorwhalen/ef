@@ -574,7 +574,7 @@
 </span><span id="line-389">        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"cpu"</span>
 </span><span id="line-390">    <span class="k">try</span><span class="p">:</span>  <span class="c1"># defer to sentence-transformers' own pick (cuda/mps/npu/xpu/hpu/cpu)</span>
 </span><span id="line-391">        <span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_device_name</span>
-</span><span id="line-392">    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover - very old sentence-transformers</span>
+</span><span id="line-392">    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover - the extra requires &gt;= 2.4</span>
 </span><span id="line-393">        <span class="k">return</span> <span class="kc">False</span>
 </span><span id="line-394">    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_device_name</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"cpu"</span>
 </span><span id="line-395">
@@ -639,7 +639,7 @@
 </span><span id="line-452"><span class="sd">    over wrapping the adapter in :class:`~ef.embedder_wrappers.InstructionEmbedder`:</span>
 </span><span id="line-453"><span class="sd">    sentence-transformers knows the prompt's length, so models that pool without</span>
 </span><span id="line-454"><span class="sd">    the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs</span>
-</span><span id="line-455"><span class="sd">    sentence-transformers &gt;= 2.3.</span>
+</span><span id="line-455"><span class="sd">    sentence-transformers &gt;= 2.4.</span>
 </span><span id="line-456">
 </span><span id="line-457"><span class="sd">    Args:</span>
 </span><span id="line-458"><span class="sd">        model_name: A sentence-transformers model name (also used in</span>
@@ -1419,7 +1419,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=785bba28"></script>
+    <script src="../../_static/documentation_options.js?v=dc233e31"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

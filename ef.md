@@ -1,4 +1,4 @@
-> built 2026-10-26 09:26 UTC from ce72746 (main) · ef 0.1.26. Details: build_info.json
+> built 2026-10-26 10:43 UTC from af507b2 (main) · ef 0.1.27. Details: build_info.json
 
 # index.html.md
 
@@ -1937,7 +1937,7 @@ models; on `all-MiniLM` they are expected to be a near no-op. Prefer these
 over wrapping the adapter in [`InstructionEmbedder`](_autosummary/ef.embedder_wrappers.html.md#ef.embedder_wrappers.InstructionEmbedder):
 sentence-transformers knows the prompt’s length, so models that pool without
 the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs
-sentence-transformers >= 2.3.
+sentence-transformers >= 2.4.
 
 * **Parameters:**
   * **model_name** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A sentence-transformers model name (also used in
@@ -7298,7 +7298,7 @@ models; on `all-MiniLM` they are expected to be a near no-op. Prefer these
 over wrapping the adapter in [`InstructionEmbedder`](_autosummary/ef.embedder_wrappers.html.md#ef.embedder_wrappers.InstructionEmbedder):
 sentence-transformers knows the prompt’s length, so models that pool without
 the prompt tokens (INSTRUCTOR, GRIT) stay correct. Needs
-sentence-transformers >= 2.3.
+sentence-transformers >= 2.4.
 
 * **Parameters:**
   * **model_name** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A sentence-transformers model name (also used in
@@ -9526,18 +9526,18 @@ See the module docstring for a complete offline example.
 
 # About this build
 
-This documentation was built on **2026-10-26 09:26 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62"><code>ce72746</code></a> on branch <code>main</code>, for **ef 0.1.26** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-26 10:43 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/af507b21fed09f13f23827a2fc3ad1a42aeb0068"><code>af507b2</code></a> on branch <code>main</code>, for **ef 0.1.27** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install ef` gives newer code than these docs describe.
+- The documented version (0.1.27) is behind the latest release on PyPI (0.1.28): `pip install ef` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ef/commit/ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62"><code>ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ef/commit/af507b21fed09f13f23827a2fc3ad1a42aeb0068"><code>af507b21fed09f13f23827a2fc3ad1a42aeb0068</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -9548,9 +9548,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ef</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/40299425634">40299425634</a>        |
+| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/40309450952">40309450952</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62</code> (in the history of the built commit) |
+| Event commit | <code>af507b21fed09f13f23827a2fc3ad1a42aeb0068</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -9575,13 +9575,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ef/0.1.27/">0.1.27</a>, newer than the documented version (0.1.26).
+Latest release: <a href="https://pypi.org/project/ef/0.1.28/">0.1.28</a>, newer than the documented version (0.1.27).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ef && cd ef
-git checkout ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62
+git checkout af507b21fed09f13f23827a2fc3ad1a42aeb0068
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
