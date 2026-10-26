@@ -1,4 +1,4 @@
-> built 2026-10-26 09:15 UTC from 49b9d06 (main) · ef 0.1.25. Details: build_info.json
+> built 2026-10-26 09:26 UTC from ce72746 (main) · ef 0.1.26. Details: build_info.json
 
 # index.html.md
 
@@ -1959,12 +1959,13 @@ sentence-transformers >= 2.3.
   * **prompt_names** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – `{input_type: name}` of prompts defined in the model’s
     own `prompts` config (passed as `encode(prompt_name=...)`).
     An explicit `prompt=` / `prompt_name=` in a call overrides both.
-  * **dtype** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Torch dtype (or its name, e.g. `"bfloat16"`) to load the model
-    in. By default, on a CPU device the model is loaded in float32:
+  * **dtype** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Torch dtype (or its name, e.g. `"bfloat16"`, `"auto"`) to
+    load the model in; names are passed through to transformers. By default, on a CPU device the model is loaded in float32:
     bf16 checkpoints (Qwen3-Embedding…) otherwise stay bf16, which is
     ~5x slower on CPUs without native bf16 matmul. Elsewhere the
-    checkpoint’s dtype is kept. An explicit `model_kwargs["torch_dtype"]`
-    takes precedence over the default.
+    checkpoint’s dtype is kept. A dtype already present in
+    `model_kwargs` (`"torch_dtype"` or `"dtype"`) takes precedence
+    over both this argument and the CPU default.
   * **\*\*st_kwargs** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Forwarded to the `SentenceTransformer` constructor.
 * **Return type:**
   [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
@@ -7319,12 +7320,13 @@ sentence-transformers >= 2.3.
   * **prompt_names** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – `{input_type: name}` of prompts defined in the model’s
     own `prompts` config (passed as `encode(prompt_name=...)`).
     An explicit `prompt=` / `prompt_name=` in a call overrides both.
-  * **dtype** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Torch dtype (or its name, e.g. `"bfloat16"`) to load the model
-    in. By default, on a CPU device the model is loaded in float32:
+  * **dtype** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Torch dtype (or its name, e.g. `"bfloat16"`, `"auto"`) to
+    load the model in; names are passed through to transformers. By default, on a CPU device the model is loaded in float32:
     bf16 checkpoints (Qwen3-Embedding…) otherwise stay bf16, which is
     ~5x slower on CPUs without native bf16 matmul. Elsewhere the
-    checkpoint’s dtype is kept. An explicit `model_kwargs["torch_dtype"]`
-    takes precedence over the default.
+    checkpoint’s dtype is kept. A dtype already present in
+    `model_kwargs` (`"torch_dtype"` or `"dtype"`) takes precedence
+    over both this argument and the CPU default.
   * **\*\*st_kwargs** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Forwarded to the `SentenceTransformer` constructor.
 * **Return type:**
   [`Embedder`](_autosummary/ef.embedders.html.md#ef.embedders.Embedder)
@@ -9524,18 +9526,18 @@ See the module docstring for a complete offline example.
 
 # About this build
 
-This documentation was built on **2026-10-26 09:15 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3"><code>49b9d06</code></a> on branch <code>main</code>, for **ef 0.1.25** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-26 09:26 UTC** from commit <a href="https://github.com/thorwhalen/ef/commit/ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62"><code>ce72746</code></a> on branch <code>main</code>, for **ef 0.1.26** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.25) is behind the latest release on PyPI (0.1.26): `pip install ef` gives newer code than these docs describe.
+- The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install ef` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ef/commit/49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3"><code>49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ef/commit/ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62"><code>ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62</code></a> |
 | Branch              | <code>main</code>                                                                                                                                    |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -9546,9 +9548,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ef</code>                                                                 |
-| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/40298001402">40298001402</a>        |
+| Run          | <a href="https://github.com/thorwhalen/ef/actions/runs/40299425634">40299425634</a>        |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3</code> (in the history of the built commit) |
+| Event commit | <code>ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -9573,13 +9575,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ef/0.1.26/">0.1.26</a>, newer than the documented version (0.1.25).
+Latest release: <a href="https://pypi.org/project/ef/0.1.27/">0.1.27</a>, newer than the documented version (0.1.26).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ef && cd ef
-git checkout 49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3
+git checkout ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

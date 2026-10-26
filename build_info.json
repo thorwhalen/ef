@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-26T09:15:49Z",
+  "built_at": "2026-10-26T09:26:57Z",
   "package": {
     "name": "ef",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "display_name": "ef",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3",
-    "short_commit": "49b9d06",
+    "commit": "ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62",
+    "short_commit": "ce72746",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ef",
-    "commit_url": "https://github.com/thorwhalen/ef/commit/49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3",
+    "commit_url": "https://github.com/thorwhalen/ef/commit/ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ef",
-    "sha": "49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3",
+    "sha": "ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "40298001402",
-    "run_url": "https://github.com/thorwhalen/ef/actions/runs/40298001402",
+    "run_id": "40299425634",
+    "run_url": "https://github.com/thorwhalen/ef/actions/runs/40299425634",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,16 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.26",
+    "latest": "0.1.27",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ef && cd ef\ngit checkout 49b9d069ac85e5aef4bf8c4184b92e2e9b468ce3\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ef && cd ef\ngit checkout ce7274604a7f0c2d8709fc1ffbb2816e5aa23d62\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (0.1.25) is behind the latest release on PyPI (0.1.26): `pip install ef` gives newer code than these docs describe."
+      "The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install ef` gives newer code than these docs describe."
     ]
   }
 }
