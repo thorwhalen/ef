@@ -389,9 +389,17 @@ def _resolves_to_cpu(device: str | None) -> bool:
         return str(device).split(":")[0] == "cpu"
     try:  # defer to sentence-transformers' own pick (cuda/mps/npu/xpu/hpu/cpu)
         from sentence_transformers.util import get_device_name
-    except ImportError:  # pragma: no cover - very old sentence-transformers
-        return False
+    except ImportError:  # sentence-transformers < 2.7 has no get_device_name
+        return _torch_picks_cpu()
     return str(get_device_name()).split(":")[0] == "cpu"
+
+
+def _torch_picks_cpu() -> bool:
+    """CPU unless torch sees cuda or mps (the pre-``get_device_name`` auto-pick)."""
+    import torch
+
+    mps = getattr(torch.backends, "mps", None)
+    return not (torch.cuda.is_available() or (mps is not None and mps.is_available()))
 
 
 def _dtype_key() -> str:

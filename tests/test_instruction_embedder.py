@@ -296,7 +296,9 @@ def test_dtype_auto_is_passed_through(monkeypatch):
     assert seen["model_kwargs"] == {_dtype_key(): "auto"}
 
 
-@pytest.mark.parametrize("version,key", [("4.55.9", "torch_dtype"), ("4.56.0", "dtype")])
+@pytest.mark.parametrize(
+    "version,key", [("4.55.9", "torch_dtype"), ("4.56.0", "dtype")]
+)
 def test_dtype_key_follows_transformers_version(monkeypatch, version, key):
     import transformers
 
@@ -316,3 +318,23 @@ def test_auto_device_cpu_gets_float32(monkeypatch):
     monkeypatch.setitem(sys.modules, "sentence_transformers.util", util)
     seen = _capture_st_kwargs(monkeypatch)
     assert seen["model_kwargs"] == {_dtype_key(): "float32"}
+
+
+def test_auto_device_falls_back_to_torch_without_get_device_name(monkeypatch):
+    import sys
+    import types
+
+    import torch
+
+    from ef.embedder_adapters import _dtype_key
+
+    # `sentence_transformers.util` without get_device_name (sentence-transformers < 2.7)
+    monkeypatch.setitem(
+        sys.modules, "sentence_transformers.util", types.SimpleNamespace()
+    )
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+    seen = _capture_st_kwargs(monkeypatch)
+    assert seen["model_kwargs"] == {_dtype_key(): "float32"}
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    assert "model_kwargs" not in _capture_st_kwargs(monkeypatch)
