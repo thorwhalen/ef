@@ -325,6 +325,25 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         return np.asarray(embedded, dtype=np.float32)
 
 
+_CPU_DEFAULT_DTYPE = "float32"
+
+
+def _resolve_torch_device(device: str | None) -> str:
+    """The device sentence-transformers will use: ``device`` or its auto-pick."""
+    if device is not None:
+        return str(device).split(":")[0]
+    try:
+        import torch
+    except ImportError:  # pragma: no cover - torch ships with sentence-transformers
+        return "cpu"
+    if torch.cuda.is_available():
+        return "cuda"
+    mps = getattr(torch.backends, "mps", None)
+    if mps is not None and mps.is_available():
+        return "mps"
+    return "cpu"
+
+
 def sentence_transformers_embedder(
     model_name: str = "all-MiniLM-L6-v2",
     *,
@@ -332,6 +351,7 @@ def sentence_transformers_embedder(
     normalize: bool = False,
     batch_size: int = 128,
     model_path: str | None = None,
+    dtype: str | None = None,
     **st_kwargs: Any,
 ) -> Embedder:
     """Build a local sentence-transformers :class:`~ef.embedders.Embedder`.
@@ -347,6 +367,12 @@ def sentence_transformers_embedder(
         model_path: A local filesystem path to load from instead of the hub —
             for air-gapped use. Loading still records ``model_name`` in
             ``model_id``.
+        dtype: Weight dtype to load the model in (e.g. ``"float32"``,
+            ``"bfloat16"``); forwarded as ``model_kwargs["torch_dtype"]``.
+            ``None`` means: on CPU load in ``float32`` (bf16 checkpoints are
+            ~5x slower on CPUs without native bf16 matmul), elsewhere keep the
+            checkpoint's dtype. An explicit ``model_kwargs["torch_dtype"]``
+            (or ``"dtype"``) is respected when ``dtype`` is not given.
         **st_kwargs: Forwarded to the ``SentenceTransformer`` constructor.
 
     Requires ``sentence-transformers`` (``pip install 'ef[sentence-transformers]'``).
@@ -358,6 +384,14 @@ def sentence_transformers_embedder(
             "sentence_transformers_embedder needs the `sentence-transformers` "
             "package. Install it with: pip install 'ef[sentence-transformers]'"
         ) from exc
+    model_kwargs = dict(st_kwargs.pop("model_kwargs", None) or {})
+    if dtype is not None:
+        model_kwargs["torch_dtype"] = dtype
+    elif not ({"torch_dtype", "dtype"} & model_kwargs.keys()):
+        if _resolve_torch_device(device) == "cpu":
+            model_kwargs["torch_dtype"] = _CPU_DEFAULT_DTYPE
+    if model_kwargs:
+        st_kwargs["model_kwargs"] = model_kwargs
     model = SentenceTransformer(model_path or model_name, device=device, **st_kwargs)
     return _SentenceTransformerEmbedder(
         model_name, model=model, normalize=normalize, batch_size=batch_size

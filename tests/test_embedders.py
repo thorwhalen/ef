@@ -636,3 +636,49 @@ def test_as_embedder_provider_prefixes(monkeypatch):
     assert voyage.model_id == "voyage:voyage-3.5@1024"
     gemini = as_embedder("gemini:gemini-embedding-001", api_key="k")
     assert gemini.model_id == "gemini:gemini-embedding-001@3072"
+
+
+# --- sentence_transformers_embedder dtype default (no download: fake module) ---
+
+
+class _FakeST:
+    def __init__(self, name, **kwargs):
+        type(self).last = {"name": name, **kwargs}
+
+    def get_embedding_dimension(self):
+        return 4
+
+
+def _st_kwargs_for(monkeypatch, **call_kwargs):
+    import sys
+    import types
+
+    from ef.embedder_adapters import sentence_transformers_embedder
+
+    fake = types.ModuleType("sentence_transformers")
+    fake.SentenceTransformer = _FakeST
+    monkeypatch.setitem(sys.modules, "sentence_transformers", fake)
+    sentence_transformers_embedder("m", **call_kwargs)
+    return _FakeST.last
+
+
+def test_st_defaults_to_float32_on_cpu(monkeypatch):
+    got = _st_kwargs_for(monkeypatch, device="cpu")
+    assert got["model_kwargs"] == {"torch_dtype": "float32"}
+
+
+def test_st_leaves_dtype_alone_off_cpu(monkeypatch):
+    got = _st_kwargs_for(monkeypatch, device="cuda")
+    assert "model_kwargs" not in got
+
+
+def test_st_dtype_keyword_wins(monkeypatch):
+    got = _st_kwargs_for(monkeypatch, device="cpu", dtype="bfloat16")
+    assert got["model_kwargs"]["torch_dtype"] == "bfloat16"
+
+
+def test_st_respects_explicit_model_kwargs(monkeypatch):
+    got = _st_kwargs_for(
+        monkeypatch, device="cpu", model_kwargs={"torch_dtype": "float16", "x": 1}
+    )
+    assert got["model_kwargs"] == {"torch_dtype": "float16", "x": 1}
