@@ -25,7 +25,8 @@ only numpy):
 - Composition wrappers: :class:`~ef.embedder_wrappers.CachedEmbedder`,
   :class:`~ef.embedder_wrappers.RetryingEmbedder`,
   :class:`~ef.embedder_wrappers.MultiEmbedder`,
-  :class:`~ef.embedder_wrappers.NormalizingEmbedder`.
+  :class:`~ef.embedder_wrappers.NormalizingEmbedder`,
+  :class:`~ef.embedder_wrappers.InstructionEmbedder`.
 
 The **segmenter facade** is the other always-importable core surface (it needs
 no numpy at all):
@@ -95,6 +96,11 @@ synthesize answers:
 - :func:`~ef.evaluation.evaluate_retrieval` — BEIR/MTEB-shaped retrieval scoring
   (primary metric NDCG@10); :func:`~ef.evaluation.read_beir` /
   :func:`~ef.evaluation.write_beir` move the corpus/queries/qrels triple to disk.
+- :func:`~ef.ablation.run_arms` — embedder ablations: named arms ranked over one
+  segmented corpus (document vectors shared between arms), scored with
+  ``evaluate_retrieval``; :func:`~ef.ablation.read_graded_cases` loads a graded
+  benchmark, :func:`~ef.ablation.instruction_arms` /
+  :func:`~ef.ablation.instruction_verdict` run the instruction experiment.
 - :func:`~ef.evaluation.evaluate_rag` — deterministic lexical RAG metrics over
   :class:`~ef.evaluation.RagSample`\\ s; :func:`~ef.evaluation.as_ragas_dataset`
   bridges to Ragas for the LLM-judged metrics.
@@ -148,6 +154,7 @@ from ef.embedder_wrappers import (
     CachedEmbedder,
     MultiEmbedder,
     NormalizingEmbedder,
+    InstructionEmbedder,
     RetryPolicy,
     RetryingEmbedder,
 )
@@ -230,13 +237,23 @@ from ef.source_manager import (
     hits_to_segments,
     ingest,
 )
+from ef.ablation import (
+    instruction_arms,
+    instruction_verdict,
+    read_graded_cases,
+    run_arms,
+)
 from ef.evaluation import (
     Qrels,
     RagEvalReport,
     RagSample,
     RETRIEVAL_METRICS,
+    BenchmarkReport,
     RetrievalEvalReport,
     as_ragas_dataset,
+    benchmark_embedders,
+    fp_rate_at_k,
+    hard_positive_recall_at_k,
     average_precision,
     context_precision,
     context_recall,
@@ -293,6 +310,7 @@ __all__ = [
     "RetryPolicy",
     "MultiEmbedder",
     "NormalizingEmbedder",
+    "InstructionEmbedder",
     # adapters & the DI seam
     "as_embedder",
     "openai_embedder",
@@ -384,6 +402,14 @@ __all__ = [
     "ndcg_at_k",
     "dcg_at_k",
     "recall_at_k",
+    "fp_rate_at_k",
+    "hard_positive_recall_at_k",
+    "benchmark_embedders",
+    "BenchmarkReport",
+    "read_graded_cases",
+    "run_arms",
+    "instruction_arms",
+    "instruction_verdict",
     "precision_at_k",
     "reciprocal_rank",
     "average_precision",

@@ -21,21 +21,23 @@ import numpy as np
 
 InputType = Literal["query", "document", "classification", "clustering"]
 
+
 @runtime_checkable
 class Embedder(Protocol):
     """Iterable[str] -> ndarray of shape (n, dim). SSOT metadata on `self`."""
-    model_id: str        # "openai:text-embedding-3-large@1024" — provider:model@dim
+
+    model_id: str  # "openai:text-embedding-3-large@1024" — provider:model@dim
     dim: int
-    normalized: bool     # True if ||v|| == 1 by construction
+    normalized: bool  # True if ||v|| == 1 by construction
     honored_input_types: tuple[InputType, ...]
 
-    def __call__(self, texts: Iterable[str], *,
-                 input_type: InputType | None = None,
-                 **backend) -> np.ndarray: ...
+    def __call__(
+        self, texts: Iterable[str], *, input_type: InputType | None = None, **backend
+    ) -> np.ndarray: ...
 
-    def embed_batch(self, texts: Iterable[str], *,
-                    input_type: InputType | None = None,
-                    **backend) -> "BatchHandle": ...
+    def embed_batch(
+        self, texts: Iterable[str], *, input_type: InputType | None = None, **backend
+    ) -> "BatchHandle": ...
 ```
 
 ### 1.2 Key decisions
@@ -123,8 +125,9 @@ Implementations may be stateful (hold an embedder/LLM) but must be re-entrant.
 class Segmenter(Protocol):
     def __call__(self, doc: str | Mapping[str, Any], /) -> Iterable[Segment]: ...
 
+
 @runtime_checkable
-class BatchedSegmenter(Protocol):   # optional optimization trait
+class BatchedSegmenter(Protocol):  # optional optimization trait
     def batch(self, docs: Iterable[...], /) -> Iterable[Iterable[Segment]]: ...
 ```
 
@@ -192,7 +195,7 @@ Four operations: `materialize(key)` (lazy backward), `mark_stale(key)` /
 
 ```python
 class SourceManager(Protocol):
-    sources: MutableMapping[SourceId, Source]       # the public surface
+    sources: MutableMapping[SourceId, Source]  # the public surface
 
     def register_config(self, name, pipeline: PipelineSpec) -> ConfigId: ...
     def materialize(self, config: ConfigId, *, sources=None) -> MaterializeReport: ...
@@ -201,7 +204,9 @@ class SourceManager(Protocol):
     def stale(self, config) -> Iterable[ArtifactKey]: ...
     def misconfigured(self, config) -> Iterable[ArtifactKey]: ...
     def gc_orphans(self, config=None) -> int: ...
-    def rebuild(self, config, *, level="index"|"vectors"|"all") -> RebuildReport: ...
+    def rebuild(
+        self, config, *, level="index" | "vectors" | "all"
+    ) -> RebuildReport: ...
     def lineage(self, key) -> Iterable[ArtifactKey]: ...
 ```
 
@@ -253,6 +258,7 @@ fully-named, defaults-filled kwargs dict with the canonical `i2` idiom:
 ```python
 from i2 import Sig
 
+
 def full_kwargs(op, args=(), kwargs=None):
     """Call (args, kwargs) -> a canonical, defaults-filled, fully-named dict."""
     return Sig(op).map_arguments(args, kwargs or {}, apply_defaults=True)
@@ -275,15 +281,15 @@ a first-class structural field.
 
 ```python
 class Segment(TypedDict, total=False):
-    text: str                       # required
-    id: str                         # required by convention; sha256 of normalized text
-    parent_id: str                  # source document or parent segment id
+    text: str  # required
+    id: str  # required by convention; sha256 of normalized text
+    parent_id: str  # source document or parent segment id
     children_ids: list[str]
-    start: int                      # char offset into the source
+    start: int  # char offset into the source
     end: int
-    index: int                      # ordinal in the segmenter's output
+    index: int  # ordinal in the segmenter's output
     tokens: int
-    metadata: Mapping[str, Any]     # framework-specific keys live here, namespaced
+    metadata: Mapping[str, Any]  # framework-specific keys live here, namespaced
 ```
 
 Promoted metadata keys that must round-trip every adapter: `source`,
@@ -350,9 +356,10 @@ users pull `pypdf`/`unstructured`/`firecrawl`).
 ```python
 @dataclass(frozen=True, slots=True)
 class BatchHandle:
-    poll: Callable        # () -> "pending" | "done" | "failed"
-    result: Callable      # () -> np.ndarray  (blocks until done)
+    poll: Callable  # () -> "pending" | "done" | "failed"
+    result: Callable  # () -> np.ndarray  (blocks until done)
     cancel: Callable = lambda: None
+
 
 def cache_key(e: Embedder, text: str, input_type: InputType | None) -> str:
     h = hashlib.sha256(f"{e.model_id}|{e.dim}|{input_type}|{text}".encode()).hexdigest()
@@ -374,33 +381,49 @@ for s, o in enumerate(orig_idx):
 ```python
 class ProducerSpec:
     op: Callable
-    op_version: str                       # participates in the id
+    op_version: str  # participates in the id
     inputs: tuple[ArtifactId, ...]
     params: Mapping[str, Hashable]
 
+
 def artifact_id(spec: ProducerSpec) -> str:
-    payload = {"op_version": spec.op_version, "inputs": list(spec.inputs),
-               "params": canonical_json(spec.params)}
+    payload = {
+        "op_version": spec.op_version,
+        "inputs": list(spec.inputs),
+        "params": canonical_json(spec.params),
+    }
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
-def materialize(self, key):              # lazy backward
-    if key in self.store: return self.store[key]
+
+def materialize(self, key):  # lazy backward
+    if key in self.store:
+        return self.store[key]
     spec = self.producers[key]
     inputs = [self.materialize(i) for i in spec.inputs]
     self.store[key] = serialize(spec.op(*inputs, **spec.params))
     return self.store[key]
 
-def delete_cascade(self, key):           # forward purge
+
+def delete_cascade(self, key):  # forward purge
     for k in self.mark_stale(key) | {key}:
         self.store.pop(k, None)
 ```
 
 ### 8.4 PCA → UMAP visualization (`ef.project`)
 ```python
-reduced = (PCA(n_components=min(50, n_samples - 1), random_state=42)
-           .fit_transform(vectors)) if source_dim > 50 else vectors
-coords = umap.UMAP(n_components=target_dim, n_neighbors=15, min_dist=0.1,
-                   metric="cosine", random_state=42, n_jobs=-1).fit_transform(reduced)
+reduced = (
+    (PCA(n_components=min(50, n_samples - 1), random_state=42).fit_transform(vectors))
+    if source_dim > 50
+    else vectors
+)
+coords = umap.UMAP(
+    n_components=target_dim,
+    n_neighbors=15,
+    min_dist=0.1,
+    metric="cosine",
+    random_state=42,
+    n_jobs=-1,
+).fit_transform(reduced)
 ```
 
 ### 8.5 Refresh-mode semantics

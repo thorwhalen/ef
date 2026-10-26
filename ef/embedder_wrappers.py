@@ -9,10 +9,14 @@ are opt-in layers, not protocol obligations.
 - :class:`RetryingEmbedder` — exponential backoff + jitter, retryable-aware.
 - :class:`MultiEmbedder` — route texts to different embedders by a predicate.
 - :class:`NormalizingEmbedder` — L2-normalize an inner embedder's output.
+- :class:`InstructionEmbedder` — prepend a per-``input_type`` instruction
+  (task-conditioned, asymmetric query/document embedding).
 
-All four delegate their metadata (``model_id`` / ``dim`` / ``normalized`` /
+They delegate their metadata (``model_id`` / ``dim`` / ``normalized`` /
 ``honored_input_types``) to the inner embedder, except where the wrapper changes
-the vector (:class:`NormalizingEmbedder` reports ``normalized=True``).
+the vector (:class:`NormalizingEmbedder` reports ``normalized=True``;
+:class:`InstructionEmbedder` bakes its instructions into ``model_id`` and adds the
+conditioned roles to ``honored_input_types``).
 
 The inner argument must already be an :class:`~ef.embedders.Embedder`; use
 :func:`ef.embedder_adapters.as_embedder` to coerce a string / callable first.
@@ -34,6 +38,8 @@ Example — cache an embedder so repeats are free:
 
 from __future__ import annotations
 
+import hashlib
+import json
 import random
 import time
 from dataclasses import dataclass, field
@@ -55,6 +61,7 @@ __all__ = [
     "RetryingEmbedder",
     "MultiEmbedder",
     "NormalizingEmbedder",
+    "InstructionEmbedder",
 ]
 
 
@@ -396,3 +403,141 @@ class NormalizingEmbedder(BaseEmbedder):
         if vectors.size == 0:
             return vectors
         return _l2_normalize(vectors)
+
+
+# ---------------------------------------------------------------------------
+# InstructionEmbedder
+# ---------------------------------------------------------------------------
+
+
+class InstructionEmbedder(BaseEmbedder):
+    """Prepend a per-``input_type`` instruction before delegating to ``inner``.
+
+    Instruction-tuned embedding models (E5-instruct, BGE, GTE, Qwen3-Embedding...)
+    are trained to read a task description in front of the text, typically on the
+    *query* side only, with documents embedded bare. That asymmetry is where the
+    gain comes from: the query says *what kind of relevance* is wanted (topic vs.
+    keyword), which a plain model cannot be told. This wrapper adds that to any
+    embedder: a text embedded with ``input_type="query"`` becomes
+    ``query_instruction + text``, and so on per role. Roles without an instruction
+    (and calls with ``input_type=None``) pass through unchanged.
+
+    **Only trust the prefix on a genuinely instruction-tuned model.** On a plain
+    model (e.g. ``all-MiniLM-L6-v2``) the prefix is expected to be a near no-op or
+    noise: use that as the control arm of an experiment, not as an improvement.
+
+    The instruction strings are used verbatim, so include the model's expected
+    separator (e.g. ``"Instruct: ...\\nQuery: "`` for Qwen3/E5-instruct,
+    ``"Represent this sentence for searching relevant passages: "`` for BGE).
+
+    Metadata:
+
+    - ``model_id`` bakes in a digest of the instructions (they change the vector),
+      so :class:`CachedEmbedder` and content-addressed artifacts never mix vectors
+      made with different instructions.
+    - ``honored_input_types`` is the inner embedder's plus every instructed role.
+    - ``input_type`` is still forwarded to ``inner``; a backend that also acts on
+      it natively (Cohere, Voyage, Gemini, or a sentence-transformers adapter
+      built with ``query_prompt=``) would then be conditioned twice, so use this
+      wrapper for backends that ignore the hint. For sentence-transformers models
+      prefer the adapter's own ``query_prompt=``.
+
+    Args:
+        inner: The embedder to condition.
+        query_instruction: Prefix for ``input_type="query"``.
+        document_instruction: Prefix for ``input_type="document"`` (usually none).
+        classification_instruction: Prefix for ``input_type="classification"``.
+        clustering_instruction: Prefix for ``input_type="clustering"``.
+
+    >>> import numpy as np
+    >>> from ef.embedders import FunctionEmbedder
+    >>> seen = []
+    >>> def toy(texts):
+    ...     seen.extend(texts)
+    ...     return np.ones((len(texts), 2))
+    >>> base = FunctionEmbedder(toy, model_id='toy@2')
+    >>> emb = InstructionEmbedder(base, query_instruction='Find packages about: ')
+    >>> _ = emb(['graphs'], input_type='query')
+    >>> _ = emb(['a DAG library'], input_type='document')
+    >>> seen
+    ['Find packages about: graphs', 'a DAG library']
+    >>> emb.honored_input_types
+    ('query',)
+    >>> emb.model_id.startswith('toy@2+instruct:')
+    True
+    """
+
+    def __init__(
+        self,
+        inner: Embedder,
+        *,
+        query_instruction: str | None = None,
+        document_instruction: str | None = None,
+        classification_instruction: str | None = None,
+        clustering_instruction: str | None = None,
+    ) -> None:
+        self.inner = inner
+        candidates: dict[InputType, str | None] = {
+            "query": query_instruction,
+            "document": document_instruction,
+            "classification": classification_instruction,
+            "clustering": clustering_instruction,
+        }
+        self.instructions: dict[InputType, str] = {
+            role: text for role, text in candidates.items() if text
+        }
+        if not self.instructions:
+            raise ValueError(
+                "InstructionEmbedder: give at least one instruction "
+                "(query_instruction=, document_instruction=, ...)"
+            )
+
+    @property
+    def model_id(self) -> str:
+        """The inner ``model_id`` plus a digest of the instructions."""
+        payload = json.dumps(self.instructions, sort_keys=True)
+        digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+        return f"{self.inner.model_id}+instruct:{digest}"
+
+    @property
+    def dim(self) -> int | None:  # noqa: D102 — delegated metadata
+        return self.inner.dim
+
+    @property
+    def normalized(self) -> bool:  # noqa: D102
+        return self.inner.normalized
+
+    @property
+    def honored_input_types(self) -> tuple[InputType, ...]:
+        """The inner embedder's honored roles plus every instructed role."""
+        inner_roles = tuple(self.inner.honored_input_types)
+        extra = tuple(r for r in self.instructions if r not in inner_roles)
+        return inner_roles + extra
+
+    def _condition(self, texts: Iterable[str], input_type: InputType | None) -> list:
+        """``texts`` with the instruction for ``input_type`` prepended (if any)."""
+        instruction = self.instructions.get(input_type) if input_type else None
+        if not instruction:
+            return list(texts)
+        return [instruction + t for t in texts]
+
+    def __call__(
+        self,
+        texts: Iterable[str],
+        *,
+        input_type: InputType | None = None,
+        **backend: Any,
+    ) -> np.ndarray:
+        texts = self._condition(texts, input_type)
+        return self.inner(texts, input_type=input_type, **backend)
+
+    def embed_batch(
+        self,
+        texts: Iterable[str],
+        *,
+        input_type: InputType | None = None,
+        **backend: Any,
+    ):
+        """Prefix, then use the inner embedder's own (possibly async) batch API."""
+        texts = self._condition(texts, input_type)
+        return self.inner.embed_batch(texts, input_type=input_type, **backend)
