@@ -296,7 +296,9 @@ def test_dtype_auto_is_passed_through(monkeypatch):
     assert seen["model_kwargs"] == {_dtype_key(): "auto"}
 
 
-@pytest.mark.parametrize("version,key", [("4.55.9", "torch_dtype"), ("4.56.0", "dtype")])
+@pytest.mark.parametrize(
+    "version,key", [("4.55.9", "torch_dtype"), ("4.56.0", "dtype")]
+)
 def test_dtype_key_follows_transformers_version(monkeypatch, version, key):
     import transformers
 

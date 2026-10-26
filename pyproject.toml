@@ -58,7 +58,7 @@ openai = [
     "openai>=1.0",
 ]
 sentence-transformers = [
-    "sentence-transformers>=2.3",  # encode(prompt=, prompt_name=)
+    "sentence-transformers>=2.4",  # encode(prompt=, prompt_name=); util.get_device_name
 ]
 testing = [
     "pytest",
