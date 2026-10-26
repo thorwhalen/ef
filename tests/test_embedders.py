@@ -664,7 +664,9 @@ def _st_kwargs_for(monkeypatch, **call_kwargs):
 
 def test_st_defaults_to_float32_on_cpu(monkeypatch):
     got = _st_kwargs_for(monkeypatch, device="cpu")
-    assert got["model_kwargs"] == {"torch_dtype": "float32"}
+    from ef.embedder_adapters import _dtype_key
+
+    assert got["model_kwargs"] == {_dtype_key(): "float32"}
 
 
 def test_st_leaves_dtype_alone_off_cpu(monkeypatch):
@@ -674,7 +676,29 @@ def test_st_leaves_dtype_alone_off_cpu(monkeypatch):
 
 def test_st_dtype_keyword_wins(monkeypatch):
     got = _st_kwargs_for(monkeypatch, device="cpu", dtype="bfloat16")
-    assert got["model_kwargs"]["torch_dtype"] == "bfloat16"
+    from ef.embedder_adapters import _dtype_key
+
+    assert got["model_kwargs"] == {_dtype_key(): "bfloat16"}
+
+
+def test_st_dtype_keyword_beats_either_model_kwargs_key(monkeypatch):
+    from ef.embedder_adapters import _dtype_key
+
+    got = _st_kwargs_for(
+        monkeypatch, device="cpu", dtype="bfloat16", model_kwargs={"dtype": "float16"}
+    )
+    assert got["model_kwargs"] == {_dtype_key(): "bfloat16"}
+
+
+def test_st_auto_device_uses_sentence_transformers_pick(monkeypatch):
+    import sys
+    import types
+
+    util = types.ModuleType("sentence_transformers.util")
+    util.get_device_name = lambda: "xpu"
+    monkeypatch.setitem(sys.modules, "sentence_transformers.util", util)
+    got = _st_kwargs_for(monkeypatch)
+    assert "model_kwargs" not in got
 
 
 def test_st_respects_explicit_model_kwargs(monkeypatch):

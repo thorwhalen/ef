@@ -333,15 +333,23 @@ def _resolve_torch_device(device: str | None) -> str:
     if device is not None:
         return str(device).split(":")[0]
     try:
-        import torch
-    except ImportError:  # pragma: no cover - torch ships with sentence-transformers
+        from sentence_transformers.util import get_device_name
+    except ImportError:  # older versions / fake modules: assume the safe default
         return "cpu"
-    if torch.cuda.is_available():
-        return "cuda"
-    mps = getattr(torch.backends, "mps", None)
-    if mps is not None and mps.is_available():
-        return "mps"
-    return "cpu"
+    return str(get_device_name()).split(":")[0]
+
+
+def _dtype_key() -> str:
+    """``model_kwargs`` key for the weight dtype (``torch_dtype`` was renamed)."""
+    try:
+        import transformers
+        from packaging.version import Version
+
+        if Version(transformers.__version__) >= Version("4.56"):
+            return "dtype"
+    except Exception:  # pragma: no cover - missing/odd transformers
+        pass
+    return "torch_dtype"
 
 
 def sentence_transformers_embedder(
@@ -368,7 +376,7 @@ def sentence_transformers_embedder(
             for air-gapped use. Loading still records ``model_name`` in
             ``model_id``.
         dtype: Weight dtype to load the model in (e.g. ``"float32"``,
-            ``"bfloat16"``); forwarded as ``model_kwargs["torch_dtype"]``.
+            ``"bfloat16"``); forwarded as ``model_kwargs["dtype"]`` (``"torch_dtype"`` on older transformers).
             ``None`` means: on CPU load in ``float32`` (bf16 checkpoints are
             ~5x slower on CPUs without native bf16 matmul), elsewhere keep the
             checkpoint's dtype. An explicit ``model_kwargs["torch_dtype"]``
@@ -385,11 +393,14 @@ def sentence_transformers_embedder(
             "package. Install it with: pip install 'ef[sentence-transformers]'"
         ) from exc
     model_kwargs = dict(st_kwargs.pop("model_kwargs", None) or {})
-    if dtype is not None:
-        model_kwargs["torch_dtype"] = dtype
-    elif not ({"torch_dtype", "dtype"} & model_kwargs.keys()):
+    dtype_keys = {"torch_dtype", "dtype"}
+    if dtype is None and not (dtype_keys & model_kwargs.keys()):
         if _resolve_torch_device(device) == "cpu":
-            model_kwargs["torch_dtype"] = _CPU_DEFAULT_DTYPE
+            dtype = _CPU_DEFAULT_DTYPE
+    if dtype is not None:
+        for key in dtype_keys:
+            model_kwargs.pop(key, None)
+        model_kwargs[_dtype_key()] = dtype
     if model_kwargs:
         st_kwargs["model_kwargs"] = model_kwargs
     model = SentenceTransformer(model_path or model_name, device=device, **st_kwargs)
