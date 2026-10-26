@@ -247,15 +247,19 @@ def _capture_st_kwargs(monkeypatch, **call_kwargs):
 def test_cpu_defaults_to_float32(monkeypatch):
     import torch
 
+    from ef.embedder_adapters import _dtype_key
+
     seen = _capture_st_kwargs(monkeypatch, device="cpu")
-    assert seen["model_kwargs"]["torch_dtype"] is torch.float32
+    assert seen["model_kwargs"][_dtype_key()] is torch.float32
 
 
 def test_explicit_dtype_wins(monkeypatch):
     import torch
 
+    from ef.embedder_adapters import _dtype_key
+
     seen = _capture_st_kwargs(monkeypatch, device="cpu", dtype="bfloat16")
-    assert seen["model_kwargs"]["torch_dtype"] is torch.bfloat16
+    assert seen["model_kwargs"][_dtype_key()] is torch.bfloat16
     seen = _capture_st_kwargs(
         monkeypatch, device="cpu", model_kwargs={"torch_dtype": torch.float16}
     )
@@ -265,3 +269,21 @@ def test_explicit_dtype_wins(monkeypatch):
 def test_non_cpu_keeps_checkpoint_dtype(monkeypatch):
     seen = _capture_st_kwargs(monkeypatch, device="cuda")
     assert "model_kwargs" not in seen
+
+
+def test_model_kwargs_dtype_key_is_respected(monkeypatch):
+    import torch
+
+    seen = _capture_st_kwargs(
+        monkeypatch, device="cpu", model_kwargs={"dtype": torch.float16}
+    )
+    assert seen["model_kwargs"] == {"dtype": torch.float16}
+
+
+def test_auto_device_defers_to_sentence_transformers(monkeypatch):
+    import sys
+    import types
+
+    util = types.SimpleNamespace(get_device_name=lambda: "xpu")
+    monkeypatch.setitem(sys.modules, "sentence_transformers.util", util)
+    assert "model_kwargs" not in _capture_st_kwargs(monkeypatch)
