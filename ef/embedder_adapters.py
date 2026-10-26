@@ -413,13 +413,10 @@ def sentence_transformers_embedder(
     normalize: bool = False,
     batch_size: int = 128,
     model_path: str | None = None,
-<<<<<<< HEAD
     dtype: str | None = None,
-=======
     query_prompt: str | None = None,
     document_prompt: str | None = None,
     prompt_names: Mapping[str, str] | None = None,
->>>>>>> origin/main
     **st_kwargs: Any,
 ) -> Embedder:
     """Build a local sentence-transformers :class:`~ef.embedders.Embedder`.
@@ -447,14 +444,12 @@ def sentence_transformers_embedder(
         model_path: A local filesystem path to load from instead of the hub —
             for air-gapped use. Loading still records ``model_name`` in
             ``model_id``.
-<<<<<<< HEAD
         dtype: Weight dtype to load the model in (e.g. ``"float32"``,
             ``"bfloat16"``); forwarded as ``model_kwargs["dtype"]`` (``"torch_dtype"`` on older transformers).
             ``None`` means: on CPU load in ``float32`` (bf16 checkpoints are
             ~5x slower on CPUs without native bf16 matmul), elsewhere keep the
             checkpoint's dtype. An explicit ``model_kwargs["torch_dtype"]``
             (or ``"dtype"``) is respected when ``dtype`` is not given.
-=======
         query_prompt: Prompt prepended to ``input_type="query"`` texts (passed
             as ``encode(prompt=...)``).
         document_prompt: Prompt for ``input_type="document"`` texts (usually
@@ -464,7 +459,6 @@ def sentence_transformers_embedder(
         prompt_names: ``{input_type: name}`` of prompts defined in the model's
             own ``prompts`` config (passed as ``encode(prompt_name=...)``).
             An explicit ``prompt=`` / ``prompt_name=`` in a call overrides both.
->>>>>>> origin/main
         **st_kwargs: Forwarded to the ``SentenceTransformer`` constructor.
 
     Requires ``sentence-transformers`` (``pip install 'ef[sentence-transformers]'``).
