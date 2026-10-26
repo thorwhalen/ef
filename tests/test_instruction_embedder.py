@@ -215,3 +215,53 @@ def test_st_empty_document_prompt_is_an_explicit_no_prompt():
     emb(["x"], input_type="document")
     assert emb._model.calls[0]["prompt"] == ""  # overrides a default_prompt_name
     assert emb.honored_input_types == ("query",)
+
+
+# --- dtype defaults (#40) -----------------------------------------------------
+
+
+def _capture_st_kwargs(monkeypatch, **call_kwargs):
+    import sys
+    import types
+
+    seen = {}
+
+    class _Fake:
+        def __init__(self, name, **kw):
+            seen.update(kw)
+
+        def get_sentence_embedding_dimension(self):
+            return 3
+
+    monkeypatch.setitem(
+        sys.modules,
+        "sentence_transformers",
+        types.SimpleNamespace(SentenceTransformer=_Fake),
+    )
+    from ef.embedder_adapters import sentence_transformers_embedder
+
+    sentence_transformers_embedder("m", **call_kwargs)
+    return seen
+
+
+def test_cpu_defaults_to_float32(monkeypatch):
+    import torch
+
+    seen = _capture_st_kwargs(monkeypatch, device="cpu")
+    assert seen["model_kwargs"]["torch_dtype"] is torch.float32
+
+
+def test_explicit_dtype_wins(monkeypatch):
+    import torch
+
+    seen = _capture_st_kwargs(monkeypatch, device="cpu", dtype="bfloat16")
+    assert seen["model_kwargs"]["torch_dtype"] is torch.bfloat16
+    seen = _capture_st_kwargs(
+        monkeypatch, device="cpu", model_kwargs={"torch_dtype": torch.float16}
+    )
+    assert seen["model_kwargs"]["torch_dtype"] is torch.float16
+
+
+def test_non_cpu_keeps_checkpoint_dtype(monkeypatch):
+    seen = _capture_st_kwargs(monkeypatch, device="cuda")
+    assert "model_kwargs" not in seen
