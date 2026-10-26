@@ -379,6 +379,44 @@ class _SentenceTransformerEmbedder(BaseEmbedder):
         return np.asarray(embedded, dtype=np.float32)
 
 
+def _resolves_to_cpu(device: str | None) -> bool:
+    """Whether ``device`` (``None`` = auto-select, as sentence-transformers does) is CPU."""
+    if device is not None:
+        return str(device).split(":")[0] == "cpu"
+    try:
+        import torch
+    except ImportError:  # pragma: no cover - torch comes with sentence-transformers
+        return False
+    has_mps = getattr(getattr(torch, "backends", None), "mps", None)
+    return not (
+        torch.cuda.is_available() or (has_mps is not None and has_mps.is_available())
+    )
+
+
+def _with_cpu_float32_default(
+    st_kwargs: Mapping[str, Any], *, device: str | None, dtype: Any
+) -> dict[str, Any]:
+    """Return ``st_kwargs`` with ``model_kwargs["torch_dtype"]`` set per ``dtype``.
+
+    An explicit ``torch_dtype`` in ``model_kwargs`` always wins; otherwise ``dtype``
+    is used, else float32 when the device is CPU.
+    """
+    out = dict(st_kwargs)
+    model_kwargs = dict(out.get("model_kwargs") or {})
+    if "torch_dtype" not in model_kwargs:
+        if dtype is None and _resolves_to_cpu(device):
+            dtype = "float32"
+        if dtype is not None:
+            if isinstance(dtype, str):
+                import torch
+
+                dtype = getattr(torch, dtype)
+            model_kwargs["torch_dtype"] = dtype
+    if model_kwargs:
+        out["model_kwargs"] = model_kwargs
+    return out
+
+
 def sentence_transformers_embedder(
     model_name: str = "all-MiniLM-L6-v2",
     *,
@@ -389,6 +427,7 @@ def sentence_transformers_embedder(
     query_prompt: str | None = None,
     document_prompt: str | None = None,
     prompt_names: Mapping[str, str] | None = None,
+    dtype: Any = None,
     **st_kwargs: Any,
 ) -> Embedder:
     """Build a local sentence-transformers :class:`~ef.embedders.Embedder`.
@@ -425,6 +464,12 @@ def sentence_transformers_embedder(
         prompt_names: ``{input_type: name}`` of prompts defined in the model's
             own ``prompts`` config (passed as ``encode(prompt_name=...)``).
             An explicit ``prompt=`` / ``prompt_name=`` in a call overrides both.
+        dtype: Torch dtype (or its name, e.g. ``"bfloat16"``) to load the model
+            in. By default, on a CPU device the model is loaded in float32:
+            bf16 checkpoints (Qwen3-Embedding...) otherwise stay bf16, which is
+            ~5x slower on CPUs without native bf16 matmul. Elsewhere the
+            checkpoint's dtype is kept. An explicit ``model_kwargs["torch_dtype"]``
+            takes precedence over the default.
         **st_kwargs: Forwarded to the ``SentenceTransformer`` constructor.
 
     Requires ``sentence-transformers`` (``pip install 'ef[sentence-transformers]'``).
@@ -436,6 +481,7 @@ def sentence_transformers_embedder(
             "sentence_transformers_embedder needs the `sentence-transformers` "
             "package. Install it with: pip install 'ef[sentence-transformers]'"
         ) from exc
+    st_kwargs = _with_cpu_float32_default(st_kwargs, device=device, dtype=dtype)
     model = SentenceTransformer(model_path or model_name, device=device, **st_kwargs)
     return _SentenceTransformerEmbedder(
         model_name,
